@@ -3,10 +3,12 @@ import { supabaseAdmin as supabase } from '@/lib/supabase'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id: sessionId } = await params
+    const params = await context.params
+    const sessionId = params.id
+    
     console.log('Report access requested for session:', sessionId)
 
     if (!sessionId) {
