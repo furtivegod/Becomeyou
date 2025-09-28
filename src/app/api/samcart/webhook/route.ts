@@ -6,12 +6,34 @@ import { generateToken } from '@/lib/auth'
 
 export async function POST(request: NextRequest) {
   try {
-    const url = new URL(request.url)
+    // Check environment variables first
+    const requiredEnvVars = {
+      SAMCART_WEBHOOK_SECRET: process.env.SAMCART_WEBHOOK_SECRET,
+      NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
+      JWT_SECRET: process.env.JWT_SECRET,
+      RESEND_API_KEY: process.env.RESEND_API_KEY,
+      NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL
+    }
 
+    const missingVars = Object.entries(requiredEnvVars)
+      .filter(([key, value]) => !value)
+      .map(([key]) => key)
+
+    if (missingVars.length > 0) {
+      console.error('Missing environment variables:', missingVars)
+      return NextResponse.json({ 
+        error: 'Server configuration error', 
+        missing: missingVars 
+      }, { status: 500 })
+    }
+
+    const url = new URL(request.url)
     const body = await request.text()
     const signature = request.headers.get('x-samcart-signature')
     
     if (!signature) {
+      console.error('Missing signature header')
       return NextResponse.json({ error: 'Missing signature' }, { status: 400 })
     }
 
@@ -23,6 +45,7 @@ export async function POST(request: NextRequest) {
       .digest('hex')
     
     if (signature !== expectedSignature) {
+      console.error('Invalid signature')
       return NextResponse.json({ error: 'Invalid signature' }, { status: 401 })
     }
 
@@ -36,12 +59,26 @@ export async function POST(request: NextRequest) {
       ...parsed
     }
     
+    console.log('Processing webhook data:', { customer_email: data.customer_email, order_id: data.order_id })
+    
     // Only process successful orders in non-test mode
     if (data.status !== 'completed') {
       return NextResponse.json({ message: 'Order not completed, skipping' })
     }
 
     const { customer_email, order_id } = data
+
+    // Test database connection
+    try {
+      const { data: testConnection } = await supabaseAdmin
+        .from('users')
+        .select('count')
+        .limit(1)
+      console.log('Database connection successful')
+    } catch (dbError) {
+      console.error('Database connection failed:', dbError)
+      return NextResponse.json({ error: 'Database connection failed', details: dbError }, { status: 500 })
+    }
 
     // Create or get user
     let { data: user, error: userError } = await supabaseAdmin
@@ -52,6 +89,7 @@ export async function POST(request: NextRequest) {
 
     if (userError && userError.code === 'PGRST116') {
       // User doesn't exist, create them
+      console.log('Creating new user:', customer_email)
       const { data: newUser, error: createError } = await supabaseAdmin
         .from('users')
         .insert({ email: customer_email })
@@ -60,19 +98,21 @@ export async function POST(request: NextRequest) {
 
       if (createError) {
         console.error('Error creating user:', createError)
-        return NextResponse.json({ error: 'Failed to create user' }, { status: 500 })
+        return NextResponse.json({ error: 'Failed to create user', details: createError }, { status: 500 })
       }
       user = newUser
     } else if (userError) {
       console.error('Error fetching user:', userError)
-      return NextResponse.json({ error: 'Failed to fetch user' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to fetch user', details: userError }, { status: 500 })
     }
 
     // Add null check for user
     if (!user) {
-      console.error('User not found')
+      console.error('User not found after creation/fetch')
       return NextResponse.json({ error: 'User not found' }, { status: 500 })
     }
+
+    console.log('User processed:', user.id)
 
     // Create order record (handle duplicate provider_ref by selecting existing)
     let orderRow: { id: string; user_id: string; provider_ref: string; status: string } | undefined
@@ -90,6 +130,7 @@ export async function POST(request: NextRequest) {
       const isUniqueViolation = (orderError as unknown as { code?: string }).code === '23505'
       if (isUniqueViolation) {
         // Fetch existing order row by provider_ref
+        console.log('Order already exists, fetching existing:', order_id)
         const { data: existingOrder, error: selectError } = await supabaseAdmin
           .from('orders')
           .select('id, user_id, provider_ref, status')
@@ -97,46 +138,60 @@ export async function POST(request: NextRequest) {
           .single()
         if (selectError || !existingOrder) {
           console.error('Error selecting existing order:', selectError)
-          return NextResponse.json({ error: 'Failed to get existing order' }, { status: 500 })
+          return NextResponse.json({ error: 'Failed to get existing order', details: selectError }, { status: 500 })
         }
         orderRow = existingOrder
       } else {
         console.error('Error creating order:', orderError)
-        return NextResponse.json({ error: 'Failed to create order' }, { status: 500 })
+        return NextResponse.json({ error: 'Failed to create order', details: orderError }, { status: 500 })
       }
     } else {
       orderRow = order as unknown as typeof orderRow
     }
 
+    console.log('Order processed:', orderRow?.id)
+
     // Create assessment session via internal API
     const sessionApiUrl = new URL('/api/assessment/session', request.url)
+    console.log('Creating session for user:', user.id)
+    
     const sessionRes = await fetch(sessionApiUrl.toString(), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId: user.id }),
       cache: 'no-store'
     })
+    
     if (!sessionRes.ok) {
       const errText = await sessionRes.text().catch(() => 'Session API error')
       console.error('Session API error:', errText)
-      return NextResponse.json({ error: 'Failed to create session' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to create session', details: errText }, { status: 500 })
     }
+    
     const sessionJson: any = await sessionRes.json()
     const sessionId: string | undefined = sessionJson?.session?.id
     if (!sessionId) {
       console.error('Session API returned no session id:', sessionJson)
-      return NextResponse.json({ error: 'Failed to create session' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to create session', details: sessionJson }, { status: 500 })
     }
+
+    console.log('Session created:', sessionId)
 
     // Compute magic link for response
     const token = generateToken(sessionId, customer_email)
     const magicLink = `${process.env.NEXT_PUBLIC_APP_URL}/assessment/${sessionId}?token=${token}`
 
-    // Send magic link email (skip in test mode if email is clearly fake)
+    // Send magic link email
     let emailed = false
-    
-    await sendMagicLink(customer_email, sessionId)
-    emailed = true
+    try {
+      console.log('Sending magic link email to:', customer_email)
+      await sendMagicLink(customer_email, sessionId)
+      emailed = true
+      console.log('Magic link email sent successfully')
+    } catch (emailError) {
+      console.error('Failed to send magic link email:', emailError)
+      // Don't fail the webhook if email fails
+    }
     
     return NextResponse.json({ 
       verified: true,
@@ -150,6 +205,9 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Webhook error:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    return NextResponse.json({ 
+      error: 'Internal server error', 
+      details: error instanceof Error ? error.message : String(error)
+    }, { status: 500 })
   }
 }
