@@ -1,0 +1,111 @@
+Project Summary
+
+Build a lean MVP for BECOME YOU: a paid, chat-based assessment that generates a personalized 30-day protocol using Claude, renders it to PDF, and delivers it to the user by email. Payments run through SamCart; the app side is a minimal, Claude-style chat with secure magic-link access.
+
+Purpose (Why this MVP exists)
+
+Validate the product quickly (prove people will pay and complete the assessment).
+
+Generate early revenue to fund the fuller platform.
+
+Create a repeatable template so additional assessments can be duplicated with new prompts.
+
+Keep costs controlled with a phased scope and transparent hours.
+
+What you need to implement (your responsibilities)
+
+Backend (Vercel functions)
+
+POST /api/samcart/webhook: verify purchase, create user/order, send magic link.
+
+POST /api/assessment/session: create assessment session.
+
+POST /api/assessment/message: stream Claude responses (SSE), persist messages/scores.
+
+POST /api/report/generate: transform structured plan → HTML → PDF, store & return URL.
+
+GET /api/report/:id: authenticated browser view / download.
+
+AI Integration
+
+Wire Anthropic Claude with trauma-informed system prompt.
+
+Compose the structured plan JSON (daily/weekly actions) from final chat output.
+
+Add basic guardrails (token limits, retries, timeouts).
+
+Frontend (Next.js on Vercel)
+
+Minimal Claude-like chat UI at /assessment/:session_id.
+
+Consent screen → chat → completion state with “Report will arrive by email”.
+
+Auth via emailed magic link.
+
+Data & Storage (Supabase)
+
+Tables: users, orders, sessions, messages, plan_outputs, pdf_jobs.
+
+Store PDFs in Supabase Storage (or S3-compatible).
+
+Row-level security for session/report access.
+
+PDF & Email
+
+HTML template → PDF (Playwright).
+
+Email via Postmark (or Resend): magic link, report delivery, 2–3 aftercare nudges.
+
+Ops
+
+PostHog (usage) + Sentry (errors).
+
+Basic env config, secrets, and deployment scripts.
+
+Rate limiting & webhook signature verification.
+
+What Matthew handles
+
+SamCart product, checkout, simple landing page.
+
+PDF visual template (brand + layout).
+
+Slack workspace creation and ongoing comms.
+
+Tech Stack (agreed)
+
+SamCart (checkout + webhook)
+
+Next.js on Vercel (frontend + serverless API)
+
+Supabase (DB, auth, storage)
+
+Anthropic Claude (AI)
+
+Playwright (HTML → PDF)
+
+Postmark/Resend (email)
+
+PostHog + Sentry (analytics/errors)
+
+Success Criteria (MVP)
+
+A paid user receives a magic link, completes the chat assessment, and gets a personalized PDF via email in < 5 minutes, with a secure browser view as fallback.
+
+Immediate To-Do (your first week checklist)
+
+ Set up Vercel project, env vars, Supabase schema & RLS.
+
+ Implement samcart/webhook (verify sig, create user/order, send magic link).
+
+ Build /assessment/:session_id (consent + chat UI + SSE).
+
+ Integrate Claude; persist messages and compose plan JSON.
+
+ Create HTML report template; render to PDF; store & sign URL.
+
+ Send report email; add aftercare drip (2–3 nudges).
+
+ Add PostHog/Sentry; minimal logs + retries.
+
+ Deploy to prod; smoke test full purchase → email flow.
