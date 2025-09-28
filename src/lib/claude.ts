@@ -25,38 +25,24 @@ Keep responses concise (2-3 sentences max) and warm. Always end with a follow-up
 
 export async function generateClaudeResponse(messages: Array<{role: "user" | "assistant", content: string}>) {
   try {
-    console.log('Calling Claude API with', messages.length, 'messages')
-    
-    if (!process.env.ANTHROPIC_API_KEY) {
-      throw new Error('ANTHROPIC_API_KEY not configured')
-    }
-
     const response = await anthropic.messages.create({
-      model: "claude-3-5-sonnet-20241022",
+      model: "claude-sonnet-4-20250514",
       max_tokens: 1000,
       system: SYSTEM_PROMPT,
       messages: messages
     })
 
-    const content = (response.content[0] as { text: string }).text
-    console.log('Claude response received:', content.substring(0, 100) + '...')
-    return content
+    return (response.content[0] as { text: string }).text
   } catch (error) {
     console.error("Claude API error:", error)
-    throw new Error(`Failed to generate response: ${error instanceof Error ? error.message : String(error)}`)
+    throw new Error("Failed to generate response")
   }
 }
 
 export async function generateStructuredPlan(conversationHistory: string) {
   try {
-    console.log('Generating structured plan from conversation')
-    
-    if (!process.env.ANTHROPIC_API_KEY) {
-      throw new Error('ANTHROPIC_API_KEY not configured')
-    }
-
     const response = await anthropic.messages.create({
-      model: "claude-3-5-sonnet-20241022",
+      model: "claude-sonnet-4-20250514",
       max_tokens: 2000,
       system: `Based on the assessment conversation, create a structured 30-day protocol in JSON format:
 
@@ -92,11 +78,9 @@ Make it specific, actionable, and personalized based on their responses.`,
       ]
     })
 
-    const content = (response.content[0] as { text: string }).text
-    console.log('Structured plan generated')
-    return JSON.parse(content)
+    return JSON.parse((response.content[0] as { text: string }).text)
   } catch (error) {
     console.error("Error generating structured plan:", error)
-    throw new Error(`Failed to generate structured plan: ${error instanceof Error ? error.message : String(error)}`)
+    throw new Error("Failed to generate structured plan")
   }
 }
