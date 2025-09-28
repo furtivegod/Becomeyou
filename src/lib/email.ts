@@ -3,9 +3,8 @@ import jwt from 'jsonwebtoken'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
-const FROM = process.env.NODE_ENV === 'production'
-  ? 'BECOME YOU <noreply@becomeyou.com>'
-  : 'onboarding@resend.dev'
+// Use Resend's default domain for now
+const FROM = 'onboarding@resend.dev' // Always use this for now
 
 export async function sendMagicLink(email: string, sessionId: string) {
   console.log('Email service called with:', { email, sessionId })
@@ -36,7 +35,7 @@ export async function sendMagicLink(email: string, sessionId: string) {
   try {
     console.log('Sending email via Resend...')
     const { data, error } = await resend.emails.send({
-      from: FROM,
+      from: FROM, // This will be 'onboarding@resend.dev'
       to: [email],
       subject: 'Your Personal Assessment is Ready',
       html: `
@@ -69,7 +68,7 @@ export async function sendMagicLink(email: string, sessionId: string) {
 export async function sendReportEmail(email: string, pdfUrl: string) {
   try {
     const { data, error } = await resend.emails.send({
-      from: FROM,
+      from: FROM, // This will be 'onboarding@resend.dev'
       to: [email],
       subject: 'Your Personalized 30-Day Protocol is Ready',
       html: `
