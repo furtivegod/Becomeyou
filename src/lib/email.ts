@@ -8,6 +8,22 @@ const FROM = process.env.NODE_ENV === 'production'
   : 'onboarding@resend.dev'
 
 export async function sendMagicLink(email: string, sessionId: string) {
+  console.log('Email service called with:', { email, sessionId })
+  console.log('RESEND_API_KEY status:', process.env.RESEND_API_KEY ? 'SET' : 'NOT SET')
+  console.log('FROM address:', FROM)
+  
+  if (!process.env.RESEND_API_KEY) {
+    throw new Error('RESEND_API_KEY not configured')
+  }
+  
+  if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET not configured')
+  }
+  
+  if (!process.env.NEXT_PUBLIC_APP_URL) {
+    throw new Error('NEXT_PUBLIC_APP_URL not configured')
+  }
+
   const token = jwt.sign(
     { sessionId, email },
     process.env.JWT_SECRET!,
@@ -15,8 +31,10 @@ export async function sendMagicLink(email: string, sessionId: string) {
   )
   
   const magicLink = `${process.env.NEXT_PUBLIC_APP_URL}/assessment/${sessionId}?token=${token}`
+  console.log('Generated magic link:', magicLink)
   
   try {
+    console.log('Sending email via Resend...')
     const { data, error } = await resend.emails.send({
       from: FROM,
       to: [email],
@@ -36,10 +54,11 @@ export async function sendMagicLink(email: string, sessionId: string) {
     })
     
     if (error) {
-      console.error('Error sending magic link:', error)
-      throw error
+      console.error('Resend API error:', error)
+      throw new Error(`Resend API error: ${JSON.stringify(error)}`)
     }
     
+    console.log('Email sent successfully:', data)
     return data
   } catch (error) {
     console.error('Failed to send magic link:', error)

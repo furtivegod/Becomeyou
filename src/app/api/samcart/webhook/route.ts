@@ -151,28 +151,29 @@ export async function POST(request: NextRequest) {
 
     console.log('Order processed:', orderRow?.id)
 
-    // Create assessment session via internal API
-    const sessionApiUrl = new URL('/api/assessment/session', request.url)
+    // Create assessment session directly (avoiding internal API call)
     console.log('Creating session for user:', user.id)
     
-    const sessionRes = await fetch(sessionApiUrl.toString(), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: user.id }),
-      cache: 'no-store'
-    })
-    
-    if (!sessionRes.ok) {
-      const errText = await sessionRes.text().catch(() => 'Session API error')
-      console.error('Session API error:', errText)
-      return NextResponse.json({ error: 'Failed to create session', details: errText }, { status: 500 })
+    const { data: session, error: sessionError } = await supabaseAdmin
+      .from('sessions')
+      .insert({ user_id: user.id, status: 'active' })
+      .select('*')
+      .single()
+
+    if (sessionError) {
+      console.error('Session creation failed:', sessionError)
+      return NextResponse.json({ 
+        error: 'Failed to create session', 
+        details: sessionError,
+        table: 'sessions',
+        userId: user.id
+      }, { status: 500 })
     }
-    
-    const sessionJson: any = await sessionRes.json()
-    const sessionId: string | undefined = sessionJson?.session?.id
+
+    const sessionId = session?.id
     if (!sessionId) {
-      console.error('Session API returned no session id:', sessionJson)
-      return NextResponse.json({ error: 'Failed to create session', details: sessionJson }, { status: 500 })
+      console.error('Session created but no ID returned:', session)
+      return NextResponse.json({ error: 'Failed to create session - no ID' }, { status: 500 })
     }
 
     console.log('Session created:', sessionId)
@@ -181,15 +182,21 @@ export async function POST(request: NextRequest) {
     const token = generateToken(sessionId, customer_email)
     const magicLink = `${process.env.NEXT_PUBLIC_APP_URL}/assessment/${sessionId}?token=${token}`
 
-    // Send magic link email
+    // Send magic link email with better error handling
     let emailed = false
+    let emailError: any = null
+    
     try {
       console.log('Sending magic link email to:', customer_email)
+      console.log('Using RESEND_API_KEY:', process.env.RESEND_API_KEY ? 'SET' : 'NOT SET')
+      console.log('Using FROM address:', process.env.NODE_ENV === 'production' ? 'BECOME YOU <noreply@becomeyou.com>' : 'onboarding@resend.dev')
+      
       await sendMagicLink(customer_email, sessionId)
       emailed = true
       console.log('Magic link email sent successfully')
-    } catch (emailError) {
-      console.error('Failed to send magic link email:', emailError)
+    } catch (emailErr) {
+      emailError = emailErr
+      console.error('Failed to send magic link email:', emailErr)
       // Don't fail the webhook if email fails
     }
     
@@ -200,7 +207,8 @@ export async function POST(request: NextRequest) {
       user,
       order: orderRow,
       session_id: sessionId,
-      magic_link: magicLink
+      magic_link: magicLink,
+      email_error: emailError ? emailError.message : null
     })
 
   } catch (error) {
