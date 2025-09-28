@@ -49,14 +49,23 @@ export async function generateClaudeResponse(messages: Array<{role: "user" | "as
 export async function generateStructuredPlan(conversationHistory: string) {
   try {
     console.log('Generating structured plan from conversation')
+    console.log('Conversation length:', conversationHistory.length)
     
     if (!process.env.ANTHROPIC_API_KEY) {
       throw new Error('ANTHROPIC_API_KEY not configured')
     }
 
+    // Truncate conversation if too long to prevent timeouts
+    const maxLength = 2000
+    const truncatedHistory = conversationHistory.length > maxLength 
+      ? conversationHistory.substring(0, maxLength) + '...'
+      : conversationHistory
+
+    console.log('Using truncated conversation length:', truncatedHistory.length)
+
     const response = await anthropic.messages.create({
       model: "claude-sonnet-4-20250514",
-      max_tokens: 2000,
+      max_tokens: 1000, // Reduced from 2000
       system: `Based on the assessment conversation, create a structured 30-day protocol in JSON format:
 
 {
@@ -86,13 +95,13 @@ Make it specific, actionable, and personalized based on their responses. Return 
       messages: [
         {
           role: "user",
-          content: `Please analyze this assessment conversation and create a structured 30-day protocol:\n\n${conversationHistory}`
+          content: `Please analyze this assessment conversation and create a structured 30-day protocol:\n\n${truncatedHistory}`
         }
       ]
     })
 
     const content = (response.content[0] as { text: string }).text
-    console.log('Raw Claude response:', content)
+    console.log('Raw Claude response length:', content.length)
     
     // Clean the response to extract JSON
     let jsonString = content.trim()
@@ -110,7 +119,7 @@ Make it specific, actionable, and personalized based on their responses. Return 
       jsonString = jsonMatch[0]
     }
     
-    console.log('Cleaned JSON string:', jsonString)
+    console.log('Cleaned JSON string length:', jsonString.length)
     
     try {
       const planData = JSON.parse(jsonString)
@@ -118,7 +127,7 @@ Make it specific, actionable, and personalized based on their responses. Return 
       return planData
     } catch (parseError) {
       console.error('JSON parse error:', parseError)
-      console.error('Failed to parse JSON:', jsonString)
+      console.error('Failed to parse JSON:', jsonString.substring(0, 200) + '...')
       
       // Return a fallback structure if parsing fails
       return {
