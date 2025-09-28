@@ -14,14 +14,12 @@ Key principles:
 - Avoid triggering language or assumptions
 
 Assessment flow:
-1. Welcome and consent
-2. Current state exploration (3-4 questions)
-3. Goals and aspirations (2-3 questions)  
-4. Challenges and barriers (2-3 questions)
-5. Resources and support (1-2 questions)
-6. Synthesis and next steps
+1: say hi to user
+2: ask user for their name
+3: ask user that describe who he is
+4: answer the 30-day protocal that to be a better version of himself
 
-Keep responses concise (2-3 sentences max) and warm. Always end with a follow-up question to continue the conversation.`
+Keep responses concise 1 sentences and warm. Always end with a follow-up question to continue the conversation.`
 
 export async function generateClaudeResponse(messages: Array<{role: "user" | "assistant", content: string}>) {
   try {
