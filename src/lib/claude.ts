@@ -4,43 +4,58 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY!,
 })
 
-export const SYSTEM_PROMPT = `You are a trauma-informed assessment specialist for BECOME YOU. Your role is to guide users through a personalized assessment that will generate a 30-day protocol for their personal transformation.
+export const SYSTEM_PROMPT = `You are a trauma-informed assessment specialist for BECOME YOU. Your role is to guide users through a quick, focused assessment that will generate a 30-day protocol.
 
 Key principles:
-- Use trauma-informed language (sensitive, non-judgmental)
-- Ask open-ended questions that encourage reflection
-- Build trust through active listening
-- Focus on strengths and resilience
-- Avoid triggering language or assumptions
+- Keep responses to exactly 3 sentences maximum
+- Ask only 1 short, direct question per response
+- Use warm, supportive language
+- Focus on key insights only
 
-Assessment flow:
-1: say hi to user
-2: ask user for their name
-3: ask user that describe who he is
-4: answer the 30-day protocal that to be a better version of himself
+Assessment flow (5 questions total):
+1. Welcome: "Welcome! I'm here to help you create your personalized 30-day transformation plan. What's one area of your life you'd most like to improve right now?"
+2. Current state: Ask about their current situation (1 question)
+3. Goals: Ask about their main goal (1 question)  
+4. Challenges: Ask about their biggest obstacle (1 question)
+5. Resources: Ask about their support system (1 question)
+6. Completion: "Thank you! I have everything I need to create your personalized 30-day protocol. Your assessment is complete and I'll now generate your customized plan."
 
-Keep responses concise 1 sentences and warm. Always end with a follow-up question to continue the conversation.`
+After the 5th question, always end with the completion message above. Keep everything brief and focused.`
 
 export async function generateClaudeResponse(messages: Array<{role: "user" | "assistant", content: string}>) {
   try {
+    console.log('Calling Claude API with', messages.length, 'messages')
+    
+    if (!process.env.ANTHROPIC_API_KEY) {
+      throw new Error('ANTHROPIC_API_KEY not configured')
+    }
+
     const response = await anthropic.messages.create({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 1000,
+      model: "claude-3-5-sonnet-20241022",
+      max_tokens: 200,
       system: SYSTEM_PROMPT,
       messages: messages
     })
 
-    return (response.content[0] as { text: string }).text
+    const content = (response.content[0] as { text: string }).text
+    console.log('Claude response received:', content.substring(0, 100) + '...')
+    return content
   } catch (error) {
     console.error("Claude API error:", error)
-    throw new Error("Failed to generate response")
+    throw new Error(`Failed to generate response: ${error instanceof Error ? error.message : String(error)}`)
   }
 }
 
 export async function generateStructuredPlan(conversationHistory: string) {
   try {
+    console.log('Generating structured plan from conversation')
+    
+    if (!process.env.ANTHROPIC_API_KEY) {
+      throw new Error('ANTHROPIC_API_KEY not configured')
+    }
+
     const response = await anthropic.messages.create({
-      model: "claude-sonnet-4-20250514",
+      model: "claude-3-5-sonnet-20241022",
       max_tokens: 2000,
       system: `Based on the assessment conversation, create a structured 30-day protocol in JSON format:
 
@@ -76,9 +91,11 @@ Make it specific, actionable, and personalized based on their responses.`,
       ]
     })
 
-    return JSON.parse((response.content[0] as { text: string }).text)
+    const content = (response.content[0] as { text: string }).text
+    console.log('Structured plan generated')
+    return JSON.parse(content)
   } catch (error) {
     console.error("Error generating structured plan:", error)
-    throw new Error("Failed to generate structured plan")
+    throw new Error(`Failed to generate structured plan: ${error instanceof Error ? error.message : String(error)}`)
   }
 }
