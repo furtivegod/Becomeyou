@@ -1,157 +1,151 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin as supabase } from '@/lib/supabase'
-import { generateStructuredPlan } from '@/lib/claude'
-import { generatePDF } from '@/lib/pdf'
-import { sendReportEmail } from '@/lib/email'
+import Anthropic from "@anthropic-ai/sdk"
 
-export async function POST(request: NextRequest) {
+const anthropic = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY!,
+})
+
+export const SYSTEM_PROMPT = `You are a trauma-informed assessment specialist for BECOME YOU. Your role is to guide users through a quick, focused assessment that will generate a 30-day protocol.
+
+Key principles:
+- Keep responses to exactly 3 sentences maximum
+- Ask only 1 short, direct question per response
+- Use warm, supportive language
+- Focus on key insights only
+
+Assessment flow (5 questions total):
+1. Welcome: "Welcome! I'm here to help you create your personalized 30-day transformation plan. What's one area of your life you'd most like to improve right now?"
+2. Current state: Ask about their current situation (1 question)
+3. Goals: Ask about their main goal (1 question)  
+4. Challenges: Ask about their biggest obstacle (1 question)
+5. Resources: Ask about their support system (1 question)
+6. Completion: "Thank you! I have everything I need to create your personalized 30-day protocol. Your assessment is complete and I'll now generate your customized plan."
+
+After the 5th question, always end with the completion message above. Keep everything brief and focused.`
+
+export async function generateClaudeResponse(messages: Array<{role: "user" | "assistant", content: string}>) {
   try {
-    console.log('Report generation API called')
+    console.log('Calling Claude API with', messages.length, 'messages')
     
-    const { sessionId } = await request.json()
-    console.log('Received sessionId:', sessionId)
-
-    if (!sessionId) {
-      console.error('No sessionId provided')
-      return NextResponse.json({ error: 'sessionId is required' }, { status: 400 })
-    }
-
-    // Check environment variables
     if (!process.env.ANTHROPIC_API_KEY) {
-      console.error('ANTHROPIC_API_KEY not set')
-      return NextResponse.json({ error: 'Claude API key not configured' }, { status: 500 })
+      throw new Error('ANTHROPIC_API_KEY not configured')
     }
 
-    // Get conversation history
-    console.log('Fetching conversation history')
-    const { data: messages, error: messagesError } = await supabase
-      .from('messages')
-      .select('role, content')
-      .eq('session_id', sessionId)
-      .order('ts', { ascending: true })
-
-    if (messagesError) {
-      console.error('Error fetching messages:', messagesError)
-      return NextResponse.json({ error: 'Failed to fetch conversation', details: messagesError }, { status: 500 })
-    }
-
-    if (!messages || messages.length === 0) {
-      console.error('No messages found for session:', sessionId)
-      return NextResponse.json({ error: 'No conversation found' }, { status: 400 })
-    }
-
-    console.log('Found', messages.length, 'messages in conversation')
-
-    // Generate conversation history string
-    const conversationHistory = messages
-      .map(msg => `${msg.role}: ${msg.content}`)
-      .join('\n\n')
-
-    console.log('Generated conversation history')
-
-    // Generate structured plan
-    console.log('Generating structured plan')
-    let planData
-    try {
-      planData = await generateStructuredPlan(conversationHistory)
-      console.log('Structured plan generated successfully')
-    } catch (claudeError) {
-      console.error('Claude API error:', claudeError)
-      return NextResponse.json({ error: 'Failed to generate plan', details: claudeError }, { status: 500 })
-    }
-
-    // Save plan to database
-    console.log('Saving plan to database')
-    const { error: planError } = await supabase
-      .from('plan_outputs')
-      .insert({
-        session_id: sessionId,
-        plan_json: planData
-      })
-
-    if (planError) {
-      console.error('Error saving plan:', planError)
-      return NextResponse.json({ error: 'Failed to save plan', details: planError }, { status: 500 })
-    }
-
-    console.log('Plan saved to database')
-
-    // Generate PDF
-    console.log('Generating PDF')
-    let pdfUrl
-    try {
-      pdfUrl = await generatePDF(planData, sessionId)
-      console.log('PDF generated successfully:', pdfUrl)
-    } catch (pdfError) {
-      console.error('PDF generation error:', pdfError)
-      return NextResponse.json({ error: 'Failed to generate PDF', details: pdfError }, { status: 500 })
-    }
-
-    // Update PDF job status
-    console.log('Updating PDF job status')
-    const { error: pdfJobError } = await supabase
-      .from('pdf_jobs')
-      .insert({
-        session_id: sessionId,
-        status: 'completed',
-        pdf_url: pdfUrl
-      })
-
-    if (pdfJobError) {
-      console.error('Error updating PDF job:', pdfJobError)
-      // Don't fail the whole process for this
-    }
-
-    // Get user id for session
-    console.log('Fetching user information')
-    const { data: sessionRow, error: sessionError } = await supabase
-      .from('sessions')
-      .select('user_id')
-      .eq('id', sessionId)
-      .single()
-
-    if (sessionError || !sessionRow) {
-      console.error('Error fetching session:', sessionError)
-      return NextResponse.json({ error: 'Failed to fetch session', details: sessionError }, { status: 500 })
-    }
-
-    // Get user email
-    const { data: userRow, error: userError } = await supabase
-      .from('users')
-      .select('email')
-      .eq('id', sessionRow.user_id)
-      .single()
-
-    if (userError || !userRow) {
-      console.error('Error fetching user:', userError)
-      return NextResponse.json({ error: 'Failed to fetch user', details: userError }, { status: 500 })
-    }
-
-    console.log('User email found:', userRow.email)
-
-    // Send report email
-    console.log('Sending report email')
-    try {
-      await sendReportEmail(userRow.email, pdfUrl)
-      console.log('Report email sent successfully')
-    } catch (emailError) {
-      console.error('Failed to send report email:', emailError)
-      // Don't fail the whole process for email issues
-    }
-
-    console.log('Report generation completed successfully')
-
-    return NextResponse.json({ 
-      success: true,
-      pdfUrl,
-      message: 'Report generated and sent successfully'
+    const response = await anthropic.messages.create({
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 150,
+      system: SYSTEM_PROMPT,
+      messages: messages
     })
 
+    const content = (response.content[0] as { text: string }).text
+    console.log('Claude response received:', content.substring(0, 100) + '...')
+    return content
   } catch (error) {
-    console.error('Report generation error:', error)
-    return NextResponse.json({ 
-      error: 'Internal server error', 
-      details: error instanceof Error ? error.message : String(error)
-    }, { status: 500 })
+    console.error("Claude API error:", error)
+    throw new Error(`Failed to generate response: ${error instanceof Error ? error.message : String(error)}`)
+  }
+}
+
+export async function generateStructuredPlan(conversationHistory: string) {
+  try {
+    console.log('Generating structured plan from conversation')
+    
+    if (!process.env.ANTHROPIC_API_KEY) {
+      throw new Error('ANTHROPIC_API_KEY not configured')
+    }
+
+    const response = await anthropic.messages.create({
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 2000,
+      system: `Based on the assessment conversation, create a structured 30-day protocol in JSON format:
+
+{
+  "title": "Personalized 30-Day Protocol",
+  "overview": "Brief description of the protocol",
+  "daily_actions": [
+    {
+      "day": 1,
+      "title": "Action title",
+      "description": "What to do",
+      "duration": "15 minutes",
+      "category": "mindfulness|movement|connection|growth"
+    }
+  ],
+  "weekly_goals": [
+    {
+      "week": 1,
+      "focus": "Week focus area",
+      "goals": ["Goal 1", "Goal 2"]
+    }
+  ],
+  "resources": ["Resource 1", "Resource 2"],
+  "reflection_prompts": ["Prompt 1", "Prompt 2"]
+}
+
+Make it specific, actionable, and personalized based on their responses. Return ONLY the JSON, no markdown formatting.`,
+      messages: [
+        {
+          role: "user",
+          content: `Please analyze this assessment conversation and create a structured 30-day protocol:\n\n${conversationHistory}`
+        }
+      ]
+    })
+
+    const content = (response.content[0] as { text: string }).text
+    console.log('Raw Claude response:', content)
+    
+    // Clean the response to extract JSON
+    let jsonString = content.trim()
+    
+    // Remove markdown code blocks if present
+    if (jsonString.startsWith('```json')) {
+      jsonString = jsonString.replace(/^```json\s*/, '').replace(/\s*```$/, '')
+    } else if (jsonString.startsWith('```')) {
+      jsonString = jsonString.replace(/^```\s*/, '').replace(/\s*```$/, '')
+    }
+    
+    // Try to find JSON object in the response
+    const jsonMatch = jsonString.match(/\{[\s\S]*\}/)
+    if (jsonMatch) {
+      jsonString = jsonMatch[0]
+    }
+    
+    console.log('Cleaned JSON string:', jsonString)
+    
+    try {
+      const planData = JSON.parse(jsonString)
+      console.log('Structured plan generated successfully')
+      return planData
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError)
+      console.error('Failed to parse JSON:', jsonString)
+      
+      // Return a fallback structure if parsing fails
+      return {
+        title: "Your Personalized 30-Day Protocol",
+        overview: "Based on your assessment, here's your customized transformation plan.",
+        daily_actions: [
+          {
+            day: 1,
+            title: "Morning Reflection",
+            description: "Start your day with 5 minutes of mindful breathing and intention setting.",
+            duration: "5 minutes",
+            category: "mindfulness"
+          }
+        ],
+        weekly_goals: [
+          {
+            week: 1,
+            focus: "Foundation Building",
+            goals: ["Establish daily routine", "Practice consistency"]
+          }
+        ],
+        resources: ["Daily journal", "Meditation app", "Support group"],
+        reflection_prompts: ["What went well today?", "What can I improve tomorrow?"]
+      }
+    }
+  } catch (error) {
+    console.error("Error generating structured plan:", error)
+    throw new Error(`Failed to generate structured plan: ${error instanceof Error ? error.message : String(error)}`)
   }
 }
