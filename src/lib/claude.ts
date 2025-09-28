@@ -32,7 +32,7 @@ export async function generateClaudeResponse(messages: Array<{role: "user" | "as
 
     const response = await anthropic.messages.create({
       model: "claude-sonnet-4-20250514",
-      max_tokens: 200,
+      max_tokens: 150,
       system: SYSTEM_PROMPT,
       messages: messages
     })
@@ -82,7 +82,7 @@ export async function generateStructuredPlan(conversationHistory: string) {
   "reflection_prompts": ["Prompt 1", "Prompt 2"]
 }
 
-Make it specific, actionable, and personalized based on their responses.`,
+Make it specific, actionable, and personalized based on their responses. Return ONLY the JSON, no markdown formatting.`,
       messages: [
         {
           role: "user",
@@ -92,8 +92,58 @@ Make it specific, actionable, and personalized based on their responses.`,
     })
 
     const content = (response.content[0] as { text: string }).text
-    console.log('Structured plan generated')
-    return JSON.parse(content)
+    console.log('Raw Claude response:', content)
+    
+    // Clean the response to extract JSON
+    let jsonString = content.trim()
+    
+    // Remove markdown code blocks if present
+    if (jsonString.startsWith('```json')) {
+      jsonString = jsonString.replace(/^```json\s*/, '').replace(/\s*```$/, '')
+    } else if (jsonString.startsWith('```')) {
+      jsonString = jsonString.replace(/^```\s*/, '').replace(/\s*```$/, '')
+    }
+    
+    // Try to find JSON object in the response
+    const jsonMatch = jsonString.match(/\{[\s\S]*\}/)
+    if (jsonMatch) {
+      jsonString = jsonMatch[0]
+    }
+    
+    console.log('Cleaned JSON string:', jsonString)
+    
+    try {
+      const planData = JSON.parse(jsonString)
+      console.log('Structured plan generated successfully')
+      return planData
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError)
+      console.error('Failed to parse JSON:', jsonString)
+      
+      // Return a fallback structure if parsing fails
+      return {
+        title: "Your Personalized 30-Day Protocol",
+        overview: "Based on your assessment, here's your customized transformation plan.",
+        daily_actions: [
+          {
+            day: 1,
+            title: "Morning Reflection",
+            description: "Start your day with 5 minutes of mindful breathing and intention setting.",
+            duration: "5 minutes",
+            category: "mindfulness"
+          }
+        ],
+        weekly_goals: [
+          {
+            week: 1,
+            focus: "Foundation Building",
+            goals: ["Establish daily routine", "Practice consistency"]
+          }
+        ],
+        resources: ["Daily journal", "Meditation app", "Support group"],
+        reflection_prompts: ["What went well today?", "What can I improve tomorrow?"]
+      }
+    }
   } catch (error) {
     console.error("Error generating structured plan:", error)
     throw new Error(`Failed to generate structured plan: ${error instanceof Error ? error.message : String(error)}`)
