@@ -31,7 +31,7 @@ export async function generateClaudeResponse(messages: Array<{role: "user" | "as
     }
 
     const response = await anthropic.messages.create({
-      model: "claude-3-5-sonnet-20241022",
+      model: "claude-sonnet-4-20250514",
       max_tokens: 200,
       system: SYSTEM_PROMPT,
       messages: messages
@@ -55,7 +55,7 @@ export async function generateStructuredPlan(conversationHistory: string) {
     }
 
     const response = await anthropic.messages.create({
-      model: "claude-3-5-sonnet-20241022",
+      model: "claude-sonnet-4-20250514",
       max_tokens: 2000,
       system: `Based on the assessment conversation, create a structured 30-day protocol in JSON format:
 
