@@ -1,106 +1,88 @@
-import { NextRequest } from 'next/server'
-import { supabaseAdmin as supabase } from '@/lib/supabase'
+import { NextRequest, NextResponse } from 'next/server'
 import { generateClaudeResponse } from '@/lib/claude'
+import { supabase } from '@/lib/supabase'
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('Message API called')
+    const { sessionId, message, currentPhase, questionCount } = await request.json()
     
-    const { sessionId, message } = await request.json()
-    console.log('Received sessionId:', sessionId, 'message:', message)
-    
+    console.log('Processing message for session:', sessionId)
+    console.log('Current phase:', currentPhase)
+    console.log('Question count:', questionCount)
+
     if (!sessionId || !message) {
-      console.error('Missing sessionId or message')
-      return new Response('Missing sessionId or message', { status: 400 })
+      return NextResponse.json({ error: 'Session ID and message are required' }, { status: 400 })
     }
 
-    // Check environment variables
     if (!process.env.ANTHROPIC_API_KEY) {
-      console.error('ANTHROPIC_API_KEY not set')
-      return new Response('Claude API key not configured', { status: 500 })
-    }
-
-    // Test database connection
-    try {
-      const { data: testData, error: testError } = await supabase
-        .from('messages')
-        .select('count')
-        .limit(1)
-      
-      if (testError) {
-        console.error('Database connection test failed:', testError)
-        return new Response('Database connection failed', { status: 500 })
-      }
-      console.log('Database connection successful')
-    } catch (dbError) {
-      console.error('Database connection error:', dbError)
-      return new Response('Database connection error', { status: 500 })
-    }
-    
-    // Save user message
-    console.log('Saving user message')
-    const { error: userMsgError } = await supabase
-      .from('messages')
-      .insert({
-        session_id: sessionId,
-        role: 'user',
-        content: message
-      })
-
-    if (userMsgError) {
-      console.error('Error saving user message:', userMsgError)
-      return new Response('Error saving message', { status: 500 })
+      return NextResponse.json({ error: 'ANTHROPIC_API_KEY not configured' }, { status: 500 })
     }
 
     // Get conversation history
-    console.log('Fetching conversation history')
-    const { data: messages, error: messagesError } = await supabase
-      .from('messages')
-      .select('role, content')
+    const { data: messages, error: fetchError } = await supabase
+      .from('assessment_messages')
+      .select('*')
       .eq('session_id', sessionId)
-      .order('ts', { ascending: true })
+      .order('created_at', { ascending: true })
 
-    if (messagesError) {
-      console.error('Error fetching messages:', messagesError)
-      return new Response('Error fetching conversation', { status: 500 })
+    if (fetchError) {
+      console.error('Error fetching messages:', fetchError)
+      return NextResponse.json({ error: 'Failed to fetch conversation history' }, { status: 500 })
     }
 
-    console.log('Found', messages?.length || 0, 'messages in conversation')
+    // Build conversation history for Claude
+    const conversationHistory = messages?.map(msg => ({
+      role: msg.role as "user" | "assistant",
+      content: msg.content
+    })) || []
 
-    // Generate Claude response
-    console.log('Generating Claude response')
-    let claudeResponse: string
-    try {
-      claudeResponse = await generateClaudeResponse(messages)
-      console.log('Claude response generated successfully')
-    } catch (claudeError) {
-      console.error('Claude API error:', claudeError)
-      return new Response('Failed to generate Claude response', { status: 500 })
-    }
+    // Add current message
+    conversationHistory.push({
+      role: "user",
+      content: message
+    })
 
-    // Save Claude response
-    console.log('Saving Claude response')
-    const { error: claudeMsgError } = await supabase
-      .from('messages')
+    // Generate response using Claude
+    const response = await generateClaudeResponse(conversationHistory, currentPhase, questionCount)
+
+    // Save assistant response to database
+    const { error: saveError } = await supabase
+      .from('assessment_messages')
       .insert({
         session_id: sessionId,
         role: 'assistant',
-        content: claudeResponse
+        content: response
       })
 
-    if (claudeMsgError) {
-      console.error('Error saving Claude message:', claudeMsgError)
-      return new Response('Error saving response', { status: 500 })
+    if (saveError) {
+      console.error('Error saving message:', saveError)
+      return NextResponse.json({ error: 'Failed to save message' }, { status: 500 })
     }
 
-    console.log('Message processing completed successfully')
+    // Check if assessment is complete
+    const isComplete = response.includes('assessment is complete') || (questionCount && questionCount >= 15)
 
-    // Return SSE stream
+    // Create streaming response
     const encoder = new TextEncoder()
     const stream = new ReadableStream({
       start(controller) {
-        controller.enqueue(encoder.encode(`data: ${JSON.stringify({ content: claudeResponse })}\n\n`))
-        controller.close()
+        // Send the response in chunks
+        const chunks = response.split(' ')
+        let index = 0
+
+        const sendChunk = () => {
+          if (index < chunks.length) {
+            const chunk = chunks[index] + (index < chunks.length - 1 ? ' ' : '')
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ content: chunk })}\n\n`))
+            index++
+            setTimeout(sendChunk, 50) // 50ms delay between chunks
+          } else {
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ isComplete, protocolData: isComplete ? {} : null })}\n\n`))
+            controller.close()
+          }
+        }
+
+        sendChunk()
       }
     })
 
@@ -109,11 +91,11 @@ export async function POST(request: NextRequest) {
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',
         'Connection': 'keep-alive',
-      }
+      },
     })
 
   } catch (error) {
-    console.error('Message API error:', error)
-    return new Response('Internal server error', { status: 500 })
+    console.error('Error processing message:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
