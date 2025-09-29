@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
     try {
       // Add timeout to prevent hanging
       const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Claude API timeout after 5 minutes')), 300000)
+        setTimeout(() => reject(new Error('Claude API timeout after 30 seconds')), 30000)
       )
       
       const claudePromise = generateStructuredPlan(conversationHistory)
@@ -116,30 +116,15 @@ export async function POST(request: NextRequest) {
 
     console.log('Plan saved to database')
 
-    // Generate PDF
-    console.log('Generating PDF')
+    // Generate PDF with actual PDF generation and storage
+    console.log('Generating PDF with storage')
     let pdfUrl
     try {
       pdfUrl = await generatePDF(planData, sessionId)
-      console.log('PDF generated successfully:', pdfUrl)
+      console.log('PDF generated and stored successfully:', pdfUrl)
     } catch (pdfError) {
       console.error('PDF generation error:', pdfError)
       return NextResponse.json({ error: 'Failed to generate PDF', details: pdfError }, { status: 500 })
-    }
-
-    // Update PDF job status
-    console.log('Updating PDF job status')
-    const { error: pdfJobError } = await supabase
-      .from('pdf_jobs')
-      .insert({
-        session_id: sessionId,
-        status: 'completed',
-        pdf_url: pdfUrl
-      })
-
-    if (pdfJobError) {
-      console.error('Error updating PDF job:', pdfJobError)
-      // Don't fail the whole process for this
     }
 
     // Get user id for session
@@ -169,28 +154,26 @@ export async function POST(request: NextRequest) {
 
     console.log('User email found:', userRow.email)
 
-    // Send report email
+    // Send report email with signed PDF URL
     console.log('Sending report email')
     try {
       await sendReportEmail(userRow.email, pdfUrl)
       console.log('Report email sent successfully')
     } catch (emailError) {
-      console.error('Failed to send report email:', emailError)
-      // Don't fail the whole process for email issues
+      console.error('Email sending error:', emailError)
+      // Don't fail the whole process for email errors
     }
 
-    console.log('Report generation completed successfully')
-
     return NextResponse.json({ 
-      success: true,
-      pdfUrl,
-      message: 'Report generated and sent successfully'
+      success: true, 
+      pdfUrl: pdfUrl,
+      message: 'Report generated and email sent successfully'
     })
 
   } catch (error) {
     console.error('Report generation error:', error)
     return NextResponse.json({ 
-      error: 'Internal server error', 
+      error: 'Failed to generate report', 
       details: error instanceof Error ? error.message : String(error)
     }, { status: 500 })
   }

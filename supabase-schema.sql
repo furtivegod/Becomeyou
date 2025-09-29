@@ -51,9 +51,28 @@ CREATE TABLE pdf_jobs (
   session_id UUID REFERENCES sessions(id) ON DELETE CASCADE,
   status VARCHAR(50) DEFAULT 'pending',
   pdf_url TEXT,
+  file_path TEXT, -- Path to file in Supabase Storage
   error TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- Create storage bucket for reports
+INSERT INTO storage.buckets (id, name, public) VALUES ('reports', 'reports', false);
+
+-- Storage policies for reports bucket
+CREATE POLICY "Users can view their own reports" ON storage.objects
+  FOR SELECT USING (
+    bucket_id = 'reports' AND
+    auth.uid()::text = (
+      SELECT user_id::text 
+      FROM sessions s 
+      JOIN pdf_jobs pj ON s.id = pj.session_id 
+      WHERE pj.file_path = name
+    )
+  );
+
+CREATE POLICY "Service role can manage all reports" ON storage.objects
+  FOR ALL USING (bucket_id = 'reports');
 
 -- Row Level Security (RLS) policies
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
@@ -64,45 +83,55 @@ ALTER TABLE plan_outputs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE pdf_jobs ENABLE ROW LEVEL SECURITY;
 
 -- RLS Policies for users
-CREATE POLICY "Users can view own data" ON users
-  FOR ALL USING (auth.uid() = id);
+CREATE POLICY "Users can view their own data" ON users
+  FOR SELECT USING (auth.uid() = id);
+
+CREATE POLICY "Service role can manage all users" ON users
+  FOR ALL USING (true);
 
 -- RLS Policies for orders
-CREATE POLICY "Users can view own orders" ON orders
-  FOR ALL USING (auth.uid() = user_id);
+CREATE POLICY "Users can view their own orders" ON orders
+  FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Service role can manage all orders" ON orders
+  FOR ALL USING (true);
 
 -- RLS Policies for sessions
-CREATE POLICY "Users can view own sessions" ON sessions
-  FOR ALL USING (auth.uid() = user_id);
+CREATE POLICY "Users can view their own sessions" ON sessions
+  FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Service role can manage all sessions" ON sessions
+  FOR ALL USING (true);
 
 -- RLS Policies for messages
-CREATE POLICY "Users can view own messages" ON messages
-  FOR ALL USING (auth.uid() = (SELECT user_id FROM sessions WHERE id = session_id));
+CREATE POLICY "Users can view messages from their sessions" ON messages
+  FOR SELECT USING (
+    session_id IN (
+      SELECT id FROM sessions WHERE user_id = auth.uid()
+    )
+  );
+
+CREATE POLICY "Service role can manage all messages" ON messages
+  FOR ALL USING (true);
 
 -- RLS Policies for plan_outputs
-CREATE POLICY "Users can view own plan outputs" ON plan_outputs
-  FOR ALL USING (auth.uid() = (SELECT user_id FROM sessions WHERE id = session_id));
+CREATE POLICY "Users can view their own plan outputs" ON plan_outputs
+  FOR SELECT USING (
+    session_id IN (
+      SELECT id FROM sessions WHERE user_id = auth.uid()
+    )
+  );
+
+CREATE POLICY "Service role can manage all plan outputs" ON plan_outputs
+  FOR ALL USING (true);
 
 -- RLS Policies for pdf_jobs
-CREATE POLICY "Users can view own pdf jobs" ON pdf_jobs
-  FOR ALL USING (auth.uid() = (SELECT user_id FROM sessions WHERE id = session_id));
+CREATE POLICY "Users can view their own PDF jobs" ON pdf_jobs
+  FOR SELECT USING (
+    session_id IN (
+      SELECT id FROM sessions WHERE user_id = auth.uid()
+    )
+  );
 
--- Indexes for performance
-CREATE INDEX idx_orders_user_id ON orders(user_id);
-CREATE INDEX idx_sessions_user_id ON sessions(user_id);
-CREATE INDEX idx_messages_session_id ON messages(session_id);
-CREATE INDEX idx_plan_outputs_session_id ON plan_outputs(session_id);
-CREATE INDEX idx_pdf_jobs_session_id ON pdf_jobs(session_id);
-
--- Create storage bucket for reports
-INSERT INTO storage.buckets (id, name, public)
-VALUES ('reports', 'reports', true)
-ON CONFLICT (id) DO UPDATE
-SET name = EXCLUDED.name, public = EXCLUDED.public;
-
--- Storage policies
-CREATE POLICY "Users can view own reports" ON storage.objects
-  FOR SELECT USING (bucket_id = 'reports' AND auth.uid()::text = (storage.foldername(name))[1]);
-
-CREATE POLICY "Users can upload own reports" ON storage.objects
-  FOR INSERT WITH CHECK (bucket_id = 'reports' AND auth.uid()::text = (storage.foldername(name))[1]);
+CREATE POLICY "Service role can manage all PDF jobs" ON pdf_jobs
+  FOR ALL USING (true);
