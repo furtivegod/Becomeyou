@@ -110,15 +110,15 @@ export default function AssessmentPage({ params, searchParams }: AssessmentPageP
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-6xl mx-auto p-4">
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden h-[700px] flex flex-col">
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden" style={{ height: '700px' }}>
           {/* Header */}
-          <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6">
+          <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 flex-shrink-0">
             <h1 className="text-2xl font-bold mb-2">BECOME YOU Assessment</h1>
             <p className="text-blue-100">Let's discover your path to transformation</p>
           </div>
           
-          {/* Chat Interface */}
-          <div className="flex-1 flex flex-col">
+          {/* Chat Interface - Takes remaining height */}
+          <div className="flex-1 flex flex-col" style={{ height: 'calc(100% - 120px)' }}>
             <ChatInterface 
               sessionId={sessionId} 
               onComplete={handleComplete}

@@ -175,8 +175,8 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
 
   return (
     <div className="flex flex-col h-full">
-      {/* Chat Messages */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50">
+      {/* Chat Messages - Fixed height with scroll */}
+      <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50" style={{ maxHeight: 'calc(100% - 80px)' }}>
         {messages.map((message) => (
           <div
             key={message.id}
@@ -229,8 +229,8 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
         )}
       </div>
 
-      {/* Input Area */}
-      <div className="border-t bg-white p-4">
+      {/* Input Area - Fixed at bottom */}
+      <div className="flex-shrink-0 border-t bg-white p-4">
         {assessmentComplete ? (
           <div className="text-center">
             <div className="inline-flex items-center space-x-2 text-green-600 font-semibold bg-green-50 px-4 py-2 rounded-lg">
