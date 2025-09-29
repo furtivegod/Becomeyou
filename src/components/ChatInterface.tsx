@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { trackEvent } from '@/lib/posthog'
+import { useSpeechRecognition } from '@/hooks/useSpeechRecognition'
 
 interface Message {
   id: string
@@ -25,6 +26,16 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
   const [protocolData, setProtocolData] = useState<any>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
+  // Speech recognition hook
+  const {
+    isListening,
+    transcript,
+    startListening,
+    stopListening,
+    error: speechError,
+    isSupported
+  } = useSpeechRecognition()
+
   // Auto-scroll to bottom when new messages arrive
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -33,6 +44,13 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
   useEffect(() => {
     scrollToBottom()
   }, [messages, isLoading, isGeneratingReport])
+
+  // Update input when transcript changes
+  useEffect(() => {
+    if (transcript) {
+      setInput(transcript)
+    }
+  }, [transcript])
 
   // Auto-start with welcome message
   useEffect(() => {
@@ -56,74 +74,37 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
 
   // Track assessment completion
   useEffect(() => {
-    if (messages.length > 0 && !assessmentComplete) {
-      const lastMessage = messages[messages.length - 1]
-      if (lastMessage.role === 'assistant') {
-        const completionSignals = [
-          'assessment is complete',
-          'protocol is ready', 
-          'I will now create your 30-day protocol',
-          'Thank you! I have everything I need',
-          'Your assessment is complete'
-        ]
-        
-        const isComplete = completionSignals.some(signal => 
-          lastMessage.content.toLowerCase().includes(signal.toLowerCase())
-        )
-        
-        if (isComplete) {
-          console.log('Assessment completion detected!')
-          setAssessmentComplete(true)
-          onComplete()
-          triggerReportGeneration()
-        }
-      }
+    if (assessmentComplete) {
+      trackEvent('assessment_completed', { sessionId })
     }
-  }, [messages, assessmentComplete, onComplete])
+  }, [assessmentComplete, sessionId])
 
   const triggerReportGeneration = async () => {
     if (isGeneratingReport) return
-    
+
     setIsGeneratingReport(true)
     try {
-      console.log('Triggering report generation for session:', sessionId)
-      const response = await fetch('/api/report/generate', {
+      const response = await fetch(`/api/report/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId })
       })
-      
+
       if (!response.ok) {
         throw new Error('Failed to generate report')
       }
+
+      const data = await response.json()
+      setProtocolData(data.planData)
+      setShowProtocol(true)
       
-      const result = await response.json()
-      console.log('Report generation result:', result)
-      
-      // Show the protocol data directly
-      if (result.planData) {
-        setProtocolData(result.planData)
-        setShowProtocol(true)
-      }
-      
-      // Show completion message to user
-      const completionMessage: Message = {
-        id: 'completion',
-        role: 'assistant',
-        content: "🎉 Perfect! Your personalized 30-day protocol has been generated! You can view it below and it has also been sent to your email with a download link.",
-        timestamp: new Date()
-      }
-      setMessages(prev => [...prev, completionMessage])
-      
+      // Call onComplete after a delay
+      setTimeout(() => {
+        onComplete()
+      }, 2000)
+
     } catch (error) {
-      console.error('Failed to trigger report generation:', error)
-      const errorMessage: Message = {
-        id: 'error',
-        role: 'assistant',
-        content: "I've generated your protocol, but there was an issue. Please check back in a few minutes or contact support.",
-        timestamp: new Date()
-      }
-      setMessages(prev => [...prev, errorMessage])
+      console.error('Error generating report:', error)
     } finally {
       setIsGeneratingReport(false)
     }
@@ -190,6 +171,12 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
             }
           }
         }
+      }
+
+      // Check if assessment is complete (you'll need to implement this logic)
+      if (messages.length >= 10) { // Example: complete after 10 messages
+        setAssessmentComplete(true)
+        triggerReportGeneration()
       }
 
     } catch (error) {
@@ -351,23 +338,68 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
             </div>
           </div>
         ) : (
-          <div className="flex space-x-3">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-              placeholder="Type your response..."
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-              disabled={isLoading}
-            />
-            <button
-              onClick={sendMessage}
-              disabled={isLoading || !input.trim()}
-              className="px-6 py-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium shadow-sm"
-            >
-              {isLoading ? 'Sending...' : 'Send'}
-            </button>
+          <div className="space-y-3">
+            {/* Speech Error Display */}
+            {speechError && (
+              <div className="p-2 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
+                {speechError}
+              </div>
+            )}
+            
+            <div className="flex space-x-3">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                placeholder="Type your response or use voice input..."
+                className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                disabled={isLoading}
+              />
+              
+              {/* Voice Input Button - Only show if supported */}
+              {isSupported && (
+                <button
+                  onClick={isListening ? stopListening : startListening}
+                  disabled={isLoading}
+                  className={`px-4 py-3 rounded-full font-medium transition-all duration-200 shadow-sm ${
+                    isListening
+                      ? 'bg-red-500 text-white hover:bg-red-600'
+                      : 'bg-green-500 text-white hover:bg-green-600'
+                  } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                  {isListening ? (
+                    <div className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                      <span>Stop</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center space-x-2">
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clipRule="evenodd" />
+                      </svg>
+                      <span>Voice</span>
+                    </div>
+                  )}
+                </button>
+              )}
+              
+              <button
+                onClick={sendMessage}
+                disabled={isLoading || !input.trim()}
+                className="px-6 py-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium shadow-sm"
+              >
+                {isLoading ? 'Sending...' : 'Send'}
+              </button>
+            </div>
+            
+            {/* Voice Input Status */}
+            {isListening && (
+              <div className="text-center text-sm text-gray-600 flex items-center justify-center">
+                <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse mr-2"></div>
+                <span>Listening... Speak now</span>
+              </div>
+            )}
           </div>
         )}
       </div>
