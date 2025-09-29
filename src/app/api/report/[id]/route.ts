@@ -267,7 +267,7 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl: stri
     <body>
       <!-- Download PDF Button -->
       <button class="download-button" id="downloadButton" onclick="downloadPDF()">
-        📥 Download PDF
+        📥 View in PDF Mode
       </button>
       
       <div class="header">
