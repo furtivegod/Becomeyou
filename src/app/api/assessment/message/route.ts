@@ -18,12 +18,26 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'ANTHROPIC_API_KEY not configured' }, { status: 500 })
     }
 
+    // Save user message first
+    const { error: userMsgError } = await supabase
+      .from('messages')
+      .insert({
+        session_id: sessionId,
+        role: 'user',
+        content: message
+      })
+
+    if (userMsgError) {
+      console.error('Error saving user message:', userMsgError)
+      return NextResponse.json({ error: 'Failed to save user message' }, { status: 500 })
+    }
+
     // Get conversation history
     const { data: messages, error: fetchError } = await supabase
-      .from('assessment_messages')
+      .from('messages')
       .select('*')
       .eq('session_id', sessionId)
-      .order('created_at', { ascending: true })
+      .order('ts', { ascending: true })
 
     if (fetchError) {
       console.error('Error fetching messages:', fetchError)
@@ -36,18 +50,12 @@ export async function POST(request: NextRequest) {
       content: msg.content
     })) || []
 
-    // Add current message
-    conversationHistory.push({
-      role: "user",
-      content: message
-    })
-
     // Generate response using Claude
     const response = await generateClaudeResponse(conversationHistory, currentPhase, questionCount)
 
     // Save assistant response to database
     const { error: saveError } = await supabase
-      .from('assessment_messages')
+      .from('messages')
       .insert({
         session_id: sessionId,
         role: 'assistant',

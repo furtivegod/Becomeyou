@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin as supabase } from '@/lib/supabase'
-import { getSignedPDFUrl } from '@/lib/pdf'
+import { supabase } from '@/lib/supabase'
 
 export async function GET(
   request: NextRequest,
@@ -105,256 +104,202 @@ export async function GET(
   }
 }
 
-function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl: string | null) {
+async function getSignedPDFUrl(sessionId: string): Promise<string | null> {
+  try {
+    const { data: pdfJob, error } = await supabase
+      .from('pdf_jobs')
+      .select('pdf_url, status')
+      .eq('session_id', sessionId)
+      .eq('status', 'completed')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single()
+
+    if (error || !pdfJob) {
+      console.log('No completed PDF found for session:', sessionId)
+      return null
+    }
+
+    return pdfJob.pdf_url
+  } catch (error) {
+    console.error('Error getting signed PDF URL:', error)
+    return null
+  }
+}
+
+function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: string | null) {
   return new NextResponse(`
     <!DOCTYPE html>
     <html>
     <head>
       <meta charset="UTF-8">
-      <title>Your Personalized Protocol</title>
+      <title>Your You 3.0 Assessment Report</title>
       <style>
-        @page {
-          margin: 20mm;
-          size: A4;
-        }
         body { 
           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-          line-height: 1.6; 
+          line-height: 1.6;
           color: #333;
-          margin: 0;
-          padding: 0;
+          max-width: 800px;
+          margin: 0 auto;
+          padding: 20px;
+          background: #f8f9fa;
         }
-        
-        .download-button {
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          background: #007bff;
+        .container {
+          background: white;
+          border-radius: 10px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          padding: 2rem;
+        }
+        .header {
+          text-align: center;
+          border-bottom: 3px solid #1976d2;
+          padding-bottom: 1rem;
+          margin-bottom: 2rem;
+        }
+        h1 { color: #1976d2; margin-bottom: 0.5rem; }
+        .subtitle { color: #666; font-style: italic; }
+        .section {
+          margin-bottom: 2rem;
+          padding: 1rem;
+          border-left: 4px solid #1976d2;
+          background: #f8f9fa;
+        }
+        .section h2 {
+          color: #1976d2;
+          margin-top: 0;
+          border-bottom: 1px solid #ddd;
+          padding-bottom: 0.5rem;
+        }
+        .pdf-button {
+          background: #1976d2;
           color: white;
           border: none;
-          padding: 15px 30px;
-          border-radius: 8px;
+          padding: 12px 24px;
+          border-radius: 6px;
           cursor: pointer;
-          font-size: 18px;
-          font-weight: 600;
-          box-shadow: 0 4px 15px rgba(0,123,255,0.4);
-          z-index: 1000;
-          transition: all 0.3s ease;
-        }
-        
-        .download-button:hover {
-          background: #0056b3;
-          transform: translateY(-2px);
-          box-shadow: 0 6px 20px rgba(0,123,255,0.5);
-        }
-        
-        .download-button:disabled {
-          background: #6c757d;
-          cursor: not-allowed;
-          transform: none;
-        }
-        
-        .header { 
-          text-align: center; 
-          margin-bottom: 40px; 
-          border-bottom: 3px solid #007bff;
-          padding-bottom: 20px;
-        }
-        .title { 
-          color: #007bff; 
-          font-size: 32px; 
-          margin-bottom: 15px; 
-          font-weight: 700;
-        }
-        .overview { 
-          color: #666; 
-          font-size: 18px; 
-          margin-bottom: 30px; 
-          font-style: italic;
-        }
-        .section { 
-          margin-bottom: 40px; 
-          page-break-inside: avoid;
-        }
-        .section-title { 
-          color: #007bff; 
-          font-size: 24px; 
-          margin-bottom: 20px; 
-          font-weight: 600;
-          border-bottom: 2px solid #e9ecef;
-          padding-bottom: 10px;
-        }
-        .daily-action { 
-          margin-bottom: 20px; 
-          padding: 20px; 
-          background: #f8f9fa; 
-          border-radius: 10px; 
-          border-left: 5px solid #007bff;
-          page-break-inside: avoid;
-        }
-        .day-number { 
-          font-weight: bold; 
-          color: #007bff; 
-          font-size: 20px; 
-          margin-bottom: 10px;
-        }
-        .action-title { 
-          font-weight: bold; 
-          margin-bottom: 10px; 
-          font-size: 18px; 
-          color: #333;
-        }
-        .action-desc { 
-          color: #666; 
-          margin-bottom: 10px; 
           font-size: 16px;
-          line-height: 1.5;
+          margin: 1rem 0;
         }
-        .action-meta { 
-          color: #888; 
-          font-size: 14px; 
-          font-weight: 500;
-        }
-        .weekly-goal { 
-          margin-bottom: 20px; 
-          padding: 15px; 
-          background: #e8f4fd; 
-          border-radius: 8px; 
-          border-left: 4px solid #17a2b8;
-        }
-        .week-title {
-          font-weight: bold;
-          font-size: 18px;
-          color: #17a2b8;
-          margin-bottom: 10px;
-        }
-        .week-goals {
-          margin-left: 20px;
-        }
-        .week-goals li {
-          margin-bottom: 5px;
-          font-size: 16px;
-        }
-        .resource { 
-          margin-bottom: 10px; 
-          padding: 8px 0; 
-          font-size: 16px;
-          border-bottom: 1px solid #e9ecef;
-        }
-        .reflection { 
-          font-style: italic; 
-          color: #666; 
-          margin-bottom: 15px;
-          padding: 15px;
-          background: #fff3cd;
-          border-radius: 8px;
-          border-left: 4px solid #ffc107;
-          font-size: 16px;
+        .pdf-button:hover { background: #1565c0; }
+        .pdf-button:disabled { 
+          background: #ccc; 
+          cursor: not-allowed; 
         }
         .footer {
-          margin-top: 50px;
           text-align: center;
-          color: #888;
-          font-size: 14px;
-          border-top: 1px solid #e9ecef;
-          padding-top: 20px;
-        }
-        @media print {
-          .download-button { display: none; }
+          margin-top: 2rem;
+          padding-top: 1rem;
+          border-top: 1px solid #ddd;
+          color: #666;
         }
       </style>
     </head>
     <body>
-      <!-- Download PDF Button -->
-      <button class="download-button" id="downloadButton" onclick="downloadPDF()">
-        📥 View in PDF Mode
-      </button>
-      
-      <div class="header">
-        <h1 class="title">${planData.title || 'Your Personalized 30-Day Protocol'}</h1>
-        <p class="overview">${planData.overview || 'Based on your assessment, here\'s your customized transformation plan.'}</p>
-      </div>
-      
-      <div class="section">
-        <h2 class="section-title">📅 Daily Actions</h2>
-        ${(planData.daily_actions || []).map((action: any) => `
-          <div class="daily-action">
-            <div class="day-number">Day ${action.day}</div>
-            <div class="action-title">${action.title}</div>
-            <div class="action-desc">${action.description}</div>
-            <div class="action-meta">Duration: ${action.duration} | Category: ${action.category}</div>
+      <div class="container">
+        <div class="header">
+          <h1>${planData.title || 'Your You 3.0 Assessment Report'}</h1>
+          <p class="subtitle">${planData.overview || 'Your personalized behavioral optimization assessment is complete.'}</p>
+        </div>
+
+        ${planData.assessment_overview ? `
+          <div class="section">
+            <h2>Assessment Overview</h2>
+            <p>${planData.assessment_overview}</p>
           </div>
-        `).join('')}
-      </div>
-      
-      ${(planData.weekly_goals || []).length > 0 ? `
-      <div class="section">
-        <h2 class="section-title">🎯 Weekly Goals</h2>
-        ${(planData.weekly_goals || []).map((goal: any) => `
-          <div class="weekly-goal">
-            <div class="week-title">Week ${goal.week}: ${goal.focus}</div>
-            <ul class="week-goals">
-              ${(goal.goals || []).map((g: string) => `<li>${g}</li>`).join('')}
-            </ul>
+        ` : ''}
+
+        ${planData.development_profile ? `
+          <div class="section">
+            <h2>Your Development Profile</h2>
+            <p>${planData.development_profile}</p>
           </div>
-        `).join('')}
+        ` : ''}
+
+        ${planData.sabotage_analysis ? `
+          <div class="section">
+            <h2>Sabotage Pattern Analysis</h2>
+            ${Object.entries(planData.sabotage_analysis).map(([key, value]: [string, any]) => `
+              <div style="margin: 1rem 0; padding: 1rem; background: white; border-radius: 6px;">
+                <strong>${key.replace(/_/g, ' ').toUpperCase()}:</strong><br>
+                ${value}
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+
+        ${planData.domain_breakdown ? `
+          <div class="section">
+            <h2>Domain Breakdown</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+              ${Object.entries(planData.domain_breakdown).map(([domain, data]: [string, any]) => `
+                <div style="padding: 1rem; background: #e3f2fd; border-radius: 6px;">
+                  <strong>${domain.toUpperCase()}:</strong><br>
+                  ${data}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+
+        ${planData.nervous_system_assessment ? `
+          <div class="section">
+            <h2>Nervous System Assessment</h2>
+            <div style="padding: 1rem; background: #fff3cd; border-radius: 6px;">
+              ${planData.nervous_system_assessment}
+            </div>
+          </div>
+        ` : ''}
+
+        ${planData.thirty_day_protocol ? `
+          <div class="section">
+            <h2>30-Day Recommended Protocol</h2>
+            ${Object.entries(planData.thirty_day_protocol).map(([key, value]: [string, any]) => `
+              <div style="margin: 1rem 0; padding: 1rem; background: #d4edda; border-radius: 6px;">
+                <strong>${key.replace(/_/g, ' ').toUpperCase()}:</strong><br>
+                ${value}
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+
+        ${planData.bottom_line ? `
+          <div class="section">
+            <h2>Bottom Line</h2>
+            <div style="padding: 1rem; background: #f8d7da; border-radius: 6px; font-weight: bold;">
+              ${planData.bottom_line}
+            </div>
+          </div>
+        ` : ''}
+
+        <div style="text-align: center; margin: 2rem 0;">
+          <button 
+            class="pdf-button" 
+            onclick="downloadPDF()"
+            ${!signedPdfUrl ? 'disabled' : ''}
+          >
+            ${signedPdfUrl ? 'Download PDF Report' : 'PDF Generating...'}
+          </button>
+        </div>
+
+        <div class="footer">
+          <p>Generated on ${new Date().toLocaleDateString()} | Your You 3.0 Behavioral Optimization Assessment</p>
+          <p style="color: #1976d2; font-weight: bold;">📧 A downloadable PDF has been sent to your email!</p>
+        </div>
       </div>
-      ` : ''}
-      
-      ${(planData.resources || []).length > 0 ? `
-      <div class="section">
-        <h2 class="section-title">📚 Resources</h2>
-        ${(planData.resources || []).map((resource: string) => `
-          <div class="resource">• ${resource}</div>
-        `).join('')}
-      </div>
-      ` : ''}
-      
-      ${(planData.reflection_prompts || []).length > 0 ? `
-      <div class="section">
-        <h2 class="section-title">🤔 Reflection Prompts</h2>
-        ${(planData.reflection_prompts || []).map((prompt: string) => `
-          <div class="reflection">${prompt}</div>
-        `).join('')}
-      </div>
-      ` : ''}
-      
-      <div class="footer">
-        <p>Generated on ${new Date().toLocaleDateString()} | Your personalized transformation protocol</p>
-        <p style="color: #007bff; font-weight: bold; margin-top: 10px;">
-          📧 A PDF version has been sent to your email with the complete protocol!
-        </p>
-      </div>
-      
+
       <script>
-        const pdfUrl = '${signedPdfUrl || ''}';
-        console.log('PDF URL in JavaScript:', pdfUrl);
-        
         function downloadPDF() {
-          if (pdfUrl) {
-            console.log('Downloading PDF from:', pdfUrl);
-            // Create a temporary link element to trigger download
+          ${signedPdfUrl ? `
             const link = document.createElement('a');
-            link.href = pdfUrl;
-            link.download = 'your-personalized-protocol.pdf';
-            link.target = '_blank';
+            link.href = '${signedPdfUrl}';
+            link.download = 'your-protocol.pdf';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-          } else {
-            alert('PDF is still being generated. Please check your email or try again in a few minutes.');
-          }
+          ` : `
+            alert('PDF is still being generated. Please wait a moment and refresh the page.');
+          `}
         }
-        
-        // Update button text based on PDF availability
-        if (!pdfUrl) {
-          document.getElementById('downloadButton').innerHTML = '⏳ PDF Generating...';
-          document.getElementById('downloadButton').disabled = true;
-        }
-        
-        // Debug: Log PDF URL status
-        console.log('PDF URL available:', !!pdfUrl);
-        console.log('Button element:', document.getElementById('downloadButton'));
       </script>
     </body>
     </html>
