@@ -32,7 +32,7 @@ export async function generateClaudeResponse(messages: Array<{role: "user" | "as
 
     const response = await anthropic.messages.create({
       model: "claude-sonnet-4-20250514",
-      max_tokens: 150,
+      max_tokens: 100,
       system: SYSTEM_PROMPT,
       messages: messages
     })
@@ -65,11 +65,14 @@ export async function generateStructuredPlan(conversationHistory: string) {
 
     const response = await anthropic.messages.create({
       model: "claude-sonnet-4-20250514",
-      max_tokens: 1000, // Reduced from 2000
-      system: `Based on the assessment conversation, create a structured 30-day protocol in JSON format:
+      max_tokens: 2000,
+      system: `You are a personal development expert. Based on the assessment conversation, create a structured 30-day protocol in valid JSON format.
 
+IMPORTANT: Return ONLY valid JSON. No markdown, no explanations, no extra text. Just the JSON object.
+
+Format:
 {
-  "title": "Personalized 30-Day Protocol",
+  "title": "Personalized 30-Day Protocol Title",
   "overview": "Brief description of the protocol",
   "daily_actions": [
     {
@@ -77,7 +80,7 @@ export async function generateStructuredPlan(conversationHistory: string) {
       "title": "Action title",
       "description": "What to do",
       "duration": "15 minutes",
-      "category": "mindfulness|movement|connection|growth"
+      "category": "mindfulness"
     }
   ],
   "weekly_goals": [
@@ -91,49 +94,71 @@ export async function generateStructuredPlan(conversationHistory: string) {
   "reflection_prompts": ["Prompt 1", "Prompt 2"]
 }
 
-Make it specific, actionable, and personalized based on their responses. Return ONLY the JSON, no markdown formatting.`,
+Make it specific and personalized based on their responses.`,
       messages: [
         {
           role: "user",
-          content: `Please analyze this assessment conversation and create a structured 30-day protocol:\n\n${truncatedHistory}`
+          content: `Create a personalized 30-day protocol based on this assessment conversation:\n\n${truncatedHistory}`
         }
       ]
     })
 
     const content = (response.content[0] as { text: string }).text
-    console.log('Raw Claude response length:', content.length)
+    console.log('Raw Claude response:', content)
     
     // Clean the response to extract JSON
     let jsonString = content.trim()
     
-    // Remove markdown code blocks if present
+    // Remove any markdown code blocks
     if (jsonString.startsWith('```json')) {
       jsonString = jsonString.replace(/^```json\s*/, '').replace(/\s*```$/, '')
     } else if (jsonString.startsWith('```')) {
       jsonString = jsonString.replace(/^```\s*/, '').replace(/\s*```$/, '')
     }
     
-    // Try to find JSON object in the response
+    // Try to find the JSON object
     const jsonMatch = jsonString.match(/\{[\s\S]*\}/)
     if (jsonMatch) {
       jsonString = jsonMatch[0]
     }
     
-    console.log('Cleaned JSON string length:', jsonString.length)
+    console.log('Cleaned JSON string:', jsonString.substring(0, 200) + '...')
     
     try {
       const planData = JSON.parse(jsonString)
-      console.log('Structured plan generated successfully')
+      console.log('✅ Successfully parsed Claude response!')
+      console.log('Plan title:', planData.title)
+      console.log('Daily actions count:', planData.daily_actions?.length || 0)
       return planData
     } catch (parseError) {
-      console.error('JSON parse error:', parseError)
-      console.error('Failed to parse JSON:', jsonString.substring(0, 200) + '...')
+      console.error('❌ JSON parse error:', parseError)
+      console.error('Failed JSON:', jsonString)
       
-      // Return a fallback structure if parsing fails
-      return {
-        title: "Your Personalized 30-Day Protocol",
-        overview: "Based on your assessment, here's your customized transformation plan.",
-        daily_actions: [
+      // Try to fix common JSON issues
+      let fixedJson = jsonString
+      
+      // Fix trailing commas
+      fixedJson = fixedJson.replace(/,(\s*[}\]])/g, '$1')
+      
+      // Fix missing quotes around keys
+      fixedJson = fixedJson.replace(/(\w+):/g, '"$1":')
+      
+      // Try parsing the fixed version
+      try {
+        const planData = JSON.parse(fixedJson)
+        console.log('✅ Successfully parsed fixed JSON!')
+        return planData
+      } catch (secondError) {
+        console.error('❌ Still failed after fixes:', secondError)
+        
+        // Return a personalized fallback based on conversation content
+        const hasEnglish = conversationHistory.toLowerCase().includes('english')
+        const hasConfidence = conversationHistory.toLowerCase().includes('confidence') || conversationHistory.toLowerCase().includes('shy')
+        const hasWork = conversationHistory.toLowerCase().includes('work') || conversationHistory.toLowerCase().includes('career')
+        
+        let personalizedTitle = "Your Personalized 30-Day Protocol"
+        let personalizedOverview = "Based on your assessment, here's your customized transformation plan."
+        let dailyActions = [
           {
             day: 1,
             title: "Morning Reflection",
@@ -141,16 +166,55 @@ Make it specific, actionable, and personalized based on their responses. Return 
             duration: "5 minutes",
             category: "mindfulness"
           }
-        ],
-        weekly_goals: [
-          {
-            week: 1,
-            focus: "Foundation Building",
-            goals: ["Establish daily routine", "Practice consistency"]
-          }
-        ],
-        resources: ["Daily journal", "Meditation app", "Support group"],
-        reflection_prompts: ["What went well today?", "What can I improve tomorrow?"]
+        ]
+        
+        if (hasEnglish) {
+          personalizedTitle = "30-Day English Confidence Builder"
+          personalizedOverview = "A structured program to build your English conversation skills and overcome shyness."
+          dailyActions = [
+            {
+              day: 1,
+              title: "Daily English Practice",
+              description: "Spend 15 minutes practicing English conversation with online resources.",
+              duration: "15 minutes",
+              category: "growth"
+            },
+            {
+              day: 2,
+              title: "Vocabulary Building",
+              description: "Learn 5 new English words and use them in sentences.",
+              duration: "10 minutes",
+              category: "growth"
+            }
+          ]
+        } else if (hasWork) {
+          personalizedTitle = "30-Day Career Development Plan"
+          personalizedOverview = "A focused approach to advancing your career and professional skills."
+          dailyActions = [
+            {
+              day: 1,
+              title: "Skill Development",
+              description: "Spend 20 minutes learning a new professional skill.",
+              duration: "20 minutes",
+              category: "growth"
+            }
+          ]
+        }
+        
+        return {
+          title: personalizedTitle,
+          overview: personalizedOverview,
+          daily_actions: dailyActions,
+          weekly_goals: [
+            {
+              week: 1,
+              focus: "Foundation Building",
+              goals: ["Establish daily routine", "Practice consistency"]
+            }
+          ],
+          resources: ["Daily journal", "Meditation app", "Support group"],
+          reflection_prompts: ["What went well today?", "What can I improve tomorrow?"]
+        }
       }
     }
   } catch (error) {
