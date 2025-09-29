@@ -1,4 +1,3 @@
-import { chromium } from 'playwright'
 import { supabaseAdmin as supabase } from '@/lib/supabase'
 
 export interface PlanData {
@@ -23,34 +22,41 @@ export interface PlanData {
 export async function generatePDF(planData: PlanData, sessionId: string): Promise<string> {
   try {
     console.log('Generating PDF for session:', sessionId)
-    
+    console.log('Plan data received:', {
+      title: planData.title,
+      overview: planData.overview,
+      daily_actions_count: planData.daily_actions?.length || 0,
+      weekly_goals_count: planData.weekly_goals?.length || 0,
+      resources_count: planData.resources?.length || 0,
+      reflection_prompts_count: planData.reflection_prompts?.length || 0
+    })
+
+    // Check for PDFShift API key
+    if (!process.env.PDFSHIFT_API_KEY) {
+      console.error('PDFSHIFT_API_KEY not configured')
+      throw new Error('PDF generation service not configured')
+    }
+
+    // Validate data
+    if (!planData.daily_actions || !Array.isArray(planData.daily_actions)) {
+      planData.daily_actions = []
+    }
+    if (!planData.weekly_goals || !Array.isArray(planData.weekly_goals)) {
+      planData.weekly_goals = []
+    }
+    if (!planData.resources || !Array.isArray(planData.resources)) {
+      planData.resources = []
+    }
+    if (!planData.reflection_prompts || !Array.isArray(planData.reflection_prompts)) {
+      planData.reflection_prompts = []
+    }
+
     // Generate HTML content
     const htmlContent = generateHTMLReport(planData)
     
-    // Launch browser and generate PDF
-    console.log('Launching browser for PDF generation')
-    const browser = await chromium.launch({ headless: true })
-    const page = await browser.newPage()
-    
-    // Set content and wait for it to load
-    await page.setContent(htmlContent, { waitUntil: 'networkidle' })
-    
-    // Generate PDF
-    const pdfBuffer = await page.pdf({
-      format: 'A4',
-      margin: {
-        top: '20mm',
-        right: '20mm',
-        bottom: '20mm',
-        left: '20mm'
-      },
-      printBackground: true,
-      displayHeaderFooter: true,
-      headerTemplate: '<div style="font-size: 10px; text-align: center; width: 100%; color: #666;">Your Personalized Protocol</div>',
-      footerTemplate: '<div style="font-size: 10px; text-align: center; width: 100%; color: #666;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>'
-    })
-    
-    await browser.close()
+    // Convert HTML to PDF using PDFShift
+    console.log('Converting HTML to PDF using PDFShift...')
+    const pdfBuffer = await convertHTMLToPDF(htmlContent)
     
     // Store PDF in Supabase Storage
     const fileName = `protocol-${sessionId}-${Date.now()}.pdf`
@@ -105,6 +111,40 @@ export async function generatePDF(planData: PlanData, sessionId: string): Promis
   } catch (error) {
     console.error('PDF generation error:', error)
     throw new Error(`Failed to generate PDF: ${error instanceof Error ? error.message : String(error)}`)
+  }
+}
+
+async function convertHTMLToPDF(htmlContent: string): Promise<Buffer> {
+  try {
+    const response = await fetch('https://api.pdfshift.io/v3/convert/pdf', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Basic ' + Buffer.from(`api:${process.env.PDFSHIFT_API_KEY}`).toString('base64'),
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        source: htmlContent,
+        format: 'A4',
+        margin: '20mm',
+        print_media: true,
+        landscape: false,
+        page_size: 'A4'
+      })
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error('PDFShift API error:', response.status, errorText)
+      throw new Error(`PDFShift API error: ${response.status} - ${errorText}`)
+    }
+
+    const pdfBuffer = await response.arrayBuffer()
+    console.log('PDF generated successfully via PDFShift')
+    return Buffer.from(pdfBuffer)
+
+  } catch (error) {
+    console.error('PDFShift conversion error:', error)
+    throw new Error(`Failed to convert HTML to PDF: ${error instanceof Error ? error.message : String(error)}`)
   }
 }
 
