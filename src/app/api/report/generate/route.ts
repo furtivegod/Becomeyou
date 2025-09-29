@@ -180,6 +180,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ 
       success: true, 
       pdfUrl: pdfUrl,
+      planData: planData, // Add this line to return the plan data
       message: 'Report generated and email sent successfully',
       redirectUrl: `/api/report/${sessionId}`
     })

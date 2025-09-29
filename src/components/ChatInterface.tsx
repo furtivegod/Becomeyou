@@ -20,6 +20,8 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
   const [isLoading, setIsLoading] = useState(false)
   const [assessmentComplete, setAssessmentComplete] = useState(false)
   const [isGeneratingReport, setIsGeneratingReport] = useState(false)
+  const [showProtocol, setShowProtocol] = useState(false)
+  const [protocolData, setProtocolData] = useState<any>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   // Auto-scroll to bottom when new messages arrive
@@ -90,11 +92,17 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
       const result = await response.json()
       console.log('Report generation result:', result)
       
+      // Show the protocol data directly
+      if (result.planData) {
+        setProtocolData(result.planData)
+        setShowProtocol(true)
+      }
+      
       // Show completion message to user
       const completionMessage: Message = {
         id: 'completion',
         role: 'assistant',
-        content: "🎉 Perfect! Your personalized 30-day protocol has been generated and sent to your email. Check your inbox for your customized transformation plan!",
+        content: "🎉 Perfect! Your personalized 30-day protocol has been generated! You can view it below and it has also been sent to your email.",
         timestamp: new Date()
       }
       setMessages(prev => [...prev, completionMessage])
@@ -104,7 +112,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
       const errorMessage: Message = {
         id: 'error',
         role: 'assistant',
-        content: "I've generated your protocol, but there was an issue sending it to your email. Please check back in a few minutes or contact support.",
+        content: "I've generated your protocol, but there was an issue. Please check back in a few minutes or contact support.",
         timestamp: new Date()
       }
       setMessages(prev => [...prev, errorMessage])
@@ -183,6 +191,74 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
     }
   }
 
+  // Protocol display component
+  const ProtocolDisplay = ({ data }: { data: any }) => (
+    <div className="bg-white rounded-lg shadow-lg p-6 mb-4">
+      <div className="text-center mb-6 border-b-2 border-blue-500 pb-4">
+        <h1 className="text-3xl font-bold text-blue-600 mb-2">{data.title || 'Your Personalized 30-Day Protocol'}</h1>
+        <p className="text-gray-600 text-lg italic">{data.overview || 'Based on your assessment, here\'s your customized transformation plan.'}</p>
+      </div>
+      
+      <div className="mb-6">
+        <h2 className="text-2xl font-semibold text-blue-600 mb-4 border-b border-gray-200 pb-2">📅 Daily Actions</h2>
+        <div className="space-y-4">
+          {(data.daily_actions || []).map((action: any, index: number) => (
+            <div key={index} className="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-500">
+              <div className="font-bold text-blue-600 text-lg mb-2">Day {action.day}</div>
+              <div className="font-semibold text-gray-800 text-lg mb-2">{action.title}</div>
+              <div className="text-gray-600 mb-2">{action.description}</div>
+              <div className="text-sm text-gray-500">Duration: {action.duration} | Category: {action.category}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      {(data.weekly_goals || []).length > 0 && (
+        <div className="mb-6">
+          <h2 className="text-2xl font-semibold text-blue-600 mb-4 border-b border-gray-200 pb-2">🎯 Weekly Goals</h2>
+          <div className="space-y-4">
+            {(data.weekly_goals || []).map((goal: any, index: number) => (
+              <div key={index} className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
+                <div className="font-bold text-blue-600 text-lg mb-2">Week {goal.week}: {goal.focus}</div>
+                <ul className="list-disc list-inside space-y-1">
+                  {(goal.goals || []).map((g: string, goalIndex: number) => (
+                    <li key={goalIndex} className="text-gray-700">{g}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      
+      {(data.resources || []).length > 0 && (
+        <div className="mb-6">
+          <h2 className="text-2xl font-semibold text-blue-600 mb-4 border-b border-gray-200 pb-2">📚 Resources</h2>
+          <div className="space-y-2">
+            {(data.resources || []).map((resource: string, index: number) => (
+              <div key={index} className="text-gray-700 border-b border-gray-200 pb-2">• {resource}</div>
+            ))}
+          </div>
+        </div>
+      )}
+      
+      {(data.reflection_prompts || []).length > 0 && (
+        <div className="mb-6">
+          <h2 className="text-2xl font-semibold text-blue-600 mb-4 border-b border-gray-200 pb-2">🤔 Reflection Prompts</h2>
+          <div className="space-y-3">
+            {(data.reflection_prompts || []).map((prompt: string, index: number) => (
+              <div key={index} className="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400 italic text-gray-700">{prompt}</div>
+            ))}
+          </div>
+        </div>
+      )}
+      
+      <div className="text-center text-gray-500 text-sm border-t border-gray-200 pt-4">
+        <p>Generated on {new Date().toLocaleDateString()} | Your personalized transformation protocol</p>
+      </div>
+    </div>
+  )
+
   return (
     <div className="flex flex-col h-full">
       {/* Chat Messages - Fixed height with scroll */}
@@ -238,6 +314,11 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
           </div>
         )}
         
+        {/* Show Protocol */}
+        {showProtocol && protocolData && (
+          <ProtocolDisplay data={protocolData} />
+        )}
+        
         {/* Auto-scroll anchor */}
         <div ref={messagesEndRef} />
       </div>
@@ -250,7 +331,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              <span>Assessment Complete! Your protocol is being generated...</span>
+              <span>Assessment Complete! Your protocol is ready above.</span>
             </div>
           </div>
         ) : (

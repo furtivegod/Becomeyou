@@ -1,3 +1,4 @@
+import { chromium } from 'playwright'
 import { supabaseAdmin as supabase } from '@/lib/supabase'
 
 export interface PlanData {
@@ -22,54 +23,57 @@ export interface PlanData {
 export async function generatePDF(planData: PlanData, sessionId: string): Promise<string> {
   try {
     console.log('Generating PDF for session:', sessionId)
-    console.log('Plan data received:', {
-      title: planData.title,
-      overview: planData.overview,
-      daily_actions_count: planData.daily_actions?.length || 0,
-      weekly_goals_count: planData.weekly_goals?.length || 0,
-      resources_count: planData.resources?.length || 0,
-      reflection_prompts_count: planData.reflection_prompts?.length || 0
-    })
-
-    // Validate data
-    if (!planData.daily_actions || !Array.isArray(planData.daily_actions)) {
-      planData.daily_actions = []
-    }
-    if (!planData.weekly_goals || !Array.isArray(planData.weekly_goals)) {
-      planData.weekly_goals = []
-    }
-    if (!planData.resources || !Array.isArray(planData.resources)) {
-      planData.resources = []
-    }
-    if (!planData.reflection_prompts || !Array.isArray(planData.reflection_prompts)) {
-      planData.reflection_prompts = []
-    }
-
+    
     // Generate HTML content
     const htmlContent = generateHTMLReport(planData)
     
-    // Store HTML in Supabase Storage
-    const fileName = `protocol-${sessionId}-${Date.now()}.html`
+    // Launch browser and generate PDF
+    console.log('Launching browser for PDF generation')
+    const browser = await chromium.launch({ headless: true })
+    const page = await browser.newPage()
+    
+    // Set content and wait for it to load
+    await page.setContent(htmlContent, { waitUntil: 'networkidle' })
+    
+    // Generate PDF
+    const pdfBuffer = await page.pdf({
+      format: 'A4',
+      margin: {
+        top: '20mm',
+        right: '20mm',
+        bottom: '20mm',
+        left: '20mm'
+      },
+      printBackground: true,
+      displayHeaderFooter: true,
+      headerTemplate: '<div style="font-size: 10px; text-align: center; width: 100%; color: #666;">Your Personalized Protocol</div>',
+      footerTemplate: '<div style="font-size: 10px; text-align: center; width: 100%; color: #666;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>'
+    })
+    
+    await browser.close()
+    
+    // Store PDF in Supabase Storage
+    const fileName = `protocol-${sessionId}-${Date.now()}.pdf`
     const filePath = `reports/${fileName}`
     
-    console.log('Storing HTML report in Supabase Storage:', filePath)
+    console.log('Storing PDF in Supabase Storage:', filePath)
     
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from('reports')
-      .upload(filePath, htmlContent, {
-        contentType: 'text/html',
+      .upload(filePath, pdfBuffer, {
+        contentType: 'application/pdf',
         cacheControl: '3600',
         upsert: false
       })
     
     if (uploadError) {
-      console.error('Error uploading HTML report:', uploadError)
-      throw new Error(`Failed to upload HTML report: ${uploadError.message}`)
+      console.error('Error uploading PDF:', uploadError)
+      throw new Error(`Failed to upload PDF: ${uploadError.message}`)
     }
     
-    console.log('HTML report uploaded successfully:', uploadData.path)
+    console.log('PDF uploaded successfully:', uploadData.path)
     
-    // Generate signed URL for the HTML report
+    // Generate signed URL for the PDF
     const { data: signedUrlData, error: signedUrlError } = await supabase.storage
       .from('reports')
       .createSignedUrl(filePath, 60 * 60 * 24 * 7) // 7 days expiry
@@ -104,7 +108,6 @@ export async function generatePDF(planData: PlanData, sessionId: string): Promis
   }
 }
 
-// Remove inline styles and scripts from HTML
 function generateHTMLReport(planData: PlanData): string {
   return `
     <!DOCTYPE html>
@@ -112,70 +115,177 @@ function generateHTMLReport(planData: PlanData): string {
     <head>
       <meta charset="UTF-8">
       <title>Your Personalized Protocol</title>
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+      <style>
+        @page {
+          margin: 20mm;
+          size: A4;
+        }
+        body { 
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          line-height: 1.6; 
+          color: #333;
+          margin: 0;
+          padding: 0;
+        }
+        .header { 
+          text-align: center; 
+          margin-bottom: 40px; 
+          border-bottom: 3px solid #007bff;
+          padding-bottom: 20px;
+        }
+        .title { 
+          color: #007bff; 
+          font-size: 32px; 
+          margin-bottom: 15px; 
+          font-weight: 700;
+        }
+        .overview { 
+          color: #666; 
+          font-size: 18px; 
+          margin-bottom: 30px; 
+          font-style: italic;
+        }
+        .section { 
+          margin-bottom: 40px; 
+          page-break-inside: avoid;
+        }
+        .section-title { 
+          color: #007bff; 
+          font-size: 24px; 
+          margin-bottom: 20px; 
+          font-weight: 600;
+          border-bottom: 2px solid #e9ecef;
+          padding-bottom: 10px;
+        }
+        .daily-action { 
+          margin-bottom: 20px; 
+          padding: 20px; 
+          background: #f8f9fa; 
+          border-radius: 10px; 
+          border-left: 5px solid #007bff;
+          page-break-inside: avoid;
+        }
+        .day-number { 
+          font-weight: bold; 
+          color: #007bff; 
+          font-size: 20px; 
+          margin-bottom: 10px;
+        }
+        .action-title { 
+          font-weight: bold; 
+          margin-bottom: 10px; 
+          font-size: 18px; 
+          color: #333;
+        }
+        .action-desc { 
+          color: #666; 
+          margin-bottom: 10px; 
+          font-size: 16px;
+          line-height: 1.5;
+        }
+        .action-meta { 
+          color: #888; 
+          font-size: 14px; 
+          font-weight: 500;
+        }
+        .weekly-goal { 
+          margin-bottom: 20px; 
+          padding: 15px; 
+          background: #e8f4fd; 
+          border-radius: 8px; 
+          border-left: 4px solid #17a2b8;
+        }
+        .week-title {
+          font-weight: bold;
+          font-size: 18px;
+          color: #17a2b8;
+          margin-bottom: 10px;
+        }
+        .week-goals {
+          margin-left: 20px;
+        }
+        .week-goals li {
+          margin-bottom: 5px;
+          font-size: 16px;
+        }
+        .resource { 
+          margin-bottom: 10px; 
+          padding: 8px 0; 
+          font-size: 16px;
+          border-bottom: 1px solid #e9ecef;
+        }
+        .reflection { 
+          font-style: italic; 
+          color: #666; 
+          margin-bottom: 15px;
+          padding: 15px;
+          background: #fff3cd;
+          border-radius: 8px;
+          border-left: 4px solid #ffc107;
+          font-size: 16px;
+        }
+        .footer {
+          margin-top: 50px;
+          text-align: center;
+          color: #888;
+          font-size: 14px;
+          border-top: 1px solid #e9ecef;
+          padding-top: 20px;
+        }
+      </style>
     </head>
-    <body class="bg-gray-50 p-8">
-      <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
-        <div class="text-center mb-8 border-b-2 border-blue-500 pb-4">
-          <h1 class="text-3xl font-bold text-blue-600 mb-2">${planData.title || 'Your Personalized 30-Day Protocol'}</h1>
-          <p class="text-gray-600 text-lg italic">${planData.overview || 'Based on your assessment, here\'s your customized transformation plan.'}</p>
-        </div>
-        
-        <div class="mb-8">
-          <h2 class="text-2xl font-semibold text-blue-600 mb-4 border-b border-gray-200 pb-2">📅 Daily Actions</h2>
-          <div class="space-y-4">
-            ${(planData.daily_actions || []).map((action: any) => `
-              <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-500">
-                <div class="font-bold text-blue-600 text-lg mb-2">Day ${action.day}</div>
-                <div class="font-semibold text-gray-800 text-lg mb-2">${action.title}</div>
-                <div class="text-gray-600 mb-2">${action.description}</div>
-                <div class="text-sm text-gray-500">Duration: ${action.duration} | Category: ${action.category}</div>
-              </div>
-            `).join('')}
+    <body>
+      <div class="header">
+        <h1 class="title">${planData.title || 'Your Personalized 30-Day Protocol'}</h1>
+        <p class="overview">${planData.overview || 'Based on your assessment, here\'s your customized transformation plan.'}</p>
+      </div>
+      
+      <div class="section">
+        <h2 class="section-title">📅 Daily Actions</h2>
+        ${(planData.daily_actions || []).map((action: any) => `
+          <div class="daily-action">
+            <div class="day-number">Day ${action.day}</div>
+            <div class="action-title">${action.title}</div>
+            <div class="action-desc">${action.description}</div>
+            <div class="action-meta">Duration: ${action.duration} | Category: ${action.category}</div>
           </div>
-        </div>
-        
-        ${(planData.weekly_goals || []).length > 0 ? `
-        <div class="mb-8">
-          <h2 class="text-2xl font-semibold text-blue-600 mb-4 border-b border-gray-200 pb-2">🎯 Weekly Goals</h2>
-          <div class="space-y-4">
-            ${(planData.weekly_goals || []).map((goal: any) => `
-              <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
-                <div class="font-bold text-blue-600 text-lg mb-2">Week ${goal.week}: ${goal.focus}</div>
-                <ul class="list-disc list-inside space-y-1">
-                  ${(goal.goals || []).map((g: string) => `<li class="text-gray-700">${g}</li>`).join('')}
-                </ul>
-              </div>
-            `).join('')}
+        `).join('')}
+      </div>
+      
+      ${(planData.weekly_goals || []).length > 0 ? `
+      <div class="section">
+        <h2 class="section-title">🎯 Weekly Goals</h2>
+        ${(planData.weekly_goals || []).map((goal: any) => `
+          <div class="weekly-goal">
+            <div class="week-title">Week ${goal.week}: ${goal.focus}</div>
+            <ul class="week-goals">
+              ${(goal.goals || []).map((g: string) => `<li>${g}</li>`).join('')}
+            </ul>
           </div>
-        </div>
-        ` : ''}
-        
-        ${(planData.resources || []).length > 0 ? `
-        <div class="mb-8">
-          <h2 class="text-2xl font-semibold text-blue-600 mb-4 border-b border-gray-200 pb-2">📚 Resources</h2>
-          <div class="space-y-2">
-            ${(planData.resources || []).map((resource: string) => `
-              <div class="text-gray-700 border-b border-gray-200 pb-2">• ${resource}</div>
-            `).join('')}
-          </div>
-        </div>
-        ` : ''}
-        
-        ${(planData.reflection_prompts || []).length > 0 ? `
-        <div class="mb-8">
-          <h2 class="text-2xl font-semibold text-blue-600 mb-4 border-b border-gray-200 pb-2">🤔 Reflection Prompts</h2>
-          <div class="space-y-3">
-            ${(planData.reflection_prompts || []).map((prompt: string) => `
-              <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400 italic text-gray-700">${prompt}</div>
-            `).join('')}
-          </div>
-        </div>
-        ` : ''}
-        
-        <div class="text-center text-gray-500 text-sm border-t border-gray-200 pt-4">
-          <p>Generated on ${new Date().toLocaleDateString()} | Your personalized transformation protocol</p>
-        </div>
+        `).join('')}
+      </div>
+      ` : ''}
+      
+      ${(planData.resources || []).length > 0 ? `
+      <div class="section">
+        <h2 class="section-title">📚 Resources</h2>
+        ${(planData.resources || []).map((resource: string) => `
+          <div class="resource">• ${resource}</div>
+        `).join('')}
+      </div>
+      ` : ''}
+      
+      ${(planData.reflection_prompts || []).length > 0 ? `
+      <div class="section">
+        <h2 class="section-title">🤔 Reflection Prompts</h2>
+        ${(planData.reflection_prompts || []).map((prompt: string) => `
+          <div class="reflection">${prompt}</div>
+        `).join('')}
+      </div>
+      ` : ''}
+      
+      <div class="footer">
+        <p>Generated on ${new Date().toLocaleDateString()} | Your personalized transformation protocol</p>
       </div>
     </body>
     </html>
