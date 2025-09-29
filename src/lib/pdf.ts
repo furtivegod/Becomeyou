@@ -1,4 +1,3 @@
-import { chromium } from 'playwright'
 import { supabaseAdmin as supabase } from '@/lib/supabase'
 
 export interface PlanData {
@@ -49,53 +48,28 @@ export async function generatePDF(planData: PlanData, sessionId: string): Promis
     // Generate HTML content
     const htmlContent = generateHTMLReport(planData)
     
-    // Launch browser and generate PDF
-    console.log('Launching browser for PDF generation')
-    const browser = await chromium.launch({ headless: true })
-    const page = await browser.newPage()
-    
-    // Set content and wait for it to load
-    await page.setContent(htmlContent, { waitUntil: 'networkidle' })
-    
-    // Generate PDF
-    const pdfBuffer = await page.pdf({
-      format: 'A4',
-      margin: {
-        top: '20mm',
-        right: '20mm',
-        bottom: '20mm',
-        left: '20mm'
-      },
-      printBackground: true,
-      displayHeaderFooter: true,
-      headerTemplate: '<div style="font-size: 10px; text-align: center; width: 100%; color: #666;">Your Personalized Protocol</div>',
-      footerTemplate: '<div style="font-size: 10px; text-align: center; width: 100%; color: #666;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>'
-    })
-    
-    await browser.close()
-    
-    // Store PDF in Supabase Storage
-    const fileName = `protocol-${sessionId}-${Date.now()}.pdf`
+    // Store HTML in Supabase Storage
+    const fileName = `protocol-${sessionId}-${Date.now()}.html`
     const filePath = `reports/${fileName}`
     
-    console.log('Storing PDF in Supabase Storage:', filePath)
+    console.log('Storing HTML report in Supabase Storage:', filePath)
     
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from('reports')
-      .upload(filePath, pdfBuffer, {
-        contentType: 'application/pdf',
+      .upload(filePath, htmlContent, {
+        contentType: 'text/html',
         cacheControl: '3600',
         upsert: false
       })
     
     if (uploadError) {
-      console.error('Error uploading PDF:', uploadError)
-      throw new Error(`Failed to upload PDF: ${uploadError.message}`)
+      console.error('Error uploading HTML report:', uploadError)
+      throw new Error(`Failed to upload HTML report: ${uploadError.message}`)
     }
     
-    console.log('PDF uploaded successfully:', uploadData.path)
+    console.log('HTML report uploaded successfully:', uploadData.path)
     
-    // Generate signed URL for the PDF
+    // Generate signed URL for the HTML report
     const { data: signedUrlData, error: signedUrlError } = await supabase.storage
       .from('reports')
       .createSignedUrl(filePath, 60 * 60 * 24 * 7) // 7 days expiry
@@ -254,9 +228,32 @@ function generateHTMLReport(planData: PlanData): string {
           border-top: 1px solid #e9ecef;
           padding-top: 20px;
         }
+        .print-instructions {
+          background: #e8f4fd;
+          padding: 15px;
+          border-radius: 8px;
+          margin-bottom: 30px;
+          border-left: 4px solid #007bff;
+        }
+        .print-instructions h3 {
+          margin: 0 0 10px 0;
+          color: #007bff;
+        }
+        .print-instructions p {
+          margin: 5px 0;
+          font-size: 14px;
+        }
       </style>
     </head>
     <body>
+      <div class="print-instructions">
+        <h3>📄 How to Save as PDF</h3>
+        <p><strong>Step 1:</strong> Press Ctrl+P (Windows) or Cmd+P (Mac)</p>
+        <p><strong>Step 2:</strong> Select "Save as PDF" as destination</p>
+        <p><strong>Step 3:</strong> Click "Save" to download your protocol</p>
+        <p><strong>Tip:</strong> Use Chrome or Edge for best results</p>
+      </div>
+      
       <div class="header">
         <h1 class="title">${planData.title || 'Your Personalized 30-Day Protocol'}</h1>
         <p class="overview">${planData.overview || 'Based on your assessment, here\'s your customized transformation plan.'}</p>
