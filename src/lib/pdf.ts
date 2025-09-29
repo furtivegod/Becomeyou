@@ -126,9 +126,6 @@ async function convertHTMLToPDF(htmlContent: string): Promise<Buffer> {
         source: htmlContent,
         format: 'A4',
         margin: '20mm',
-        print_media: true,
-        landscape: false,
-        page_size: 'A4'
       })
     })
 
