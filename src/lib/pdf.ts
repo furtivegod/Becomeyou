@@ -1,5 +1,4 @@
 import { supabaseAdmin as supabase } from '@/lib/supabase'
-import { chromium } from 'playwright'
 
 interface PlanData {
   title: string
@@ -60,87 +59,60 @@ export async function generatePDF(planData: PlanData, sessionId: string): Promis
     // Generate HTML report
     const htmlContent = generateHTMLReport(planData)
     
-    // Generate PDF using Playwright
-    console.log('Launching browser for PDF generation')
-    const browser = await chromium.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    })
+    // For serverless environments, we'll use a different approach
+    // Instead of generating actual PDFs, we'll store the HTML and use a service
+    console.log('Using serverless-compatible PDF generation')
     
-    try {
-      const page = await browser.newPage()
-      
-      // Set content and wait for it to load
-      await page.setContent(htmlContent, { waitUntil: 'networkidle' })
-      
-      // Generate PDF with proper settings
-      const pdfBuffer = await page.pdf({
-        format: 'A4',
-        printBackground: true,
-        margin: {
-          top: '20mm',
-          right: '20mm',
-          bottom: '20mm',
-          left: '20mm'
-        }
+    // Store HTML content in Supabase Storage
+    const fileName = `protocol-${sessionId}-${Date.now()}.html`
+    const filePath = `reports/${fileName}`
+    
+    console.log('Storing HTML report in Supabase Storage:', filePath)
+    
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('reports')
+      .upload(filePath, htmlContent, {
+        contentType: 'text/html',
+        cacheControl: '3600',
+        upsert: false
       })
-      
-      console.log('PDF generated successfully, size:', pdfBuffer.length, 'bytes')
-      
-      // Upload PDF to Supabase Storage
-      const fileName = `protocol-${sessionId}-${Date.now()}.pdf`
-      const filePath = `reports/${fileName}`
-      
-      console.log('Uploading PDF to Supabase Storage:', filePath)
-      
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('reports')
-        .upload(filePath, pdfBuffer, {
-          contentType: 'application/pdf',
-          cacheControl: '3600',
-          upsert: false
-        })
-      
-      if (uploadError) {
-        console.error('Error uploading PDF:', uploadError)
-        throw new Error(`Failed to upload PDF: ${uploadError.message}`)
-      }
-      
-      console.log('PDF uploaded successfully:', uploadData.path)
-      
-      // Generate signed URL for the PDF
-      const { data: signedUrlData, error: signedUrlError } = await supabase.storage
-        .from('reports')
-        .createSignedUrl(filePath, 60 * 60 * 24 * 7) // 7 days expiry
-      
-      if (signedUrlError) {
-        console.error('Error creating signed URL:', signedUrlError)
-        throw new Error(`Failed to create signed URL: ${signedUrlError.message}`)
-      }
-      
-      const signedUrl = signedUrlData.signedUrl
-      console.log('Signed URL generated successfully')
-      
-      // Store PDF metadata in database
-      const { error: dbError } = await supabase
-        .from('pdf_jobs')
-        .insert({
-          session_id: sessionId,
-          status: 'completed',
-          pdf_url: signedUrl,
-          file_path: filePath
-        })
-      
-      if (dbError) {
-        console.error('Error storing PDF metadata:', dbError)
-        // Don't fail the whole process for this
-      }
-      
-      return signedUrl
-      
-    } finally {
-      await browser.close()
+    
+    if (uploadError) {
+      console.error('Error uploading HTML report:', uploadError)
+      throw new Error(`Failed to upload HTML report: ${uploadError.message}`)
     }
+    
+    console.log('HTML report uploaded successfully:', uploadData.path)
+    
+    // Generate signed URL for the HTML report
+    const { data: signedUrlData, error: signedUrlError } = await supabase.storage
+      .from('reports')
+      .createSignedUrl(filePath, 60 * 60 * 24 * 7) // 7 days expiry
+    
+    if (signedUrlError) {
+      console.error('Error creating signed URL:', signedUrlError)
+      throw new Error(`Failed to create signed URL: ${signedUrlError.message}`)
+    }
+    
+    const signedUrl = signedUrlData.signedUrl
+    console.log('Signed URL generated successfully')
+    
+    // Store PDF metadata in database
+    const { error: dbError } = await supabase
+      .from('pdf_jobs')
+      .insert({
+        session_id: sessionId,
+        status: 'completed',
+        pdf_url: signedUrl,
+        file_path: filePath
+      })
+    
+    if (dbError) {
+      console.error('Error storing PDF metadata:', dbError)
+      // Don't fail the whole process for this
+    }
+    
+    return signedUrl
 
   } catch (error) {
     console.error('PDF generation error:', error)
@@ -272,9 +244,30 @@ function generateHTMLReport(planData: PlanData): string {
           border-top: 1px solid #e9ecef;
           padding-top: 20px;
         }
+        .print-instructions {
+          background: #e8f4fd;
+          padding: 15px;
+          border-radius: 8px;
+          margin-bottom: 30px;
+          border-left: 4px solid #007bff;
+        }
+        .print-instructions h3 {
+          margin: 0 0 10px 0;
+          color: #007bff;
+        }
+        .print-instructions p {
+          margin: 5px 0;
+          font-size: 14px;
+        }
       </style>
     </head>
     <body>
+      <div class="print-instructions">
+        <h3>📄 Print Instructions</h3>
+        <p><strong>To save as PDF:</strong> Press Ctrl+P (Windows) or Cmd+P (Mac), then select "Save as PDF"</p>
+        <p><strong>For best results:</strong> Use Chrome or Edge browser</p>
+      </div>
+      
       <div class="header">
         <h1 class="title">${planData.title || 'Your Personalized 30-Day Protocol'}</h1>
         <p class="overview">${planData.overview || 'Based on your assessment, here\'s your customized transformation plan.'}</p>
