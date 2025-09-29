@@ -1,6 +1,4 @@
-'use client'
-
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 
 interface Message {
   id: string
@@ -19,30 +17,91 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isComplete, setIsComplete] = useState(false)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const [isGeneratingReport, setIsGeneratingReport] = useState(false)
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
-
+  // Auto-start with welcome message
   useEffect(() => {
-    scrollToBottom()
+    if (messages.length === 0) {
+      const welcomeMessage: Message = {
+        id: 'welcome',
+        role: 'assistant',
+        content: "Welcome! I'm here to help you create your personalized 30-day transformation plan. What's one area of your life you'd most like to improve right now?",
+        timestamp: new Date()
+      }
+      setMessages([welcomeMessage])
+    }
+  }, [])
+
+  // Track assessment completion
+  useEffect(() => {
+    if (messages.length > 0) {
+      const lastMessage = messages[messages.length - 1]
+      if (lastMessage.role === 'assistant') {
+        const completionSignals = [
+          'assessment is complete',
+          'protocol is ready', 
+          'I will now create your 30-day protocol',
+          'Thank you! I have everything I need',
+          'Your assessment is complete'
+        ]
+        
+        const isComplete = completionSignals.some(signal => 
+          lastMessage.content.toLowerCase().includes(signal.toLowerCase())
+        )
+        
+        if (isComplete && !isComplete) {
+          setIsComplete(true)
+          onComplete()
+          triggerReportGeneration()
+        }
+      }
+    }
   }, [messages])
 
   const triggerReportGeneration = async () => {
+    if (isGeneratingReport) return
+    
+    setIsGeneratingReport(true)
     try {
-      await fetch('/api/report/generate', {
+      console.log('Triggering report generation for session:', sessionId)
+      const response = await fetch('/api/report/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId })
       })
-    } catch (e) {
-      console.error('Failed to trigger report generation:', e)
+      
+      if (!response.ok) {
+        throw new Error('Failed to generate report')
+      }
+      
+      const result = await response.json()
+      console.log('Report generation result:', result)
+      
+      // Show completion message to user
+      const completionMessage: Message = {
+        id: 'completion',
+        role: 'assistant',
+        content: "🎉 Perfect! Your personalized 30-day protocol has been generated and sent to your email. Check your inbox for your customized transformation plan!",
+        timestamp: new Date()
+      }
+      setMessages(prev => [...prev, completionMessage])
+      
+    } catch (error) {
+      console.error('Failed to trigger report generation:', error)
+      const errorMessage: Message = {
+        id: 'error',
+        role: 'assistant',
+        content: "I've generated your protocol, but there was an issue sending it to your email. Please check back in a few minutes or contact support.",
+        timestamp: new Date()
+      }
+      setMessages(prev => [...prev, errorMessage])
+    } finally {
+      setIsGeneratingReport(false)
     }
   }
 
   const sendMessage = async () => {
-    if (!input.trim() || isLoading) return
+    if (!input.trim() || isLoading || isComplete) return
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -104,14 +163,6 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
         }
       }
 
-      // Heuristic: assessment complete when assistant signals synthesis/next steps
-      const completionSignals = ['assessment is complete', 'protocol is ready', 'next steps', 'I will now create your 30-day protocol']
-      if (completionSignals.some(sig => assistantMessage.content.toLowerCase().includes(sig))) {
-        setIsComplete(true)
-        onComplete()
-        await triggerReportGeneration()
-      }
-
     } catch (error) {
       console.error('Error sending message:', error)
     } finally {
@@ -149,11 +200,21 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
             </div>
           </div>
         )}
-        <div ref={messagesEndRef} />
+        {isGeneratingReport && (
+          <div className="flex justify-start">
+            <div className="bg-green-100 text-green-800 px-4 py-2 rounded-lg">
+              🔄 Generating your personalized protocol...
+            </div>
+          </div>
+        )}
       </div>
 
-      {!isComplete && (
-        <div className="border-t p-4">
+      <div className="border-t p-4">
+        {isComplete ? (
+          <div className="text-center text-green-600 font-semibold">
+            ✅ Assessment Complete! Your protocol has been generated and sent to your email.
+          </div>
+        ) : (
           <div className="flex space-x-2">
             <input
               type="text"
@@ -161,30 +222,19 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
               placeholder="Type your response..."
-              className="flex-1 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               disabled={isLoading}
             />
             <button
               onClick={sendMessage}
-              disabled={!input.trim() || isLoading}
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isLoading || !input.trim()}
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Send
             </button>
           </div>
-        </div>
-      )}
-
-      {isComplete && (
-        <div className="text-center p-8 bg-green-50 border border-green-200 rounded-lg">
-          <h3 className="text-lg font-semibold text-green-800 mb-2">
-            Assessment Complete!
-          </h3>
-          <p className="text-green-600">
-            Your personalized 30-day protocol is being generated and will be sent to your email shortly.
-          </p>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   )
 }

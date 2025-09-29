@@ -1,8 +1,7 @@
-"use client"
-
-import { useEffect, useState } from "react"
-import ChatInterface from "@/components/ChatInterface"
-import ConsentScreen from "@/components/ConsentScreen"
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import ChatInterface from '@/components/ChatInterface'
+import ConsentScreen from '@/components/ConsentScreen'
 
 interface AssessmentPageProps {
   params: { sessionId: string }
@@ -14,6 +13,8 @@ export default function AssessmentPage({ params, searchParams }: AssessmentPageP
   const { token } = searchParams
   const [hasConsented, setHasConsented] = useState(false)
   const [isValid, setIsValid] = useState<boolean | null>(null)
+  const [isComplete, setIsComplete] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     let isMounted = true
@@ -38,6 +39,14 @@ export default function AssessmentPage({ params, searchParams }: AssessmentPageP
     validate()
     return () => { isMounted = false }
   }, [token, sessionId])
+
+  const handleComplete = () => {
+    setIsComplete(true)
+    // Redirect to report after a short delay
+    setTimeout(() => {
+      router.push(`/api/report/${sessionId}`)
+    }, 3000)
+  }
 
   if (isValid === null) {
     return (
@@ -68,24 +77,41 @@ export default function AssessmentPage({ params, searchParams }: AssessmentPageP
     )
   }
 
+  if (isComplete) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center max-w-md mx-auto p-8 bg-white rounded-lg shadow-lg">
+          <div className="mb-6">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h1 className="text-2xl font-bold text-gray-800 mb-2">Assessment Complete!</h1>
+            <p className="text-gray-600">Your personalized 30-day protocol is being generated and will be sent to your email shortly.</p>
+          </div>
+          <div className="text-sm text-gray-500">
+            Redirecting to your report...
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-lg shadow-lg h-[600px] flex flex-col">
-            <div className="border-b p-4">
-              <h1 className="text-2xl font-bold text-gray-800">BECOME YOU Assessment</h1>
-              <p className="text-gray-600">Let&apos;s discover your path to transformation</p>
-            </div>
-            <ChatInterface 
-              sessionId={sessionId} 
-              onComplete={() => {
-                console.log('Assessment completed')
-              }}
-            />
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white rounded-lg shadow-lg h-[600px] flex flex-col">
+          <div className="border-b p-4">
+            <h1 className="text-2xl font-bold text-gray-800">BECOME YOU Assessment</h1>
+            <p className="text-gray-600">Let's discover your path to transformation</p>
           </div>
+          <ChatInterface 
+            sessionId={sessionId} 
+            onComplete={handleComplete}
+          />
         </div>
       </div>
     </div>
   )
-} 
+}

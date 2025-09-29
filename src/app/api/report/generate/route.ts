@@ -52,52 +52,57 @@ export async function POST(request: NextRequest) {
     // Generate structured plan with timeout
     console.log('Generating structured plan')
     let planData
-    
     try {
-      // Add timeout to prevent hanging
+      // Set a timeout for Claude API call
       const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Claude API timeout 5 minutes')), 300000)
+        setTimeout(() => reject(new Error('Claude API timeout after 30 seconds')), 30000)
       )
       
       const claudePromise = generateStructuredPlan(conversationHistory)
-      
       planData = await Promise.race([claudePromise, timeoutPromise])
-      console.log('Structured plan generated successfully')
-    } catch (claudeError) {
-      console.error('Claude API error:', claudeError)
       
-      // Use fallback plan if Claude fails
+      console.log('Structured plan generated successfully')
+    } catch (error) {
+      console.error('Claude API error:', error)
+      console.log('Using fallback plan due to Claude API error')
+      
+      // Fallback plan if Claude fails
       planData = {
-        title: "Your Personalized 30-Day Protocol",
+        title: 'Your Personalized 30-Day Protocol',
         overview: "Based on your assessment, here's your customized transformation plan.",
         daily_actions: [
           {
             day: 1,
-            title: "Morning Reflection",
-            description: "Start your day with 5 minutes of mindful breathing and intention setting.",
-            duration: "5 minutes",
-            category: "mindfulness"
+            title: 'Morning Reflection',
+            description: 'Start your day with 10 minutes of quiet reflection on your goals.',
+            duration: '10 minutes',
+            category: 'mindfulness'
           },
           {
             day: 2,
-            title: "Goal Setting",
-            description: "Write down your main goal for the day and one action step.",
-            duration: "10 minutes",
-            category: "growth"
+            title: 'Action Step',
+            description: 'Take one small step toward your main goal today.',
+            duration: '15 minutes',
+            category: 'action'
           }
         ],
         weekly_goals: [
           {
             week: 1,
-            focus: "Foundation Building",
-            goals: ["Establish daily routine", "Practice consistency"]
+            focus: 'Foundation Building',
+            goals: ['Establish daily routine', 'Identify key priorities']
           }
         ],
-        resources: ["Daily journal", "Meditation app", "Support group"],
-        reflection_prompts: ["What went well today?", "What can I improve tomorrow?"]
+        resources: [
+          'Daily journal for tracking progress',
+          'Accountability partner or support group',
+          'Regular check-ins with yourself'
+        ],
+        reflection_prompts: [
+          'What went well today?',
+          'What would you like to improve tomorrow?'
+        ]
       }
-      
-      console.log('Using fallback plan due to Claude API error')
     }
 
     // Save plan to database
@@ -106,7 +111,8 @@ export async function POST(request: NextRequest) {
       .from('plan_outputs')
       .insert({
         session_id: sessionId,
-        plan_json: planData
+        plan_json: planData,
+        status: 'completed'
       })
 
     if (planError) {
@@ -116,8 +122,8 @@ export async function POST(request: NextRequest) {
 
     console.log('Plan saved to database')
 
-    // Generate PDF with Playwright
-    console.log('Generating PDF with Playwright')
+    // Generate PDF with storage
+    console.log('Generating PDF with storage')
     let pdfUrl
     try {
       pdfUrl = await generatePDF(planData, sessionId)
@@ -127,47 +133,47 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to generate PDF', details: pdfError }, { status: 500 })
     }
 
-    // Get user id for session
+    // Get user email for sending report
     console.log('Fetching user information')
-    const { data: sessionRow, error: sessionError } = await supabase
+    const { data: sessionData, error: sessionError } = await supabase
       .from('sessions')
       .select('user_id')
       .eq('id', sessionId)
       .single()
 
-    if (sessionError || !sessionRow) {
+    if (sessionError || !sessionData) {
       console.error('Error fetching session:', sessionError)
-      return NextResponse.json({ error: 'Failed to fetch session', details: sessionError }, { status: 500 })
+      return NextResponse.json({ error: 'Session not found' }, { status: 404 })
     }
 
-    // Get user email
     const { data: userRow, error: userError } = await supabase
       .from('users')
       .select('email')
-      .eq('id', sessionRow.user_id)
+      .eq('id', sessionData.user_id)
       .single()
 
     if (userError || !userRow) {
       console.error('Error fetching user:', userError)
-      return NextResponse.json({ error: 'Failed to fetch user', details: userError }, { status: 500 })
+      return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
 
     console.log('User email found:', userRow.email)
 
-    // Send report email with signed PDF URL
+    // Send report email
     console.log('Sending report email')
     try {
       await sendReportEmail(userRow.email, pdfUrl)
       console.log('Report email sent successfully')
     } catch (emailError) {
       console.error('Email sending error:', emailError)
-      // Don't fail the whole process for email errors
+      // Don't fail the whole process if email fails
     }
 
     return NextResponse.json({ 
       success: true, 
       pdfUrl: pdfUrl,
-      message: 'Report generated and email sent successfully'
+      message: 'Report generated and email sent successfully',
+      redirectUrl: `/api/report/${sessionId}` // Add redirect URL for user
     })
 
   } catch (error) {
