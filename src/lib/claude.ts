@@ -104,7 +104,7 @@ Make it specific and personalized based on their responses.`,
     })
 
     const content = (response.content[0] as { text: string }).text
-    console.log('Raw Claude response:', content)
+    console.log('Raw Claude response length:', content.length)
     
     // Clean the response to extract JSON
     let jsonString = content.trim()
@@ -122,7 +122,7 @@ Make it specific and personalized based on their responses.`,
       jsonString = jsonMatch[0]
     }
     
-    console.log('Cleaned JSON string:', jsonString.substring(0, 200) + '...')
+    console.log('Cleaned JSON string length:', jsonString.length)
     
     try {
       const planData = JSON.parse(jsonString)
@@ -132,89 +132,102 @@ Make it specific and personalized based on their responses.`,
       return planData
     } catch (parseError) {
       console.error('❌ JSON parse error:', parseError)
-      console.error('Failed JSON:', jsonString)
+      console.error('Failed JSON length:', jsonString.length)
       
-      // Try to fix common JSON issues
+      // Try to fix incomplete JSON
       let fixedJson = jsonString
       
-      // Fix trailing commas
-      fixedJson = fixedJson.replace(/,(\s*[}\]])/g, '$1')
+      // Check if JSON is incomplete (missing closing brackets)
+      const openBraces = (fixedJson.match(/\{/g) || []).length
+      const closeBraces = (fixedJson.match(/\}/g) || []).length
+      const openBrackets = (fixedJson.match(/\[/g) || []).length
+      const closeBrackets = (fixedJson.match(/\]/g) || []).length
       
-      // Fix missing quotes around keys
-      fixedJson = fixedJson.replace(/(\w+):/g, '"$1":')
+      console.log('Brace count - Open:', openBraces, 'Close:', closeBraces)
+      console.log('Bracket count - Open:', openBrackets, 'Close:', closeBrackets)
+      
+      // If JSON is incomplete, try to complete it
+      if (openBraces > closeBraces || openBrackets > closeBrackets) {
+        console.log('🔧 Attempting to fix incomplete JSON...')
+        
+        // Find the last complete object in daily_actions
+        const lastCompleteAction = fixedJson.lastIndexOf('}')
+        if (lastCompleteAction > 0) {
+          // Try to complete the JSON structure
+          let completion = ''
+          
+          // Add missing closing brackets for daily_actions array
+          if (openBrackets > closeBrackets) {
+            completion += ']'
+          }
+          
+          // Add missing closing braces for the main object
+          if (openBraces > closeBraces) {
+            completion += '}'
+          }
+          
+          // Add missing sections if they don't exist
+          if (!fixedJson.includes('"weekly_goals"')) {
+            completion = completion.replace(/\]$/, '],\n  "weekly_goals": [\n    {\n      "week": 1,\n      "focus": "Foundation Building",\n      "goals": ["Establish daily routine", "Practice consistency"]\n    }\n  ],\n  "resources": ["Daily journal", "Meditation app", "Support group"],\n  "reflection_prompts": ["What went well today?", "What can I improve tomorrow?"]\n}')
+          }
+          
+          fixedJson = fixedJson.substring(0, lastCompleteAction + 1) + completion
+          console.log('🔧 Applied JSON completion fixes')
+        }
+      }
       
       // Try parsing the fixed version
       try {
         const planData = JSON.parse(fixedJson)
         console.log('✅ Successfully parsed fixed JSON!')
+        console.log('Plan title:', planData.title)
+        console.log('Daily actions count:', planData.daily_actions?.length || 0)
         return planData
       } catch (secondError) {
         console.error('❌ Still failed after fixes:', secondError)
         
-        // Return a personalized fallback based on conversation content
-        const hasEnglish = conversationHistory.toLowerCase().includes('english')
-        const hasConfidence = conversationHistory.toLowerCase().includes('confidence') || conversationHistory.toLowerCase().includes('shy')
-        const hasWork = conversationHistory.toLowerCase().includes('work') || conversationHistory.toLowerCase().includes('career')
-        
-        let personalizedTitle = "Your Personalized 30-Day Protocol"
-        let personalizedOverview = "Based on your assessment, here's your customized transformation plan."
-        let dailyActions = [
-          {
-            day: 1,
-            title: "Morning Reflection",
-            description: "Start your day with 5 minutes of mindful breathing and intention setting.",
-            duration: "5 minutes",
-            category: "mindfulness"
+        // Extract what we can from the partial JSON
+        try {
+          // Try to extract just the daily_actions array
+          const actionsMatch = jsonString.match(/"daily_actions":\s*\[([\s\S]*?)\]/)
+          if (actionsMatch) {
+            const actionsText = actionsMatch[1]
+            const actions = []
+            const actionMatches = actionsText.match(/\{[^}]*\}/g)
+            if (actionMatches) {
+              for (const actionMatch of actionMatches) {
+                try {
+                  const action = JSON.parse(actionMatch)
+                  actions.push(action)
+                } catch (e) {
+                  // Skip malformed actions
+                }
+              }
+            }
+            
+            console.log('✅ Extracted', actions.length, 'daily actions from partial JSON')
+            
+            return {
+              title: "Your Personalized 30-Day Protocol",
+              overview: "Based on your assessment, here's your customized transformation plan.",
+              daily_actions: actions,
+              weekly_goals: [
+                {
+                  week: 1,
+                  focus: "Foundation Building",
+                  goals: ["Establish daily routine", "Practice consistency"]
+                }
+              ],
+              resources: ["Daily journal", "Meditation app", "Support group"],
+              reflection_prompts: ["What went well today?", "What can I improve tomorrow?"]
+            }
           }
-        ]
-        
-        if (hasEnglish) {
-          personalizedTitle = "30-Day English Confidence Builder"
-          personalizedOverview = "A structured program to build your English conversation skills and overcome shyness."
-          dailyActions = [
-            {
-              day: 1,
-              title: "Daily English Practice",
-              description: "Spend 15 minutes practicing English conversation with online resources.",
-              duration: "15 minutes",
-              category: "growth"
-            },
-            {
-              day: 2,
-              title: "Vocabulary Building",
-              description: "Learn 5 new English words and use them in sentences.",
-              duration: "10 minutes",
-              category: "growth"
-            }
-          ]
-        } else if (hasWork) {
-          personalizedTitle = "30-Day Career Development Plan"
-          personalizedOverview = "A focused approach to advancing your career and professional skills."
-          dailyActions = [
-            {
-              day: 1,
-              title: "Skill Development",
-              description: "Spend 20 minutes learning a new professional skill.",
-              duration: "20 minutes",
-              category: "growth"
-            }
-          ]
+        } catch (extractError) {
+          console.error('❌ Failed to extract partial data:', extractError)
         }
         
-        return {
-          title: personalizedTitle,
-          overview: personalizedOverview,
-          daily_actions: dailyActions,
-          weekly_goals: [
-            {
-              week: 1,
-              focus: "Foundation Building",
-              goals: ["Establish daily routine", "Practice consistency"]
-            }
-          ],
-          resources: ["Daily journal", "Meditation app", "Support group"],
-          reflection_prompts: ["What went well today?", "What can I improve tomorrow?"]
-        }
+        // If all else fails, throw an error instead of using generic fallback
+        throw new Error('Failed to parse Claude response and extract meaningful data')
       }
     }
   } catch (error) {
