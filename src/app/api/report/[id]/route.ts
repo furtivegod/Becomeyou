@@ -17,7 +17,7 @@ export async function GET(
     
     if (signedPdfUrl) {
       console.log('Found existing PDF, redirecting to signed URL')
-      return NextResponse.redirect(signedPdfUrl)
+      // return NextResponse.redirect(signedPdfUrl)
     }
 
     // If no PDF exists, get the plan data and generate HTML view
