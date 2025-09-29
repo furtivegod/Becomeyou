@@ -14,6 +14,8 @@ export async function GET(
 
     // Try to get signed PDF URL first
     const signedPdfUrl = await getSignedPDFUrl(sessionId)
+    console.log('PDF URL found:', signedPdfUrl ? 'Yes' : 'No')
+    console.log('PDF URL:', signedPdfUrl)
     
     // Always show HTML page, don't redirect to PDF
     console.log('Generating HTML view for session:', sessionId)
@@ -123,74 +125,33 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl: stri
           padding: 0;
         }
         
-        /* PDF Viewer Modal Styles */
-        .pdf-modal {
-          display: none;
-          position: fixed;
-          z-index: 2000;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          background-color: rgba(0,0,0,0.8);
-        }
-        
-        .pdf-modal-content {
-          position: relative;
-          margin: 2% auto;
-          width: 90%;
-          height: 90%;
-          background: white;
-          border-radius: 10px;
-          overflow: hidden;
-        }
-        
-        .pdf-close {
-          position: absolute;
-          top: 15px;
-          right: 20px;
-          color: #fff;
-          font-size: 28px;
-          font-weight: bold;
-          cursor: pointer;
-          z-index: 2001;
-          background: rgba(0,0,0,0.5);
-          border-radius: 50%;
-          width: 40px;
-          height: 40px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        
-        .pdf-close:hover {
-          background: rgba(0,0,0,0.8);
-        }
-        
-        .pdf-iframe {
-          width: 100%;
-          height: 100%;
-          border: none;
-        }
-        
-        .pdf-button {
+        .download-button {
           position: fixed;
           top: 20px;
           right: 20px;
           background: #007bff;
           color: white;
           border: none;
-          padding: 12px 24px;
-          border-radius: 6px;
+          padding: 15px 30px;
+          border-radius: 8px;
           cursor: pointer;
-          font-size: 16px;
+          font-size: 18px;
           font-weight: 600;
-          box-shadow: 0 2px 10px rgba(0,123,255,0.3);
+          box-shadow: 0 4px 15px rgba(0,123,255,0.4);
           z-index: 1000;
+          transition: all 0.3s ease;
         }
         
-        .pdf-button:hover {
+        .download-button:hover {
           background: #0056b3;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(0,123,255,0.5);
+        }
+        
+        .download-button:disabled {
+          background: #6c757d;
+          cursor: not-allowed;
+          transform: none;
         }
         
         .header { 
@@ -299,24 +260,15 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl: stri
           padding-top: 20px;
         }
         @media print {
-          .pdf-button { display: none; }
+          .download-button { display: none; }
         }
       </style>
     </head>
     <body>
-      ${signedPdfUrl ? `
-      <button class="pdf-button" onclick="showPDF('${signedPdfUrl}')">
-        📄 View PDF
+      <!-- Download PDF Button -->
+      <button class="download-button" id="downloadButton" onclick="downloadPDF()">
+        📥 Download PDF
       </button>
-      ` : ''}
-      
-      <!-- PDF Modal -->
-      <div id="pdfModal" class="pdf-modal">
-        <div class="pdf-modal-content">
-          <span class="pdf-close" onclick="closePDF()">&times;</span>
-          <iframe id="pdfFrame" class="pdf-iframe" src=""></iframe>
-        </div>
-      </div>
       
       <div class="header">
         <h1 class="title">${planData.title || 'Your Personalized 30-Day Protocol'}</h1>
@@ -375,32 +327,34 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl: stri
       </div>
       
       <script>
-        function showPDF(pdfUrl) {
-          document.getElementById('pdfFrame').src = pdfUrl;
-          document.getElementById('pdfModal').style.display = 'block';
-          document.body.style.overflow = 'hidden';
-        }
+        const pdfUrl = '${signedPdfUrl || ''}';
+        console.log('PDF URL in JavaScript:', pdfUrl);
         
-        function closePDF() {
-          document.getElementById('pdfModal').style.display = 'none';
-          document.getElementById('pdfFrame').src = '';
-          document.body.style.overflow = 'auto';
-        }
-        
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-          const modal = document.getElementById('pdfModal');
-          if (event.target === modal) {
-            closePDF();
+        function downloadPDF() {
+          if (pdfUrl) {
+            console.log('Downloading PDF from:', pdfUrl);
+            // Create a temporary link element to trigger download
+            const link = document.createElement('a');
+            link.href = pdfUrl;
+            link.download = 'your-personalized-protocol.pdf';
+            link.target = '_blank';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          } else {
+            alert('PDF is still being generated. Please check your email or try again in a few minutes.');
           }
         }
         
-        // Close modal with Escape key
-        document.addEventListener('keydown', function(event) {
-          if (event.key === 'Escape') {
-            closePDF();
-          }
-        });
+        // Update button text based on PDF availability
+        if (!pdfUrl) {
+          document.getElementById('downloadButton').innerHTML = '⏳ PDF Generating...';
+          document.getElementById('downloadButton').disabled = true;
+        }
+        
+        // Debug: Log PDF URL status
+        console.log('PDF URL available:', !!pdfUrl);
+        console.log('Button element:', document.getElementById('downloadButton'));
       </script>
     </body>
     </html>
