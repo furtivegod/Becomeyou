@@ -121,7 +121,6 @@ export async function POST(request: NextRequest) {
       .insert({
         session_id: sessionId,
         plan_json: planData,
-        status: 'completed'
       })
 
     if (planError) {

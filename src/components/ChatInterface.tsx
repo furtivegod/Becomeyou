@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 interface Message {
   id: string
@@ -20,6 +20,16 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
   const [isLoading, setIsLoading] = useState(false)
   const [assessmentComplete, setAssessmentComplete] = useState(false)
   const [isGeneratingReport, setIsGeneratingReport] = useState(false)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  // Auto-scroll to bottom when new messages arrive
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages, isLoading, isGeneratingReport])
 
   // Auto-start with welcome message
   useEffect(() => {
@@ -227,6 +237,9 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
             </div>
           </div>
         )}
+        
+        {/* Auto-scroll anchor */}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Input Area - Fixed at bottom */}
