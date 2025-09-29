@@ -132,10 +132,10 @@ export async function POST(request: NextRequest) {
 
     // Generate PDF with storage
     console.log('Generating PDF with storage')
-    let pdfUrl
+    let pdfResult
     try {
-      pdfUrl = await generatePDF(planData, sessionId)
-      console.log('PDF generated and stored successfully:', pdfUrl)
+      pdfResult = await generatePDF(planData, sessionId)
+      console.log('PDF generated and stored successfully:', pdfResult.pdfUrl)
     } catch (pdfError) {
       console.error('PDF generation error:', pdfError)
       return NextResponse.json({ error: 'Failed to generate PDF', details: pdfError }, { status: 500 })
@@ -168,9 +168,9 @@ export async function POST(request: NextRequest) {
     console.log('User email found:', userRow.email)
 
     // Send report email
-    console.log('Sending report email')
+    console.log('Sending report email with PDF attachment')
     try {
-      await sendReportEmail(userRow.email, pdfUrl)
+      await sendReportEmail(userRow.email, pdfResult.pdfUrl, pdfResult.pdfBuffer)
       console.log('Report email sent successfully')
     } catch (emailError) {
       console.error('Email sending error:', emailError)
@@ -179,7 +179,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ 
       success: true, 
-      pdfUrl: pdfUrl,
+      pdfUrl: pdfResult.pdfUrl,
       planData: planData, // Add this line to return the plan data
       message: 'Report generated and email sent successfully',
       redirectUrl: `/api/report/${sessionId}`

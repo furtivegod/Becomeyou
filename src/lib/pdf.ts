@@ -19,7 +19,7 @@ export interface PlanData {
   reflection_prompts: string[]
 }
 
-export async function generatePDF(planData: PlanData, sessionId: string): Promise<string> {
+export async function generatePDF(planData: PlanData, sessionId: string): Promise<{ pdfUrl: string, pdfBuffer: Buffer }> {
   try {
     console.log('Generating PDF for session:', sessionId)
     console.log('Plan data received:', {
@@ -106,7 +106,7 @@ export async function generatePDF(planData: PlanData, sessionId: string): Promis
       console.error('Error storing PDF metadata:', dbError)
     }
     
-    return signedUrl
+    return { pdfUrl: signedUrl, pdfBuffer }
 
   } catch (error) {
     console.error('PDF generation error:', error)

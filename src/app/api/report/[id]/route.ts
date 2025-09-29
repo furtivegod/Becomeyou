@@ -350,6 +350,9 @@ function generateHTMLReport(planData: any, sessionId: string) {
       
       <div class="footer">
         <p>Generated on ${new Date().toLocaleDateString()} | Your personalized transformation protocol</p>
+        <p style="color: #007bff; font-weight: bold; margin-top: 10px;">
+          📧 A PDF version has been sent to your email with the complete protocol!
+        </p>
       </div>
     </body>
     </html>

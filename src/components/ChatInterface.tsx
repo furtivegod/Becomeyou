@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from 'react'
+import { trackEvent } from '@/lib/posthog'
 
 interface Message {
   id: string
@@ -43,6 +44,13 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
         timestamp: new Date()
       }
       setMessages([welcomeMessage])
+    }
+  }, [])
+
+  // Track assessment start
+  useEffect(() => {
+    if (messages.length === 0) {
+      trackEvent('assessment_started', { sessionId })
     }
   }, [])
 
@@ -190,6 +198,13 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
       setIsLoading(false)
     }
   }
+
+  // Track message sent
+  useEffect(() => {
+    if (input.length > 0 && !isLoading && !assessmentComplete) {
+      trackEvent('message_sent', { sessionId, messageLength: input.length })
+    }
+  }, [input, isLoading, assessmentComplete, sessionId])
 
   // Protocol display component
   const ProtocolDisplay = ({ data }: { data: any }) => (
