@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
     try {
       // Set a timeout for Claude API call
       const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Claude API timeout after 30 seconds')), 30000)
+        setTimeout(() => reject(new Error('Claude API timeout after 60 seconds')), 60000)
       )
       
       const claudePromise = generateStructuredPlan(conversationHistory)

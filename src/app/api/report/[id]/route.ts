@@ -47,18 +47,28 @@ export async function GET(
           const generateResult = await generateResponse.json()
           console.log('Report generation triggered successfully')
           
-          // Try to get the plan data again after generation
-          const { data: newPlanOutput, error: newPlanError } = await supabase
+          // Add a check to prevent multiple generations
+          const { data: existingPlan } = await supabase
             .from('plan_outputs')
-            .select('plan_json')
+            .select('id')
             .eq('session_id', sessionId)
-            .order('created_at', { ascending: false })
             .limit(1)
             .single()
-          
-          if (newPlanOutput && !newPlanError) {
-            const planData = newPlanOutput.plan_json
-            return generateHTMLReport(planData, sessionId)
+
+          if (existingPlan) {
+            console.log('Plan already exists, skipping generation')
+            // Get the existing plan data instead of generating new one
+            const { data: planOutput } = await supabase
+              .from('plan_outputs')
+              .select('plan_json')
+              .eq('session_id', sessionId)
+              .order('created_at', { ascending: false })
+              .limit(1)
+              .single()
+            
+            if (planOutput) {
+              return generateHTMLReport(planOutput.plan_json, sessionId)
+            }
           }
         }
       } catch (generateError) {
