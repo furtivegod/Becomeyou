@@ -66,31 +66,48 @@ export async function sendMagicLink(email: string, sessionId: string) {
 }
 
 export async function sendReportEmail(email: string, pdfUrl: string) {
+  console.log('Sending report email to:', email)
+  
+  if (!process.env.RESEND_API_KEY) {
+    throw new Error('RESEND_API_KEY not configured')
+  }
+
   try {
+    console.log('Sending email via Resend...')
     const { data, error } = await resend.emails.send({
-      from: FROM, // This will be 'onboarding@resend.dev'
+      from: 'onboarding@resend.dev',
       to: [email],
-      subject: 'Your Personalized 30-Day Protocol is Ready',
+      subject: 'Your Personalized 30-Day Protocol is Ready!',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h1 style="color: #333; text-align: center;">Your Protocol is Ready!</h1>
-          <p style="font-size: 16px; line-height: 1.6;">Congratulations on completing your assessment. Your personalized 30-day protocol has been generated and is ready for download.</p>
-          <div style="text-align: center; margin: 30px 0;">
-            <a href="${pdfUrl}" style="display: inline-block; background: #28a745; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold;">
+          <h1 style="color: #007bff; text-align: center;">Your Protocol is Ready!</h1>
+          
+          <p style="font-size: 18px; color: #333; text-align: center; margin: 30px 0;">
+            Your personalized 30-day transformation protocol has been generated and is ready for download.
+          </p>
+          
+          <div style="text-align: center; margin: 40px 0;">
+            <a href="${pdfUrl}" 
+               style="background-color: #007bff; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-size: 18px; font-weight: bold; display: inline-block;"
+               download="your-protocol.pdf">
               Download Your Protocol
             </a>
           </div>
-          <p style="color: #666; font-size: 14px; text-align: center;">You can also view your report online at any time.</p>
+          
+          <p style="color: #666; font-size: 14px; text-align: center; margin-top: 30px;">
+            This link will automatically download your PDF file.
+          </p>
         </div>
       `
     })
     
     if (error) {
-      console.error('Error sending report email:', error)
-      throw error
+      console.error('Resend API error:', error)
+      throw new Error(`Resend API error: ${JSON.stringify(error)}`)
     }
     
-    return data
+    console.log('Report email sent successfully:', data?.id)
+    
   } catch (error) {
     console.error('Failed to send report email:', error)
     throw error

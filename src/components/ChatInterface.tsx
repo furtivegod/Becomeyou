@@ -102,7 +102,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
       const completionMessage: Message = {
         id: 'completion',
         role: 'assistant',
-        content: "🎉 Perfect! Your personalized 30-day protocol has been generated! You can view it below and it has also been sent to your email.",
+        content: "🎉 Perfect! Your personalized 30-day protocol has been generated! You can view it below and it has also been sent to your email with a download link.",
         timestamp: new Date()
       }
       setMessages(prev => [...prev, completionMessage])
@@ -193,7 +193,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
 
   // Protocol display component
   const ProtocolDisplay = ({ data }: { data: any }) => (
-    <div className="bg-white rounded-lg shadow-lg p-6 mb-4">
+    <div className="bg-white rounded-lg shadow-lg p-6 mb-4 border-2 border-blue-200">
       <div className="text-center mb-6 border-b-2 border-blue-500 pb-4">
         <h1 className="text-3xl font-bold text-blue-600 mb-2">{data.title || 'Your Personalized 30-Day Protocol'}</h1>
         <p className="text-gray-600 text-lg italic">{data.overview || 'Based on your assessment, here\'s your customized transformation plan.'}</p>
@@ -255,6 +255,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
       
       <div className="text-center text-gray-500 text-sm border-t border-gray-200 pt-4">
         <p>Generated on {new Date().toLocaleDateString()} | Your personalized transformation protocol</p>
+        <p className="mt-2 text-blue-600 font-semibold">📧 A downloadable PDF has been sent to your email!</p>
       </div>
     </div>
   )
