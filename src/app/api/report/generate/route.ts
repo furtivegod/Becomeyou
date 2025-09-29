@@ -84,23 +84,32 @@ export async function POST(request: NextRequest) {
             description: 'Take one small step toward your main goal today.',
             duration: '15 minutes',
             category: 'action'
+          },
+          {
+            day: 3,
+            title: 'Progress Review',
+            description: 'Review your progress and adjust your approach if needed.',
+            duration: '10 minutes',
+            category: 'reflection'
           }
         ],
         weekly_goals: [
           {
             week: 1,
             focus: 'Foundation Building',
-            goals: ['Establish daily routine', 'Identify key priorities']
+            goals: ['Establish daily routine', 'Identify key priorities', 'Set clear objectives']
           }
         ],
         resources: [
           'Daily journal for tracking progress',
           'Accountability partner or support group',
-          'Regular check-ins with yourself'
+          'Regular check-ins with yourself',
+          'Online resources and tools'
         ],
         reflection_prompts: [
           'What went well today?',
-          'What would you like to improve tomorrow?'
+          'What would you like to improve tomorrow?',
+          'How are you feeling about your progress?'
         ]
       }
     }
@@ -173,7 +182,7 @@ export async function POST(request: NextRequest) {
       success: true, 
       pdfUrl: pdfUrl,
       message: 'Report generated and email sent successfully',
-      redirectUrl: `/api/report/${sessionId}` // Add redirect URL for user
+      redirectUrl: `/api/report/${sessionId}`
     })
 
   } catch (error) {
