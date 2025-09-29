@@ -1,6 +1,7 @@
+import { chromium } from 'playwright'
 import { supabaseAdmin as supabase } from '@/lib/supabase'
 
-interface PlanData {
+export interface PlanData {
   title: string
   overview: string
   daily_actions: Array<{
@@ -23,68 +24,78 @@ export async function generatePDF(planData: PlanData, sessionId: string): Promis
   try {
     console.log('Generating PDF for session:', sessionId)
     console.log('Plan data received:', {
-      title: planData?.title,
-      overview: planData?.overview,
-      daily_actions_count: planData?.daily_actions?.length || 0,
-      weekly_goals_count: planData?.weekly_goals?.length || 0,
-      resources_count: planData?.resources?.length || 0,
-      reflection_prompts_count: planData?.reflection_prompts?.length || 0
+      title: planData.title,
+      overview: planData.overview,
+      daily_actions_count: planData.daily_actions?.length || 0,
+      weekly_goals_count: planData.weekly_goals?.length || 0,
+      resources_count: planData.resources?.length || 0,
+      reflection_prompts_count: planData.reflection_prompts?.length || 0
     })
-    
-    // Validate data structure
-    if (!planData) {
-      throw new Error('Plan data is undefined')
-    }
-    
+
+    // Validate data
     if (!planData.daily_actions || !Array.isArray(planData.daily_actions)) {
-      console.warn('Daily actions is not an array, using empty array')
       planData.daily_actions = []
     }
-    
     if (!planData.weekly_goals || !Array.isArray(planData.weekly_goals)) {
-      console.warn('Weekly goals is not an array, using empty array')
       planData.weekly_goals = []
     }
-    
     if (!planData.resources || !Array.isArray(planData.resources)) {
-      console.warn('Resources is not an array, using empty array')
       planData.resources = []
     }
-    
     if (!planData.reflection_prompts || !Array.isArray(planData.reflection_prompts)) {
-      console.warn('Reflection prompts is not an array, using empty array')
       planData.reflection_prompts = []
     }
-    
-    // Generate HTML report
+
+    // Generate HTML content
     const htmlContent = generateHTMLReport(planData)
     
-    // For serverless environments, we'll use a different approach
-    // Instead of generating actual PDFs, we'll store the HTML and use a service
-    console.log('Using serverless-compatible PDF generation')
+    // Launch browser and generate PDF
+    console.log('Launching browser for PDF generation')
+    const browser = await chromium.launch({ headless: true })
+    const page = await browser.newPage()
     
-    // Store HTML content in Supabase Storage
-    const fileName = `protocol-${sessionId}-${Date.now()}.html`
+    // Set content and wait for it to load
+    await page.setContent(htmlContent, { waitUntil: 'networkidle' })
+    
+    // Generate PDF
+    const pdfBuffer = await page.pdf({
+      format: 'A4',
+      margin: {
+        top: '20mm',
+        right: '20mm',
+        bottom: '20mm',
+        left: '20mm'
+      },
+      printBackground: true,
+      displayHeaderFooter: true,
+      headerTemplate: '<div style="font-size: 10px; text-align: center; width: 100%; color: #666;">Your Personalized Protocol</div>',
+      footerTemplate: '<div style="font-size: 10px; text-align: center; width: 100%; color: #666;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>'
+    })
+    
+    await browser.close()
+    
+    // Store PDF in Supabase Storage
+    const fileName = `protocol-${sessionId}-${Date.now()}.pdf`
     const filePath = `reports/${fileName}`
     
-    console.log('Storing HTML report in Supabase Storage:', filePath)
+    console.log('Storing PDF in Supabase Storage:', filePath)
     
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from('reports')
-      .upload(filePath, htmlContent, {
-        contentType: 'text/html',
+      .upload(filePath, pdfBuffer, {
+        contentType: 'application/pdf',
         cacheControl: '3600',
         upsert: false
       })
     
     if (uploadError) {
-      console.error('Error uploading HTML report:', uploadError)
-      throw new Error(`Failed to upload HTML report: ${uploadError.message}`)
+      console.error('Error uploading PDF:', uploadError)
+      throw new Error(`Failed to upload PDF: ${uploadError.message}`)
     }
     
-    console.log('HTML report uploaded successfully:', uploadData.path)
+    console.log('PDF uploaded successfully:', uploadData.path)
     
-    // Generate signed URL for the HTML report
+    // Generate signed URL for the PDF
     const { data: signedUrlData, error: signedUrlError } = await supabase.storage
       .from('reports')
       .createSignedUrl(filePath, 60 * 60 * 24 * 7) // 7 days expiry
@@ -109,7 +120,6 @@ export async function generatePDF(planData: PlanData, sessionId: string): Promis
     
     if (dbError) {
       console.error('Error storing PDF metadata:', dbError)
-      // Don't fail the whole process for this
     }
     
     return signedUrl
@@ -244,30 +254,9 @@ function generateHTMLReport(planData: PlanData): string {
           border-top: 1px solid #e9ecef;
           padding-top: 20px;
         }
-        .print-instructions {
-          background: #e8f4fd;
-          padding: 15px;
-          border-radius: 8px;
-          margin-bottom: 30px;
-          border-left: 4px solid #007bff;
-        }
-        .print-instructions h3 {
-          margin: 0 0 10px 0;
-          color: #007bff;
-        }
-        .print-instructions p {
-          margin: 5px 0;
-          font-size: 14px;
-        }
       </style>
     </head>
     <body>
-      <div class="print-instructions">
-        <h3>📄 Print Instructions</h3>
-        <p><strong>To save as PDF:</strong> Press Ctrl+P (Windows) or Cmd+P (Mac), then select "Save as PDF"</p>
-        <p><strong>For best results:</strong> Use Chrome or Edge browser</p>
-      </div>
-      
       <div class="header">
         <h1 class="title">${planData.title || 'Your Personalized 30-Day Protocol'}</h1>
         <p class="overview">${planData.overview || 'Based on your assessment, here\'s your customized transformation plan.'}</p>
@@ -285,6 +274,7 @@ function generateHTMLReport(planData: PlanData): string {
         `).join('')}
       </div>
       
+      ${planData.weekly_goals.length > 0 ? `
       <div class="section">
         <h2 class="section-title">🎯 Weekly Goals</h2>
         ${planData.weekly_goals.map((goal: any) => `
@@ -296,20 +286,25 @@ function generateHTMLReport(planData: PlanData): string {
           </div>
         `).join('')}
       </div>
+      ` : ''}
       
+      ${planData.resources.length > 0 ? `
       <div class="section">
         <h2 class="section-title">📚 Resources</h2>
         ${planData.resources.map((resource: string) => `
           <div class="resource">• ${resource}</div>
         `).join('')}
       </div>
+      ` : ''}
       
+      ${planData.reflection_prompts.length > 0 ? `
       <div class="section">
         <h2 class="section-title">🤔 Reflection Prompts</h2>
         ${planData.reflection_prompts.map((prompt: string) => `
           <div class="reflection">${prompt}</div>
         `).join('')}
       </div>
+      ` : ''}
       
       <div class="footer">
         <p>Generated on ${new Date().toLocaleDateString()} | Your personalized transformation protocol</p>

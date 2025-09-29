@@ -38,7 +38,7 @@ export async function GET(
 
     const planData = planOutput.plan_json
 
-    // Generate HTML report
+    // Generate HTML report with download button
     const htmlContent = `
       <!DOCTYPE html>
       <html>
@@ -46,14 +46,16 @@ export async function GET(
         <meta charset="UTF-8">
         <title>Your Personalized Protocol</title>
         <style>
+          @page {
+            margin: 20mm;
+            size: A4;
+          }
           body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6; 
             color: #333;
             margin: 0;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
+            padding: 0;
           }
           .header { 
             text-align: center; 
@@ -75,6 +77,7 @@ export async function GET(
           }
           .section { 
             margin-bottom: 40px; 
+            page-break-inside: avoid;
           }
           .section-title { 
             color: #007bff; 
@@ -90,6 +93,7 @@ export async function GET(
             background: #f8f9fa; 
             border-radius: 10px; 
             border-left: 5px solid #007bff;
+            page-break-inside: avoid;
           }
           .day-number { 
             font-weight: bold; 
@@ -150,7 +154,15 @@ export async function GET(
             border-left: 4px solid #ffc107;
             font-size: 16px;
           }
-          .print-button {
+          .footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+            border-top: 1px solid #e9ecef;
+            padding-top: 20px;
+          }
+          .download-button {
             position: fixed;
             top: 20px;
             right: 20px;
@@ -165,16 +177,16 @@ export async function GET(
             box-shadow: 0 2px 10px rgba(0,123,255,0.3);
             z-index: 1000;
           }
-          .print-button:hover {
+          .download-button:hover {
             background: #0056b3;
           }
           @media print {
-            .print-button { display: none; }
+            .download-button { display: none; }
           }
         </style>
       </head>
       <body>
-        <button class="print-button" onclick="window.print()">🖨️ Print Report</button>
+        <button class="download-button" onclick="downloadPDF()">📥 Download PDF</button>
         
         <div class="header">
           <h1 class="title">${planData.title || 'Your Personalized 30-Day Protocol'}</h1>
@@ -183,7 +195,7 @@ export async function GET(
         
         <div class="section">
           <h2 class="section-title">📅 Daily Actions</h2>
-          ${(planData.daily_actions || []).map((action: any) => `
+          ${planData.daily_actions.map((action: any) => `
             <div class="daily-action">
               <div class="day-number">Day ${action.day}</div>
               <div class="action-title">${action.title}</div>
@@ -193,9 +205,10 @@ export async function GET(
           `).join('')}
         </div>
         
+        ${planData.weekly_goals && planData.weekly_goals.length > 0 ? `
         <div class="section">
           <h2 class="section-title">🎯 Weekly Goals</h2>
-          ${(planData.weekly_goals || []).map((goal: any) => `
+          ${planData.weekly_goals.map((goal: any) => `
             <div class="weekly-goal">
               <div class="week-title">Week ${goal.week}: ${goal.focus}</div>
               <ul class="week-goals">
@@ -204,20 +217,62 @@ export async function GET(
             </div>
           `).join('')}
         </div>
+        ` : ''}
         
+        ${planData.resources && planData.resources.length > 0 ? `
         <div class="section">
           <h2 class="section-title">📚 Resources</h2>
-          ${(planData.resources || []).map((resource: string) => `
+          ${planData.resources.map((resource: string) => `
             <div class="resource">• ${resource}</div>
           `).join('')}
         </div>
+        ` : ''}
         
+        ${planData.reflection_prompts && planData.reflection_prompts.length > 0 ? `
         <div class="section">
           <h2 class="section-title">🤔 Reflection Prompts</h2>
-          ${(planData.reflection_prompts || []).map((prompt: string) => `
+          ${planData.reflection_prompts.map((prompt: string) => `
             <div class="reflection">${prompt}</div>
           `).join('')}
         </div>
+        ` : ''}
+        
+        <div class="footer">
+          <p>Generated on ${new Date().toLocaleDateString()} | Your personalized transformation protocol</p>
+        </div>
+        
+        <script>
+          function downloadPDF() {
+            // Trigger PDF generation
+            fetch('/api/report/generate', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                sessionId: '${sessionId}'
+              })
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.pdfUrl) {
+                // Download the PDF
+                const link = document.createElement('a');
+                link.href = data.pdfUrl;
+                link.download = '${planData.title || 'protocol'}.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              } else {
+                alert('Error generating PDF: ' + (data.error || 'Unknown error'));
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('Error generating PDF: ' + error.message);
+            });
+          }
+        </script>
       </body>
       </html>
     `

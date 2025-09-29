@@ -116,8 +116,8 @@ export async function POST(request: NextRequest) {
 
     console.log('Plan saved to database')
 
-    // Generate PDF with actual PDF generation and storage
-    console.log('Generating PDF with storage')
+    // Generate PDF with Playwright
+    console.log('Generating PDF with Playwright')
     let pdfUrl
     try {
       pdfUrl = await generatePDF(planData, sessionId)
