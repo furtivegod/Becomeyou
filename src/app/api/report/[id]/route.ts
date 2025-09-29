@@ -34,47 +34,6 @@ export async function GET(
     if (planError || !planOutput) {
       console.error('Error fetching plan data:', planError)
       
-      // If no plan data exists, trigger report generation
-      console.log('No plan data found, triggering report generation')
-      try {
-        const generateResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/report/generate`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ sessionId })
-        })
-        
-        if (generateResponse.ok) {
-          const generateResult = await generateResponse.json()
-          console.log('Report generation triggered successfully')
-          
-          // Add a check to prevent multiple generations
-          const { data: existingPlan } = await supabase
-            .from('plan_outputs')
-            .select('id')
-            .eq('session_id', sessionId)
-            .limit(1)
-            .single()
-
-          if (existingPlan) {
-            console.log('Plan already exists, skipping generation')
-            // Get the existing plan data instead of generating new one
-            const { data: planOutput } = await supabase
-              .from('plan_outputs')
-              .select('plan_json')
-              .eq('session_id', sessionId)
-              .order('created_at', { ascending: false })
-              .limit(1)
-              .single()
-            
-            if (planOutput) {
-              return generateHTMLReport(planOutput.plan_json, sessionId)
-            }
-          }
-        }
-      } catch (generateError) {
-        console.error('Error triggering report generation:', generateError)
-      }
-      
       // If all else fails, show a fallback message
       return new NextResponse(`
         <!DOCTYPE html>
