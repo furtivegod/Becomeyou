@@ -15,13 +15,8 @@ export async function GET(
     // Try to get signed PDF URL first
     const signedPdfUrl = await getSignedPDFUrl(sessionId)
     
-    if (signedPdfUrl) {
-      console.log('Found existing PDF, redirecting to signed URL')
-      // return NextResponse.redirect(signedPdfUrl)
-    }
-
-    // If no PDF exists, get the plan data and generate HTML view
-    console.log('No PDF found, generating HTML view')
+    // Always show HTML page, don't redirect to PDF
+    console.log('Generating HTML view for session:', sessionId)
     
     const { data: planOutput, error: planError } = await supabase
       .from('plan_outputs')
@@ -100,7 +95,7 @@ export async function GET(
     }
 
     const planData = planOutput.plan_json
-    return generateHTMLReport(planData, sessionId)
+    return generateHTMLReport(planData, sessionId, signedPdfUrl)
 
   } catch (error) {
     console.error('Report viewer error:', error)
@@ -108,7 +103,7 @@ export async function GET(
   }
 }
 
-function generateHTMLReport(planData: any, sessionId: string) {
+function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl: string | null) {
   return new NextResponse(`
     <!DOCTYPE html>
     <html>
@@ -127,6 +122,77 @@ function generateHTMLReport(planData: any, sessionId: string) {
           margin: 0;
           padding: 0;
         }
+        
+        /* PDF Viewer Modal Styles */
+        .pdf-modal {
+          display: none;
+          position: fixed;
+          z-index: 2000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0,0,0,0.8);
+        }
+        
+        .pdf-modal-content {
+          position: relative;
+          margin: 2% auto;
+          width: 90%;
+          height: 90%;
+          background: white;
+          border-radius: 10px;
+          overflow: hidden;
+        }
+        
+        .pdf-close {
+          position: absolute;
+          top: 15px;
+          right: 20px;
+          color: #fff;
+          font-size: 28px;
+          font-weight: bold;
+          cursor: pointer;
+          z-index: 2001;
+          background: rgba(0,0,0,0.5);
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        .pdf-close:hover {
+          background: rgba(0,0,0,0.8);
+        }
+        
+        .pdf-iframe {
+          width: 100%;
+          height: 100%;
+          border: none;
+        }
+        
+        .pdf-button {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: #007bff;
+          color: white;
+          border: none;
+          padding: 12px 24px;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 16px;
+          font-weight: 600;
+          box-shadow: 0 2px 10px rgba(0,123,255,0.3);
+          z-index: 1000;
+        }
+        
+        .pdf-button:hover {
+          background: #0056b3;
+        }
+        
         .header { 
           text-align: center; 
           margin-bottom: 40px; 
@@ -232,31 +298,25 @@ function generateHTMLReport(planData: any, sessionId: string) {
           border-top: 1px solid #e9ecef;
           padding-top: 20px;
         }
-        .download-button {
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          background: #007bff;
-          color: white;
-          border: none;
-          padding: 12px 24px;
-          border-radius: 6px;
-          cursor: pointer;
-          font-size: 16px;
-          font-weight: 600;
-          box-shadow: 0 2px 10px rgba(0,123,255,0.3);
-          z-index: 1000;
-        }
-        .download-button:hover {
-          background: #0056b3;
-        }
         @media print {
-          .download-button { display: none; }
+          .pdf-button { display: none; }
         }
       </style>
     </head>
     <body>
-      <button class="download-button" onclick="window.print()">📥 Download PDF</button>
+      ${signedPdfUrl ? `
+      <button class="pdf-button" onclick="showPDF('${signedPdfUrl}')">
+        📄 View PDF
+      </button>
+      ` : ''}
+      
+      <!-- PDF Modal -->
+      <div id="pdfModal" class="pdf-modal">
+        <div class="pdf-modal-content">
+          <span class="pdf-close" onclick="closePDF()">&times;</span>
+          <iframe id="pdfFrame" class="pdf-iframe" src=""></iframe>
+        </div>
+      </div>
       
       <div class="header">
         <h1 class="title">${planData.title || 'Your Personalized 30-Day Protocol'}</h1>
@@ -313,6 +373,35 @@ function generateHTMLReport(planData: any, sessionId: string) {
           📧 A PDF version has been sent to your email with the complete protocol!
         </p>
       </div>
+      
+      <script>
+        function showPDF(pdfUrl) {
+          document.getElementById('pdfFrame').src = pdfUrl;
+          document.getElementById('pdfModal').style.display = 'block';
+          document.body.style.overflow = 'hidden';
+        }
+        
+        function closePDF() {
+          document.getElementById('pdfModal').style.display = 'none';
+          document.getElementById('pdfFrame').src = '';
+          document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+          const modal = document.getElementById('pdfModal');
+          if (event.target === modal) {
+            closePDF();
+          }
+        }
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+          if (event.key === 'Escape') {
+            closePDF();
+          }
+        });
+      </script>
     </body>
     </html>
   `, {
