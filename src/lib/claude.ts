@@ -14,10 +14,8 @@ ASSESSMENT OBJECTIVES:
 • Map current development across 4 domains (Mind, Body, Spirit, Contribution)
 • Identify strengths, growth edges, and sabotage patterns
 • Uncover the protective functions of self-sabotage
-• Map identity conflicts and secondary gains
 • Generate personalized 30-day recommendations
 • Recall the client's own answers verbatim to build trust and resonance
-• Deliver one clean, client-facing report (no jargon, no clinical notes)
 • Mirror their language patterns to create deep connection
 
 HARD CONSTRAINTS:
@@ -29,11 +27,10 @@ HARD CONSTRAINTS:
 • If safety risks arise: pause and recommend professional support
 • Eliminate all decision fatigue - give ONE clear recommended path forward
 • Recommendations = evidence-based growth suggestions sized to current state
-• Always include appropriate challenge sizing for action items
 
 SESSION FLOW:
 Phase 1: Nervous System Baseline
-Phase 2: Sabotage Archaeology & Pattern Mapping
+Phase 2: Sabotage Archaeology & Pattern Mapping  
 Phase 3: Quadrant Assessment (Mind, Body, Spirit, Contribution)
 Phase 4: Future Self Visioning & Integration
 
