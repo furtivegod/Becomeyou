@@ -299,24 +299,24 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                 disabled={isLoading}
               />
               
-              {/* Voice Input Button - Only show if supported */}
+              {/* Voice Input Button - Fixed styling */}
               {isSupported && (
                 <button
                   onClick={isListening ? stopListening : startListening}
                   disabled={isLoading}
-                  className={`px-3 sm:px-4 py-2 sm:py-3 rounded-full font-medium transition-all duration-200 shadow-sm text-sm sm:text-base ${
+                  className={`px-3 sm:px-4 py-2 sm:py-3 rounded-full font-medium transition-all duration-200 shadow-sm text-sm sm:text-base min-w-[60px] ${
                     isListening
-                      ? 'bg-red-500 text-white hover:bg-red-600'
-                      : 'bg-green-500 text-white hover:bg-green-600'
+                      ? 'bg-red-500 text-white hover:bg-red-600 border-2 border-red-600'
+                      : 'bg-green-500 text-white hover:bg-green-600 border-2 border-green-600'
                   } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                   {isListening ? (
-                    <div className="flex items-center space-x-1 sm:space-x-2">
+                    <div className="flex items-center justify-center space-x-1 sm:space-x-2">
                       <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                      <span>Stop</span>
+                      <span className="hidden sm:inline">Stop</span>
                     </div>
                   ) : (
-                    <div className="flex items-center space-x-1 sm:space-x-2">
+                    <div className="flex items-center justify-center space-x-1 sm:space-x-2">
                       <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clipRule="evenodd" />
                       </svg>
