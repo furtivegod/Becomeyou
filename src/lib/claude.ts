@@ -149,10 +149,12 @@ export async function generateStructuredPlan(conversationHistory: string) {
 
     const response = await anthropic.messages.create({
       model: "claude-sonnet-4-20250514",
-      max_tokens: 3000,
+      max_tokens: 4000,
       system: `You are a professional behavioral optimization specialist. Based on the You 3.0 assessment conversation, create a comprehensive client-facing report in valid JSON format.
 
 IMPORTANT: Return ONLY valid JSON. No markdown, no explanations, no extra text. Just the JSON object.
+
+CRITICAL: All arrays (daily_actions, weekly_goals, resources, reflection_prompts) MUST contain actual content. Do not leave them empty or use placeholder text.
 
 Format:
 {
@@ -183,7 +185,59 @@ Format:
   },
   "bottom_line": "Personalized wake-up statement that calls them forward without shame, addressing both protective function and cost",
   "reminder_quote": "Direct quote they wrote or note to self they'll recognize",
-  "book_recommendations": ["Book 1 with brief explanation", "Book 2 with brief explanation"]
+  "book_recommendations": ["Book 1 with brief explanation", "Book 2 with brief explanation"],
+  "daily_actions": [
+    "Day 1: [Specific action based on their patterns]",
+    "Day 2: [Another specific action]",
+    "Day 3: [Another specific action]",
+    "Day 4: [Another specific action]",
+    "Day 5: [Another specific action]",
+    "Day 6: [Another specific action]",
+    "Day 7: [Another specific action]",
+    "Day 8: [Another specific action]",
+    "Day 9: [Another specific action]",
+    "Day 10: [Another specific action]",
+    "Day 11: [Another specific action]",
+    "Day 12: [Another specific action]",
+    "Day 13: [Another specific action]",
+    "Day 14: [Another specific action]",
+    "Day 15: [Another specific action]",
+    "Day 16: [Another specific action]",
+    "Day 17: [Another specific action]",
+    "Day 18: [Another specific action]",
+    "Day 19: [Another specific action]",
+    "Day 20: [Another specific action]",
+    "Day 21: [Another specific action]",
+    "Day 22: [Another specific action]",
+    "Day 23: [Another specific action]",
+    "Day 24: [Another specific action]",
+    "Day 25: [Another specific action]",
+    "Day 26: [Another specific action]",
+    "Day 27: [Another specific action]",
+    "Day 28: [Another specific action]",
+    "Day 29: [Another specific action]",
+    "Day 30: [Another specific action]"
+  ],
+  "weekly_goals": [
+    "Week 1: [Specific weekly goal based on their patterns]",
+    "Week 2: [Another specific weekly goal]",
+    "Week 3: [Another specific weekly goal]",
+    "Week 4: [Another specific weekly goal]"
+  ],
+  "resources": [
+    "Resource 1: [Specific resource based on their needs]",
+    "Resource 2: [Another specific resource]",
+    "Resource 3: [Another specific resource]",
+    "Resource 4: [Another specific resource]",
+    "Resource 5: [Another specific resource]"
+  ],
+  "reflection_prompts": [
+    "Prompt 1: [Specific reflection question based on their patterns]",
+    "Prompt 2: [Another specific reflection question]",
+    "Prompt 3: [Another specific reflection question]",
+    "Prompt 4: [Another specific reflection question]",
+    "Prompt 5: [Another specific reflection question]"
+  ]
 }
 
 Make it deeply personalized using their exact words, metaphors, and language patterns. This should feel like a professional coach's assessment report.`,
@@ -220,6 +274,10 @@ Make it deeply personalized using their exact words, metaphors, and language pat
       const planData = JSON.parse(jsonString)
       console.log('✅ Successfully parsed Claude response!')
       console.log('Report title:', planData.title)
+      console.log('Daily actions count:', planData.daily_actions?.length || 0)
+      console.log('Weekly goals count:', planData.weekly_goals?.length || 0)
+      console.log('Resources count:', planData.resources?.length || 0)
+      console.log('Reflection prompts count:', planData.reflection_prompts?.length || 0)
       return planData
     } catch (parseError) {
       console.error('❌ JSON parse error:', parseError)
@@ -242,8 +300,8 @@ Make it deeply personalized using their exact words, metaphors, and language pat
         console.log('🔧 Attempting to fix incomplete JSON...')
         
         // Add missing closing brackets
-        const missingBraces = openBraces - closeBraces
         const missingBrackets = openBrackets - closeBrackets
+        const missingBraces = openBraces - closeBraces
         
         for (let i = 0; i < missingBrackets; i++) {
           fixedJson += ']'
@@ -296,6 +354,58 @@ Make it deeply personalized using their exact words, metaphors, and language pat
         book_recommendations: [
           "The Body Keeps the Score by Bessel van der Kolk - Understanding trauma and healing",
           "Atomic Habits by James Clear - Building sustainable change"
+        ],
+        daily_actions: [
+          "Day 1: Start with 5 minutes of morning reflection on your goals",
+          "Day 2: Practice one small action that moves you toward your main objective",
+          "Day 3: Notice one pattern that serves you and one that doesn't",
+          "Day 4: Take a different approach to a routine task",
+          "Day 5: Connect with someone who supports your growth",
+          "Day 6: Review your progress and adjust if needed",
+          "Day 7: Celebrate one small win from the week",
+          "Day 8: Identify one limiting belief and challenge it",
+          "Day 9: Practice self-compassion in a difficult moment",
+          "Day 10: Take a risk that feels manageable",
+          "Day 11: Reflect on what you've learned about yourself",
+          "Day 12: Practice setting a healthy boundary",
+          "Day 13: Do something that brings you joy",
+          "Day 14: Share your progress with someone you trust",
+          "Day 15: Review your goals and adjust if necessary",
+          "Day 16: Practice gratitude for your growth",
+          "Day 17: Take action on something you've been avoiding",
+          "Day 18: Practice mindfulness for 10 minutes",
+          "Day 19: Connect with your values and act accordingly",
+          "Day 20: Celebrate your courage and progress",
+          "Day 21: Practice self-care in a way that feels nourishing",
+          "Day 22: Take a step outside your comfort zone",
+          "Day 23: Reflect on how you've changed this month",
+          "Day 24: Practice forgiveness toward yourself",
+          "Day 25: Take action on your biggest goal",
+          "Day 26: Practice patience with your process",
+          "Day 27: Connect with your purpose and meaning",
+          "Day 28: Practice resilience in a challenging moment",
+          "Day 29: Reflect on your transformation journey",
+          "Day 30: Celebrate your commitment to growth"
+        ],
+        weekly_goals: [
+          "Week 1: Establish a daily routine that supports your goals",
+          "Week 2: Practice one new skill or habit consistently",
+          "Week 3: Take action on your biggest challenge",
+          "Week 4: Integrate all your learnings into daily life"
+        ],
+        resources: [
+          "Daily journal for tracking progress and insights",
+          "Accountability partner or support group",
+          "Mindfulness or meditation practice",
+          "Regular exercise or movement routine",
+          "Professional support if needed"
+        ],
+        reflection_prompts: [
+          "What was one moment today where I felt truly aligned with my values?",
+          "What pattern did I notice in myself today, and how did I respond?",
+          "What would I like to do differently tomorrow?",
+          "How am I growing and changing through this process?",
+          "What am I most grateful for in my journey right now?"
         ]
       }
     }

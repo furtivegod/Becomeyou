@@ -96,14 +96,8 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
         throw new Error('Failed to generate report')
       }
 
-      const data = await response.json()
-      setProtocolData(data.planData)
-      setShowProtocol(true)
-      
-      // Call onComplete after a delay
-      setTimeout(() => {
-        onComplete()
-      }, 2000)
+      // Redirect directly to report page
+      window.location.href = `/api/report/${sessionId}`
 
     } catch (error) {
       console.error('Error generating report:', error)
@@ -181,9 +175,10 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
         }
       }
 
-      // Check if assessment is complete
-      if (assistantMessage.content.includes('assessment is complete') || questionCount >= 15) {
+      // Check if assessment is complete - ONLY after 15+ questions
+      if (questionCount >= 15 || assistantMessage.content.includes('assessment is complete')) {
         setAssessmentComplete(true)
+        // Don't show protocol in chat, go directly to report
         triggerReportGeneration()
       }
 
