@@ -161,7 +161,10 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
           if (line.startsWith('data: ')) {
             try {
               const data = JSON.parse(line.slice(6))
-              assistantMessage.content += data.content
+              // Fix: Only append content if it exists and isn't undefined
+              if (data.content && data.content !== 'undefined') {
+                assistantMessage.content += data.content
+              }
               setMessages(prev => 
                 prev.map(msg => 
                   msg.id === assistantMessage.id 
