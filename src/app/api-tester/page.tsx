@@ -1,6 +1,29 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+
+// Toast component
+const Toast = ({ message, type, onClose }: { message: string, type: 'success' | 'error', onClose: () => void }) => {
+  useEffect(() => {
+    const timer = setTimeout(onClose, 5000)
+    return () => clearTimeout(timer)
+  }, [onClose])
+
+  return (
+    <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg ${
+      type === 'success' 
+        ? 'bg-green-500 text-white' 
+        : 'bg-red-500 text-white'
+    }`}>
+      <div className="flex items-center space-x-2">
+        <span>{message}</span>
+        <button onClick={onClose} className="ml-2 text-white hover:text-gray-200">
+          ×
+        </button>
+      </div>
+    </div>
+  )
+}
 
 export default function BecomeYou_API_TesterPage() {
   const [email, setEmail] = useState("deondreivory328@gmail.com")
@@ -8,17 +31,20 @@ export default function BecomeYou_API_TesterPage() {
   const [orderId, setOrderId] = useState("sc_test_123")
   const [loading, setLoading] = useState(false)
   const [responseText, setResponseText] = useState("")
-  const [magicLink, setMagicLink] = useState("")
   const [webhookData, setWebhookData] = useState<any>(null)
+  const [toast, setToast] = useState<{ message: string, type: 'success' | 'error' } | null>(null)
 
   const [sessionUserId, setSessionUserId] = useState("")
   const [sessionLoading, setSessionLoading] = useState(false)
   const [sessionResponse, setSessionResponse] = useState("")
 
+  const showToast = (message: string, type: 'success' | 'error') => {
+    setToast({ message, type })
+  }
+
   const callWebhook = async () => {
     setLoading(true)
     setResponseText("")
-    setMagicLink("")
     setWebhookData(null)
 
     try {
@@ -35,6 +61,7 @@ export default function BecomeYou_API_TesterPage() {
         const err = await sigRes.text()
         setResponseText("Signing failed: " + err)
         setLoading(false)
+        showToast("Failed to sign webhook request", "error")
         return
       }
       
@@ -56,22 +83,21 @@ export default function BecomeYou_API_TesterPage() {
         setResponseText(JSON.stringify(json, null, 2))
         setWebhookData(json)
         
-        if (json.magic_link) {
-          setMagicLink(json.magic_link)
+        // Show success toast
+        if (json.emailed) {
+          showToast(`✅ Magic link successfully sent to ${email}`, "success")
+        } else {
+          showToast("⚠️ Webhook processed but email may not have been sent", "error")
         }
       } catch {
         setResponseText(text)
+        showToast("Failed to parse webhook response", "error")
       }
     } catch (e: any) {
       setResponseText("Request failed: " + (e?.message || String(e)))
+      showToast("Webhook request failed", "error")
     } finally {
       setLoading(false)
-    }
-  }
-
-  const openAssessment = () => {
-    if (magicLink) {
-      window.open(magicLink, '_blank')
     }
   }
 
@@ -88,11 +114,14 @@ export default function BecomeYou_API_TesterPage() {
       try {
         const json = JSON.parse(text)
         setSessionResponse(JSON.stringify(json, null, 2))
+        showToast("Session created successfully", "success")
       } catch {
         setSessionResponse(text)
+        showToast("Failed to parse session response", "error")
       }
     } catch (e: any) {
       setSessionResponse("Request failed: " + (e?.message || String(e)))
+      showToast("Session creation failed", "error")
     } finally {
       setSessionLoading(false)
     }
@@ -100,6 +129,15 @@ export default function BecomeYou_API_TesterPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Toast Notification */}
+      {toast && (
+        <Toast 
+          message={toast.message} 
+          type={toast.type} 
+          onClose={() => setToast(null)} 
+        />
+      )}
+
       <div className="container mx-auto px-4 py-8 space-y-8">
         <div className="max-w-2xl mx-auto bg-white rounded-lg shadow p-6">
           <h1 className="text-2xl font-bold mb-4">Complete SamCart → Assessment Workflow Tester</h1>
@@ -146,23 +184,16 @@ export default function BecomeYou_API_TesterPage() {
               </button>
             </div>
 
-            {magicLink && (
+            {/* Success Message - No Magic Link Button */}
+            {webhookData && webhookData.emailed && (
               <div className="bg-green-50 border border-green-200 rounded p-4">
                 <h3 className="font-semibold text-green-800 mb-2">✅ Purchase Complete!</h3>
-                <p className="text-green-700 mb-3">User created, order placed, session started. Magic link generated:</p>
-                <div className="flex items-center space-x-3">
-                  <button
-                    onClick={openAssessment}
-                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                  >
-                    2. Open Assessment (Magic Link)
-                  </button>
-                  <span className="text-sm text-gray-600">This opens the assessment page in a new tab</span>
-                </div>
-                <details className="mt-3">
-                  <summary className="cursor-pointer text-sm text-gray-600">View Magic Link</summary>
-                  <code className="block mt-2 p-2 bg-gray-100 rounded text-xs break-all">{magicLink}</code>
-                </details>
+                <p className="text-green-700 mb-3">
+                  User created, order placed, session started. Magic link has been sent to your email!
+                </p>
+                <p className="text-sm text-gray-600">
+                  Check your email ({email}) for the magic link to access the assessment.
+                </p>
               </div>
             )}
 
@@ -211,7 +242,7 @@ export default function BecomeYou_API_TesterPage() {
               <div><strong>Order:</strong> {webhookData.order?.provider_ref} (Status: {webhookData.order?.status})</div>
               <div><strong>Session:</strong> {webhookData.session_id}</div>
               <div><strong>Email Sent:</strong> {webhookData.emailed ? 'Yes' : 'No'}</div>
-              <div><strong>Next Step:</strong> Click "Open Assessment" to continue the user journey</div>
+              <div><strong>Next Step:</strong> Check your email for the magic link to access the assessment</div>
             </div>
           </div>
         )}
