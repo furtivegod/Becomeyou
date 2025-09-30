@@ -106,6 +106,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
     }
   }
 
+  // Update the completion check in sendMessage function
   const sendMessage = async () => {
     if (!input.trim() || isLoading || assessmentComplete) return
 
@@ -175,8 +176,8 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
         }
       }
 
-      // Check if assessment is complete - ONLY after 15+ questions
-      if (questionCount >= 15 || assistantMessage.content.includes('assessment is complete')) {
+      // Check if assessment is complete - ONLY after 15+ questions AND specific completion signal
+      if (questionCount >= 15 && assistantMessage.content.includes('assessment is complete')) {
         setAssessmentComplete(true)
         // Don't show protocol in chat, go directly to report
         triggerReportGeneration()
