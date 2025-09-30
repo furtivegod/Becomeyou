@@ -35,7 +35,7 @@ Phase 3: Quadrant Assessment (Mind, Body, Spirit, Contribution)
 Phase 4: Future Self Visioning & Integration
 
 Ask questions systematically across all domains. Only complete the assessment after asking at least 15 questions across all phases. When you have gathered sufficient information, end with "assessment is complete" and provide a brief summary of what will be included in their personalized report.
-
+Remember 3~6 questions in each Phase!!!
 Remember: This is not a diagnostic tool. Never present clinical labels or medical advice. If severe trauma or crisis patterns appear, recommend professional support.`
 
 export async function generateClaudeResponse(messages: Array<{role: "user" | "assistant", content: string}>, currentPhase?: string, questionCount?: number) {
