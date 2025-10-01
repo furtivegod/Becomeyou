@@ -419,9 +419,9 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                   {message.role === 'assistant' ? (
                     // AI Message - Exact Claude Styling
                     <div className="flex gap-4 mb-8">
-                      {/* AI Avatar - 32px, rounded-md, emerald color */}
+                      {/* AI Avatar - Cute Robot */}
                       <div className="w-8 h-8 flex-shrink-0 rounded-md bg-[#F3F4F6] flex items-center justify-center text-[#284138] text-base">
-                        /
+                        🤖
                       </div>
                       {/* AI Content - Fixed formatting */}
                       <div className="flex-1 text-base leading-[1.7] text-[#1F2937] font-normal tracking-[-0.01em]">
@@ -448,7 +448,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                 <div className="max-w-[700px] w-full px-6">
                   <div className="flex gap-4">
                     <div className="w-8 h-8 flex-shrink-0 rounded-md bg-[#F3F4F6] flex items-center justify-center text-[#284138] text-base">
-                      /
+                      🤖
                     </div>
                     <div className="flex items-center gap-1 pt-2">
                       <div className="w-2 h-2 bg-[#9CA3AF] rounded-full animate-[typingBounce_1.4s_infinite_ease-in-out]"></div>
@@ -466,7 +466,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                 <div className="max-w-[700px] w-full px-6">
                   <div className="flex gap-4">
                     <div className="w-8 h-8 flex-shrink-0 rounded-md bg-[#F3F4F6] flex items-center justify-center text-[#284138] text-base">
-                      /
+                      🤖
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-4 h-4 border-2 border-green-500 border-t-transparent rounded-full animate-spin"></div>
@@ -513,7 +513,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Are you ready to unlock You 3.0?"
+                placeholder="Type your answers here."
                 className="w-full min-h-[24px] max-h-[200px] border-none outline-none resize-none text-base leading-[1.5] text-[#1F2937] bg-transparent font-inherit placeholder:text-[#9CA3AF]"
                 disabled={isLoading}
                 rows={1}
