@@ -326,7 +326,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
 
   // Add this function to your ChatInterface component
   const formatMessageContent = (content: string) => {
-    // Convert **text** to <strong>text</strong>
+    // Convert **text** to <strong>text</strong> - Fixed regex
     const formattedContent = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     
     return (
