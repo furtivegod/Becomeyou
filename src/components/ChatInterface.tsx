@@ -276,9 +276,12 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
       }
 
       // Check if assessment is complete
-      if (questionCount >= 15 && assistantMessage.content.includes('assessment is complete')) {
+      if (assistantMessage.content.includes('assessment is complete') || 
+          assistantMessage.content.includes('I have everything I need')) {
         setAssessmentComplete(true)
-        triggerReportGeneration()
+        
+        // Generate the report first
+        await triggerReportGeneration()
       }
 
     } catch (error) {
@@ -293,6 +296,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
 
     setIsGeneratingReport(true)
     try {
+      // Call your existing report generation API
       const response = await fetch(`/api/report/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -303,6 +307,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
         throw new Error('Failed to generate report')
       }
 
+      // Redirect to your existing result page
       window.location.href = `/api/report/${sessionId}`
 
     } catch (error) {
