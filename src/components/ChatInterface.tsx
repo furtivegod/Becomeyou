@@ -124,15 +124,10 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
     trackEvent('environment_set', { sessionId, environment: env })
   }
 
-  // Start assessment chat
+  // Start assessment chat - LET THE SYSTEM PROMPT HANDLE IT
   const startAssessment = () => {
-    const welcomeMessage: Message = {
-      id: 'welcome',
-      role: 'assistant',
-      content: ``,
-      timestamp: new Date()
-    }
-    setMessages([welcomeMessage])
+    // Don't create any message here - let the API/system prompt handle it
+    setMessages([]) // Start with empty messages
     trackEvent('assessment_started', { sessionId })
   }
 
