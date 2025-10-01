@@ -254,7 +254,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
   if (currentScreen === 'welcome') {
     return (
       <div className="flex flex-col h-screen bg-white font-['-apple-system',_'BlinkMacSystemFont',_'SF_Pro_Display',_'Segoe_UI',_'system-ui',_'sans-serif']">
-        {/* Welcome Screen - First Image Style */}
+        {/* Welcome Screen - Second Image Style (Client's Needs) */}
         <div className="flex-1 flex items-center justify-center p-6">
           <div className="max-w-[700px] w-full text-center">
             {/* Greeting */}
@@ -272,7 +272,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
               </p>
             </div>
 
-            {/* Input Box */}
+            {/* Input Box - Clean and Minimalist */}
             <div className="bg-white border border-gray-300 rounded-xl p-4 flex flex-col gap-2 transition-all duration-150 focus-within:border-[#284138] focus-within:shadow-[0_0_0_3px_rgba(40,65,56,0.08)]">
               <textarea
                 ref={textareaRef}
@@ -316,26 +316,13 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                 </div>
                 
                 <button
-                  onClick={handleEnvironmentSubmit}
+                  onClick={handleWelcomeSubmit}
                   disabled={!input.trim()}
                   className="min-w-[80px] h-9 bg-[#284138] text-white border-none rounded-lg text-sm font-medium cursor-pointer flex items-center justify-center gap-1.5 transition-all duration-150 px-4 hover:bg-[#1f3329] hover:-translate-y-px hover:shadow-[0_4px_12px_rgba(40,65,56,0.2)] active:translate-y-0 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
                 >
                   Send <span className="text-base">↑</span>
                 </button>
               </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="mt-6 flex flex-wrap justify-center gap-2">
-              {['Home Office', 'Coffee Shop', 'Library', 'Outdoors', 'Quiet Space'].map((env) => (
-                <button
-                  key={env}
-                  onClick={() => setInput(env)}
-                  className="px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-colors"
-                >
-                  {env}
-                </button>
-              ))}
             </div>
           </div>
         </div>
