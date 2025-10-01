@@ -129,7 +129,13 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
     const welcomeMessage: Message = {
       id: 'welcome',
       role: 'assistant',
-      content: `Hey there, ${userName}!\n\nThis assessment will help you understand exactly why you might feel stuck despite having the drive and vision to succeed. We'll identify the specific patterns that have been holding you back, map your unique strengths across four key life domains (Mind, Body, Spirit, and Contribution), and create a personalized 30-day protocol that actually fits your nervous system and lifestyle.\n\nI'll be direct but respectful; sometimes the truth stings, but clarity accelerates growth.\n\nAre you ready to get started?`,
+      content: `Hey there, ${userName}!
+
+This assessment will help you understand exactly why you might feel stuck despite having the drive and vision to succeed. We'll identify the specific patterns that have been holding you back, map your unique strengths across four key life domains (Mind, Body, Spirit, and Contribution), and create a personalized 30-day protocol that actually fits your nervous system and lifestyle.
+
+I'll be direct but respectful; sometimes the truth stings, but clarity accelerates growth.
+
+Are you ready to get started?`,
       timestamp: new Date()
     }
     setMessages([welcomeMessage])
@@ -357,14 +363,10 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                       <div className="w-8 h-8 flex-shrink-0 rounded-md bg-[#F3F4F6] flex items-center justify-center text-[#284138] text-base">
                         /
                       </div>
-                      {/* AI Content - Exact typography */}
+                      {/* AI Content - Fixed formatting */}
                       <div className="flex-1 text-base leading-[1.7] text-[#1F2937] font-normal tracking-[-0.01em]">
                         <div className="whitespace-pre-line">
-                          {message.content.split('\n').map((paragraph, index) => (
-                            <p key={index} className="m-0 mb-4 last:mb-0">
-                              {paragraph}
-                            </p>
-                          ))}
+                          {message.content}
                         </div>
                       </div>
                     </div>
