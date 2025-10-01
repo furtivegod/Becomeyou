@@ -267,9 +267,6 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                   Hey there, Matthew
                 </h1>
               </div>
-              <p className="text-lg text-gray-700">
-                How can I help you today?
-              </p>
             </div>
 
             {/* Input Box - Clean and Minimalist */}
@@ -279,7 +276,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="What's your name?"
+                placeholder="Are you ready to unlock You 3.0?"
                 className="w-full min-h-[24px] max-h-[200px] border-none outline-none resize-none text-base leading-[1.5] text-[#1F2937] bg-transparent font-inherit placeholder:text-gray-400"
                 rows={1}
               />
@@ -320,9 +317,16 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                   disabled={!input.trim()}
                   className="min-w-[80px] h-9 bg-[#284138] text-white border-none rounded-lg text-sm font-medium cursor-pointer flex items-center justify-center gap-1.5 transition-all duration-150 px-4 hover:bg-[#1f3329] hover:-translate-y-px hover:shadow-[0_4px_12px_rgba(40,65,56,0.2)] active:translate-y-0 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
                 >
-                  Send <span className="text-base">↑</span>
+                  Send <span className="text-base">→</span>
                 </button>
               </div>
+            </div>
+
+            {/* Transformation Message */}
+            <div className="mt-8">
+              <p className="text-lg text-gray-800 font-medium">
+                This is where transformation begins.
+              </p>
             </div>
           </div>
         </div>
