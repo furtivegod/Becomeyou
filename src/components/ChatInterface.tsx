@@ -129,13 +129,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
     const welcomeMessage: Message = {
       id: 'welcome',
       role: 'assistant',
-      content: `Hey there, ${userName}!
-
-This assessment will help you understand exactly why you might feel stuck despite having the drive and vision to succeed. We'll identify the specific patterns that have been holding you back, map your unique strengths across four key life domains (Mind, Body, Spirit, and Contribution), and create a personalized 30-day protocol that actually fits your nervous system and lifestyle.
-
-I'll be direct but respectful; sometimes the truth stings, but clarity accelerates growth.
-
-Are you ready to get started?`,
+      content: ``,
       timestamp: new Date()
     }
     setMessages([welcomeMessage])
