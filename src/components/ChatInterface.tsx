@@ -476,7 +476,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                     <div className="flex items-center gap-2">
                       <div className="w-4 h-4 border-2 border-green-500 border-t-transparent rounded-full animate-spin"></div>
                       <span className="text-green-700 text-sm font-medium">
-                        🔄 Generating your You 3.0 assessment report...
+                        Generating your You 3.0 assessment report...
                       </span>
                     </div>
                   </div>
@@ -498,7 +498,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              <span>Assessment Complete! Your You 3.0 report is ready above.</span>
+              <span>Assessment Complete! Your You 3.0 report will be generated within a few minutes.</span>
             </div>
           </div>
         ) : (
