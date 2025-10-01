@@ -324,6 +324,19 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
     }
   }, [input, isLoading, assessmentComplete, sessionId])
 
+  // Add this function to your ChatInterface component
+  const formatMessageContent = (content: string) => {
+    // Convert **text** to <strong>text</strong>
+    const formattedContent = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    
+    return (
+      <div 
+        className="whitespace-pre-line"
+        dangerouslySetInnerHTML={{ __html: formattedContent }}
+      />
+    )
+  }
+
   // Render different screens
   if (currentScreen === 'welcome') {
     return (
@@ -428,11 +441,9 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                       <div className="w-8 h-8 flex-shrink-0 rounded-md bg-[#F3F4F6] flex items-center justify-center text-[#284138] text-base">
                         🤖
                       </div>
-                      {/* AI Content - Fixed formatting */}
+                      {/* AI Content - Fixed formatting with bold support */}
                       <div className="flex-1 text-base leading-[1.7] text-[#1F2937] font-normal tracking-[-0.01em]">
-                        <div className="whitespace-pre-line">
-                          {message.content}
-                        </div>
+                        {formatMessageContent(message.content)}
                       </div>
                     </div>
                   ) : (
