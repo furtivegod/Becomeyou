@@ -17,15 +17,19 @@ interface ChatInterfaceProps {
 }
 
 export default function ChatInterface({ sessionId, onComplete }: ChatInterfaceProps) {
+  // Screen states
+  const [currentScreen, setCurrentScreen] = useState<'welcome' | 'environment' | 'chat'>('welcome')
+  const [userName, setUserName] = useState('')
+  const [environment, setEnvironment] = useState('')
+  
+  // Chat states
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [assessmentComplete, setAssessmentComplete] = useState(false)
   const [isGeneratingReport, setIsGeneratingReport] = useState(false)
-  const [showProtocol, setShowProtocol] = useState(false)
-  const [protocolData, setProtocolData] = useState<any>(null)
-  const [currentPhase, setCurrentPhase] = useState('welcome')
   const [questionCount, setQuestionCount] = useState(0)
+  
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -47,7 +51,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
     }
   }
 
-  // Smart scroll - only if user is near bottom
+  // Smart scroll
   const smartScroll = () => {
     if (messagesEndRef.current) {
       const container = messagesEndRef.current.parentElement
@@ -78,58 +82,58 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
     }
   }, [transcript])
 
-  // Auto-start with welcome message
-  useEffect(() => {
-    if (messages.length === 0) {
-      const welcomeMessage: Message = {
-        id: 'welcome',
-        role: 'assistant',
-        content: "Welcome to your You 3.0 Behavioral Optimization Assessment.\n\nThis assessment will help you understand exactly why you might feel stuck despite having the drive and vision to succeed. We'll identify the specific patterns that have been holding you back, map your unique strengths across four key life domains (Mind, Body, Spirit, and Contribution), and create a personalized 30-day protocol that actually fits your nervous system and lifestyle.\n\nI'll be direct but respectful; sometimes the truth stings, but clarity accelerates growth.\n\nAre you ready to get started?",
-        timestamp: new Date()
+  // Handle keyboard shortcuts
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      if (currentScreen === 'welcome') {
+        handleWelcomeSubmit()
+      } else if (currentScreen === 'environment') {
+        handleEnvironmentSubmit()
+      } else {
+        sendMessage()
       }
-      setMessages([welcomeMessage])
-    }
-  }, [])
-
-  // Track assessment start
-  useEffect(() => {
-    if (messages.length === 0) {
-      trackEvent('assessment_started', { sessionId })
-    }
-  }, [])
-
-  // Track assessment completion
-  useEffect(() => {
-    if (assessmentComplete) {
-      trackEvent('assessment_completed', { sessionId })
-    }
-  }, [assessmentComplete, sessionId])
-
-  const triggerReportGeneration = async () => {
-    if (isGeneratingReport) return
-
-    setIsGeneratingReport(true)
-    try {
-      const response = await fetch(`/api/report/generate`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId })
-      })
-
-      if (!response.ok) {
-        throw new Error('Failed to generate report')
-      }
-
-      // Redirect directly to report page
-      window.location.href = `/api/report/${sessionId}`
-
-    } catch (error) {
-      console.error('Error generating report:', error)
-    } finally {
-      setIsGeneratingReport(false)
     }
   }
 
+  // Welcome screen handlers
+  const handleWelcomeSubmit = () => {
+    if (!input.trim()) return
+    
+    const name = input.trim()
+    setUserName(name)
+    setInput('')
+    setCurrentScreen('environment')
+    trackEvent('welcome_completed', { sessionId, userName: name })
+  }
+
+  // Environment screen handlers
+  const handleEnvironmentSubmit = () => {
+    if (!input.trim()) return
+    
+    const env = input.trim()
+    setEnvironment(env)
+    setInput('')
+    setCurrentScreen('chat')
+    
+    // Start the actual assessment chat
+    startAssessment()
+    trackEvent('environment_set', { sessionId, environment: env })
+  }
+
+  // Start assessment chat
+  const startAssessment = () => {
+    const welcomeMessage: Message = {
+      id: 'welcome',
+      role: 'assistant',
+      content: `Hey there, ${userName}!\n\nI understand you're in a ${environment} environment. Perfect.\n\nThis assessment will help you understand exactly why you might feel stuck despite having the drive and vision to succeed. We'll identify the specific patterns that have been holding you back, map your unique strengths across four key life domains (Mind, Body, Spirit, and Contribution), and create a personalized 30-day protocol that actually fits your nervous system and lifestyle.\n\nI'll be direct but respectful; sometimes the truth stings, but clarity accelerates growth.\n\nAre you ready to get started?`,
+      timestamp: new Date()
+    }
+    setMessages([welcomeMessage])
+    trackEvent('assessment_started', { sessionId })
+  }
+
+  // Chat message handling
   const sendMessage = async () => {
     if (!input.trim() || isLoading || assessmentComplete) return
 
@@ -152,7 +156,8 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
         body: JSON.stringify({ 
           sessionId, 
           message: input,
-          currentPhase,
+          userName,
+          environment,
           questionCount: questionCount + 1
         })
       })
@@ -214,11 +219,27 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
     }
   }
 
-  // Handle keyboard shortcuts
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      sendMessage()
+  const triggerReportGeneration = async () => {
+    if (isGeneratingReport) return
+
+    setIsGeneratingReport(true)
+    try {
+      const response = await fetch(`/api/report/generate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to generate report')
+      }
+
+      window.location.href = `/api/report/${sessionId}`
+
+    } catch (error) {
+      console.error('Error generating report:', error)
+    } finally {
+      setIsGeneratingReport(false)
     }
   }
 
@@ -229,6 +250,100 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
     }
   }, [input, isLoading, assessmentComplete, sessionId])
 
+  // Render different screens
+  if (currentScreen === 'welcome') {
+    return (
+      <div className="flex flex-col h-screen bg-white font-['-apple-system',_'BlinkMacSystemFont',_'SF_Pro_Display',_'Segoe_UI',_'system-ui',_'sans-serif']">
+        {/* Welcome Screen - First Image Style */}
+        <div className="flex-1 flex items-center justify-center p-6">
+          <div className="max-w-[700px] w-full text-center">
+            {/* Greeting */}
+            <div className="mb-8">
+              <div className="flex items-center justify-center mb-4">
+                <div className="w-6 h-6 bg-[#8B4513] rounded-full flex items-center justify-center mr-3">
+                  <span className="text-white text-sm">★</span>
+                </div>
+                <h1 className="text-2xl font-serif text-[#8B4513]">
+                  Hey there, Matthew
+                </h1>
+              </div>
+              <p className="text-lg text-gray-700">
+                How can I help you today?
+              </p>
+            </div>
+
+            {/* Input Box */}
+            <div className="bg-white border border-gray-300 rounded-xl p-4 flex flex-col gap-2 transition-all duration-150 focus-within:border-[#284138] focus-within:shadow-[0_0_0_3px_rgba(40,65,56,0.08)]">
+              <textarea
+                ref={textareaRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="What's your name?"
+                className="w-full min-h-[24px] max-h-[200px] border-none outline-none resize-none text-base leading-[1.5] text-[#1F2937] bg-transparent font-inherit placeholder:text-gray-400"
+                rows={1}
+              />
+              
+              <div className="flex items-center justify-between gap-2 pt-2 border-t border-gray-100">
+                <div className="flex gap-1">
+                  <button className="w-8 h-8 border-none bg-transparent rounded-md flex items-center justify-center cursor-pointer text-gray-500 transition-all duration-150 hover:bg-gray-100 hover:text-[#1F2937] active:scale-95">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                    </svg>
+                  </button>
+                  
+                  {isSupported && (
+                    <button
+                      onClick={isListening ? stopListening : startListening}
+                      className={`w-8 h-8 border-none bg-transparent rounded-md flex items-center justify-center cursor-pointer transition-all duration-150 active:scale-95 ${
+                        isListening
+                          ? 'text-red-500 hover:bg-red-50'
+                          : 'text-gray-500 hover:bg-gray-100 hover:text-[#1F2937]'
+                      }`}
+                    >
+                      {isListening ? (
+                        <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                      ) : (
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                          <line x1="12" y1="19" x2="12" y2="23"/>
+                          <line x1="8" y1="23" x2="16" y2="23"/>
+                        </svg>
+                      )}
+                    </button>
+                  )}
+                </div>
+                
+                <button
+                  onClick={handleEnvironmentSubmit}
+                  disabled={!input.trim()}
+                  className="min-w-[80px] h-9 bg-[#284138] text-white border-none rounded-lg text-sm font-medium cursor-pointer flex items-center justify-center gap-1.5 transition-all duration-150 px-4 hover:bg-[#1f3329] hover:-translate-y-px hover:shadow-[0_4px_12px_rgba(40,65,56,0.2)] active:translate-y-0 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+                >
+                  Send <span className="text-base">↑</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="mt-6 flex flex-wrap justify-center gap-2">
+              {['Home Office', 'Coffee Shop', 'Library', 'Outdoors', 'Quiet Space'].map((env) => (
+                <button
+                  key={env}
+                  onClick={() => setInput(env)}
+                  className="px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                >
+                  {env}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Chat Screen - Third Image Style
   return (
     <div className="flex flex-col h-screen bg-white font-['-apple-system',_'BlinkMacSystemFont',_'SF_Pro_Display',_'Segoe_UI',_'system-ui',_'sans-serif']">
       {/* Messages Container - Claude Style */}
