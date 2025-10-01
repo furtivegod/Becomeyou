@@ -274,10 +274,10 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
         <div style="text-align: center; margin: 2rem 0;">
           <button 
             class="pdf-button" 
-            onclick="downloadPDF()"
+            onclick="showPDF()"
             ${!signedPdfUrl ? 'disabled' : ''}
           >
-            ${signedPdfUrl ? 'Download PDF Report' : 'PDF Generating...'}
+            ${signedPdfUrl ? 'View PDF Report' : 'Open PDF in this tab...'}
           </button>
         </div>
 
@@ -288,7 +288,7 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
       </div>
 
       <script>
-        function downloadPDF() {
+        function showPDF() {
           ${signedPdfUrl ? `
             const link = document.createElement('a');
             link.href = '${signedPdfUrl}';
