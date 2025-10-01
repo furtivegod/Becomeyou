@@ -157,7 +157,7 @@ export async function generateClaudeResponse(messages: Array<{role: "user" | "as
     }
 
     const response = await anthropic.messages.create({
-      model: "claude-sonnet-4-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 300,
       system: SYSTEM_PROMPT,
       messages: messages
@@ -190,7 +190,7 @@ export async function generateStructuredPlan(conversationHistory: string) {
     console.log('Using truncated conversation length:', truncatedHistory.length)
 
     const response = await anthropic.messages.create({
-      model: "claude-sonnet-4-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 4000,
       system: `You are a professional behavioral optimization specialist. Based on the You 3.0 assessment conversation, create a comprehensive client-facing report in valid JSON format.
 

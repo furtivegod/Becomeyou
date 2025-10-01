@@ -27,6 +27,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
   const [currentPhase, setCurrentPhase] = useState('welcome')
   const [questionCount, setQuestionCount] = useState(0)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   // Speech recognition hook
   const {
@@ -38,13 +39,36 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
     isSupported
   } = useSpeechRecognition()
 
-  // Auto-scroll to bottom when new messages arrive
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  // Auto-expand textarea
+  const adjustTextareaHeight = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
+    }
+  }
+
+  // Smart scroll - only if user is near bottom
+  const smartScroll = () => {
+    if (messagesEndRef.current) {
+      const container = messagesEndRef.current.parentElement
+      if (container) {
+        const threshold = 100
+        const isNearBottom = 
+          container.scrollHeight - container.scrollTop - container.clientHeight < threshold
+        
+        if (isNearBottom) {
+          messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+        }
+      }
+    }
   }
 
   useEffect(() => {
-    scrollToBottom()
+    adjustTextareaHeight()
+  }, [input])
+
+  useEffect(() => {
+    smartScroll()
   }, [messages, isLoading, isGeneratingReport])
 
   // Update input when transcript changes
@@ -190,6 +214,14 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
     }
   }
 
+  // Handle keyboard shortcuts
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      sendMessage()
+    }
+  }
+
   // Track message sent
   useEffect(() => {
     if (input.length > 0 && !isLoading && !assessmentComplete) {
@@ -198,146 +230,168 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
   }, [input, isLoading, assessmentComplete, sessionId])
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
-      {/* Header */}
-      <div className="flex-shrink-0 bg-white border-b border-gray-200 px-4 py-3">
-        <div className="flex items-center justify-between">
-          <h1 className="text-lg sm:text-xl font-semibold text-gray-900">
-            You 3.0 Assessment
-          </h1>
-          <div className="text-sm text-gray-500">
-            Question {questionCount}
+    <div className="flex flex-col h-screen bg-white font-['-apple-system',_'BlinkMacSystemFont',_'SF_Pro_Display',_'Segoe_UI',_'system-ui',_'sans-serif']">
+      {/* Messages Container - Claude Style */}
+      <div className="flex-1 overflow-y-auto overflow-x-hidden scroll-smooth py-6" style={{ scrollbarGutter: 'stable' }}>
+        <div className="w-full flex justify-center">
+          <div className="max-w-[700px] w-full px-6">
+            {messages.map((message) => (
+              <div key={message.id} className="w-full flex justify-center mb-8 animate-[messageSlideIn_0.3s_ease-out]">
+                <div className="max-w-[700px] w-full px-6">
+                  {message.role === 'assistant' ? (
+                    <div className="flex gap-4 mb-8">
+                      {/* AI Avatar */}
+                      <div className="w-8 h-8 flex-shrink-0 rounded-md bg-gray-100 flex items-center justify-center text-[#284138] text-base">
+                        /
+                      </div>
+                      {/* AI Content */}
+                      <div className="flex-1 text-base leading-[1.7] text-[#1F2937] font-normal tracking-[-0.01em]">
+                        <div className="whitespace-pre-line">
+                          {message.content}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex justify-end mb-8">
+                      <div className="bg-gray-100 px-4 py-3 rounded-[18px] max-w-[70%] text-base leading-[1.5] text-[#1F2937] break-words">
+                        {message.content}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+            
+            {/* Typing Indicator */}
+            {isLoading && (
+              <div className="w-full flex justify-center mb-8 opacity-60">
+                <div className="max-w-[700px] w-full px-6">
+                  <div className="flex gap-4">
+                    <div className="w-8 h-8 flex-shrink-0 rounded-md bg-gray-100 flex items-center justify-center text-[#284138] text-base">
+                      /
+                    </div>
+                    <div className="flex items-center gap-1 pt-2">
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-[typingBounce_1.4s_infinite_ease-in-out]"></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-[typingBounce_1.4s_infinite_ease-in-out]" style={{ animationDelay: '0.2s' }}></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-[typingBounce_1.4s_infinite_ease-in-out]" style={{ animationDelay: '0.4s' }}></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* Report Generation Indicator */}
+            {isGeneratingReport && (
+              <div className="w-full flex justify-center mb-8">
+                <div className="max-w-[700px] w-full px-6">
+                  <div className="flex gap-4">
+                    <div className="w-8 h-8 flex-shrink-0 rounded-md bg-gray-100 flex items-center justify-center text-[#284138] text-base">
+                      /
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 h-4 border-2 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+                      <span className="text-green-700 text-sm font-medium">
+                        🔄 Generating your You 3.0 assessment report...
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* Auto-scroll anchor */}
+            <div ref={messagesEndRef} />
           </div>
         </div>
       </div>
 
-      {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto px-3 sm:px-4 py-4 space-y-4">
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-          >
-            <div
-              className={`max-w-xs sm:max-w-md lg:max-w-lg px-3 sm:px-4 py-2 sm:py-3 rounded-2xl shadow-sm ${
-                message.role === 'user'
-                  ? 'bg-blue-500 text-white rounded-br-md'
-                  : 'bg-white text-gray-800 border border-gray-200 rounded-bl-md'
-              }`}
-            >
-              <div className="text-sm sm:text-base leading-relaxed whitespace-pre-line">
-                {message.content}
-              </div>
-              <div className={`text-xs mt-1 ${
-                message.role === 'user' ? 'text-blue-100' : 'text-gray-500'
-              }`}>
-                {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </div>
-            </div>
-          </div>
-        ))}
-        
-        {/* Loading indicator */}
-        {isLoading && (
-          <div className="flex justify-start">
-            <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-md px-3 sm:px-4 py-2 sm:py-3 shadow-sm">
-              <div className="flex space-x-1">
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-              </div>
-            </div>
-          </div>
-        )}
-        
-        {/* Report generation indicator */}
-        {isGeneratingReport && (
-          <div className="flex justify-start">
-            <div className="bg-green-50 border border-green-200 rounded-2xl rounded-bl-md px-3 sm:px-4 py-2 sm:py-3 shadow-sm">
-              <div className="flex items-center space-x-2">
-                <div className="w-4 h-4 border-2 border-green-500 border-t-transparent rounded-full animate-spin"></div>
-                <span className="text-green-700 text-sm font-medium">
-                  🔄 Generating your You 3.0 assessment report...
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
-        
-        {/* Auto-scroll anchor */}
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* Input Area - Fixed at bottom */}
-      <div className="flex-shrink-0 border-t bg-white p-3 sm:p-4">
+      {/* Input Container - Claude Style */}
+      <div className="flex-shrink-0 border-t border-gray-200 p-4 bg-white">
         {assessmentComplete ? (
-          <div className="text-center">
-            <div className="inline-flex items-center space-x-2 text-green-600 font-semibold bg-green-50 px-3 sm:px-4 py-2 rounded-lg">
-              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="max-w-[700px] mx-auto text-center">
+            <div className="inline-flex items-center space-x-2 text-green-600 font-semibold bg-green-50 px-4 py-2 rounded-lg">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              <span className="text-sm sm:text-base">Assessment Complete! Your You 3.0 report is ready above.</span>
+              <span>Assessment Complete! Your You 3.0 report is ready above.</span>
             </div>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="max-w-[700px] mx-auto">
             {/* Speech Error Display */}
             {speechError && (
-              <div className="p-2 bg-red-50 border border-red-200 rounded text-red-700 text-xs sm:text-sm">
+              <div className="mb-3 p-2 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
                 {speechError}
               </div>
             )}
             
-            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
-              <input
-                type="text"
+            {/* Input Box - Claude Style */}
+            <div className="bg-white border border-gray-300 rounded-xl p-4 flex flex-col gap-2 transition-all duration-150 focus-within:border-[#284138] focus-within:shadow-[0_0_0_3px_rgba(40,65,56,0.08)]">
+              {/* Textarea */}
+              <textarea
+                ref={textareaRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-                placeholder="Type your response or use voice input..."
-                className="flex-1 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base"
+                onKeyDown={handleKeyDown}
+                placeholder="Are you ready to unlock You 3.0?"
+                className="w-full min-h-[24px] max-h-[200px] border-none outline-none resize-none text-base leading-[1.5] text-[#1F2937] bg-transparent font-inherit placeholder:text-gray-400"
                 disabled={isLoading}
+                rows={1}
               />
               
-              {/* Voice Input Button - Fixed styling */}
-              {isSupported && (
-                <button
-                  onClick={isListening ? stopListening : startListening}
-                  disabled={isLoading}
-                  className={`px-3 sm:px-4 py-2 sm:py-3 rounded-full font-medium transition-all duration-200 shadow-sm text-sm sm:text-base min-w-[60px] ${
-                    isListening
-                      ? 'bg-red-500 text-white hover:bg-red-600 border-2 border-red-600'
-                      : 'bg-green-500 text-white hover:bg-green-600 border-2 border-green-600'
-                  } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                >
-                  {isListening ? (
-                    <div className="flex items-center justify-center space-x-1 sm:space-x-2">
-                      <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                      <span className="hidden sm:inline">Stop</span>
-                    </div>
-                  ) : (
-                    <div className="flex items-center justify-center space-x-1 sm:space-x-2">
-                      <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clipRule="evenodd" />
-                      </svg>
-                      <span className="hidden sm:inline">Voice</span>
-                    </div>
+              {/* Controls Row */}
+              <div className="flex items-center justify-between gap-2 pt-2 border-t border-gray-100">
+                <div className="flex gap-1">
+                  {/* Attach Button */}
+                  <button
+                    className="w-8 h-8 border-none bg-transparent rounded-md flex items-center justify-center cursor-pointer text-gray-500 transition-all duration-150 hover:bg-gray-100 hover:text-[#1F2937] active:scale-95"
+                    aria-label="Attach file"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                    </svg>
+                  </button>
+                  
+                  {/* Voice Input Button */}
+                  {isSupported && (
+                    <button
+                      onClick={isListening ? stopListening : startListening}
+                      disabled={isLoading}
+                      className={`w-8 h-8 border-none bg-transparent rounded-md flex items-center justify-center cursor-pointer transition-all duration-150 active:scale-95 ${
+                        isListening
+                          ? 'text-red-500 hover:bg-red-50'
+                          : 'text-gray-500 hover:bg-gray-100 hover:text-[#1F2937]'
+                      } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      aria-label="Voice input"
+                    >
+                      {isListening ? (
+                        <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                      ) : (
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                          <line x1="12" y1="19" x2="12" y2="23"/>
+                          <line x1="8" y1="23" x2="16" y2="23"/>
+                        </svg>
+                      )}
+                    </button>
                   )}
+                </div>
+                
+                {/* Send Button */}
+                <button
+                  onClick={sendMessage}
+                  disabled={isLoading || !input.trim()}
+                  className="min-w-[80px] h-9 bg-[#284138] text-white border-none rounded-lg text-sm font-medium cursor-pointer flex items-center justify-center gap-1.5 transition-all duration-150 px-4 hover:bg-[#1f3329] hover:-translate-y-px hover:shadow-[0_4px_12px_rgba(40,65,56,0.2)] active:translate-y-0 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+                >
+                  Send <span className="text-base">↑</span>
                 </button>
-              )}
-              
-              <button
-                onClick={sendMessage}
-                disabled={isLoading || !input.trim()}
-                className="px-4 sm:px-6 py-2 sm:py-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium shadow-sm text-sm sm:text-base"
-              >
-                {isLoading ? 'Sending...' : 'Send'}
-              </button>
+              </div>
             </div>
             
             {/* Voice Input Status */}
             {isListening && (
-              <div className="text-center text-xs sm:text-sm text-gray-600 flex items-center justify-center">
+              <div className="mt-2 text-center text-sm text-gray-600 flex items-center justify-center">
                 <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse mr-2"></div>
                 <span>Listening... Speak now</span>
               </div>
@@ -345,6 +399,28 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
           </div>
         )}
       </div>
+
+      <style jsx>{`
+        @keyframes messageSlideIn {
+          from {
+            opacity: 0;
+            transform: translateY(8px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes typingBounce {
+          0%, 60%, 100% {
+            transform: translateY(0);
+          }
+          30% {
+            transform: translateY(-8px);
+          }
+        }
+      `}</style>
     </div>
   )
 }
