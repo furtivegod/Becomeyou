@@ -151,14 +151,8 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
       const reader = response.body?.getReader()
       if (!reader) return
 
-      const assistantMessage: Message = {
-        id: Date.now().toString(),
-        role: 'assistant',
-        content: '',
-        timestamp: new Date()
-      }
-
-      setMessages([assistantMessage])
+      // Don't create an empty message - let the API handle it
+      let assistantMessage: Message | null = null
 
       while (true) {
         const { done, value } = await reader.read()
@@ -172,15 +166,26 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
             try {
               const data = JSON.parse(line.slice(6))
               if (data.content && data.content !== 'undefined') {
+                // Create message only when we get content
+                if (!assistantMessage) {
+                  assistantMessage = {
+                    id: Date.now().toString(),
+                    role: 'assistant',
+                    content: '',
+                    timestamp: new Date()
+                  }
+                  setMessages([assistantMessage])
+                }
+                
                 assistantMessage.content += data.content
-              }
-              setMessages(prev => 
-                prev.map(msg => 
-                  msg.id === assistantMessage.id 
-                    ? { ...msg, content: assistantMessage.content }
-                    : msg
+                setMessages(prev => 
+                  prev.map(msg => 
+                    msg.id === assistantMessage!.id 
+                      ? { ...msg, content: assistantMessage!.content }
+                      : msg
+                  )
                 )
-              )
+              }
             } catch (e) {
               console.error('Error parsing SSE data:', e)
             }
