@@ -103,7 +103,10 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
     const name = input.trim()
     setUserName(name)
     setInput('')
-    setCurrentScreen('environment')
+    setCurrentScreen('chat')
+    
+    // Start the assessment immediately
+    startAssessment()
     trackEvent('welcome_completed', { sessionId, userName: name })
   }
 
@@ -126,7 +129,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
     const welcomeMessage: Message = {
       id: 'welcome',
       role: 'assistant',
-      content: `Hey there, ${userName}!\n\nI understand you're in a ${environment} environment. Perfect.\n\nThis assessment will help you understand exactly why you might feel stuck despite having the drive and vision to succeed. We'll identify the specific patterns that have been holding you back, map your unique strengths across four key life domains (Mind, Body, Spirit, and Contribution), and create a personalized 30-day protocol that actually fits your nervous system and lifestyle.\n\nI'll be direct but respectful; sometimes the truth stings, but clarity accelerates growth.\n\nAre you ready to get started?`,
+      content: `Hey there, ${userName}!\n\nThis assessment will help you understand exactly why you might feel stuck despite having the drive and vision to succeed. We'll identify the specific patterns that have been holding you back, map your unique strengths across four key life domains (Mind, Body, Spirit, and Contribution), and create a personalized 30-day protocol that actually fits your nervous system and lifestyle.\n\nI'll be direct but respectful; sometimes the truth stings, but clarity accelerates growth.\n\nAre you ready to get started?`,
       timestamp: new Date()
     }
     setMessages([welcomeMessage])
