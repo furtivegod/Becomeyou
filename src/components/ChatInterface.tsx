@@ -343,32 +343,41 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
     )
   }
 
-  // Chat Screen - Third Image Style
+  // Chat Screen - EXACT CLAUDE SPECIFICATIONS
   return (
     <div className="flex flex-col h-screen bg-white font-['-apple-system',_'BlinkMacSystemFont',_'SF_Pro_Display',_'Segoe_UI',_'system-ui',_'sans-serif']">
-      {/* Messages Container - Claude Style */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden scroll-smooth py-6" style={{ scrollbarGutter: 'stable' }}>
+      {/* Messages Container - Exact Claude Layout */}
+      <div 
+        className="flex-1 overflow-y-auto overflow-x-hidden scroll-smooth py-6"
+        style={{ scrollbarGutter: 'stable' }}
+      >
         <div className="w-full flex justify-center">
           <div className="max-w-[700px] w-full px-6">
             {messages.map((message) => (
               <div key={message.id} className="w-full flex justify-center mb-8 animate-[messageSlideIn_0.3s_ease-out]">
                 <div className="max-w-[700px] w-full px-6">
                   {message.role === 'assistant' ? (
+                    // AI Message - Exact Claude Styling
                     <div className="flex gap-4 mb-8">
-                      {/* AI Avatar */}
-                      <div className="w-8 h-8 flex-shrink-0 rounded-md bg-gray-100 flex items-center justify-center text-[#284138] text-base">
+                      {/* AI Avatar - 32px, rounded-md, emerald color */}
+                      <div className="w-8 h-8 flex-shrink-0 rounded-md bg-[#F3F4F6] flex items-center justify-center text-[#284138] text-base">
                         /
                       </div>
-                      {/* AI Content */}
+                      {/* AI Content - Exact typography */}
                       <div className="flex-1 text-base leading-[1.7] text-[#1F2937] font-normal tracking-[-0.01em]">
                         <div className="whitespace-pre-line">
-                          {message.content}
+                          {message.content.split('\n').map((paragraph, index) => (
+                            <p key={index} className="m-0 mb-4 last:mb-0">
+                              {paragraph}
+                            </p>
+                          ))}
                         </div>
                       </div>
                     </div>
                   ) : (
+                    // User Message - Exact Claude Styling
                     <div className="flex justify-end mb-8">
-                      <div className="bg-gray-100 px-4 py-3 rounded-[18px] max-w-[70%] text-base leading-[1.5] text-[#1F2937] break-words">
+                      <div className="bg-[#F9FAFB] border border-[#E5E7EB] px-4 py-3 rounded-[18px] max-w-[70%] text-base leading-[1.5] text-[#1F2937] break-words">
                         {message.content}
                       </div>
                     </div>
@@ -377,18 +386,18 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
               </div>
             ))}
             
-            {/* Typing Indicator */}
+            {/* Typing Indicator - Exact Claude Animation */}
             {isLoading && (
               <div className="w-full flex justify-center mb-8 opacity-60">
                 <div className="max-w-[700px] w-full px-6">
                   <div className="flex gap-4">
-                    <div className="w-8 h-8 flex-shrink-0 rounded-md bg-gray-100 flex items-center justify-center text-[#284138] text-base">
+                    <div className="w-8 h-8 flex-shrink-0 rounded-md bg-[#F3F4F6] flex items-center justify-center text-[#284138] text-base">
                       /
                     </div>
                     <div className="flex items-center gap-1 pt-2">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-[typingBounce_1.4s_infinite_ease-in-out]"></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-[typingBounce_1.4s_infinite_ease-in-out]" style={{ animationDelay: '0.2s' }}></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-[typingBounce_1.4s_infinite_ease-in-out]" style={{ animationDelay: '0.4s' }}></div>
+                      <div className="w-2 h-2 bg-[#9CA3AF] rounded-full animate-[typingBounce_1.4s_infinite_ease-in-out]"></div>
+                      <div className="w-2 h-2 bg-[#9CA3AF] rounded-full animate-[typingBounce_1.4s_infinite_ease-in-out]" style={{ animationDelay: '0.2s' }}></div>
+                      <div className="w-2 h-2 bg-[#9CA3AF] rounded-full animate-[typingBounce_1.4s_infinite_ease-in-out]" style={{ animationDelay: '0.4s' }}></div>
                     </div>
                   </div>
                 </div>
@@ -400,7 +409,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
               <div className="w-full flex justify-center mb-8">
                 <div className="max-w-[700px] w-full px-6">
                   <div className="flex gap-4">
-                    <div className="w-8 h-8 flex-shrink-0 rounded-md bg-gray-100 flex items-center justify-center text-[#284138] text-base">
+                    <div className="w-8 h-8 flex-shrink-0 rounded-md bg-[#F3F4F6] flex items-center justify-center text-[#284138] text-base">
                       /
                     </div>
                     <div className="flex items-center gap-2">
@@ -420,8 +429,8 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
         </div>
       </div>
 
-      {/* Input Container - Claude Style */}
-      <div className="flex-shrink-0 border-t border-gray-200 p-4 bg-white">
+      {/* Input Container - EXACT CLAUDE SPECS */}
+      <div className="flex-shrink-0 border-t border-[#E5E7EB] p-4 bg-white">
         {assessmentComplete ? (
           <div className="max-w-[700px] mx-auto text-center">
             <div className="inline-flex items-center space-x-2 text-green-600 font-semibold bg-green-50 px-4 py-2 rounded-lg">
@@ -440,26 +449,27 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
               </div>
             )}
             
-            {/* Input Box - Claude Style */}
-            <div className="bg-white border border-gray-300 rounded-xl p-4 flex flex-col gap-2 transition-all duration-150 focus-within:border-[#284138] focus-within:shadow-[0_0_0_3px_rgba(40,65,56,0.08)]">
-              {/* Textarea */}
+            {/* Input Box - EXACT CLAUDE SPECIFICATIONS */}
+            <div className="bg-white border border-[#D1D5DB] rounded-xl p-4 flex flex-col gap-2 transition-all duration-150 focus-within:border-[#284138] focus-within:shadow-[0_0_0_3px_rgba(40,65,56,0.08)]">
+              {/* Textarea - Exact specs */}
               <textarea
                 ref={textareaRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Are you ready to unlock You 3.0?"
-                className="w-full min-h-[24px] max-h-[200px] border-none outline-none resize-none text-base leading-[1.5] text-[#1F2937] bg-transparent font-inherit placeholder:text-gray-400"
+                className="w-full min-h-[24px] max-h-[200px] border-none outline-none resize-none text-base leading-[1.5] text-[#1F2937] bg-transparent font-inherit placeholder:text-[#9CA3AF]"
                 disabled={isLoading}
                 rows={1}
+                aria-label="Message input"
               />
               
-              {/* Controls Row */}
-              <div className="flex items-center justify-between gap-2 pt-2 border-t border-gray-100">
+              {/* Controls Row - Exact Claude Layout */}
+              <div className="flex items-center justify-between gap-2 pt-2 border-t border-[#F3F4F6]">
                 <div className="flex gap-1">
-                  {/* Attach Button */}
+                  {/* Attach Button - 32px control button */}
                   <button
-                    className="w-8 h-8 border-none bg-transparent rounded-md flex items-center justify-center cursor-pointer text-gray-500 transition-all duration-150 hover:bg-gray-100 hover:text-[#1F2937] active:scale-95"
+                    className="w-8 h-8 border-none bg-transparent rounded-md flex items-center justify-center cursor-pointer text-[#6B7280] transition-all duration-150 hover:bg-[#F3F4F6] hover:text-[#1F2937] active:scale-95"
                     aria-label="Attach file"
                   >
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -467,7 +477,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                     </svg>
                   </button>
                   
-                  {/* Voice Input Button */}
+                  {/* Voice Input Button - 32px control button */}
                   {isSupported && (
                     <button
                       onClick={isListening ? stopListening : startListening}
@@ -475,7 +485,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                       className={`w-8 h-8 border-none bg-transparent rounded-md flex items-center justify-center cursor-pointer transition-all duration-150 active:scale-95 ${
                         isListening
                           ? 'text-red-500 hover:bg-red-50'
-                          : 'text-gray-500 hover:bg-gray-100 hover:text-[#1F2937]'
+                          : 'text-[#6B7280] hover:bg-[#F3F4F6] hover:text-[#1F2937]'
                       } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                       aria-label="Voice input"
                     >
@@ -493,13 +503,14 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                   )}
                 </div>
                 
-                {/* Send Button */}
+                {/* Send Button - EXACT CLAUDE SPECS */}
                 <button
                   onClick={sendMessage}
                   disabled={isLoading || !input.trim()}
-                  className="min-w-[80px] h-9 bg-[#284138] text-white border-none rounded-lg text-sm font-medium cursor-pointer flex items-center justify-center gap-1.5 transition-all duration-150 px-4 hover:bg-[#1f3329] hover:-translate-y-px hover:shadow-[0_4px_12px_rgba(40,65,56,0.2)] active:translate-y-0 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+                  className="min-w-[80px] h-9 bg-[#284138] text-white border-none rounded-lg text-sm font-medium cursor-pointer flex items-center justify-center gap-1.5 transition-all duration-150 px-4 hover:bg-[#1f3329] hover:-translate-y-px hover:shadow-[0_4px_12px_rgba(40,65,56,0.2)] active:translate-y-0 disabled:bg-[#E5E7EB] disabled:text-[#9CA3AF] disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+                  aria-label="Send message"
                 >
-                  Send <span className="text-base">↑</span>
+                  Send <span className="text-base" aria-hidden="true">↑</span>
                 </button>
               </div>
             </div>
