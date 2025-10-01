@@ -125,9 +125,75 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
   }
 
   // Start assessment chat - LET THE SYSTEM PROMPT HANDLE IT
-  const startAssessment = () => {
+  const startAssessment = async () => {
     // Don't create any message here - let the API/system prompt handle it
     setMessages([]) // Start with empty messages
+    
+    // Trigger the system prompt to generate the welcome message
+    setIsLoading(true)
+    
+    try {
+      const response = await fetch('/api/assessment/message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          sessionId, 
+          message: '', // Empty message to trigger system prompt
+          userName,
+          environment: 'assessment_start'
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to start assessment')
+      }
+
+      const reader = response.body?.getReader()
+      if (!reader) return
+
+      const assistantMessage: Message = {
+        id: Date.now().toString(),
+        role: 'assistant',
+        content: '',
+        timestamp: new Date()
+      }
+
+      setMessages([assistantMessage])
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+
+        const chunk = new TextDecoder().decode(value)
+        const lines = chunk.split('\n')
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6))
+              if (data.content && data.content !== 'undefined') {
+                assistantMessage.content += data.content
+              }
+              setMessages(prev => 
+                prev.map(msg => 
+                  msg.id === assistantMessage.id 
+                    ? { ...msg, content: assistantMessage.content }
+                    : msg
+                )
+              )
+            } catch (e) {
+              console.error('Error parsing SSE data:', e)
+            }
+          }
+        }
+      }
+
+    } catch (error) {
+      console.error('Error starting assessment:', error)
+    } finally {
+      setIsLoading(false)
+    }
+    
     trackEvent('assessment_started', { sessionId })
   }
 
