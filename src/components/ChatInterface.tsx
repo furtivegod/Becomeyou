@@ -138,9 +138,9 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           sessionId, 
-          message: '', // Empty message to trigger system prompt
-          userName,
-          environment: 'assessment_start'
+          message: 'start assessment', // Trigger message
+          currentPhase: 'welcome', // Set the phase
+          questionCount: 0 // Start with 0 questions
         })
       })
 
