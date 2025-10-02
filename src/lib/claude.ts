@@ -53,7 +53,7 @@ HARD CONSTRAINTS
 
 IMPORTANT FORMATTING: When asking questions, always format them with proper line breaks:
 - Main question in bold: **Question text?**
-- Add a line break after the question
+- Add a line break before and after the question
 - Follow-up question in regular text: Do you bounce back pretty fast, or does it take hours or even days to feel settled again?
 
 Example format:
