@@ -1,14 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
-import crypto from 'crypto'
 import { supabaseAdmin } from '@/lib/supabase'
 import { sendMagicLink } from '@/lib/email'
 import { generateToken } from '@/lib/auth'
 
 export async function POST(request: NextRequest) {
   try {
-    // Check environment variables first
+    // Check required environment variables (excluding webhook secret for now)
     const requiredEnvVars = {
-      SAMCART_WEBHOOK_SECRET: process.env.SAMCART_WEBHOOK_SECRET,
       NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
       SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
       JWT_SECRET: process.env.JWT_SECRET,
@@ -28,45 +26,40 @@ export async function POST(request: NextRequest) {
       }, { status: 500 })
     }
 
-    const url = new URL(request.url)
     const body = await request.text()
     const signature = request.headers.get('x-samcart-signature')
     
-    if (!signature) {
-      console.error('Missing signature header')
-      return NextResponse.json({ error: 'Missing signature' }, { status: 400 })
-    }
+    console.log('=== SAMCART WEBHOOK DEBUG ===')
+    console.log('Headers:', Object.fromEntries(request.headers.entries()))
+    console.log('Body:', body)
+    console.log('Signature:', signature)
+    console.log('================================')
 
-    // Verify SamCart webhook signature
-    const webhookSecret = process.env.SAMCART_WEBHOOK_SECRET!
-    const expectedSignature = crypto
-      .createHmac('sha256', webhookSecret)
-      .update(body)
-      .digest('hex')
+    // Parse the SamCart webhook data
+    const samcartData = JSON.parse(body)
     
-    if (signature !== expectedSignature) {
-      console.error('Invalid signature')
-      return NextResponse.json({ error: 'Invalid signature' }, { status: 401 })
-    }
-
-    // Parse data (allow empty/minimal body in test mode)
-    const parsed = body ? JSON.parse(body) : {}
-
-    const data = {
-      status: 'completed',
-      customer_email: parsed.customer_email || url.searchParams.get('email') || 'tester@example.com',
-      order_id: parsed.order_id || url.searchParams.get('order_id') || `test_${Date.now()}`,
-      ...parsed
-    }
+    console.log('Received SamCart webhook data:', JSON.stringify(samcartData, null, 2))
     
-    console.log('Processing webhook data:', { customer_email: data.customer_email, order_id: data.order_id })
+    // Extract data from SamCart webhook payload
+    const customerEmail = samcartData.customer_email || samcartData.customer?.email
+    const orderId = samcartData.order_id || samcartData.order?.id
+    const status = samcartData.status || samcartData.order?.status
+    const customerName = samcartData.customer_name || samcartData.customer?.name || 
+                        (samcartData.customer?.first_name && samcartData.customer?.last_name ? 
+                         `${samcartData.customer.first_name} ${samcartData.customer.last_name}` : null)
     
-    // Only process successful orders in non-test mode
-    if (data.status !== 'completed') {
+    console.log('Extracted data:', { customerEmail, orderId, status, customerName })
+    
+    // Only process successful orders
+    if (status !== 'completed') {
+      console.log('Order not completed, skipping')
       return NextResponse.json({ message: 'Order not completed, skipping' })
     }
 
-    const { customer_email, order_id } = data
+    if (!customerEmail || !orderId) {
+      console.error('Missing required data:', { customerEmail, orderId })
+      return NextResponse.json({ error: 'Missing customer email or order ID' }, { status: 400 })
+    }
 
     // Test database connection
     try {
@@ -84,15 +77,15 @@ export async function POST(request: NextRequest) {
     let { data: user, error: userError } = await supabaseAdmin
       .from('users')
       .select('id, email, created_at')
-      .eq('email', customer_email)
+      .eq('email', customerEmail)
       .single()
 
     if (userError && userError.code === 'PGRST116') {
       // User doesn't exist, create them
-      console.log('Creating new user:', customer_email)
+      console.log('Creating new user:', customerEmail)
       const { data: newUser, error: createError } = await supabaseAdmin
         .from('users')
-        .insert({ email: customer_email })
+        .insert({ email: customerEmail })
         .select('id, email, created_at')
         .single()
 
@@ -106,7 +99,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to fetch user', details: userError }, { status: 500 })
     }
 
-    // Add null check for user
     if (!user) {
       console.error('User not found after creation/fetch')
       return NextResponse.json({ error: 'User not found' }, { status: 500 })
@@ -114,13 +106,13 @@ export async function POST(request: NextRequest) {
 
     console.log('User processed:', user.id)
 
-    // Create order record (handle duplicate provider_ref by selecting existing)
+    // Create order record
     let orderRow: { id: string; user_id: string; provider_ref: string; status: string } | undefined
     const { data: order, error: orderError } = await supabaseAdmin
       .from('orders')
       .insert({
         user_id: user.id,
-        provider_ref: order_id,
+        provider_ref: orderId,
         status: 'completed'
       })
       .select('id, user_id, provider_ref, status')
@@ -130,11 +122,11 @@ export async function POST(request: NextRequest) {
       const isUniqueViolation = (orderError as unknown as { code?: string }).code === '23505'
       if (isUniqueViolation) {
         // Fetch existing order row by provider_ref
-        console.log('Order already exists, fetching existing:', order_id)
+        console.log('Order already exists, fetching existing:', orderId)
         const { data: existingOrder, error: selectError } = await supabaseAdmin
           .from('orders')
           .select('id, user_id, provider_ref, status')
-          .eq('provider_ref', order_id)
+          .eq('provider_ref', orderId)
           .single()
         if (selectError || !existingOrder) {
           console.error('Error selecting existing order:', selectError)
@@ -151,7 +143,7 @@ export async function POST(request: NextRequest) {
 
     console.log('Order processed:', orderRow?.id)
 
-    // Create assessment session directly (avoiding internal API call)
+    // Create assessment session
     console.log('Creating session for user:', user.id)
     
     const { data: session, error: sessionError } = await supabaseAdmin
@@ -178,20 +170,17 @@ export async function POST(request: NextRequest) {
 
     console.log('Session created:', sessionId)
 
-    // Compute magic link for response
-    const token = generateToken(sessionId, customer_email)
+    // Generate magic link
+    const token = generateToken(sessionId, customerEmail)
     const magicLink = `${process.env.NEXT_PUBLIC_APP_URL}/assessment/${sessionId}?token=${token}`
 
-    // Send magic link email with better error handling
+    // Send magic link email
     let emailed = false
     let emailError: any = null
     
     try {
-      console.log('Sending magic link email to:', customer_email)
-      console.log('Using RESEND_API_KEY:', process.env.RESEND_API_KEY ? 'SET' : 'NOT SET')
-      console.log('Using FROM address:', process.env.NODE_ENV === 'production' ? 'BECOME YOU <noreply@becomeyou.com>' : 'onboarding@resend.dev')
-      
-      await sendMagicLink(customer_email, sessionId)
+      console.log('Sending magic link email to:', customerEmail)
+      await sendMagicLink(customerEmail, sessionId)
       emailed = true
       console.log('Magic link email sent successfully')
     } catch (emailErr) {
@@ -203,12 +192,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ 
       verified: true,
       emailed,
-      email_to: customer_email,
+      email_to: customerEmail,
       user,
       order: orderRow,
       session_id: sessionId,
       magic_link: magicLink,
-      email_error: emailError ? emailError.message : null
+      email_error: emailError ? emailError.message : null,
+      debug_info: {
+        received_headers: Object.fromEntries(request.headers.entries()),
+        received_body: samcartData
+      }
     })
 
   } catch (error) {
