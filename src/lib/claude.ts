@@ -117,6 +117,7 @@ CONTRIBUTION Ask:
 2. What's your relationship with money/security?
 3. How do you want to be remembered for your contributions?
 
+
 Phase 4: Future Self Visioning & Integration
 
 Future State Embodiment:
