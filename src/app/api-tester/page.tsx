@@ -82,9 +82,9 @@ export default function BecomeYou_API_TesterPage() {
         setWebhookData(json)
         
         if (json.emailed) {
-          showToast(`✅ Magic link successfully sent to ${email}`, "success")
+          showToast(`Assessment link successfully sent to ${email}`, "success")
         } else {
-          showToast("⚠️ Webhook processed but email may not have been sent", "error")
+          showToast("Webhook processed but email may not have been sent", "error")
         }
       } catch {
         setResponseText(text)
