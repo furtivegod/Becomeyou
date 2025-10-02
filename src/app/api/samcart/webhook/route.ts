@@ -5,7 +5,7 @@ import { generateToken } from '@/lib/auth'
 
 export async function POST(request: NextRequest) {
   try {
-    // Check required environment variables (excluding webhook secret for now)
+    // Check required environment variables
     const requiredEnvVars = {
       NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
       SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
@@ -41,19 +41,18 @@ export async function POST(request: NextRequest) {
     console.log('Received SamCart webhook data:', JSON.stringify(samcartData, null, 2))
     
     // Extract data from SamCart webhook payload
-    const customerEmail = samcartData.customer_email || samcartData.customer?.email
-    const orderId = samcartData.order_id || samcartData.order?.id
-    const status = samcartData.status || samcartData.order?.status
-    const customerName = samcartData.customer_name || samcartData.customer?.name || 
-                        (samcartData.customer?.first_name && samcartData.customer?.last_name ? 
-                         `${samcartData.customer.first_name} ${samcartData.customer.last_name}` : null)
+    const customerEmail = samcartData.customer?.email
+    const orderId = samcartData.order?.id
+    const status = samcartData.products?.[0]?.status || 'completed' // Get status from products array
+    const customerName = samcartData.customer?.first_name && samcartData.customer?.last_name ? 
+                        `${samcartData.customer.first_name} ${samcartData.customer.last_name}` : null
     
     console.log('Extracted data:', { customerEmail, orderId, status, customerName })
     
-    // Only process successful orders
-    if (status !== 'completed') {
-      console.log('Order not completed, skipping')
-      return NextResponse.json({ message: 'Order not completed, skipping' })
+    // Only process successful orders (SamCart uses "Charged" status)
+    if (status !== 'Charged') {
+      console.log('Order not charged, skipping')
+      return NextResponse.json({ message: 'Order not charged, skipping' })
     }
 
     if (!customerEmail || !orderId) {
@@ -112,7 +111,7 @@ export async function POST(request: NextRequest) {
       .from('orders')
       .insert({
         user_id: user.id,
-        provider_ref: orderId,
+        provider_ref: orderId.toString(), // Convert to string
         status: 'completed'
       })
       .select('id, user_id, provider_ref, status')
@@ -126,7 +125,7 @@ export async function POST(request: NextRequest) {
         const { data: existingOrder, error: selectError } = await supabaseAdmin
           .from('orders')
           .select('id, user_id, provider_ref, status')
-          .eq('provider_ref', orderId)
+          .eq('provider_ref', orderId.toString())
           .single()
         if (selectError || !existingOrder) {
           console.error('Error selecting existing order:', selectError)
