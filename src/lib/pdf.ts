@@ -107,9 +107,9 @@ export async function generatePDF(planData: PlanData, sessionId: string): Promis
     // Generate HTML content with client name
     const htmlContent = generateHTMLReport(planData, clientName)
     
-    // Convert HTML to PDF using PDFShift
-    console.log('Converting HTML to PDF using PDFShift...')
-    const pdfBuffer = await convertHTMLToPDF(htmlContent)
+          // Convert HTML to PDF using PDFShift
+          console.log('Converting HTML to PDF using PDFShift...')
+          const pdfBuffer = await convertHTMLToPDF(htmlContent, clientName)
     
     // Store PDF in Supabase Storage
     const fileName = `protocol-${sessionId}-${Date.now()}.pdf`
@@ -167,8 +167,16 @@ export async function generatePDF(planData: PlanData, sessionId: string): Promis
   }
 }
 
-async function convertHTMLToPDF(htmlContent: string): Promise<Buffer> {
+async function convertHTMLToPDF(htmlContent: string, clientName: string = 'Client'): Promise<Buffer> {
   try {
+    // Create footer HTML with PDFShift variables
+    const footerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; border-top: 1px solid #bdc3c7; font-size: 12px; color: #7f8c8d;">
+        <div>${clientName}</div>
+        <div>YOU 3.0 - Page {{page}} of {{total}}</div>
+      </div>
+    `;
+
     const response = await fetch('https://api.pdfshift.io/v3/convert/pdf', {
       method: 'POST',
       headers: {
@@ -179,6 +187,11 @@ async function convertHTMLToPDF(htmlContent: string): Promise<Buffer> {
         source: htmlContent,
         format: 'A4',
         margin: '20mm',
+        footer: {
+          source: footerHTML,
+          height: '60px', // Space between content and footer
+          start_at: 1 // Start footer from page 1
+        }
       })
     })
 
@@ -196,6 +209,37 @@ async function convertHTMLToPDF(htmlContent: string): Promise<Buffer> {
     console.error('PDFShift conversion error:', error)
     throw new Error(`Failed to convert HTML to PDF: ${error instanceof Error ? error.message : String(error)}`)
   }
+}
+
+// Smart content splitting based on estimated height
+function splitContentByHeight(items: string[], maxItemsPerPage: number = 15): string[][] {
+  const pages: string[][] = [];
+  let currentPage: string[] = [];
+  let currentItemCount = 0;
+  
+  items.forEach((item, index) => {
+    // Estimate item height based on content length
+    const estimatedHeight = Math.ceil(item.length / 80) * 1.6; // Rough line estimation
+    const maxHeightPerPage = 20; // Estimated max lines per page
+    
+    // If adding this item would exceed page capacity, start new page
+    if (currentItemCount >= maxItemsPerPage || 
+        (currentPage.length > 0 && estimatedHeight > maxHeightPerPage)) {
+      pages.push([...currentPage]);
+      currentPage = [];
+      currentItemCount = 0;
+    }
+    
+    currentPage.push(item);
+    currentItemCount++;
+  });
+  
+  // Add remaining items
+  if (currentPage.length > 0) {
+    pages.push(currentPage);
+  }
+  
+  return pages;
 }
 
 function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): string {
@@ -282,10 +326,8 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         .page {
           width: 100%;
           min-height: 100vh;
-          padding: 40px 40px 80px 40px; /* Add bottom padding for footer */
+          padding: 40px; /* Standard padding - PDFShift handles footer spacing */
           position: relative;
-          display: flex;
-          flex-direction: column;
         }
         
         /* Cover Page Styles */
@@ -376,11 +418,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           flex: 1; /* Take up available space */
         }
         
-        .content-wrapper {
-          flex: 1; /* Take up available space, pushing footer down */
-          display: flex;
-          flex-direction: column;
-        }
+        /* Content wrapper no longer needed - PDFShift handles footer */
         
         .section-title {
           font-family: 'Inter', sans-serif;
@@ -409,7 +447,11 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         .content li {
           page-break-inside: avoid; /* Keep individual list items together */
           margin-bottom: 8px;
+          max-height: 200px; /* Prevent single items from being too tall */
+          overflow: hidden;
         }
+        
+        /* Page break detection handled by PDFShift */
         
         .content p {
           font-size: 16px;
@@ -502,29 +544,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           font-size: 16px;
         }
         
-        .footer {
-          position: absolute;
-          bottom: 20px;
-          left: 40px;
-          right: 40px;
-          border-top: 1px solid #bdc3c7;
-          padding-top: 15px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-top: auto; /* Push footer to bottom */
-        }
-        
-        .footer .client-name {
-          color: #7f8c8d;
-          font-size: 12px;
-        }
-        
-        .footer .version {
-          color: #7f8c8d;
-          font-size: 12px;
-          font-weight: 600;
-        }
+        /* Footer is now handled by PDFShift natively - no CSS needed */
         
         .page-break {
           page-break-before: always;
@@ -639,25 +659,19 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
       
       <!-- Assessment Overview Page -->
       <div class="page page-break">
-        <div class="content-wrapper">
-          <div class="section">
+        <div class="section">
             <div class="section-title">Assessment Overview</div>
             <div class="content">
               <p>${assessmentOverview}</p>
             </div>
           </div>
-        </div>
         
-        <div class="footer">
-          <div class="client-name">${clientName}</div>
-          <div class="version">YOU 3.0</div>
-        </div>
+        <!-- Footer handled by PDFShift natively -->
       </div>
       
       <!-- Sabotage Pattern Analysis -->
       <div class="page page-break">
-        <div class="content-wrapper">
-          <div class="section">
+        <div class="section">
             <div class="section-title">Sabotage Pattern Analysis</div>
             
             <div class="domain-item">
@@ -680,18 +694,13 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
               <strong>Your Success Proof:</strong> ${successProof}
             </div>
           </div>
-        </div>
         
-        <div class="footer">
-          <div class="client-name">${clientName}</div>
-          <div class="version">YOU 3.0</div>
-        </div>
+        <!-- Footer handled by PDFShift natively -->
       </div>
       
       <!-- Domain Breakdown - Mind -->
       <div class="page page-break">
-        <div class="content-wrapper">
-          <div class="section">
+        <div class="section">
             <div class="section-title">Domain Breakdown</div>
             <div class="domain-title">MIND</div>
             
@@ -717,18 +726,13 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
               </div>
             </div>
           </div>
-        </div>
         
-        <div class="footer">
-          <div class="client-name">${clientName}</div>
-          <div class="version">YOU 3.0</div>
-        </div>
+        <!-- Footer handled by PDFShift natively -->
       </div>
       
       <!-- Domain Breakdown - Body -->
       <div class="page page-break">
-        <div class="content-wrapper">
-          <div class="section">
+        <div class="section">
             <div class="section-title">Domain Breakdown</div>
             <div class="domain-title">BODY</div>
             
@@ -754,18 +758,13 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
               </div>
             </div>
           </div>
-        </div>
         
-        <div class="footer">
-          <div class="client-name">${clientName}</div>
-          <div class="version">YOU 3.0</div>
-        </div>
+        <!-- Footer handled by PDFShift natively -->
       </div>
       
       <!-- Domain Breakdown - Spirit -->
       <div class="page page-break">
-        <div class="content-wrapper">
-          <div class="section">
+        <div class="section">
             <div class="section-title">Domain Breakdown</div>
             <div class="domain-title">SPIRIT & RELATIONSHIPS</div>
             
@@ -791,18 +790,13 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
               </div>
             </div>
           </div>
-        </div>
         
-        <div class="footer">
-          <div class="client-name">${clientName}</div>
-          <div class="version">YOU 3.0</div>
-        </div>
+        <!-- Footer handled by PDFShift natively -->
       </div>
       
       <!-- Domain Breakdown - Contribution -->
       <div class="page page-break">
-        <div class="content-wrapper">
-          <div class="section">
+        <div class="section">
             <div class="section-title">Domain Breakdown</div>
             <div class="domain-title">CONTRIBUTION</div>
             
@@ -828,20 +822,15 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
               </div>
             </div>
           </div>
-        </div>
         
-        <div class="footer">
-          <div class="client-name">${clientName}</div>
-          <div class="version">YOU 3.0</div>
-        </div>
+        <!-- Footer handled by PDFShift natively -->
       </div>
       
       
       
       <!-- Nervous System Assessment -->
       <div class="page page-break">
-        <div class="content-wrapper">
-          <div class="section">
+        <div class="section">
             <div class="section-title">Nervous System Assessment</div>
             
             <div class="nervous-system">
@@ -849,18 +838,13 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
               <p>${nervousSystemAssessment}</p>
             </div>
           </div>
-        </div>
         
-        <div class="footer">
-          <div class="client-name">${clientName}</div>
-          <div class="version">YOU 3.0</div>
-        </div>
+        <!-- Footer handled by PDFShift natively -->
       </div>
       
       <!-- 30-Day Protocol -->
       <div class="page page-break">
-        <div class="content-wrapper">
-          <div class="section">
+        <div class="section">
             <div class="section-title">30-Day Recommend Growth Protocol</div>
             
             <div class="protocol-section">
@@ -888,18 +872,13 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
               </div>
             </div>
           </div>
-        </div>
         
-        <div class="footer">
-          <div class="client-name">${clientName}</div>
-          <div class="version">YOU 3.0</div>
-        </div>
+        <!-- Footer handled by PDFShift natively -->
       </div>
       
       <!-- Development Reminders -->
       <div class="page page-break">
-        <div class="content-wrapper">
-          <div class="section">
+        <div class="section">
             <div class="section-title">Development Reminders</div>
             
             <div class="content">
@@ -913,52 +892,37 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
               </ul>
             </div>
           </div>
-        </div>
         
-        <div class="footer">
-          <div class="client-name">${clientName}</div>
-          <div class="version">YOU 3.0</div>
-        </div>
+        <!-- Footer handled by PDFShift natively -->
       </div>
       
       <!-- Reminder Box -->
       <div class="page page-break">
-        <div class="content-wrapper">
-          <div class="section">
+        <div class="section">
             <div class="reminder-box">
               <h3>Reminder Box</h3>
               <p>"${reminderQuote}"</p>
             </div>
           </div>
-        </div>
         
-        <div class="footer">
-          <div class="client-name">${clientName}</div>
-          <div class="version">YOU 3.0</div>
-        </div>
+        <!-- Footer handled by PDFShift natively -->
       </div>
       
       <!-- Bottom Line -->
       <div class="page page-break">
-        <div class="content-wrapper">
-          <div class="section">
+        <div class="section">
             <div class="bottom-line">
               <h2>Bottom Line</h2>
               <p>${bottomLine}</p>
             </div>
           </div>
-        </div>
         
-        <div class="footer">
-          <div class="client-name">${clientName}</div>
-          <div class="version">YOU 3.0</div>
-        </div>
+        <!-- Footer handled by PDFShift natively -->
       </div>
       
       <!-- Book Recommendations -->
       <div class="page page-break">
-        <div class="content-wrapper">
-          <div class="section">
+        <div class="section">
             <div class="section-title">Book Recommendations</div>
             
             <div class="content">
@@ -967,33 +931,25 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
               </ol>
             </div>
           </div>
-        </div>
         
-        <div class="footer">
-          <div class="client-name">${clientName}</div>
-          <div class="version">YOU 3.0</div>
-        </div>
+        <!-- Footer handled by PDFShift natively -->
       </div>
       
-      <!-- Daily Actions - Split into multiple pages if needed -->
+      <!-- Daily Actions - Smart content-aware splitting -->
       ${(() => {
-        const itemsPerPage = 15; // Limit items per page to ensure footer visibility
-        const totalPages = Math.ceil(dailyActions.length / itemsPerPage);
+        const contentPages = splitContentByHeight(dailyActions, 12); // Smarter limit
         let html = '';
+        let globalIndex = 1;
         
-        for (let page = 0; page < totalPages; page++) {
-          const startIndex = page * itemsPerPage;
-          const endIndex = Math.min(startIndex + itemsPerPage, dailyActions.length);
-          const pageActions = dailyActions.slice(startIndex, endIndex);
-          
+        contentPages.forEach((pageActions, pageIndex) => {
           html += `
-            <div class="page ${page > 0 ? 'page-break' : ''}">
+            <div class="page ${pageIndex > 0 ? 'page-break' : ''}">
               <div class="content-wrapper">
                 <div class="section">
-                  <div class="section-title">Daily Actions ${totalPages > 1 ? `(Part ${page + 1} of ${totalPages})` : ''}</div>
+                  <div class="section-title">Daily Actions ${contentPages.length > 1 ? `(Part ${pageIndex + 1} of ${contentPages.length})` : ''}</div>
                   
                   <div class="content">
-                    <ol start="${startIndex + 1}">
+                    <ol start="${globalIndex}">
                       ${pageActions.map(action => `<li>${action}</li>`).join('')}
                     </ol>
                   </div>
@@ -1006,7 +962,8 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
               </div>
             </div>
           `;
-        }
+          globalIndex += pageActions.length;
+        });
         
         return html;
       })()}
@@ -1121,8 +1078,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
       
       <!-- Next Steps -->
       <div class="page page-break">
-        <div class="content-wrapper">
-          <div class="section">
+        <div class="section">
             <div class="section-title">Next Steps</div>
             
             <div class="content">
@@ -1148,12 +1104,8 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
               </div>
             </div>
           </div>
-        </div>
         
-        <div class="footer">
-          <div class="client-name">${clientName}</div>
-          <div class="version">YOU 3.0</div>
-        </div>
+        <!-- Footer handled by PDFShift natively -->
       </div>
 
 
@@ -1165,12 +1117,8 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
               <p>This assessment was built with care, respect, and the belief that you already have everything you need to become the person you described. The only thing left to do is <em>take action</em>.</p>
             </div>
           </div>
-        </div>
         
-        <div class="footer">
-          <div class="client-name">${clientName}</div>
-          <div class="version">YOU 3.0</div>
-        </div>
+        <!-- Footer handled by PDFShift natively -->
       </div>
     </body>
     </html>
