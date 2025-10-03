@@ -169,8 +169,26 @@ export async function generatePDF(planData: PlanData, sessionId: string): Promis
 
 async function convertHTMLToPDF(htmlContent: string, clientName: string = 'Client'): Promise<Buffer> {
   try {
-    // Create footer HTML with PDFShift variables
-    const footerHTML = `<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; border-top: 1px solid #bdc3c7; font-size: 12px; color: #7f8c8d;"><div>${clientName}</div><div>YOU 3.0 - Page {{page}} of {{total}}</div></div>`;
+    // Create footer HTML with PDFShift variables - matching template design
+    const footerHTML = `
+      <div style="
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        padding: 8px 20px; 
+        border-top: 1px solid #d3d3d3; 
+        border-bottom: 1px solid #d3d3d3;
+        font-size: 11px; 
+        color: #999999;
+        background: #f8f8f8;
+        font-family: Arial, sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      ">
+        <div>${clientName}</div>
+        <div>YOU 3.0</div>
+      </div>
+    `;
 
     const response = await fetch('https://api.pdfshift.io/v3/convert/pdf', {
       method: 'POST',
@@ -184,7 +202,7 @@ async function convertHTMLToPDF(htmlContent: string, clientName: string = 'Clien
         margin: '20mm',
         footer: {
           source: footerHTML,
-          height: '60px', // Space between content and footer
+          height: '40px', // Space between content and footer
           start_at: 1 // Start footer from page 1
         }
       })
@@ -422,7 +440,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           color: #2c3e50;
           margin-bottom: 80px;
           text-align: center;
-          background: #f5f3f0;
+          background:rgb(219, 185, 133);
           padding: 40px;
           border-radius: 8px;
           letter-spacing: 1px;
@@ -658,6 +676,18 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="section-title">Assessment Overview</div>
             <div class="content">
               <p>${assessmentOverview}</p>
+            </div>
+          </div>
+        
+        <!-- Footer handled by PDFShift natively -->
+      </div>
+      
+      <!-- Your Development Profile Page -->
+      <div class="page page-break">
+        <div class="section">
+            <div class="section-title">Your Development Profile</div>
+            <div class="content">
+              <p>${developmentProfile}</p>
             </div>
           </div>
         
