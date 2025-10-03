@@ -393,7 +393,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         .disclaimer-box {
           background: #fff8e1;
           padding: 25px;
-          margin: 60px 0 40px 0;
+          margin: 80px 0 60px 0;
           border-radius: 8px;
           text-align: center;
         }
@@ -401,7 +401,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         .disclaimer-box p {
           font-family: 'Playfair Display', serif;
           font-style: normal;
-          font-size: 0.9em;
+          font-size: 1.2em;
           color: #2c3e50;
           line-height: 1.5;
           margin: 0;
