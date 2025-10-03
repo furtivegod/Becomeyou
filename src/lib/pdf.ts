@@ -192,38 +192,31 @@ function generateHTMLReport(planData: PlanData): string {
   const weeklyRecommendation = thirtyDayProtocol.weekly_recommendation || 'Implement one consistent practice that supports your growth goals.'
   const thirtyDayApproach = thirtyDayProtocol.thirty_day_approach || 'Focus on one key area of development that will have the most impact.'
   const environmentalOptimization = thirtyDayProtocol.environmental_optimization || 'Make one environmental change that supports your goals.'
-  const progressMarkers = thirtyDayProtocol.progress_markers || ['Notice changes in your daily patterns', 'Observe shifts in your stress response', 'Track improvements in your target area']
   
-  // Extract book recommendations
-  const bookRecommendations = planData.book_recommendations || [
-    'The Body Keeps the Score by Bessel van der Kolk - Understanding trauma and healing',
-    'Atomic Habits by James Clear - Building sustainable change'
-  ]
+  // Ensure arrays are properly validated
+  const progressMarkers = Array.isArray(planData.thirty_day_protocol?.progress_markers) 
+    ? planData.thirty_day_protocol.progress_markers 
+    : ['Notice changes in your daily patterns', 'Observe shifts in your stress response', 'Track improvements in your target area']
   
-  // Extract daily actions
-  const dailyActions = planData.daily_actions || [
-    'Day 1: Start with 5 minutes of morning reflection on your goals',
-    'Day 2: Practice one small action that moves you toward your main objective',
-    'Day 3: Notice one pattern that serves you and one that doesn\'t'
-  ]
+  const bookRecommendations = Array.isArray(planData.book_recommendations) 
+    ? planData.book_recommendations 
+    : ['The Body Keeps the Score by Bessel van der Kolk - Understanding trauma and healing', 'Atomic Habits by James Clear - Building sustainable change']
   
-  // Extract weekly goals
-  const weeklyGoals = planData.weekly_goals || [
-    'Week 1: Establish a daily routine that supports your goals',
-    'Week 2: Practice one new skill or habit consistently'
-  ]
+  const dailyActions = Array.isArray(planData.daily_actions) 
+    ? planData.daily_actions 
+    : ['Day 1: Start with 5 minutes of morning reflection on your goals', 'Day 2: Practice one small action that moves you toward your main objective', 'Day 3: Notice one pattern that serves you and one that doesn\'t']
   
-  // Extract resources
-  const resources = planData.resources || [
-    'Daily journal for tracking progress and insights',
-    'Accountability partner or support group'
-  ]
+  const weeklyGoals = Array.isArray(planData.weekly_goals) 
+    ? planData.weekly_goals 
+    : ['Week 1: Establish a daily routine that supports your goals', 'Week 2: Practice one new skill or habit consistently']
   
-  // Extract reflection prompts
-  const reflectionPrompts = planData.reflection_prompts || [
-    'What was one moment today where I felt truly aligned with my values?',
-    'What pattern did I notice in myself today, and how did I respond?'
-  ]
+  const resources = Array.isArray(planData.resources) 
+    ? planData.resources 
+    : ['Daily journal for tracking progress and insights', 'Accountability partner or support group']
+  
+  const reflectionPrompts = Array.isArray(planData.reflection_prompts) 
+    ? planData.reflection_prompts 
+    : ['What was one moment today where I felt truly aligned with my values?', 'What pattern did I notice in myself today, and how did I respond?']
 
   return `
     <!DOCTYPE html>
