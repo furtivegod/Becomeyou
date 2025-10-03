@@ -328,7 +328,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         /* Cover Page Styles */
         .brand-header {
           text-align: center;
-          margin-bottom: 40px;
+          margin-bottom: 20px;
         }
         
         .brand-line {
@@ -342,7 +342,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           font-size: 4.2em;
           font-weight: 400;
           color: #2c3e50;
-          margin: 30px 0;
+          margin: 15px 0;
         }
         
         .brand-text {
@@ -360,12 +360,12 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           font-weight: 300;
           color: #7f8c8d;
           letter-spacing: 3px;
-          margin: 20px 0;
+          margin: 10px 0;
         }
         
         .assessment-title {
           text-align: center;
-          margin: 80px 0;
+          margin: 40px 0;
         }
         
         .assessment-title h1 {
@@ -378,7 +378,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         }
         
         .client-info {
-          margin: 60px 0;
+          margin: 30px 0;
         }
         
         .client-line {
@@ -386,14 +386,14 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           font-size: 1.6em;
           font-weight: 400;
           color: #2c3e50;
-          margin: 20px 0;
+          margin: 12px 0;
           text-transform: uppercase;
         }
         
         .disclaimer-box {
           background: #fff8e1;
-          padding: 30px;
-          margin: 80px 0 50px 0;
+          padding: 25px;
+          margin: 40px 0 20px 0;
           border-radius: 8px;
           text-align: center;
         }
