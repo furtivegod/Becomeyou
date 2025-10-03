@@ -339,10 +339,10 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         
         .brand-logo {
           font-family: 'Inter', sans-serif;
-          font-size: 2.8em;
+          font-size: 4.2em;
           font-weight: 400;
           color: #2c3e50;
-          margin: 20px 0;
+          margin: 30px 0;
         }
         
         .brand-text {
@@ -356,16 +356,16 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         
         .brand-tagline {
           font-family: 'Inter', sans-serif;
-          font-size: 0.9em;
+          font-size: 1.1em;
           font-weight: 300;
           color: #7f8c8d;
           letter-spacing: 3px;
-          margin: 10px 0;
+          margin: 20px 0;
         }
         
         .assessment-title {
           text-align: center;
-          margin: 60px 0;
+          margin: 80px 0;
         }
         
         .assessment-title h1 {
@@ -378,22 +378,22 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         }
         
         .client-info {
-          margin: 40px 0;
+          margin: 60px 0;
         }
         
         .client-line {
           font-family: 'Playfair Display', serif;
-          font-size: 1.4em;
+          font-size: 1.6em;
           font-weight: 400;
           color: #2c3e50;
-          margin: 15px 0;
+          margin: 20px 0;
           text-transform: uppercase;
         }
         
         .disclaimer-box {
           background: #fff8e1;
-          padding: 25px;
-          margin: 60px 0 40px 0;
+          padding: 30px;
+          margin: 80px 0 50px 0;
           border-radius: 8px;
           text-align: center;
         }
