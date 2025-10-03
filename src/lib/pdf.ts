@@ -783,9 +783,20 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
               <p><strong>Weekly Recommendation:</strong> ${weeklyRecommendation}</p>
               <p><strong>30-Day Approach:</strong> ${thirtyDayApproach}</p>
               <p><strong>Environmental Optimization:</strong> ${environmentalOptimization}</p>
+              
               <p><strong>Suggested Progress Markers:</strong></p>
               <ol>
                 ${progressMarkers.map(marker => `<li>${marker}</li>`).join('')}
+              </ol>
+              
+              <p><strong>Daily Actions:</strong></p>
+              <ol>
+                ${dailyActions.map(action => `<li>${action}</li>`).join('')}
+              </ol>
+              
+              <p><strong>Weekly Goals:</strong></p>
+              <ol>
+                ${weeklyGoals.map(goal => `<li>${goal}</li>`).join('')}
               </ol>
             </div>
           </div>
@@ -852,74 +863,6 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         <!-- Footer handled by PDFShift natively -->
       </div>
       
-      <!-- Daily Actions - Smart content-aware splitting -->
-      ${(() => {
-        const contentPages = splitContentByHeight(dailyActions, 12); // Smarter limit
-        let html = '';
-        let globalIndex = 1;
-        
-        contentPages.forEach((pageActions, pageIndex) => {
-          html += `
-            <div class="page ${pageIndex > 0 ? 'page-break' : ''}">
-              <div class="content-wrapper">
-                <div class="section">
-                  <div class="section-title">Daily Actions ${contentPages.length > 1 ? `(Part ${pageIndex + 1} of ${contentPages.length})` : ''}</div>
-                  
-                  <div class="content">
-                    <ol start="${globalIndex}">
-                      ${pageActions.map(action => `<li>${action}</li>`).join('')}
-                    </ol>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="footer">
-                <div class="client-name">${clientName}</div>
-                <div class="version">YOU 3.0</div>
-              </div>
-            </div>
-          `;
-          globalIndex += pageActions.length;
-        });
-        
-        return html;
-      })()}
-      
-      <!-- Weekly Goals - Split into multiple pages if needed -->
-      ${(() => {
-        const itemsPerPage = 8; // Limit items per page for weekly goals
-        const totalPages = Math.ceil(weeklyGoals.length / itemsPerPage);
-        let html = '';
-        
-        for (let page = 0; page < totalPages; page++) {
-          const startIndex = page * itemsPerPage;
-          const endIndex = Math.min(startIndex + itemsPerPage, weeklyGoals.length);
-          const pageGoals = weeklyGoals.slice(startIndex, endIndex);
-          
-          html += `
-            <div class="page ${page > 0 ? 'page-break' : ''}">
-              <div class="content-wrapper">
-                <div class="section">
-                  <div class="section-title">Weekly Goals ${totalPages > 1 ? `(Part ${page + 1} of ${totalPages})` : ''}</div>
-                  
-                  <div class="content">
-                    <ol start="${startIndex + 1}">
-                      ${pageGoals.map(goal => `<li>${goal}</li>`).join('')}
-                    </ol>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="footer">
-                <div class="client-name">${clientName}</div>
-                <div class="version">YOU 3.0</div>
-              </div>
-            </div>
-          `;
-        }
-        
-        return html;
-      })()}
       
       <!-- Resources - Split into multiple pages if needed -->
       ${(() => {
