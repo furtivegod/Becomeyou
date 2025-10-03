@@ -339,7 +339,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         
         .brand-logo {
           font-family: 'Inter', sans-serif;
-          font-size: 1.8em;
+          font-size: 2.8em;
           font-weight: 400;
           color: #2c3e50;
           margin: 20px 0;
@@ -383,10 +383,10 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         
         .client-line {
           font-family: 'Playfair Display', serif;
-          font-size: 1.1em;
+          font-size: 1.4em;
           font-weight: 400;
           color: #2c3e50;
-          margin: 8px 0;
+          margin: 15px 0;
           text-transform: uppercase;
         }
         
@@ -400,7 +400,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         
         .disclaimer-box p {
           font-family: 'Playfair Display', serif;
-          font-style: italic;
+          font-style: normal;
           font-size: 0.9em;
           color: #2c3e50;
           line-height: 1.5;
