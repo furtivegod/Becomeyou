@@ -4,10 +4,10 @@ import { supabaseAdmin as supabase } from '@/lib/supabase'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { sessionId: string } }
+  { params }: { params: Promise<{ sessionId: string }> }
 ) {
   try {
-    const { sessionId } = params
+    const { sessionId } = await params
     
     console.log('📄 Generating PDF for session:', sessionId)
     
