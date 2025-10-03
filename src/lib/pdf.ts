@@ -456,17 +456,17 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         }
         
         .domain-title {
-          font-size: 1.4em;
-          font-weight: 600;
+          font-size: 3.2em;
+          font-weight: 700;
           color: #2c3e50;
-          margin-bottom: 15px;
+          margin-bottom: 5px;
           text-transform: uppercase;
-          letter-spacing: 1px;
+          letter-spacing: 2px;
           text-align: center;
         }
         
         .domain-breakdown-content {
-          margin: 30px 0;
+          margin: 10px 0;
         }
         
         .domain-breakdown-item {
