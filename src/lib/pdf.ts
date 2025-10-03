@@ -53,6 +53,35 @@ export async function generatePDF(planData: PlanData, sessionId: string): Promis
       throw new Error('PDF generation service not configured')
     }
 
+    // Get user information for client name
+    console.log('Fetching user information for client name')
+    const { data: sessionData, error: sessionError } = await supabase
+      .from('sessions')
+      .select('user_id')
+      .eq('id', sessionId)
+      .single()
+
+    let clientName = 'Client'
+    if (!sessionError && sessionData) {
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select('email, user_name')
+        .eq('id', sessionData.user_id)
+        .single()
+
+      if (!userError && userData) {
+        // Use user_name if available, otherwise extract from email
+        if (userData.user_name) {
+          clientName = userData.user_name
+        } else {
+          // Extract name from email if no name is provided
+          const emailName = userData.email.split('@')[0]
+          clientName = emailName.charAt(0).toUpperCase() + emailName.slice(1)
+        }
+        console.log('Client name determined:', clientName)
+      }
+    }
+
     // Validate data
     if (!planData.daily_actions || !Array.isArray(planData.daily_actions)) {
       planData.daily_actions = []
@@ -67,8 +96,8 @@ export async function generatePDF(planData: PlanData, sessionId: string): Promis
       planData.reflection_prompts = []
     }
 
-    // Generate HTML content
-    const htmlContent = generateHTMLReport(planData)
+    // Generate HTML content with client name
+    const htmlContent = generateHTMLReport(planData, clientName)
     
     // Convert HTML to PDF using PDFShift
     console.log('Converting HTML to PDF using PDFShift...')
@@ -161,7 +190,7 @@ async function convertHTMLToPDF(htmlContent: string): Promise<Buffer> {
   }
 }
 
-function generateHTMLReport(planData: PlanData): string {
+function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): string {
   // Extract the real data from the assessment
   const assessmentOverview = planData.assessment_overview || 'Your personalized assessment has been completed. This report provides insights into your behavioral patterns and recommendations for growth.'
   const developmentProfile = planData.development_profile || 'Based on your responses, you\'ve shown clear patterns of behavior and areas where you\'re ready for transformation.'
@@ -480,7 +509,7 @@ function generateHTMLReport(planData: PlanData): string {
         </div>
         
         <div class="footer">
-          <div class="client-name">[CLIENT NAME]</div>
+          <div class="client-name">${clientName}</div>
           <div class="version">YOU 3.0</div>
         </div>
       </div>
@@ -498,7 +527,7 @@ function generateHTMLReport(planData: PlanData): string {
         </div>
         
         <div class="footer">
-          <div class="client-name">[CLIENT NAME]</div>
+          <div class="client-name">${clientName}</div>
           <div class="version">YOU 3.0</div>
         </div>
       </div>
@@ -530,7 +559,7 @@ function generateHTMLReport(planData: PlanData): string {
         </div>
         
         <div class="footer">
-          <div class="client-name">[CLIENT NAME]</div>
+          <div class="client-name">${clientName}</div>
           <div class="version">YOU 3.0</div>
         </div>
       </div>
@@ -547,7 +576,7 @@ function generateHTMLReport(planData: PlanData): string {
         </div>
         
         <div class="footer">
-          <div class="client-name">[CLIENT NAME]</div>
+          <div class="client-name">${clientName}</div>
           <div class="version">YOU 3.0</div>
         </div>
       </div>
@@ -564,7 +593,7 @@ function generateHTMLReport(planData: PlanData): string {
         </div>
         
         <div class="footer">
-          <div class="client-name">[CLIENT NAME]</div>
+          <div class="client-name">${clientName}</div>
           <div class="version">YOU 3.0</div>
         </div>
       </div>
@@ -581,7 +610,7 @@ function generateHTMLReport(planData: PlanData): string {
         </div>
         
         <div class="footer">
-          <div class="client-name">[CLIENT NAME]</div>
+          <div class="client-name">${clientName}</div>
           <div class="version">YOU 3.0</div>
         </div>
       </div>
@@ -598,7 +627,7 @@ function generateHTMLReport(planData: PlanData): string {
         </div>
         
         <div class="footer">
-          <div class="client-name">[CLIENT NAME]</div>
+          <div class="client-name">${clientName}</div>
           <div class="version">YOU 3.0</div>
         </div>
       </div>
@@ -615,7 +644,7 @@ function generateHTMLReport(planData: PlanData): string {
         </div>
         
         <div class="footer">
-          <div class="client-name">[CLIENT NAME]</div>
+          <div class="client-name">${clientName}</div>
           <div class="version">YOU 3.0</div>
         </div>
       </div>
@@ -652,7 +681,7 @@ function generateHTMLReport(planData: PlanData): string {
         </div>
         
         <div class="footer">
-          <div class="client-name">[CLIENT NAME]</div>
+          <div class="client-name">${clientName}</div>
           <div class="version">YOU 3.0</div>
         </div>
       </div>
@@ -675,7 +704,7 @@ function generateHTMLReport(planData: PlanData): string {
         </div>
         
         <div class="footer">
-          <div class="client-name">[CLIENT NAME]</div>
+          <div class="client-name">${clientName}</div>
           <div class="version">YOU 3.0</div>
         </div>
       </div>
@@ -690,7 +719,7 @@ function generateHTMLReport(planData: PlanData): string {
         </div>
         
         <div class="footer">
-          <div class="client-name">[CLIENT NAME]</div>
+          <div class="client-name">${clientName}</div>
           <div class="version">YOU 3.0</div>
         </div>
       </div>
@@ -705,7 +734,7 @@ function generateHTMLReport(planData: PlanData): string {
         </div>
         
         <div class="footer">
-          <div class="client-name">[CLIENT NAME]</div>
+          <div class="client-name">${clientName}</div>
           <div class="version">YOU 3.0</div>
         </div>
       </div>
@@ -723,7 +752,7 @@ function generateHTMLReport(planData: PlanData): string {
         </div>
         
         <div class="footer">
-          <div class="client-name">[CLIENT NAME]</div>
+          <div class="client-name">${clientName}</div>
           <div class="version">YOU 3.0</div>
         </div>
       </div>
@@ -741,7 +770,7 @@ function generateHTMLReport(planData: PlanData): string {
         </div>
         
         <div class="footer">
-          <div class="client-name">[CLIENT NAME]</div>
+          <div class="client-name">${clientName}</div>
           <div class="version">YOU 3.0</div>
         </div>
       </div>
@@ -759,7 +788,7 @@ function generateHTMLReport(planData: PlanData): string {
         </div>
         
         <div class="footer">
-          <div class="client-name">[CLIENT NAME]</div>
+          <div class="client-name">${clientName}</div>
           <div class="version">YOU 3.0</div>
         </div>
       </div>
@@ -777,7 +806,7 @@ function generateHTMLReport(planData: PlanData): string {
         </div>
         
         <div class="footer">
-          <div class="client-name">[CLIENT NAME]</div>
+          <div class="client-name">${clientName}</div>
           <div class="version">YOU 3.0</div>
         </div>
       </div>
@@ -795,7 +824,7 @@ function generateHTMLReport(planData: PlanData): string {
         </div>
         
         <div class="footer">
-          <div class="client-name">[CLIENT NAME]</div>
+          <div class="client-name">${clientName}</div>
           <div class="version">YOU 3.0</div>
         </div>
       </div>

@@ -75,17 +75,20 @@ export async function POST(request: NextRequest) {
     // Create or get user
     let { data: user, error: userError } = await supabaseAdmin
       .from('users')
-      .select('id, email, created_at')
+      .select('id, email, created_at, user_name')
       .eq('email', customerEmail)
       .single()
 
     if (userError && userError.code === 'PGRST116') {
-      // User doesn't exist, create them
-      console.log('Creating new user:', customerEmail)
+      // User doesn't exist, create them with name from SamCart
+      console.log('Creating new user:', customerEmail, 'with name:', customerName)
       const { data: newUser, error: createError } = await supabaseAdmin
         .from('users')
-        .insert({ email: customerEmail })
-        .select('id, email, created_at')
+        .insert({ 
+          email: customerEmail,
+          user_name: customerName || null
+        })
+        .select('id, email, created_at, user_name')
         .single()
 
       if (createError) {
@@ -96,6 +99,20 @@ export async function POST(request: NextRequest) {
     } else if (userError) {
       console.error('Error fetching user:', userError)
       return NextResponse.json({ error: 'Failed to fetch user', details: userError }, { status: 500 })
+    } else if (user && !user.user_name && customerName) {
+      // Update existing user with name if we have it and they don't have a name
+      console.log('Updating existing user with name from SamCart:', customerName)
+      const { error: updateError } = await supabaseAdmin
+        .from('users')
+        .update({
+          user_name: customerName
+        })
+        .eq('id', user.id)
+      
+      if (updateError) {
+        console.error('Error updating user name:', updateError)
+        // Don't fail the webhook for this
+      }
     }
 
     if (!user) {

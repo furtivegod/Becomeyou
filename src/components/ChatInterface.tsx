@@ -21,7 +21,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
   const [currentScreen, setCurrentScreen] = useState<'welcome' | 'environment' | 'chat'>('welcome')
   const [userName, setUserName] = useState('')
   const [environment, setEnvironment] = useState('')
-  
+  const [clientName, setClientName] = useState('')
   // Chat states
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
@@ -66,6 +66,27 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
       }
     }
   }
+
+  // Fetch client name on mount
+  useEffect(() => {
+    const fetchClientName = async () => {
+      try {
+        const response = await fetch(`/api/user-name?sessionId=${sessionId}`)
+        if (response.ok) {
+          const data = await response.json()
+          if (data.name) {
+            setClientName(data.name)
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching client name:', error)
+      }
+    }
+    
+    if (sessionId) {
+      fetchClientName()
+    }
+  }, [sessionId])
 
   useEffect(() => {
     adjustTextareaHeight()
@@ -351,7 +372,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                   <span className="text-white text-sm">★</span>
                 </div>
                 <h1 className="text-2xl font-serif text-[#8B4513]">
-                  Hey there, Matthew
+                  Hey there, {clientName || 'there'}
                 </h1>
               </div>
             </div>

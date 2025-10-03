@@ -5,6 +5,7 @@
 CREATE TABLE users (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   email VARCHAR(255) UNIQUE NOT NULL,
+  user_name VARCHAR(255), -- Full name from SamCart
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
