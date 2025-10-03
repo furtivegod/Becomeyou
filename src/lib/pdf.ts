@@ -182,181 +182,633 @@ function generateHTMLReport(planData: PlanData): string {
     <html lang="en">
     <head>
       <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>${planData.title || 'You 3.0 Assessment Report'}</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>${planData.title || 'You 3.0 Assessment Report'}</title>
       <style>
-            body {
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                line-height: 1.6;
-                color: #333;
-                max-width: 800px;
-                margin: 0 auto;
-                padding: 20px;
-                background-color: #f8f9fa;
-            }
-            .header {
-                text-align: center;
-                margin-bottom: 40px;
-                padding: 30px;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white;
-                border-radius: 10px;
-            }
-            .header h1 {
-                margin: 0;
-                font-size: 2.5em;
-                font-weight: 300;
-            }
-            .header p {
-                margin: 10px 0 0 0;
-                opacity: 0.9;
-                font-size: 1.1em;
-            }
-            .section {
-                background: white;
-                margin: 20px 0;
-                padding: 30px;
-                border-radius: 10px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            }
-            .section h2 {
-                color: #667eea;
-                border-bottom: 3px solid #667eea;
-                padding-bottom: 10px;
-                margin-bottom: 20px;
-                font-size: 1.8em;
-            }
-            .section h3 {
-                color: #555;
-                margin-top: 25px;
-                margin-bottom: 15px;
-                font-size: 1.3em;
-            }
-            .action-item {
-                background: #f8f9fa;
-                padding: 15px;
-                margin: 10px 0;
-                border-left: 4px solid #667eea;
-                border-radius: 5px;
-            }
-            .action-item strong {
-                color: #667eea;
-            }
-            .goal-item {
-                background: #e8f4f8;
-                padding: 15px;
-                margin: 10px 0;
-                border-left: 4px solid #17a2b8;
-                border-radius: 5px;
-            }
-            .goal-item strong {
-                color: #17a2b8;
-            }
-            .resource-item {
-                background: #f0f8e8;
-                padding: 15px;
-                margin: 10px 0;
-                border-left: 4px solid #28a745;
-                border-radius: 5px;
-            }
-            .resource-item strong {
-                color: #28a745;
-            }
-            .prompt-item {
-                background: #fff8e1;
-                padding: 15px;
-                margin: 10px 0;
-                border-left: 4px solid #ffc107;
-                border-radius: 5px;
-            }
-            .prompt-item strong {
-                color: #ffc107;
-            }
-            .overview {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white;
-                padding: 25px;
-                border-radius: 10px;
-                margin-bottom: 30px;
-            }
-            .overview h2 {
-                color: white;
-                border-bottom: 2px solid rgba(255,255,255,0.3);
-            }
-            .footer {
-                text-align: center;
-                margin-top: 40px;
-                padding: 20px;
-                background: #f8f9fa;
-                border-radius: 10px;
-                color: #666;
-            }
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+        
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        
+        body {
+          font-family: 'Inter', sans-serif;
+          line-height: 1.6;
+          color: #2c3e50;
+          background: white;
+          font-size: 14px;
+        }
+        
+        .page {
+          width: 100%;
+          min-height: 100vh;
+          padding: 40px;
+          position: relative;
+        }
+        
+        .header-banner {
+          background: #f5f3f0;
+          padding: 30px;
+          margin-bottom: 40px;
+          text-align: center;
+          border-radius: 8px;
+        }
+        
+        .header-banner h1 {
+          font-family: 'Playfair Display', serif;
+          font-size: 2.5em;
+          font-weight: 700;
+          color: #2c3e50;
+          margin-bottom: 10px;
+          letter-spacing: 1px;
+        }
+        
+        .header-banner .subtitle {
+          font-size: 1.1em;
+          color: #7f8c8d;
+          font-weight: 300;
+        }
+        
+        .section {
+          margin-bottom: 50px;
+          page-break-inside: avoid;
+        }
+        
+        .section-title {
+          font-family: 'Playfair Display', serif;
+          font-size: 1.8em;
+          font-weight: 700;
+          color: #2c3e50;
+          margin-bottom: 25px;
+          text-align: center;
+          background: #f5f3f0;
+          padding: 20px;
+          border-radius: 8px;
+          letter-spacing: 0.5px;
+        }
+        
+        .content {
+          font-size: 14px;
+          line-height: 1.7;
+          color: #34495e;
+          margin-bottom: 20px;
+        }
+        
+        .highlight-box {
+          background: #fff8e1;
+          border-left: 4px solid #f39c12;
+          padding: 20px;
+          margin: 20px 0;
+          border-radius: 4px;
+        }
+        
+        .highlight-box p {
+          font-style: italic;
+          color: #8b4513;
+          font-size: 16px;
+          line-height: 1.6;
+        }
+        
+        .domain-section {
+          margin-bottom: 40px;
+          page-break-inside: avoid;
+        }
+        
+        .domain-title {
+          font-size: 1.4em;
+          font-weight: 600;
+          color: #2c3e50;
+          margin-bottom: 15px;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+        
+        .domain-item {
+          margin-bottom: 15px;
+        }
+        
+        .domain-item strong {
+          color: #2c3e50;
+          font-weight: 600;
+        }
+        
+        .protocol-section {
+          background: #f8f9fa;
+          padding: 25px;
+          border-radius: 8px;
+          margin: 30px 0;
+        }
+        
+        .protocol-item {
+          margin-bottom: 15px;
+          padding-left: 20px;
+          position: relative;
+        }
+        
+        .protocol-item::before {
+          content: "•";
+          color: #3498db;
+          font-weight: bold;
+          position: absolute;
+          left: 0;
+        }
+        
+        .reminder-box {
+          background: #fff8e1;
+          border: 2px solid #f39c12;
+          padding: 25px;
+          margin: 30px 0;
+          border-radius: 8px;
+          text-align: center;
+        }
+        
+        .reminder-box h3 {
+          font-family: 'Playfair Display', serif;
+          font-size: 1.3em;
+          color: #8b4513;
+          margin-bottom: 15px;
+        }
+        
+        .reminder-box p {
+          font-style: italic;
+          color: #8b4513;
+          font-size: 16px;
+        }
+        
+        .footer {
+          position: absolute;
+          bottom: 20px;
+          left: 40px;
+          right: 40px;
+          border-top: 1px solid #bdc3c7;
+          padding-top: 15px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        
+        .footer .client-name {
+          color: #7f8c8d;
+          font-size: 12px;
+        }
+        
+        .footer .version {
+          color: #7f8c8d;
+          font-size: 12px;
+          font-weight: 600;
+        }
+        
+        .page-break {
+          page-break-before: always;
+        }
+        
+        .quote {
+          font-style: italic;
+          color: #7f8c8d;
+          border-left: 3px solid #bdc3c7;
+          padding-left: 20px;
+          margin: 20px 0;
+        }
+        
+        .assessment-overview {
+          background: #ecf0f1;
+          padding: 25px;
+          border-radius: 8px;
+          margin: 30px 0;
+        }
+        
+        .assessment-overview h2 {
+          font-family: 'Playfair Display', serif;
+          font-size: 1.5em;
+          color: #2c3e50;
+          margin-bottom: 15px;
+        }
+        
+        .nervous-system {
+          background: #e8f4f8;
+          padding: 25px;
+          border-radius: 8px;
+          margin: 30px 0;
+        }
+        
+        .nervous-system h2 {
+          font-family: 'Playfair Display', serif;
+          font-size: 1.5em;
+          color: #2c3e50;
+          margin-bottom: 15px;
+        }
+        
+        .bottom-line {
+          background: #2c3e50;
+          color: white;
+          padding: 30px;
+          border-radius: 8px;
+          margin: 30px 0;
+          text-align: center;
+        }
+        
+        .bottom-line h2 {
+          font-family: 'Playfair Display', serif;
+          font-size: 1.5em;
+          margin-bottom: 15px;
+        }
+        
+        .bottom-line p {
+          font-size: 16px;
+          line-height: 1.6;
+        }
       </style>
     </head>
     <body>
-      <div class="header">
-            <h1>${planData.title || 'You 3.0 Assessment Report'}</h1>
-            <p>Your personalized transformation protocol</p>
+      <!-- Cover Page -->
+      <div class="page">
+        <div class="header-banner">
+          <h1>YOU 3.0 PERSONAL DEVELOPMENT ASSESSMENT</h1>
+          <div class="subtitle">BEHAVIORAL OPTIMIZATION</div>
         </div>
-
-        <div class="overview">
-            <h2>Assessment Overview</h2>
-            <p>${planData.assessment_overview || 'Your personalized assessment has been completed. This report provides insights into your behavioral patterns and recommendations for growth.'}</p>
+        
+        <div class="assessment-overview">
+          <h2>Assessment Overview</h2>
+          <p>${planData.assessment_overview || 'Your personalized assessment has been completed. This report provides insights into your behavioral patterns and recommendations for growth.'}</p>
         </div>
-
-        <div class="section">
-            <h2>🧠 Your Development Profile</h2>
-            <p>${planData.development_profile || 'Based on your responses, you\'ve shown clear patterns of behavior and areas where you\'re ready for transformation.'}</p>
-      </div>
-      
-      <div class="section">
-            <h2>📋 Daily Actions</h2>
-            <p>Follow these daily actions to build momentum and create lasting change:</p>
-            ${safeDailyActions.map((action, index) => `
-                <div class="action-item">
-                    <strong>${action}</strong>
-          </div>
-        `).join('')}
-      </div>
-      
-      <div class="section">
-            <h2>🎯 Weekly Goals</h2>
-            <p>Focus on these weekly objectives to maintain progress:</p>
-            ${safeWeeklyGoals.map((goal, index) => `
-                <div class="goal-item">
-                    <strong>${goal}</strong>
-          </div>
-        `).join('')}
-      </div>
-      
-      <div class="section">
-            <h2>📚 Resources</h2>
-            <p>Utilize these resources to support your journey:</p>
-            ${safeResources.map((resource, index) => `
-                <div class="resource-item">
-                    <strong>${resource}</strong>
-                </div>
-        `).join('')}
-      </div>
-      
-      <div class="section">
-            <h2>🤔 Reflection Prompts</h2>
-            <p>Use these questions for deeper self-awareness:</p>
-            ${safeReflectionPrompts.map((prompt, index) => `
-                <div class="prompt-item">
-                    <strong>${prompt}</strong>
-                </div>
-        `).join('')}
-      </div>
-
-        <div class="section">
-            <h2>💡 Bottom Line</h2>
-            <p>${planData.bottom_line || 'You have the capacity for growth and transformation. The key is to start with what\'s already working and build from there.'}</p>
+        
+        <div class="highlight-box">
+          <p>This assessment was built with care, respect, and the belief that you already have everything you need to become the person you described. The only thing left to do is <em>take action</em>.</p>
         </div>
-
+        
         <div class="footer">
-            <p>Generated on ${new Date().toLocaleDateString()} | Your personalized transformation protocol</p>
+          <div class="client-name">[CLIENT NAME]</div>
+          <div class="version">YOU 3.0</div>
         </div>
+      </div>
+      
+      <!-- Development Profile Page -->
+      <div class="page page-break">
+        <div class="section">
+          <div class="section-title">Your Development Profile</div>
+          <div class="content">
+            <p>${planData.development_profile || 'Based on your responses, you\'ve shown clear patterns of behavior and areas where you\'re ready for transformation.'}</p>
+          </div>
+          <div class="quote">
+            <p>Your words: "[PULL_QUOTE_FROM_CLIENT]"</p>
+          </div>
+        </div>
+        
+        <div class="footer">
+          <div class="client-name">[CLIENT NAME]</div>
+          <div class="version">YOU 3.0</div>
+        </div>
+      </div>
+      
+      <!-- Sabotage Pattern Analysis -->
+      <div class="page page-break">
+        <div class="section">
+          <div class="section-title">Sabotage Pattern Analysis</div>
+          
+          <div class="domain-item">
+            <strong>Your Protective Pattern:</strong> [CLIENT_PATTERN_IN_THEIR_WORDS]
+          </div>
+          
+          <div class="domain-item">
+            <strong>What It's Protecting You From:</strong> [ANALYSIS_PARAGRAPH]
+          </div>
+          
+          <div class="domain-item">
+            <strong>How It Serves You:</strong> [SECONDARY_GAINS_PARAGRAPH]
+          </div>
+          
+          <div class="domain-item">
+            <strong>Your Go-To Patterns:</strong> [DOPAMINE_PATTERNS_LIST]
+          </div>
+          
+          <div class="domain-item">
+            <strong>Your Success Proof:</strong> [TIMES_THEY'VE_OVERCOME_IT]
+          </div>
+        </div>
+        
+        <div class="footer">
+          <div class="client-name">[CLIENT NAME]</div>
+          <div class="version">YOU 3.0</div>
+        </div>
+      </div>
+      
+      <!-- Domain Breakdown - Mind -->
+      <div class="page page-break">
+        <div class="section">
+          <div class="section-title">Domain Breakdown</div>
+          <div class="domain-title">MIND</div>
+          
+          <div class="domain-item">
+            <strong>Current Level:</strong> [Foundation / Exploration / Mastery]
+          </div>
+          
+          <div class="domain-item">
+            <strong>Current Phase:</strong> [Friction / Experimentation / Integration]
+          </div>
+          
+          <div class="domain-item">
+            <strong>Key Strengths:</strong> [PARAGRAPH_WITH_SPECIFIC_EXAMPLES]
+          </div>
+          
+          <div class="domain-item">
+            <strong>Here's what you're already proving works:</strong> [CONNECTION_TO_OTHER_AREAS]
+          </div>
+          
+          <div class="domain-item">
+            <strong>Growth Opportunities:</strong> [PARAGRAPH_FRAMED_AS_WHATS_IN_REACH]
+          </div>
+        </div>
+        
+        <div class="footer">
+          <div class="client-name">[CLIENT NAME]</div>
+          <div class="version">YOU 3.0</div>
+        </div>
+      </div>
+      
+      <!-- Domain Breakdown - Body -->
+      <div class="page page-break">
+        <div class="section">
+          <div class="section-title">Domain Breakdown</div>
+          <div class="domain-title">BODY</div>
+          
+          <div class="domain-item">
+            <strong>Current Level:</strong> [Foundation / Exploration / Mastery]
+          </div>
+          
+          <div class="domain-item">
+            <strong>Current Phase:</strong> [Friction / Experimentation / Integration]
+          </div>
+          
+          <div class="domain-item">
+            <strong>Key Strengths:</strong> [PARAGRAPH_WITH_SPECIFIC_EXAMPLES]
+          </div>
+          
+          <div class="domain-item">
+            <strong>Here's what you're already proving works:</strong> [CONNECTION_TO_OTHER_AREAS]
+          </div>
+          
+          <div class="domain-item">
+            <strong>Growth Opportunities:</strong> [PARAGRAPH_FRAMED_AS_WHATS_IN_REACH]
+          </div>
+        </div>
+        
+        <div class="footer">
+          <div class="client-name">[CLIENT NAME]</div>
+          <div class="version">YOU 3.0</div>
+        </div>
+      </div>
+      
+      <!-- Domain Breakdown - Spirit -->
+      <div class="page page-break">
+        <div class="section">
+          <div class="section-title">Domain Breakdown</div>
+          <div class="domain-title">SPIRIT & RELATIONSHIPS</div>
+          
+          <div class="domain-item">
+            <strong>Current Level:</strong> [Foundation / Exploration / Mastery]
+          </div>
+          
+          <div class="domain-item">
+            <strong>Current Phase:</strong> [Friction / Experimentation / Integration]
+          </div>
+          
+          <div class="domain-item">
+            <strong>Key Strengths:</strong> [PARAGRAPH_WITH_SPECIFIC_EXAMPLES]
+          </div>
+          
+          <div class="domain-item">
+            <strong>Here's what you're already proving works:</strong> [CONNECTION_TO_OTHER_AREAS]
+          </div>
+          
+          <div class="domain-item">
+            <strong>Growth Opportunities:</strong> [PARAGRAPH_FRAMED_AS_WHATS_IN_REACH]
+          </div>
+        </div>
+        
+        <div class="footer">
+          <div class="client-name">[CLIENT NAME]</div>
+          <div class="version">YOU 3.0</div>
+        </div>
+      </div>
+      
+      <!-- Domain Breakdown - Contribution -->
+      <div class="page page-break">
+        <div class="section">
+          <div class="section-title">Domain Breakdown</div>
+          <div class="domain-title">CONTRIBUTION</div>
+          
+          <div class="domain-item">
+            <strong>Current Level:</strong> [Foundation / Exploration / Mastery]
+          </div>
+          
+          <div class="domain-item">
+            <strong>Current Phase:</strong> [Friction / Experimentation / Integration]
+          </div>
+          
+          <div class="domain-item">
+            <strong>Key Strengths:</strong> [PARAGRAPH_WITH_SPECIFIC_EXAMPLES]
+          </div>
+          
+          <div class="domain-item">
+            <strong>Here's what you're already proving works:</strong> [CONNECTION_TO_OTHER_AREAS]
+          </div>
+          
+          <div class="domain-item">
+            <strong>Growth Opportunities:</strong> [PARAGRAPH_FRAMED_AS_WHATS_IN_REACH]
+          </div>
+        </div>
+        
+        <div class="footer">
+          <div class="client-name">[CLIENT NAME]</div>
+          <div class="version">YOU 3.0</div>
+        </div>
+      </div>
+      
+      <!-- Nervous System Assessment -->
+      <div class="page page-break">
+        <div class="section">
+          <div class="section-title">Nervous System Assessment</div>
+          
+          <div class="nervous-system">
+            <h2>Primary State:</h2>
+            <p>[PLAIN_LANGUAGE_DESCRIPTION]</p>
+            
+            <h2>Regulation Capacity:</h2>
+            <p>[Natural / Developing / Needs Support]</p>
+            
+            <h2>Observable Patterns:</h2>
+            <ul>
+              <li>[CLIENT_QUOTE_1]</li>
+              <li>[CLIENT_QUOTE_2]</li>
+              <li>[CLIENT_QUOTE_3]</li>
+              <li>[CLIENT_QUOTE_4]</li>
+              <li>[CLIENT_QUOTE_5]</li>
+              <li>[CLIENT_QUOTE_6]</li>
+            </ul>
+            
+            <h2>Your Regulation Snapshot:</h2>
+            <p>[PARAGRAPH_EXPLAINING_THEIR_CAPACITY]</p>
+          </div>
+        </div>
+        
+        <div class="footer">
+          <div class="client-name">[CLIENT NAME]</div>
+          <div class="version">YOU 3.0</div>
+        </div>
+      </div>
+      
+      <!-- 30-Day Protocol -->
+      <div class="page page-break">
+        <div class="section">
+          <div class="section-title">30-Day Recommend Growth Protocol</div>
+          
+          <div class="protocol-section">
+            <p><strong>Your recommended approach based on:</strong> [LIST_THEIR_SPECIFIC_PATTERNS]</p>
+            
+            <div class="protocol-item">
+              <strong>72-Hour Suggestion:</strong> [ONE_SPECIFIC_ACTION_ANCHORED_TO_STRONGEST_HABIT]
+            </div>
+            
+            <div class="protocol-item">
+              <strong>Weekly Recommendation:</strong> [ONE_RECURRING_PRACTICE]
+            </div>
+            
+            <div class="protocol-item">
+              <strong>30-Day Approach:</strong> [ONE_SYSTEM_SHIFT_WITH_SPECIFIC_STEPS]
+            </div>
+            
+            <div class="protocol-item">
+              <strong>Environmental Optimization:</strong> [ONE_ENVIRONMENTAL_CHANGE]
+            </div>
+            
+            <div class="protocol-item">
+              <strong>Suggested Progress Markers (observe these, don't force them):</strong>
+              <ol>
+                <li>[BEHAVIORAL_MARKER_1]</li>
+                <li>[BEHAVIORAL_MARKER_2]</li>
+                <li>[BEHAVIORAL_MARKER_3]</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        
+        <div class="footer">
+          <div class="client-name">[CLIENT NAME]</div>
+          <div class="version">YOU 3.0</div>
+        </div>
+      </div>
+      
+      <!-- Development Reminders -->
+      <div class="page page-break">
+        <div class="section">
+          <div class="section-title">Development Reminders</div>
+          
+          <div class="content">
+            <ul>
+              <li>Growth is cyclical; regression is protection, not failure</li>
+              <li>Integration comes through consistent practice, not more awareness</li>
+              <li>Your nervous system is the foundation—regulate first, then grow</li>
+              <li>Your sabotage patterns have wisdom; honor them while updating them</li>
+              <li>Identity shifts over time with deliberate practice</li>
+              <li>You're not broken—you're context-dependent. Build better contexts.</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="footer">
+          <div class="client-name">[CLIENT NAME]</div>
+          <div class="version">YOU 3.0</div>
+        </div>
+      </div>
+      
+      <!-- Reminder Box -->
+      <div class="page page-break">
+        <div class="section">
+          <div class="reminder-box">
+            <h3>Reminder Box</h3>
+            <p>"[DIRECT_CLIENT_QUOTE]"</p>
+            <p>"[RESPONSE_TO_QUOTE]"</p>
+          </div>
+        </div>
+        
+        <div class="footer">
+          <div class="client-name">[CLIENT NAME]</div>
+          <div class="version">YOU 3.0</div>
+        </div>
+      </div>
+      
+      <!-- Bottom Line -->
+      <div class="page page-break">
+        <div class="section">
+          <div class="bottom-line">
+            <h2>Bottom Line</h2>
+            <p>[PERSONALIZED_WAKE_UP_PARAGRAPH - addresses protective function AND cost of keeping pattern]</p>
+          </div>
+        </div>
+        
+        <div class="footer">
+          <div class="client-name">[CLIENT NAME]</div>
+          <div class="version">YOU 3.0</div>
+        </div>
+      </div>
+      
+      <!-- Book Recommendations -->
+      <div class="page page-break">
+        <div class="section">
+          <div class="section-title">Book Recommendations</div>
+          
+          <div class="content">
+            <ol>
+              <li><strong>[BOOK_TITLE_1]</strong> by [AUTHOR_1]</li>
+              <p>[WHY_THIS_BOOK_FITS_THEIR_JOURNEY]</p>
+              
+              <li><strong>[BOOK_TITLE_2]</strong> by [AUTHOR_2]</li>
+              <p>[WHY_THIS_BOOK_FITS_THEIR_JOURNEY]</p>
+            </ol>
+          </div>
+        </div>
+        
+        <div class="footer">
+          <div class="client-name">[CLIENT NAME]</div>
+          <div class="version">YOU 3.0</div>
+        </div>
+      </div>
+      
+      <!-- Next Steps -->
+      <div class="page page-break">
+        <div class="section">
+          <div class="section-title">Next Steps</div>
+          
+          <div class="content">
+            <p><strong>6-Month Follow-Up Assessment Recommended:</strong> [PERSONALIZED_TIMELINE_AND_EXPECTED_PROGRESS]</p>
+            
+            <p><strong>Monthly Check-In Options:</strong> Brief progress reviews (15-20 min) to track:</p>
+            <ul>
+              <li>Nervous system regulation progress</li>
+              <li>Business execution vs. avoidance patterns</li>
+              <li>Body care consistency</li>
+              <li>Relationship dynamics as you grow</li>
+            </ul>
+            
+            <p><strong>Focus Areas for Next Phase:</strong></p>
+            <ul>
+              <li>[FOCUS_AREA_1]</li>
+              <li>[FOCUS_AREA_2]</li>
+              <li>[FOCUS_AREA_3]</li>
+              <li>[FOCUS_AREA_4]</li>
+            </ul>
+            
+            <p><strong>How to Stay Connected:</strong> [YOUR_NEWSLETTER_SIGNUP_COMMUNITY_LINKS]</p>
+          </div>
+        </div>
+        
+        <div class="footer">
+          <div class="client-name">[CLIENT NAME]</div>
+          <div class="version">YOU 3.0</div>
+        </div>
+      </div>
     </body>
     </html>
   `
@@ -384,13 +836,13 @@ export async function getSignedPDFUrl(sessionId: string): Promise<string | null>
     
     // Generate new signed URL
     const { data: signedUrlData, error: signedUrlError } = await supabase.storage
-    .from('reports')
+      .from('reports')
       .createSignedUrl(pdfJob.file_path, 60 * 60 * 24 * 7) // 7 days expiry
 
     if (signedUrlError) {
       console.error('Error creating signed URL:', signedUrlError)
       return null
-  }
+    }
 
     return signedUrlData.signedUrl
 
