@@ -6,20 +6,33 @@ export interface PlanData {
   assessment_overview?: string
   development_profile?: string
   bottom_line?: string
-  daily_actions: Array<{
-    day: number
-    title: string
-    description: string
-    duration: string
-    category: string
-  }>
-  weekly_goals: Array<{
-    week: number
-    focus: string
-    goals: string[]
-  }>
-  resources: string[]
-  reflection_prompts: string[]
+  sabotage_analysis?: {
+    protective_pattern?: string
+    what_its_protecting_from?: string
+    how_it_serves_you?: string
+    go_to_patterns?: string
+    success_proof?: string
+  }
+  domain_breakdown?: {
+    mind?: string
+    body?: string
+    spirit?: string
+    contribution?: string
+  }
+  nervous_system_assessment?: string
+  thirty_day_protocol?: {
+    seventy_two_hour_suggestion?: string
+    weekly_recommendation?: string
+    thirty_day_approach?: string
+    environmental_optimization?: string
+    progress_markers?: string[]
+  }
+  reminder_quote?: string
+  book_recommendations?: string[]
+  daily_actions?: string[]
+  weekly_goals?: string[]
+  resources?: string[]
+  reflection_prompts?: string[]
 }
 
 export async function generatePDF(planData: PlanData, sessionId: string): Promise<{ pdfUrl: string, pdfBuffer: Buffer }> {
@@ -149,32 +162,67 @@ async function convertHTMLToPDF(htmlContent: string): Promise<Buffer> {
 }
 
 function generateHTMLReport(planData: PlanData): string {
-  // Ensure all arrays exist and have content
-  const dailyActions = planData.daily_actions || []
-  const weeklyGoals = planData.weekly_goals || []
-  const resources = planData.resources || []
-  const reflectionPrompts = planData.reflection_prompts || []
+  // Extract the real data from the assessment
+  const assessmentOverview = planData.assessment_overview || 'Your personalized assessment has been completed. This report provides insights into your behavioral patterns and recommendations for growth.'
+  const developmentProfile = planData.development_profile || 'Based on your responses, you\'ve shown clear patterns of behavior and areas where you\'re ready for transformation.'
+  const bottomLine = planData.bottom_line || 'You have the capacity for growth and transformation. The key is to start with what\'s already working and build from there.'
+  const reminderQuote = planData.reminder_quote || 'Remember: progress, not perfection.'
   
-  // Ensure we have at least some content for each section
-  const safeDailyActions = dailyActions.length > 0 ? dailyActions : [
-    "Day 1: Start with 5 minutes of morning reflection on your goals",
-    "Day 2: Practice one small action that moves you toward your main objective",
-    "Day 3: Notice one pattern that serves you and one that doesn't"
+  // Extract sabotage analysis
+  const sabotageAnalysis = planData.sabotage_analysis || {}
+  const protectivePattern = sabotageAnalysis.protective_pattern || 'Based on your responses, you have protective patterns that serve important functions in your life.'
+  const whatItsProtectingFrom = sabotageAnalysis.what_its_protecting_from || 'These patterns protect you from experiences you find challenging.'
+  const howItServesYou = sabotageAnalysis.how_it_serves_you || 'These patterns provide you with safety and comfort in difficult situations.'
+  const goToPatterns = sabotageAnalysis.go_to_patterns || 'Your current patterns help you navigate daily life and challenges.'
+  const successProof = sabotageAnalysis.success_proof || 'You\'ve demonstrated the ability to overcome challenges in the past.'
+  
+  // Extract domain breakdown
+  const domainBreakdown = planData.domain_breakdown || {}
+  const mindDomain = domainBreakdown.mind || 'Your mental approach shows both strengths and areas for development.'
+  const bodyDomain = domainBreakdown.body || 'Your relationship with your physical self has both supportive and challenging aspects.'
+  const spiritDomain = domainBreakdown.spirit || 'Your spiritual and relational connections provide both support and growth opportunities.'
+  const contributionDomain = domainBreakdown.contribution || 'Your approach to work and contribution shows both current capabilities and potential for expansion.'
+  
+  // Extract nervous system assessment
+  const nervousSystemAssessment = planData.nervous_system_assessment || 'Your nervous system shows patterns of both activation and regulation that we can work with.'
+  
+  // Extract 30-day protocol
+  const thirtyDayProtocol = planData.thirty_day_protocol || {}
+  const seventyTwoHourSuggestion = thirtyDayProtocol.seventy_two_hour_suggestion || 'Start with one small, manageable action that builds on your existing strengths.'
+  const weeklyRecommendation = thirtyDayProtocol.weekly_recommendation || 'Implement one consistent practice that supports your growth goals.'
+  const thirtyDayApproach = thirtyDayProtocol.thirty_day_approach || 'Focus on one key area of development that will have the most impact.'
+  const environmentalOptimization = thirtyDayProtocol.environmental_optimization || 'Make one environmental change that supports your goals.'
+  const progressMarkers = thirtyDayProtocol.progress_markers || ['Notice changes in your daily patterns', 'Observe shifts in your stress response', 'Track improvements in your target area']
+  
+  // Extract book recommendations
+  const bookRecommendations = planData.book_recommendations || [
+    'The Body Keeps the Score by Bessel van der Kolk - Understanding trauma and healing',
+    'Atomic Habits by James Clear - Building sustainable change'
   ]
   
-  const safeWeeklyGoals = weeklyGoals.length > 0 ? weeklyGoals : [
-    "Week 1: Establish a daily routine that supports your goals",
-    "Week 2: Practice one new skill or habit consistently"
+  // Extract daily actions
+  const dailyActions = planData.daily_actions || [
+    'Day 1: Start with 5 minutes of morning reflection on your goals',
+    'Day 2: Practice one small action that moves you toward your main objective',
+    'Day 3: Notice one pattern that serves you and one that doesn\'t'
   ]
   
-  const safeResources = resources.length > 0 ? resources : [
-    "Daily journal for tracking progress and insights",
-    "Accountability partner or support group"
+  // Extract weekly goals
+  const weeklyGoals = planData.weekly_goals || [
+    'Week 1: Establish a daily routine that supports your goals',
+    'Week 2: Practice one new skill or habit consistently'
   ]
   
-  const safeReflectionPrompts = reflectionPrompts.length > 0 ? reflectionPrompts : [
-    "What was one moment today where I felt truly aligned with my values?",
-    "What pattern did I notice in myself today, and how did I respond?"
+  // Extract resources
+  const resources = planData.resources || [
+    'Daily journal for tracking progress and insights',
+    'Accountability partner or support group'
+  ]
+  
+  // Extract reflection prompts
+  const reflectionPrompts = planData.reflection_prompts || [
+    'What was one moment today where I felt truly aligned with my values?',
+    'What pattern did I notice in myself today, and how did I respond?'
   ]
 
   return `
@@ -431,7 +479,7 @@ function generateHTMLReport(planData: PlanData): string {
         
         <div class="assessment-overview">
           <h2>Assessment Overview</h2>
-          <p>${planData.assessment_overview || 'Your personalized assessment has been completed. This report provides insights into your behavioral patterns and recommendations for growth.'}</p>
+          <p>${assessmentOverview}</p>
         </div>
         
         <div class="highlight-box">
@@ -449,10 +497,10 @@ function generateHTMLReport(planData: PlanData): string {
         <div class="section">
           <div class="section-title">Your Development Profile</div>
           <div class="content">
-            <p>${planData.development_profile || 'Based on your responses, you\'ve shown clear patterns of behavior and areas where you\'re ready for transformation.'}</p>
+            <p>${developmentProfile}</p>
           </div>
           <div class="quote">
-            <p>Your words: "[PULL_QUOTE_FROM_CLIENT]"</p>
+            <p>Your words: "${reminderQuote}"</p>
           </div>
         </div>
         
@@ -468,23 +516,23 @@ function generateHTMLReport(planData: PlanData): string {
           <div class="section-title">Sabotage Pattern Analysis</div>
           
           <div class="domain-item">
-            <strong>Your Protective Pattern:</strong> [CLIENT_PATTERN_IN_THEIR_WORDS]
+            <strong>Your Protective Pattern:</strong> ${protectivePattern}
           </div>
           
           <div class="domain-item">
-            <strong>What It's Protecting You From:</strong> [ANALYSIS_PARAGRAPH]
+            <strong>What It's Protecting You From:</strong> ${whatItsProtectingFrom}
           </div>
           
           <div class="domain-item">
-            <strong>How It Serves You:</strong> [SECONDARY_GAINS_PARAGRAPH]
+            <strong>How It Serves You:</strong> ${howItServesYou}
           </div>
           
           <div class="domain-item">
-            <strong>Your Go-To Patterns:</strong> [DOPAMINE_PATTERNS_LIST]
+            <strong>Your Go-To Patterns:</strong> ${goToPatterns}
           </div>
           
           <div class="domain-item">
-            <strong>Your Success Proof:</strong> [TIMES_THEY'VE_OVERCOME_IT]
+            <strong>Your Success Proof:</strong> ${successProof}
           </div>
         </div>
         
@@ -501,23 +549,7 @@ function generateHTMLReport(planData: PlanData): string {
           <div class="domain-title">MIND</div>
           
           <div class="domain-item">
-            <strong>Current Level:</strong> [Foundation / Exploration / Mastery]
-          </div>
-          
-          <div class="domain-item">
-            <strong>Current Phase:</strong> [Friction / Experimentation / Integration]
-          </div>
-          
-          <div class="domain-item">
-            <strong>Key Strengths:</strong> [PARAGRAPH_WITH_SPECIFIC_EXAMPLES]
-          </div>
-          
-          <div class="domain-item">
-            <strong>Here's what you're already proving works:</strong> [CONNECTION_TO_OTHER_AREAS]
-          </div>
-          
-          <div class="domain-item">
-            <strong>Growth Opportunities:</strong> [PARAGRAPH_FRAMED_AS_WHATS_IN_REACH]
+            <strong>Current Level:</strong> ${mindDomain}
           </div>
         </div>
         
@@ -534,23 +566,7 @@ function generateHTMLReport(planData: PlanData): string {
           <div class="domain-title">BODY</div>
           
           <div class="domain-item">
-            <strong>Current Level:</strong> [Foundation / Exploration / Mastery]
-          </div>
-          
-          <div class="domain-item">
-            <strong>Current Phase:</strong> [Friction / Experimentation / Integration]
-          </div>
-          
-          <div class="domain-item">
-            <strong>Key Strengths:</strong> [PARAGRAPH_WITH_SPECIFIC_EXAMPLES]
-          </div>
-          
-          <div class="domain-item">
-            <strong>Here's what you're already proving works:</strong> [CONNECTION_TO_OTHER_AREAS]
-          </div>
-          
-          <div class="domain-item">
-            <strong>Growth Opportunities:</strong> [PARAGRAPH_FRAMED_AS_WHATS_IN_REACH]
+            <strong>Current Level:</strong> ${bodyDomain}
           </div>
         </div>
         
@@ -567,23 +583,7 @@ function generateHTMLReport(planData: PlanData): string {
           <div class="domain-title">SPIRIT & RELATIONSHIPS</div>
           
           <div class="domain-item">
-            <strong>Current Level:</strong> [Foundation / Exploration / Mastery]
-          </div>
-          
-          <div class="domain-item">
-            <strong>Current Phase:</strong> [Friction / Experimentation / Integration]
-          </div>
-          
-          <div class="domain-item">
-            <strong>Key Strengths:</strong> [PARAGRAPH_WITH_SPECIFIC_EXAMPLES]
-          </div>
-          
-          <div class="domain-item">
-            <strong>Here's what you're already proving works:</strong> [CONNECTION_TO_OTHER_AREAS]
-          </div>
-          
-          <div class="domain-item">
-            <strong>Growth Opportunities:</strong> [PARAGRAPH_FRAMED_AS_WHATS_IN_REACH]
+            <strong>Current Level:</strong> ${spiritDomain}
           </div>
         </div>
         
@@ -600,23 +600,7 @@ function generateHTMLReport(planData: PlanData): string {
           <div class="domain-title">CONTRIBUTION</div>
           
           <div class="domain-item">
-            <strong>Current Level:</strong> [Foundation / Exploration / Mastery]
-          </div>
-          
-          <div class="domain-item">
-            <strong>Current Phase:</strong> [Friction / Experimentation / Integration]
-          </div>
-          
-          <div class="domain-item">
-            <strong>Key Strengths:</strong> [PARAGRAPH_WITH_SPECIFIC_EXAMPLES]
-          </div>
-          
-          <div class="domain-item">
-            <strong>Here's what you're already proving works:</strong> [CONNECTION_TO_OTHER_AREAS]
-          </div>
-          
-          <div class="domain-item">
-            <strong>Growth Opportunities:</strong> [PARAGRAPH_FRAMED_AS_WHATS_IN_REACH]
+            <strong>Current Level:</strong> ${contributionDomain}
           </div>
         </div>
         
@@ -633,23 +617,7 @@ function generateHTMLReport(planData: PlanData): string {
           
           <div class="nervous-system">
             <h2>Primary State:</h2>
-            <p>[PLAIN_LANGUAGE_DESCRIPTION]</p>
-            
-            <h2>Regulation Capacity:</h2>
-            <p>[Natural / Developing / Needs Support]</p>
-            
-            <h2>Observable Patterns:</h2>
-            <ul>
-              <li>[CLIENT_QUOTE_1]</li>
-              <li>[CLIENT_QUOTE_2]</li>
-              <li>[CLIENT_QUOTE_3]</li>
-              <li>[CLIENT_QUOTE_4]</li>
-              <li>[CLIENT_QUOTE_5]</li>
-              <li>[CLIENT_QUOTE_6]</li>
-            </ul>
-            
-            <h2>Your Regulation Snapshot:</h2>
-            <p>[PARAGRAPH_EXPLAINING_THEIR_CAPACITY]</p>
+            <p>${nervousSystemAssessment}</p>
           </div>
         </div>
         
@@ -665,30 +633,26 @@ function generateHTMLReport(planData: PlanData): string {
           <div class="section-title">30-Day Recommend Growth Protocol</div>
           
           <div class="protocol-section">
-            <p><strong>Your recommended approach based on:</strong> [LIST_THEIR_SPECIFIC_PATTERNS]</p>
-            
             <div class="protocol-item">
-              <strong>72-Hour Suggestion:</strong> [ONE_SPECIFIC_ACTION_ANCHORED_TO_STRONGEST_HABIT]
+              <strong>72-Hour Suggestion:</strong> ${seventyTwoHourSuggestion}
             </div>
             
             <div class="protocol-item">
-              <strong>Weekly Recommendation:</strong> [ONE_RECURRING_PRACTICE]
+              <strong>Weekly Recommendation:</strong> ${weeklyRecommendation}
             </div>
             
             <div class="protocol-item">
-              <strong>30-Day Approach:</strong> [ONE_SYSTEM_SHIFT_WITH_SPECIFIC_STEPS]
+              <strong>30-Day Approach:</strong> ${thirtyDayApproach}
             </div>
             
             <div class="protocol-item">
-              <strong>Environmental Optimization:</strong> [ONE_ENVIRONMENTAL_CHANGE]
+              <strong>Environmental Optimization:</strong> ${environmentalOptimization}
             </div>
             
             <div class="protocol-item">
-              <strong>Suggested Progress Markers (observe these, don't force them):</strong>
+              <strong>Suggested Progress Markers:</strong>
               <ol>
-                <li>[BEHAVIORAL_MARKER_1]</li>
-                <li>[BEHAVIORAL_MARKER_2]</li>
-                <li>[BEHAVIORAL_MARKER_3]</li>
+                ${progressMarkers.map(marker => `<li>${marker}</li>`).join('')}
               </ol>
             </div>
           </div>
@@ -728,8 +692,7 @@ function generateHTMLReport(planData: PlanData): string {
         <div class="section">
           <div class="reminder-box">
             <h3>Reminder Box</h3>
-            <p>"[DIRECT_CLIENT_QUOTE]"</p>
-            <p>"[RESPONSE_TO_QUOTE]"</p>
+            <p>"${reminderQuote}"</p>
           </div>
         </div>
         
@@ -744,7 +707,7 @@ function generateHTMLReport(planData: PlanData): string {
         <div class="section">
           <div class="bottom-line">
             <h2>Bottom Line</h2>
-            <p>[PERSONALIZED_WAKE_UP_PARAGRAPH - addresses protective function AND cost of keeping pattern]</p>
+            <p>${bottomLine}</p>
           </div>
         </div>
         
@@ -761,11 +724,7 @@ function generateHTMLReport(planData: PlanData): string {
           
           <div class="content">
             <ol>
-              <li><strong>[BOOK_TITLE_1]</strong> by [AUTHOR_1]</li>
-              <p>[WHY_THIS_BOOK_FITS_THEIR_JOURNEY]</p>
-              
-              <li><strong>[BOOK_TITLE_2]</strong> by [AUTHOR_2]</li>
-              <p>[WHY_THIS_BOOK_FITS_THEIR_JOURNEY]</p>
+              ${bookRecommendations.map(book => `<li><strong>${book}</strong></li>`).join('')}
             </ol>
           </div>
         </div>
@@ -776,31 +735,69 @@ function generateHTMLReport(planData: PlanData): string {
         </div>
       </div>
       
-      <!-- Next Steps -->
+      <!-- Daily Actions -->
       <div class="page page-break">
         <div class="section">
-          <div class="section-title">Next Steps</div>
+          <div class="section-title">Daily Actions</div>
           
           <div class="content">
-            <p><strong>6-Month Follow-Up Assessment Recommended:</strong> [PERSONALIZED_TIMELINE_AND_EXPECTED_PROGRESS]</p>
-            
-            <p><strong>Monthly Check-In Options:</strong> Brief progress reviews (15-20 min) to track:</p>
-            <ul>
-              <li>Nervous system regulation progress</li>
-              <li>Business execution vs. avoidance patterns</li>
-              <li>Body care consistency</li>
-              <li>Relationship dynamics as you grow</li>
-            </ul>
-            
-            <p><strong>Focus Areas for Next Phase:</strong></p>
-            <ul>
-              <li>[FOCUS_AREA_1]</li>
-              <li>[FOCUS_AREA_2]</li>
-              <li>[FOCUS_AREA_3]</li>
-              <li>[FOCUS_AREA_4]</li>
-            </ul>
-            
-            <p><strong>How to Stay Connected:</strong> [YOUR_NEWSLETTER_SIGNUP_COMMUNITY_LINKS]</p>
+            <ol>
+              ${dailyActions.map(action => `<li>${action}</li>`).join('')}
+            </ol>
+          </div>
+        </div>
+        
+        <div class="footer">
+          <div class="client-name">[CLIENT NAME]</div>
+          <div class="version">YOU 3.0</div>
+        </div>
+      </div>
+      
+      <!-- Weekly Goals -->
+      <div class="page page-break">
+        <div class="section">
+          <div class="section-title">Weekly Goals</div>
+          
+          <div class="content">
+            <ol>
+              ${weeklyGoals.map(goal => `<li>${goal}</li>`).join('')}
+            </ol>
+          </div>
+        </div>
+        
+        <div class="footer">
+          <div class="client-name">[CLIENT NAME]</div>
+          <div class="version">YOU 3.0</div>
+        </div>
+      </div>
+      
+      <!-- Resources -->
+      <div class="page page-break">
+        <div class="section">
+          <div class="section-title">Resources</div>
+          
+          <div class="content">
+            <ol>
+              ${resources.map(resource => `<li>${resource}</li>`).join('')}
+            </ol>
+          </div>
+        </div>
+        
+        <div class="footer">
+          <div class="client-name">[CLIENT NAME]</div>
+          <div class="version">YOU 3.0</div>
+        </div>
+      </div>
+      
+      <!-- Reflection Prompts -->
+      <div class="page page-break">
+        <div class="section">
+          <div class="section-title">Reflection Prompts</div>
+          
+          <div class="content">
+            <ol>
+              ${reflectionPrompts.map(prompt => `<li>${prompt}</li>`).join('')}
+            </ol>
           </div>
         </div>
         

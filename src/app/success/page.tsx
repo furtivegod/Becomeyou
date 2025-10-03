@@ -14,7 +14,7 @@ export default function SuccessPage() {
 
           {/* Success Message */}
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            🎉 Purchase Successful!
+            Purchase Successful!
           </h1>
           
           <p className="text-xl text-gray-600 mb-8">
