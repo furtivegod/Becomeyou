@@ -314,7 +314,9 @@ export async function generateStructuredPlan(conversationHistory: string) {
 
 IMPORTANT: Return ONLY valid JSON. No markdown, no explanations, no extra text. Just the JSON object.
 
-CRITICAL: All arrays (daily_actions, weekly_goals, resources, reflection_prompts) MUST contain actual content. Do not leave them empty or use placeholder text.
+CRITICAL: All arrays (daily_actions, weekly_goals, resources, reflection_prompts, progress_markers) MUST contain actual content. Do not leave them empty or use placeholder text.
+
+REQUIRED: Every field in the JSON structure must be populated with meaningful, personalized content based on the client's responses. No empty strings or generic placeholders.
 
 Format:
 {
@@ -330,60 +332,60 @@ Format:
     "success_proof": "Times they've overcome it, however briefly"
   },
   "domain_breakdown": {
-    "mind": "Current level, strengths, growth opportunities using their language",
-    "body": "Current level, strengths, growth opportunities using their language", 
-    "spirit": "Current level, strengths, growth opportunities using their language",
-    "contribution": "Current level, strengths, growth opportunities using their language"
+    "mind": "Current level (Foundation/Exploration/Mastery), current phase (Friction/Experimentation/Integration), key strengths with specific examples, growth opportunities framed as what's in reach",
+    "body": "Current level (Foundation/Exploration/Mastery), current phase (Friction/Experimentation/Integration), key strengths with specific examples, growth opportunities framed as what's in reach", 
+    "spirit": "Current level (Foundation/Exploration/Mastery), current phase (Friction/Experimentation/Integration), key strengths with specific examples, growth opportunities framed as what's in reach",
+    "contribution": "Current level (Foundation/Exploration/Mastery), current phase (Friction/Experimentation/Integration), key strengths with specific examples, growth opportunities framed as what's in reach"
   },
-  "nervous_system_assessment": "Primary state in plain language, regulation capacity, observable patterns recalling client's exact phrasing",
+  "nervous_system_assessment": "Primary state in plain language, regulation capacity (Natural/Developing/Needs Support), observable patterns with client's exact quotes, regulation reality explanation",
   "thirty_day_protocol": {
     "seventy_two_hour_suggestion": "One specific action anchored to their strongest existing habit",
     "weekly_recommendation": "One suggested recurring practice leveraging their environment",
     "thirty_day_approach": "One recommended system shift addressing their core protective pattern",
     "environmental_optimization": "One specific environmental change that removes friction",
-    "progress_markers": "3 specific, behaviorally observable indicators to track"
+    "progress_markers": ["Specific marker 1", "Specific marker 2", "Specific marker 3"],
+    "daily_actions": [
+      "Day 1: [Specific action based on their patterns]",
+      "Day 2: [Another specific action]",
+      "Day 3: [Another specific action]",
+      "Day 4: [Another specific action]",
+      "Day 5: [Another specific action]",
+      "Day 6: [Another specific action]",
+      "Day 7: [Another specific action]",
+      "Day 8: [Another specific action]",
+      "Day 9: [Another specific action]",
+      "Day 10: [Another specific action]",
+      "Day 11: [Another specific action]",
+      "Day 12: [Another specific action]",
+      "Day 13: [Another specific action]",
+      "Day 14: [Another specific action]",
+      "Day 15: [Another specific action]",
+      "Day 16: [Another specific action]",
+      "Day 17: [Another specific action]",
+      "Day 18: [Another specific action]",
+      "Day 19: [Another specific action]",
+      "Day 20: [Another specific action]",
+      "Day 21: [Another specific action]",
+      "Day 22: [Another specific action]",
+      "Day 23: [Another specific action]",
+      "Day 24: [Another specific action]",
+      "Day 25: [Another specific action]",
+      "Day 26: [Another specific action]",
+      "Day 27: [Another specific action]",
+      "Day 28: [Another specific action]",
+      "Day 29: [Another specific action]",
+      "Day 30: [Another specific action]"
+    ],
+    "weekly_goals": [
+      "Week 1: [Specific weekly goal based on their patterns]",
+      "Week 2: [Another specific weekly goal]",
+      "Week 3: [Another specific weekly goal]",
+      "Week 4: [Another specific weekly goal]"
+    ]
   },
   "bottom_line": "Personalized wake-up statement that calls them forward without shame, addressing both protective function and cost",
   "reminder_quote": "Direct quote they wrote or note to self they'll recognize",
   "book_recommendations": ["Book 1 with brief explanation", "Book 2 with brief explanation"],
-  "daily_actions": [
-    "Day 1: [Specific action based on their patterns]",
-    "Day 2: [Another specific action]",
-    "Day 3: [Another specific action]",
-    "Day 4: [Another specific action]",
-    "Day 5: [Another specific action]",
-    "Day 6: [Another specific action]",
-    "Day 7: [Another specific action]",
-    "Day 8: [Another specific action]",
-    "Day 9: [Another specific action]",
-    "Day 10: [Another specific action]",
-    "Day 11: [Another specific action]",
-    "Day 12: [Another specific action]",
-    "Day 13: [Another specific action]",
-    "Day 14: [Another specific action]",
-    "Day 15: [Another specific action]",
-    "Day 16: [Another specific action]",
-    "Day 17: [Another specific action]",
-    "Day 18: [Another specific action]",
-    "Day 19: [Another specific action]",
-    "Day 20: [Another specific action]",
-    "Day 21: [Another specific action]",
-    "Day 22: [Another specific action]",
-    "Day 23: [Another specific action]",
-    "Day 24: [Another specific action]",
-    "Day 25: [Another specific action]",
-    "Day 26: [Another specific action]",
-    "Day 27: [Another specific action]",
-    "Day 28: [Another specific action]",
-    "Day 29: [Another specific action]",
-    "Day 30: [Another specific action]"
-  ],
-  "weekly_goals": [
-    "Week 1: [Specific weekly goal based on their patterns]",
-    "Week 2: [Another specific weekly goal]",
-    "Week 3: [Another specific weekly goal]",
-    "Week 4: [Another specific weekly goal]"
-  ],
   "resources": [
     "Resource 1: [Specific resource based on their needs]",
     "Resource 2: [Another specific resource]",
@@ -397,10 +399,23 @@ Format:
     "Prompt 3: [Another specific reflection question]",
     "Prompt 4: [Another specific reflection question]",
     "Prompt 5: [Another specific reflection question]"
-  ]
+  ],
+  "next_assessment": {
+    "six_month_followup": "6-Month Follow-Up Assessment recommended with personalized timeline and expected progress",
+    "monthly_checkin": "Monthly Check-In Options (brief progress reviews) to track: nervous system regulation progress, business execution vs. avoidance patterns, body care consistency, relationship dynamics as you grow",
+    "focus_areas": [
+      "Focus Area 1: [Specific area for next phase]",
+      "Focus Area 2: [Another specific area]",
+      "Focus Area 3: [Another specific area]",
+      "Focus Area 4: [Another specific area]"
+    ],
+    "stay_connected": "How to Stay Connected: newsletter signup, community links, ongoing support resources"
+  }
 }
 
-Make it deeply personalized using their exact words, metaphors, and language patterns. This should feel like a professional coach's assessment report.`,
+Make it deeply personalized using their exact words, metaphors, and language patterns. This should feel like a professional coach's assessment report.
+
+FINAL CHECK: Ensure every field contains meaningful, personalized content. No empty strings, no generic placeholders, no missing data. Every array must have actual content based on the client's responses.`,
       messages: [
         {
           role: "user",

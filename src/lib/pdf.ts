@@ -26,13 +26,19 @@ export interface PlanData {
     thirty_day_approach?: string
     environmental_optimization?: string
     progress_markers?: string[]
+    daily_actions?: string[]
+    weekly_goals?: string[]
   }
   reminder_quote?: string
   book_recommendations?: string[]
-  daily_actions?: string[]
-  weekly_goals?: string[]
   resources?: string[]
   reflection_prompts?: string[]
+  next_assessment?: {
+    six_month_followup?: string
+    monthly_checkin?: string
+    focus_areas?: string[]
+    stay_connected?: string
+  }
 }
 
 export async function generatePDF(planData: PlanData, sessionId: string): Promise<{ pdfUrl: string, pdfBuffer: Buffer }> {
@@ -41,8 +47,8 @@ export async function generatePDF(planData: PlanData, sessionId: string): Promis
     console.log('Plan data received:', {
       title: planData.title,
       overview: planData.overview,
-      daily_actions_count: planData.daily_actions?.length || 0,
-      weekly_goals_count: planData.weekly_goals?.length || 0,
+      daily_actions_count: planData.thirty_day_protocol?.daily_actions?.length || 0,
+      weekly_goals_count: planData.thirty_day_protocol?.weekly_goals?.length || 0,
       resources_count: planData.resources?.length || 0,
       reflection_prompts_count: planData.reflection_prompts?.length || 0
     })
@@ -83,11 +89,13 @@ export async function generatePDF(planData: PlanData, sessionId: string): Promis
     }
 
     // Validate data
-    if (!planData.daily_actions || !Array.isArray(planData.daily_actions)) {
-      planData.daily_actions = []
+    if (!planData.thirty_day_protocol?.daily_actions || !Array.isArray(planData.thirty_day_protocol.daily_actions)) {
+      if (!planData.thirty_day_protocol) planData.thirty_day_protocol = {}
+      planData.thirty_day_protocol.daily_actions = []
     }
-    if (!planData.weekly_goals || !Array.isArray(planData.weekly_goals)) {
-      planData.weekly_goals = []
+    if (!planData.thirty_day_protocol?.weekly_goals || !Array.isArray(planData.thirty_day_protocol.weekly_goals)) {
+      if (!planData.thirty_day_protocol) planData.thirty_day_protocol = {}
+      planData.thirty_day_protocol.weekly_goals = []
     }
     if (!planData.resources || !Array.isArray(planData.resources)) {
       planData.resources = []
@@ -231,12 +239,12 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
     ? planData.book_recommendations 
     : ['The Body Keeps the Score by Bessel van der Kolk - Understanding trauma and healing', 'Atomic Habits by James Clear - Building sustainable change']
   
-  const dailyActions = Array.isArray(planData.daily_actions) 
-    ? planData.daily_actions 
+  const dailyActions = Array.isArray(planData.thirty_day_protocol?.daily_actions) 
+    ? planData.thirty_day_protocol.daily_actions 
     : ['Day 1: Start with 5 minutes of morning reflection on your goals', 'Day 2: Practice one small action that moves you toward your main objective', 'Day 3: Notice one pattern that serves you and one that doesn\'t']
   
-  const weeklyGoals = Array.isArray(planData.weekly_goals) 
-    ? planData.weekly_goals 
+  const weeklyGoals = Array.isArray(planData.thirty_day_protocol?.weekly_goals) 
+    ? planData.thirty_day_protocol.weekly_goals 
     : ['Week 1: Establish a daily routine that supports your goals', 'Week 2: Practice one new skill or habit consistently']
   
   const resources = Array.isArray(planData.resources) 
@@ -278,6 +286,118 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           position: relative;
         }
         
+        /* Cover Page Styles */
+        .brand-header {
+          text-align: center;
+          margin-bottom: 40px;
+        }
+        
+        .brand-line {
+          height: 1px;
+          background-color: #bdc3c7;
+          margin: 20px 0;
+        }
+        
+        .brand-logo {
+          font-family: 'Inter', sans-serif;
+          font-size: 1.8em;
+          font-weight: 400;
+          color: #2c3e50;
+          margin: 20px 0;
+        }
+        
+        .brand-text {
+          color: #2c3e50;
+        }
+        
+        .brand-slash {
+          color: #f39c12;
+          margin: 0 5px;
+        }
+        
+        .brand-tagline {
+          font-family: 'Inter', sans-serif;
+          font-size: 0.9em;
+          font-weight: 300;
+          color: #7f8c8d;
+          letter-spacing: 3px;
+          margin: 10px 0;
+        }
+        
+        .assessment-title {
+          text-align: center;
+          margin: 60px 0;
+        }
+        
+        .assessment-title h1 {
+          font-family: 'Playfair Display', serif;
+          font-size: 2.2em;
+          font-weight: 700;
+          color: #2c3e50;
+          margin: 0;
+          line-height: 1.2;
+        }
+        
+        .client-info {
+          margin: 40px 0;
+        }
+        
+        .client-line {
+          font-family: 'Playfair Display', serif;
+          font-size: 1.1em;
+          font-weight: 400;
+          color: #2c3e50;
+          margin: 8px 0;
+          text-transform: uppercase;
+        }
+        
+        .disclaimer-box {
+          background: #fff8e1;
+          padding: 25px;
+          margin: 60px 0 40px 0;
+          border-radius: 8px;
+          text-align: center;
+        }
+        
+        .disclaimer-box p {
+          font-family: 'Playfair Display', serif;
+          font-style: italic;
+          font-size: 0.9em;
+          color: #2c3e50;
+          line-height: 1.5;
+          margin: 0;
+        }
+        
+        /* Motivational Message Page */
+        .motivational-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 60vh;
+          padding: 40px;
+        }
+        
+        .motivational-box {
+          background: #fff8e1;
+          padding: 40px;
+          border-radius: 8px;
+          max-width: 600px;
+          text-align: left;
+        }
+        
+        .motivational-box p {
+          font-family: 'Playfair Display', serif;
+          font-size: 1.1em;
+          color: #2c3e50;
+          line-height: 1.6;
+          margin: 0;
+        }
+        
+        .motivational-box em {
+          font-style: italic;
+          font-weight: 600;
+        }
+        
         .header-banner {
           background: #f5f3f0;
           padding: 30px;
@@ -307,16 +427,20 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         }
         
         .section-title {
-          font-family: 'Playfair Display', serif;
+          font-family: 'Inter', sans-serif;
           font-size: 1.8em;
-          font-weight: 700;
+          font-weight: 600;
           color: #2c3e50;
-          margin-bottom: 25px;
+          margin-bottom: 40px;
           text-align: center;
           background: #f5f3f0;
-          padding: 20px;
+          padding: 25px;
           border-radius: 8px;
           letter-spacing: 0.5px;
+        }
+        
+        .section-title.assessment-overview {
+          font-size: 1.6em;
         }
         
         .content {
@@ -324,6 +448,13 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           line-height: 1.7;
           color: #34495e;
           margin-bottom: 20px;
+        }
+        
+        .content p {
+          font-size: 16px;
+          line-height: 1.6;
+          color: #2c3e50;
+          margin: 0;
         }
         
         .highlight-box {
@@ -353,6 +484,29 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           margin-bottom: 15px;
           text-transform: uppercase;
           letter-spacing: 1px;
+          text-align: center;
+        }
+        
+        .domain-breakdown-content {
+          margin: 30px 0;
+        }
+        
+        .domain-breakdown-item {
+          margin-bottom: 20px;
+          line-height: 1.6;
+        }
+        
+        .domain-breakdown-item strong {
+          color: #2c3e50;
+          font-weight: 600;
+          font-size: 16px;
+          display: block;
+          margin-bottom: 5px;
+        }
+        
+        .domain-breakdown-item {
+          color: #34495e;
+          font-size: 15px;
         }
         
         .domain-item {
@@ -494,35 +648,43 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
     <body>
       <!-- Cover Page -->
       <div class="page">
-        <div class="header-banner">
-          <h1>YOU 3.0 PERSONAL DEVELOPMENT ASSESSMENT</h1>
-          <div class="subtitle">BEHAVIORAL OPTIMIZATION</div>
+        <!-- Brand Header -->
+        <div class="brand-header">
+          <div class="brand-line"></div>
+          <div class="brand-logo">
+            <span class="brand-text">become</span>
+            <span class="brand-slash">/</span>
+            <span class="brand-text">you</span>
+          </div>
+          <div class="brand-tagline">LIVE INSPIRED</div>
+          <div class="brand-line"></div>
         </div>
         
-        <div class="assessment-overview">
-          <h2>Assessment Overview</h2>
-          <p>${assessmentOverview}</p>
+        <!-- Assessment Title -->
+        <div class="assessment-title">
+          <h1>YOU 3.0 PERSONAL DEVELOPMENT</h1>
+          <h1>ASSESSMENT</h1>
         </div>
         
-        <div class="highlight-box">
-          <p>This assessment was built with care, respect, and the belief that you already have everything you need to become the person you described. The only thing left to do is <em>take action</em>.</p>
+        <!-- Client Information -->
+        <div class="client-info">
+          <div class="client-line">CLIENT NAME: ${clientName}</div>
+          <div class="client-line">DATE: ${new Date().toLocaleDateString()}</div>
+          <div class="client-line">ASSESSMENT TYPE: BEHAVIORAL OPTIMIZATION</div>
         </div>
         
-        <div class="footer">
-          <div class="client-name">${clientName}</div>
-          <div class="version">YOU 3.0</div>
+        <!-- Disclaimer Box -->
+        <div class="disclaimer-box">
+          <p>This assessment is not a diagnostic tool and does not replace professional mental health support. If you are experiencing crisis-level distress, please seek immediate professional care.</p>
         </div>
       </div>
       
-      <!-- Development Profile Page -->
+      <!-- Assessment Overview Page -->
       <div class="page page-break">
         <div class="section">
-          <div class="section-title">Your Development Profile</div>
+          <div class="section-title">Assessment Overview</div>
           <div class="content">
-            <p>${developmentProfile}</p>
-          </div>
-          <div class="quote">
-            <p>Your words: "${reminderQuote}"</p>
+            <p>${assessmentOverview}</p>
           </div>
         </div>
         
@@ -570,8 +732,26 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           <div class="section-title">Domain Breakdown</div>
           <div class="domain-title">MIND</div>
           
-          <div class="domain-item">
-            <strong>Current Level:</strong> ${mindDomain}
+          <div class="domain-breakdown-content">
+            <div class="domain-breakdown-item">
+              <strong>Current Level:</strong> ${mindDomain}
+            </div>
+            
+            <div class="domain-breakdown-item">
+              <strong>Current Phase:</strong> ${mindDomain}
+            </div>
+            
+            <div class="domain-breakdown-item">
+              <strong>Key Strengths:</strong> ${mindDomain}
+            </div>
+            
+            <div class="domain-breakdown-item">
+              <strong>Here's what you're already proving works:</strong> ${mindDomain}
+            </div>
+            
+            <div class="domain-breakdown-item">
+              <strong>Growth Opportunities:</strong> ${mindDomain}
+            </div>
           </div>
         </div>
         
@@ -587,8 +767,26 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           <div class="section-title">Domain Breakdown</div>
           <div class="domain-title">BODY</div>
           
-          <div class="domain-item">
-            <strong>Current Level:</strong> ${bodyDomain}
+          <div class="domain-breakdown-content">
+            <div class="domain-breakdown-item">
+              <strong>Current Level:</strong> ${bodyDomain}
+            </div>
+            
+            <div class="domain-breakdown-item">
+              <strong>Current Phase:</strong> ${bodyDomain}
+            </div>
+            
+            <div class="domain-breakdown-item">
+              <strong>Key Strengths:</strong> ${bodyDomain}
+            </div>
+            
+            <div class="domain-breakdown-item">
+              <strong>Here's what you're already proving works:</strong> ${bodyDomain}
+            </div>
+            
+            <div class="domain-breakdown-item">
+              <strong>Growth Opportunities:</strong> ${bodyDomain}
+            </div>
           </div>
         </div>
         
@@ -604,8 +802,26 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           <div class="section-title">Domain Breakdown</div>
           <div class="domain-title">SPIRIT & RELATIONSHIPS</div>
           
-          <div class="domain-item">
-            <strong>Current Level:</strong> ${spiritDomain}
+          <div class="domain-breakdown-content">
+            <div class="domain-breakdown-item">
+              <strong>Current Level:</strong> ${spiritDomain}
+            </div>
+            
+            <div class="domain-breakdown-item">
+              <strong>Current Phase:</strong> ${spiritDomain}
+            </div>
+            
+            <div class="domain-breakdown-item">
+              <strong>Key Strengths:</strong> ${spiritDomain}
+            </div>
+            
+            <div class="domain-breakdown-item">
+              <strong>Here's what you're already proving works:</strong> ${spiritDomain}
+            </div>
+            
+            <div class="domain-breakdown-item">
+              <strong>Growth Opportunities:</strong> ${spiritDomain}
+            </div>
           </div>
         </div>
         
@@ -621,8 +837,40 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           <div class="section-title">Domain Breakdown</div>
           <div class="domain-title">CONTRIBUTION</div>
           
-          <div class="domain-item">
-            <strong>Current Level:</strong> ${contributionDomain}
+          <div class="domain-breakdown-content">
+            <div class="domain-breakdown-item">
+              <strong>Current Level:</strong> ${contributionDomain}
+            </div>
+            
+            <div class="domain-breakdown-item">
+              <strong>Current Phase:</strong> ${contributionDomain}
+            </div>
+            
+            <div class="domain-breakdown-item">
+              <strong>Key Strengths:</strong> ${contributionDomain}
+            </div>
+            
+            <div class="domain-breakdown-item">
+              <strong>Here's what you're already proving works:</strong> ${contributionDomain}
+            </div>
+            
+            <div class="domain-breakdown-item">
+              <strong>Growth Opportunities:</strong> ${contributionDomain}
+            </div>
+          </div>
+        </div>
+        
+        <div class="footer">
+          <div class="client-name">${clientName}</div>
+          <div class="version">YOU 3.0</div>
+        </div>
+      </div>
+      
+      <!-- Motivational Message Page -->
+      <div class="page page-break">
+        <div class="motivational-container">
+          <div class="motivational-box">
+            <p>This assessment was built with care, respect, and the belief that you already have everything you need to become the person you described. The only thing left to do is <em>take action</em>.</p>
           </div>
         </div>
         
@@ -820,6 +1068,41 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <ol>
               ${reflectionPrompts.map(prompt => `<li>${prompt}</li>`).join('')}
             </ol>
+          </div>
+        </div>
+        
+        <div class="footer">
+          <div class="client-name">${clientName}</div>
+          <div class="version">YOU 3.0</div>
+        </div>
+      </div>
+      
+      <!-- Next Steps -->
+      <div class="page page-break">
+        <div class="section">
+          <div class="section-title">Next Steps</div>
+          
+          <div class="content">
+            <div class="protocol-section">
+              <div class="protocol-item">
+                <strong>6-Month Follow-Up Assessment Recommended:</strong> ${planData.next_assessment?.six_month_followup || 'Personalized timeline and expected progress tracking'}
+              </div>
+              
+              <div class="protocol-item">
+                <strong>Monthly Check-In Options:</strong> ${planData.next_assessment?.monthly_checkin || 'Brief progress reviews to track your development'}
+              </div>
+              
+              <div class="protocol-item">
+                <strong>Focus Areas for Next Phase:</strong>
+                <ol>
+                  ${(planData.next_assessment?.focus_areas || ['Focus Area 1', 'Focus Area 2', 'Focus Area 3', 'Focus Area 4']).map(area => `<li>${area}</li>`).join('')}
+                </ol>
+              </div>
+              
+              <div class="protocol-item">
+                <strong>How to Stay Connected:</strong> ${planData.next_assessment?.stay_connected || 'Newsletter signup, community links, and ongoing support resources'}
+              </div>
+            </div>
           </div>
         </div>
         
