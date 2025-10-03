@@ -417,22 +417,22 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         
         .section-title {
           font-family: 'Inter', sans-serif;
-          font-size: 1.8em;
-          font-weight: 600;
+          font-size: 3.2em;
+          font-weight: 700;
           color: #2c3e50;
-          margin-bottom: 40px;
+          margin-bottom: 80px;
           text-align: center;
           background: #f5f3f0;
-          padding: 25px;
+          padding: 40px;
           border-radius: 8px;
-          letter-spacing: 0.5px;
+          letter-spacing: 1px;
         }
         
         .content {
-          font-size: 14px;
-          line-height: 1.7;
+          font-size: 16px;
+          line-height: 1.8;
           color: #34495e;
-          margin-bottom: 20px;
+          margin-bottom: 30px;
         }
         
         .content ol, .content ul {
