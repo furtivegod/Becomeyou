@@ -170,12 +170,7 @@ export async function generatePDF(planData: PlanData, sessionId: string): Promis
 async function convertHTMLToPDF(htmlContent: string, clientName: string = 'Client'): Promise<Buffer> {
   try {
     // Create footer HTML with PDFShift variables
-    const footerHTML = `
-      <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; border-top: 1px solid #bdc3c7; font-size: 12px; color: #7f8c8d;">
-        <div>${clientName}</div>
-        <div>YOU 3.0 - Page {{page}} of {{total}}</div>
-      </div>
-    `;
+    const footerHTML = `<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; border-top: 1px solid #bdc3c7; font-size: 12px; color: #7f8c8d;"><div>${clientName}</div><div>YOU 3.0 - Page {{page}} of {{total}}</div></div>`;
 
     const response = await fetch('https://api.pdfshift.io/v3/convert/pdf', {
       method: 'POST',
