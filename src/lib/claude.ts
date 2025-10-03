@@ -309,7 +309,7 @@ export async function generateStructuredPlan(conversationHistory: string) {
 
     const response = await anthropic.messages.create({
       model: "claude-sonnet-4-5-20250929",
-      max_tokens: 4000,
+      max_tokens: 6000,
       system: `You are a professional behavioral optimization specialist. Based on the You 3.0 assessment conversation, create a comprehensive client-facing report in valid JSON format.
 
 IMPORTANT: Return ONLY valid JSON. No markdown, no explanations, no extra text. Just the JSON object.

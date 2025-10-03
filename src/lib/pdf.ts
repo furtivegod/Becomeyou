@@ -456,7 +456,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         }
         
         .domain-title {
-          font-size: 3.2em;
+          font-size: 2.4em;
           font-weight: 700;
           color: #2c3e50;
           margin-bottom: 5px;
@@ -496,48 +496,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           font-weight: 600;
         }
         
-        .protocol-section {
-          background: #f8f9fa;
-          padding: 25px;
-          border-radius: 8px;
-          margin: 30px 0;
-        }
         
-        .protocol-item {
-          margin-bottom: 15px;
-          padding-left: 20px;
-          position: relative;
-        }
-        
-        .protocol-item::before {
-          content: "•";
-          color: #3498db;
-          font-weight: bold;
-          position: absolute;
-          left: 0;
-        }
-        
-        .reminder-box {
-          background: #fff8e1;
-          border: 2px solid #f39c12;
-          padding: 25px;
-          margin: 30px 0;
-          border-radius: 8px;
-          text-align: center;
-        }
-        
-        .reminder-box h3 {
-          font-family: 'Playfair Display', serif;
-          font-size: 1.3em;
-          color: #8b4513;
-          margin-bottom: 15px;
-        }
-        
-        .reminder-box p {
-          font-style: italic;
-          color: #8b4513;
-          font-size: 16px;
-        }
         
         /* Footer is now handled by PDFShift natively - no CSS needed */
         
@@ -553,39 +512,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           margin: 20px 0;
         }
         
-        .nervous-system {
-          background: #e8f4f8;
-          padding: 25px;
-          border-radius: 8px;
-          margin: 30px 0;
-        }
         
-        .nervous-system h2 {
-          font-family: 'Playfair Display', serif;
-          font-size: 1.5em;
-          color: #2c3e50;
-          margin-bottom: 15px;
-        }
-        
-        .bottom-line {
-          background: #2c3e50;
-          color: white;
-          padding: 30px;
-          border-radius: 8px;
-          margin: 30px 0;
-          text-align: center;
-        }
-        
-        .bottom-line h2 {
-          font-family: 'Playfair Display', serif;
-          font-size: 1.5em;
-          margin-bottom: 15px;
-        }
-        
-        .bottom-line p {
-          font-size: 16px;
-          line-height: 1.6;
-        }
         
         /* Motivational Message Page */
         .motivational-container {
@@ -839,9 +766,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
       <div class="page page-break">
         <div class="section">
             <div class="section-title">Nervous System Assessment</div>
-            
-            <div class="nervous-system">
-              <h2>Primary State:</h2>
+            <div class="content">
               <p>${nervousSystemAssessment}</p>
             </div>
           </div>
@@ -853,30 +778,39 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
       <div class="page page-break">
         <div class="section">
             <div class="section-title">30-Day Recommend Growth Protocol</div>
-            
-            <div class="protocol-section">
-              <div class="protocol-item">
-                <strong>72-Hour Suggestion:</strong> ${seventyTwoHourSuggestion}
-              </div>
-              
-              <div class="protocol-item">
-                <strong>Weekly Recommendation:</strong> ${weeklyRecommendation}
-              </div>
-              
-              <div class="protocol-item">
-                <strong>30-Day Approach:</strong> ${thirtyDayApproach}
-              </div>
-              
-              <div class="protocol-item">
-                <strong>Environmental Optimization:</strong> ${environmentalOptimization}
-              </div>
-              
-              <div class="protocol-item">
-                <strong>Suggested Progress Markers:</strong>
-                <ol>
-                  ${progressMarkers.map(marker => `<li>${marker}</li>`).join('')}
-                </ol>
-              </div>
+            <div class="content">
+              <p><strong>72-Hour Suggestion:</strong> ${seventyTwoHourSuggestion}</p>
+              <p><strong>Weekly Recommendation:</strong> ${weeklyRecommendation}</p>
+              <p><strong>30-Day Approach:</strong> ${thirtyDayApproach}</p>
+              <p><strong>Environmental Optimization:</strong> ${environmentalOptimization}</p>
+              <p><strong>Suggested Progress Markers:</strong></p>
+              <ol>
+                ${progressMarkers.map(marker => `<li>${marker}</li>`).join('')}
+              </ol>
+            </div>
+          </div>
+        
+        <!-- Footer handled by PDFShift natively -->
+      </div>
+      
+      <!-- Reminder Box -->
+      <div class="page page-break">
+        <div class="section">
+            <div class="section-title">Reminder Box</div>
+            <div class="content">
+              <p>"${reminderQuote}"</p>
+            </div>
+          </div>
+        
+        <!-- Footer handled by PDFShift natively -->
+      </div>
+      
+      <!-- Bottom Line -->
+      <div class="page page-break">
+        <div class="section">
+            <div class="section-title">Bottom Line</div>
+            <div class="content">
+              <p>${bottomLine}</p>
             </div>
           </div>
         
@@ -897,30 +831,6 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
                 <li>Identity shifts over time with deliberate practice</li>
                 <li>You're not broken—you're context-dependent. Build better contexts.</li>
               </ul>
-            </div>
-          </div>
-        
-        <!-- Footer handled by PDFShift natively -->
-      </div>
-      
-      <!-- Reminder Box -->
-      <div class="page page-break">
-        <div class="section">
-            <div class="reminder-box">
-              <h3>Reminder Box</h3>
-              <p>"${reminderQuote}"</p>
-            </div>
-          </div>
-        
-        <!-- Footer handled by PDFShift natively -->
-      </div>
-      
-      <!-- Bottom Line -->
-      <div class="page page-break">
-        <div class="section">
-            <div class="bottom-line">
-              <h2>Bottom Line</h2>
-              <p>${bottomLine}</p>
             </div>
           </div>
         
