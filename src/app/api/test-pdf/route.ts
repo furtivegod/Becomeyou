@@ -5,6 +5,16 @@ export async function GET(request: NextRequest) {
   try {
     console.log('🧪 Testing PDF generation with sample data...')
     
+    // Check if PDFShift API key is available
+    if (!process.env.PDFSHIFT_API_KEY) {
+      console.error('❌ PDFSHIFT_API_KEY not configured')
+      return NextResponse.json({
+        success: false,
+        error: 'PDFSHIFT_API_KEY not configured',
+        message: 'PDF generation service not configured'
+      }, { status: 500 })
+    }
+    
     // Sample plan data for testing
     const samplePlanData = {
       title: "You 3.0 Behavioral Optimization Assessment Report",
@@ -94,6 +104,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Generate PDF with sample data
+    console.log('📝 Starting PDF generation...')
     const result = await generatePDF(samplePlanData, 'test-session-123')
     
     console.log('✅ PDF generated successfully!')
@@ -108,10 +119,17 @@ export async function GET(request: NextRequest) {
 
   } catch (error) {
     console.error('❌ PDF generation test failed:', error)
+    console.error('Error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+      name: error instanceof Error ? error.name : 'Unknown'
+    })
+    
     return NextResponse.json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
-      message: 'PDF generation test failed'
+      message: 'PDF generation test failed',
+      details: error instanceof Error ? error.stack : undefined
     }, { status: 500 })
   }
 }
