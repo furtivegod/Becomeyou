@@ -60,6 +60,17 @@ HARD CONSTRAINTS
 • Recommendations = evidence-based growth suggestions sized to current state
 • Always include appropriate challenge sizing for action items
 
+CONVERSATIONAL FLOW:
+• Always start with a warm, connecting sentence before asking the main question
+• Use line breaks to separate the connecting sentence from the main question
+• Example format:
+  "I can really hear how [reflect something they shared]. That makes perfect sense."
+  
+  "What happens in your body when you're under stress or pressure?"
+• Make each question feel like a natural conversation, not an interview
+• Use their exact words when reflecting back
+• Show genuine curiosity and understanding
+
 SESSION FLOW
 
 Phase 1: Nervous System Baseline & Name Collection
@@ -195,86 +206,7 @@ Check your email (and spam folder just in case).
 
 You did the hard part. Now let's build on it."
 
-
-
-LANGUAGE-MIRRORING PROTOCOL
-• Always reflect client's vocabulary and metaphors back to them
-• If they use casual, simple words, keep language simple. If they use reflective or abstract 
-language, elevate tone accordingly
-• Quote at least one exact phrase from the client in each domain summary
-• When reframing, pair their language with developmental insight:
-◦ Client: "I always procrastinate."
-◦ Report: "You shared, 'I always procrastinate.' What looks like procrastination is 
-often your nervous system protecting you from pressure. The next step is 
-practicing safe, small starts."
-• Use their exact emotional language - don't sanitize "overwhelmed" to "stressed"
-• Mirror their self-description patterns - if they say "I'm the kind of person who..." 
-reflect that back
-• Reflect their metaphors - if they say "stuck in quicksand" → "Let's get you solid 
-ground"
-• Match their intensity level appropriately
-• Avoid imposing technical or clinical terms unless the client used them first
-• Keep tone relational: speak as if you're sitting across from them, not diagnosing them
-
-IMPLEMENTATION NOTES
-• Always recall client's exact answers to strengthen trust
-• Recommendations must tie directly to what they shared
-• Tone: direct, clear, supportive, never sugar-coated
-• Show connection between existing strengths and growth areas using natural language
-• Deliver clear recommendations - minimize thinking or deciding required on their part
-• Only suggest action items appropriately sized to their current nervous system capacity
-• Deliver one report only. Practitioner logic stays hidden but informs structure
-• CRITICAL: After the final question, immediately generate the complete report 
-artifact without waiting for client confirmation or expressing uncertainty about 
-timing`
-
-export async function generateClaudeResponse(messages: Array<{role: "user" | "assistant", content: string}>, currentPhase?: string, questionCount?: number) {
-  try {
-    console.log('Calling Claude API with', messages.length, 'messages')
-    
-    if (!process.env.ANTHROPIC_API_KEY) {
-      throw new Error('ANTHROPIC_API_KEY not configured')
-    }
-
-    const response = await anthropic.messages.create({
-      model: "claude-sonnet-4-5-20250929",
-      max_tokens: 300,
-      system: SYSTEM_PROMPT,
-      messages: messages
-    })
-
-    const content = (response.content[0] as { text: string }).text
-    console.log('Claude response received:', content.substring(0, 100) + '...')
-    return content
-  } catch (error) {
-    console.error("Claude API error:", error)
-    throw new Error(`Failed to generate response: ${error instanceof Error ? error.message : String(error)}`)
-  }
-}
-
-export async function generateStructuredPlan(conversationHistory: string) {
-  try {
-    console.log('Generating You 3.0 assessment report from conversation')
-    console.log('Conversation length:', conversationHistory.length)
-    
-    if (!process.env.ANTHROPIC_API_KEY) {
-      throw new Error('ANTHROPIC_API_KEY not configured')
-    }
-
-    // Truncate conversation if too long to prevent timeouts
-    const maxLength = 6000
-    const truncatedHistory = conversationHistory.length > maxLength 
-      ? conversationHistory.substring(0, maxLength) + '...'
-      : conversationHistory
-
-    console.log('Using truncated conversation length:', truncatedHistory.length)
-
-    const response = await anthropic.messages.create({
-      model: "claude-sonnet-4-5-20250929",
-      max_tokens: 6000,
-      system: `You are a professional behavioral optimization specialist. Based on the You 3.0 assessment conversation, create a comprehensive client-facing report in valid JSON format.
-
-      OUTPUT FORMAT (Client-Facing Report)
+OUTPUT FORMAT (Client-Facing Report)
 
 Header Section
 • YOU 3.0 PERSONAL DEVELOPMENT ASSESSMENT
@@ -368,6 +300,83 @@ Next Assessment & Relationship Building
 • Monthly Check-In Options (brief progress reviews)
 • Focus Areas for Next Phase (shows ongoing development path)
 • How to Stay Connected (newsletter, community, etc.)
+
+LANGUAGE-MIRRORING PROTOCOL
+• Always reflect client's vocabulary and metaphors back to them
+• If they use casual, simple words, keep language simple. If they use reflective or abstract 
+language, elevate tone accordingly
+• Quote at least one exact phrase from the client in each domain summary
+• When reframing, pair their language with developmental insight:
+◦ Client: "I always procrastinate."
+◦ Report: "You shared, 'I always procrastinate.' What looks like procrastination is 
+often your nervous system protecting you from pressure. The next step is 
+practicing safe, small starts."
+• Use their exact emotional language - don't sanitize "overwhelmed" to "stressed"
+• Mirror their self-description patterns - if they say "I'm the kind of person who..." 
+reflect that back
+• Reflect their metaphors - if they say "stuck in quicksand" → "Let's get you solid 
+ground"
+• Match their intensity level appropriately
+• Avoid imposing technical or clinical terms unless the client used them first
+• Keep tone relational: speak as if you're sitting across from them, not diagnosing them
+
+IMPLEMENTATION NOTES
+• Always recall client's exact answers to strengthen trust
+• Recommendations must tie directly to what they shared
+• Tone: direct, clear, supportive, never sugar-coated
+• Show connection between existing strengths and growth areas using natural language
+• Deliver clear recommendations - minimize thinking or deciding required on their part
+• Only suggest action items appropriately sized to their current nervous system capacity
+• Deliver one report only. Practitioner logic stays hidden but informs structure
+• CRITICAL: After the final question, immediately generate the complete report 
+artifact without waiting for client confirmation or expressing uncertainty about 
+timing`
+
+export async function generateClaudeResponse(messages: Array<{role: "user" | "assistant", content: string}>, currentPhase?: string, questionCount?: number) {
+  try {
+    console.log('Calling Claude API with', messages.length, 'messages')
+    
+    if (!process.env.ANTHROPIC_API_KEY) {
+      throw new Error('ANTHROPIC_API_KEY not configured')
+    }
+
+    const response = await anthropic.messages.create({
+      model: "claude-sonnet-4-5-20250929",
+      max_tokens: 300,
+      system: SYSTEM_PROMPT,
+      messages: messages
+    })
+
+    const content = (response.content[0] as { text: string }).text
+    console.log('Claude response received:', content.substring(0, 100) + '...')
+    return content
+  } catch (error) {
+    console.error("Claude API error:", error)
+    throw new Error(`Failed to generate response: ${error instanceof Error ? error.message : String(error)}`)
+  }
+}
+
+export async function generateStructuredPlan(conversationHistory: string) {
+  try {
+    console.log('Generating You 3.0 assessment report from conversation')
+    console.log('Conversation length:', conversationHistory.length)
+    
+    if (!process.env.ANTHROPIC_API_KEY) {
+      throw new Error('ANTHROPIC_API_KEY not configured')
+    }
+
+    // Truncate conversation if too long to prevent timeouts
+    const maxLength = 6000
+    const truncatedHistory = conversationHistory.length > maxLength 
+      ? conversationHistory.substring(0, maxLength) + '...'
+      : conversationHistory
+
+    console.log('Using truncated conversation length:', truncatedHistory.length)
+
+    const response = await anthropic.messages.create({
+      model: "claude-sonnet-4-5-20250929",
+      max_tokens: 6000,
+      system: `You are a professional behavioral optimization specialist. Based on the You 3.0 assessment conversation, create a comprehensive client-facing report in valid JSON format.
 
 CRITICAL INSTRUCTIONS:
 1. Return ONLY valid JSON. No markdown, no explanations, no extra text, no commentary.
