@@ -173,7 +173,7 @@ export async function generatePDF(planData: PlanData, sessionId: string): Promis
 async function convertHTMLToPDF(htmlContent: string, clientName: string = 'Client'): Promise<Buffer> {
   try {
     // Create footer HTML with PDFShift variables - matching template design
-    const footerHTML = `<div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 20px; border-top: 1px solid #d3d3d3; border-bottom: 1px solid #d3d3d3; font-size: 11px; color: #999999; background: #f8f8f8; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.5px;"><div>${clientName}</div><div>YOU 3.0</div></div>`;
+    const footerHTML = `<div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 20px; border-top: 1px solid #4A5D23; border-bottom: 1px solid #4A5D23; font-size: 11px; color: #666; background: #F5F1E8; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.5px;"><div>${clientName}</div><div>YOU 3.0</div></div>`;
 
     const response = await fetch('https://api.pdfshift.io/v3/convert/pdf', {
       method: 'POST',
@@ -330,16 +330,18 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         body {
           font-family: 'Inter', sans-serif;
           line-height: 1.6;
-          color: #2c3e50;
-          background: white;
+          color: #1A1A1A;
+          background: #F5F1E8;
           font-size: 14px;
         }
         
         .page {
           width: 100%;
           min-height: 100vh;
-          padding: 40px; /* Standard padding - PDFShift handles footer spacing */
+          padding: 40px;
           position: relative;
+          background: white;
+          margin-bottom: 20px;
         }
         
         /* Cover Page Styles */
@@ -349,25 +351,30 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         }
         
         .brand-line {
-          height: 1px;
-          background-color: #bdc3c7;
+          height: 2px;
+          background-color: #4A5D23;
           margin: 20px 0;
+          width: 200px;
+          margin-left: auto;
+          margin-right: auto;
         }
         
         .brand-logo {
-          font-family: 'Inter', sans-serif;
-          font-size: 4.2em;
-          font-weight: 400;
-          color: #2c3e50;
+          text-align: center;
           margin: 20px 0;
         }
         
+        .brand-logo img {
+          max-width: 300px;
+          height: auto;
+        }
+        
         .brand-text {
-          color: #2c3e50;
+          color: #1A1A1A;
         }
         
         .brand-slash {
-          color: #f39c12;
+          color: #D4AF37;
           margin: 0 5px;
         }
         
@@ -375,7 +382,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           font-family: 'Inter', sans-serif;
           font-size: 1.1em;
           font-weight: 300;
-          color: #7f8c8d;
+          color: #666;
           letter-spacing: 3px;
           margin: 15px 0;
         }
@@ -389,7 +396,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           font-family: 'Playfair Display', serif;
           font-size: 2.2em;
           font-weight: 700;
-          color: #2c3e50;
+          color: #4A5D23;
           margin: 0;
           line-height: 1.2;
         }
@@ -402,16 +409,17 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           font-family: 'Playfair Display', serif;
           font-size: 1.6em;
           font-weight: 400;
-          color: #2c3e50;
+          color: #1A1A1A;
           margin: 20px 0;
           text-transform: uppercase;
         }
         
         .disclaimer-box {
-          background: #fff8e1;
+          background: #FFF3CD;
           padding: 25px;
           margin: 80px 0 60px 0;
           border-radius: 8px;
+          border: 1px solid #D4AF37;
           text-align: center;
         }
         
@@ -419,7 +427,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           font-family: 'Playfair Display', serif;
           font-style: normal;
           font-size: 1.2em;
-          color: #2c3e50;
+          color: #856404;
           line-height: 1.5;
           margin: 0;
         }
@@ -433,13 +441,13 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         /* Content wrapper no longer needed - PDFShift handles footer */
         
         .section-title {
-          font-family: 'Inter', sans-serif;
+          font-family: 'Playfair Display', serif;
           font-size: 3.2em;
           font-weight: 700;
-          color: #2c3e50;
+          color: #4A5D23;
           margin-bottom: 80px;
           text-align: center;
-          background:rgb(219, 185, 133);
+          background: #FFF3CD;
           padding: 40px;
           border-radius: 8px;
           letter-spacing: 1px;
@@ -448,7 +456,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         .content {
           font-size: 16px;
           line-height: 1.8;
-          color: #34495e;
+          color: #1A1A1A;
           margin-bottom: 30px;
         }
         
@@ -468,14 +476,14 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         .content p {
           font-size: 16px;
           line-height: 1.6;
-          color: #2c3e50;
+          color: #1A1A1A;
           margin: 0;
         }
         
         .domain-title {
           font-size: 2.4em;
           font-weight: 700;
-          color: #2c3e50;
+          color: #4A5D23;
           margin-bottom: 5px;
           text-transform: uppercase;
           letter-spacing: 2px;
@@ -492,7 +500,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         }
         
         .domain-breakdown-item strong {
-          color: #2c3e50;
+          color: #4A5D23;
           font-weight: 600;
           font-size: 16px;
           display: block;
@@ -500,7 +508,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         }
         
         .domain-breakdown-item {
-          color: #34495e;
+          color: #1A1A1A;
           font-size: 15px;
         }
         
@@ -509,7 +517,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         }
         
         .domain-item strong {
-          color: #2c3e50;
+          color: #4A5D23;
           font-weight: 600;
         }
         
@@ -523,7 +531,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         
         .quote {
           font-style: italic;
-          color: #7f8c8d;
+          color: #666;
           border-left: 3px solid #bdc3c7;
           padding-left: 20px;
           margin: 20px 0;
@@ -541,9 +549,10 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         }
         
         .motivational-box {
-          background: #fff8e1;
+          background: #FFF3CD;
           padding: 40px;
           border-radius: 8px;
+          border: 1px solid #D4AF37;
           max-width: 600px;
           text-align: left;
         }
@@ -551,7 +560,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         .motivational-box p {
           font-family: 'Playfair Display', serif;
           font-size: 1.1em;
-          color: #2c3e50;
+          color: #856404;
           line-height: 1.6;
           margin: 0;
         }
@@ -569,9 +578,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         <div class="brand-header">
           <div class="brand-line"></div>
           <div class="brand-logo">
-            <span class="brand-text">become</span>
-            <span class="brand-slash">/</span>
-            <span class="brand-text">you</span>
+            <img src="${process.env.NEXT_PUBLIC_APP_URL ? `https://${process.env.NEXT_PUBLIC_APP_URL}` : 'http://localhost:3000'}/logo.png" alt="Become You Logo" />
           </div>
           <div class="brand-tagline">LIVE INSPIRED</div>
           <div class="brand-line"></div>
