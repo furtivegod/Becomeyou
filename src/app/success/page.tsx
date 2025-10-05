@@ -1,15 +1,42 @@
 "use client"
 
+import { useEffect, useState } from 'react'
+
 export default function SuccessPage() {
+  const [userEmail, setUserEmail] = useState('[their email]')
+  const [isLoading, setIsLoading] = useState(true)
+  
+  useEffect(() => {
+    // Fetch user email from API
+    const fetchUserEmail = async () => {
+      try {
+        const response = await fetch('/api/user-email')
+        const data = await response.json()
+        
+        if (data.success) {
+          setUserEmail(data.email)
+        }
+      } catch (error) {
+        console.error('Error fetching user email:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    
+    fetchUserEmail()
+  }, [])
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-3xl mx-auto text-center">
-          {/* Success Icon */}
-          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-8">
-            <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
+          {/* Logo */}
+          <div className="w-24 h-24 mx-auto mb-8">
+            <img 
+              src="/logo.png" 
+              alt="Become You Logo" 
+              className="w-full h-full object-contain"
+            />
           </div>
 
           {/* Main Headline */}
@@ -30,11 +57,13 @@ export default function SuccessPage() {
             </h2>
             <div className="text-left space-y-4">
               <p className="text-gray-600">
-                We've sent your assessment link to <strong>[their email]</strong>
+                We've sent your assessment link to <strong>
+                  {isLoading ? '...' : userEmail}
+                </strong>
               </p>
               <div className="bg-gray-50 rounded-lg p-4 text-sm">
                 <p><strong>Subject line:</strong> "Your You 3.0 Assessment Link – Start Now"</p>
-                <p><strong>From:</strong> [insert become you email]</p>
+                <p><strong>From:</strong> noreply@becomeyou.ai</p>
               </div>
               <p className="text-sm text-gray-500">
                 Can't find it? Check your spam folder or contact support
