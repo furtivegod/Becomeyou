@@ -297,8 +297,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
       }
 
       // Check if assessment is complete
-      if (assistantMessage.content.includes('assessment is complete') || 
-          assistantMessage.content.includes('I have everything I need')) {
+      if (assistantMessage.content.includes('thank you for showing up fully for this assessment')){
         setAssessmentComplete(true)
         
         // Generate the report first

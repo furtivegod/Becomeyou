@@ -83,7 +83,8 @@ export async function sendMagicLink(email: string, sessionId: string) {
               </p>
               <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; font-family: Arial, sans-serif;">
                 Immediately after completion, your recommended 30-Day Transformation Protocol will be 
-                delivered to this email address. Save it. Reference it. Use it.
+                delivered to this email address. 
+                Save it. Reference it. Use it.
               </p>
             </div>
             
