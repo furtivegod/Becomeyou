@@ -548,7 +548,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         <div class="brand-header">
           <div class="brand-line"></div>
           <div class="brand-logo">
-            <img src="https://${process.env.NEXT_PUBLIC_APP_URL || 'localhost:3000'}/logo.png" alt="Become You Logo" />
+            <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" />
           </div>
           <div class="brand-tagline">LIVE INSPIRED</div>
           <div class="brand-line"></div>
