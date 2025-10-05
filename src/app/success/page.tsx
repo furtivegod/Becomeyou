@@ -30,14 +30,6 @@ export default function SuccessPage() {
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-3xl mx-auto text-center">
-          {/* Logo */}
-          <div className="w-32 h-32 mx-auto mb-12">
-            <img 
-              src="/logo.png" 
-              alt="Become You Logo" 
-              className="w-full h-full object-contain"
-            />
-          </div>
 
           {/* Main Headline */}
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
