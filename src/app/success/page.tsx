@@ -31,7 +31,7 @@ export default function SuccessPage() {
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-3xl mx-auto text-center">
           {/* Logo */}
-          <div className="w-24 h-24 mx-auto mb-8">
+          <div className="w-32 h-32 mx-auto mb-12">
             <img 
               src="/logo.png" 
               alt="Become You Logo" 
@@ -63,7 +63,7 @@ export default function SuccessPage() {
               </p>
               <div className="bg-gray-50 rounded-lg p-4 text-sm">
                 <p><strong>Subject line:</strong> "Your You 3.0 Assessment Link – Start Now"</p>
-                <p><strong>From:</strong> noreply@becomeyou.ai</p>
+                <p><strong>From:</strong> becomeyou.ai</p>
               </div>
               <p className="text-sm text-gray-500">
                 Can't find it? Check your spam folder or contact support
