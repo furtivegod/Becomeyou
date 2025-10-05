@@ -3,28 +3,8 @@
 import { useEffect, useState } from 'react'
 
 export default function SuccessPage() {
-  const [userEmail, setUserEmail] = useState('[their email]')
+  const [userEmail, setUserEmail] = useState('your email.')
   const [isLoading, setIsLoading] = useState(true)
-  
-  useEffect(() => {
-    // Fetch user email from API
-    const fetchUserEmail = async () => {
-      try {
-        const response = await fetch('/api/user-email')
-        const data = await response.json()
-        
-        if (data.success) {
-          setUserEmail(data.email)
-        }
-      } catch (error) {
-        console.error('Error fetching user email:', error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-    
-    fetchUserEmail()
-  }, [])
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F5F1E8' }}>
