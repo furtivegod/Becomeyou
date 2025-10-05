@@ -889,11 +889,6 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
                   </div>
                 </div>
               </div>
-              
-              <div class="footer">
-                <div class="client-name">${clientName}</div>
-                <div class="version">YOU 3.0</div>
-              </div>
             </div>
           `;
         }
@@ -924,11 +919,6 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
                     </ol>
                   </div>
                 </div>
-              </div>
-              
-              <div class="footer">
-                <div class="client-name">${clientName}</div>
-                <div class="version">YOU 3.0</div>
               </div>
             </div>
           `;
