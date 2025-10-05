@@ -60,10 +60,10 @@ export default function AssessmentPage({ params, searchParams }: AssessmentPageP
 
   if (isValid === null) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#F5F1E8' }}>
         <div className="text-center max-w-md w-full">
-          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <h1 className="text-lg sm:text-xl font-semibold text-gray-700">Validating access…</h1>
+          <div className="w-8 h-8 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-4" style={{ borderColor: '#4A5D23', borderTopColor: 'transparent' }}></div>
+          <h1 className="text-lg sm:text-xl font-semibold" style={{ color: '#1A1A1A' }}>Validating access…</h1>
         </div>
       </div>
     )
@@ -71,20 +71,21 @@ export default function AssessmentPage({ params, searchParams }: AssessmentPageP
 
   if (!isValid) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#F5F1E8' }}>
         <div className="text-center max-w-md w-full bg-white rounded-lg shadow-lg p-6 sm:p-8">
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Access Denied</h1>
-          <p className="text-gray-600 mb-6 text-sm sm:text-base">
+          <h1 className="text-xl sm:text-2xl font-bold mb-2" style={{ color: '#4A5D23', fontFamily: 'Georgia, Times New Roman, serif' }}>Access Denied</h1>
+          <p className="mb-6 text-sm sm:text-base" style={{ color: '#1A1A1A' }}>
             This assessment link is invalid or has expired. Please check your email for a valid link.
           </p>
           <button
             onClick={() => window.location.reload()}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 text-sm sm:text-base"
+            className="text-white px-4 py-2 rounded-md transition-colors duration-200 text-sm sm:text-base hover:opacity-90"
+            style={{ backgroundColor: '#4A5D23' }}
           >
             Try Again
           </button>
@@ -95,7 +96,7 @@ export default function AssessmentPage({ params, searchParams }: AssessmentPageP
 
   if (!hasConsented) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+      <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#F5F1E8' }}>
         <div className="max-w-2xl w-full">
           <ConsentScreen onConsent={() => setHasConsented(true)} />
         </div>
@@ -105,19 +106,19 @@ export default function AssessmentPage({ params, searchParams }: AssessmentPageP
 
   if (isComplete) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#F5F1E8' }}>
         <div className="text-center max-w-md w-full bg-white rounded-lg shadow-lg p-6 sm:p-8">
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Assessment Complete!</h1>
-          <p className="text-gray-600 mb-6 text-sm sm:text-base">
+          <h1 className="text-xl sm:text-2xl font-bold mb-2" style={{ color: '#4A5D23', fontFamily: 'Georgia, Times New Roman, serif' }}>Assessment Complete!</h1>
+          <p className="mb-6 text-sm sm:text-base" style={{ color: '#1A1A1A' }}>
             Your personalized You 3.0 report is being generated and will be sent to your email shortly.
           </p>
-          <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
-            <p className="text-blue-800 text-sm">
+          <div className="rounded-md p-4" style={{ backgroundColor: '#FFF3CD', border: '1px solid #D4AF37' }}>
+            <p className="text-sm" style={{ color: '#856404' }}>
               📧 Check your email for your personalized 30-day protocol
             </p>
           </div>
@@ -127,7 +128,7 @@ export default function AssessmentPage({ params, searchParams }: AssessmentPageP
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen" style={{ backgroundColor: '#F5F1E8' }}>
       <ChatInterface sessionId={sessionId} onComplete={handleComplete} />
     </div>
   )

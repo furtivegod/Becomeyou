@@ -28,13 +28,13 @@ export async function sendMagicLink(email: string, sessionId: string) {
       html: `
         <div style="font-family: 'Georgia', 'Times New Roman', serif; max-width: 600px; margin: 0 auto; background-color: #F5F1E8;">
           <!-- Header Section -->
-          <div style="background-color: white; padding: 40px 20px 20px 20px; text-align: center;">
+          <div style="background-color: white; padding: 40px 20px 30px 20px; text-align: center;">
             <!-- Logo -->
-            <div style="margin-bottom: 30px;">
-              <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 60px; width: auto;" />
+            <div style="margin-bottom: 40px;">
+              <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 100px; width: auto;" />
             </div>
             <!-- Green Line -->
-            <div style="height: 2px; background-color: #4A5D23; width: 100px; margin: 0 auto;"></div>
+            <div style="height: 3px; background-color: #4A5D23; width: 200px; margin: 0 auto;"></div>
           </div>
           
           <!-- Body Section -->

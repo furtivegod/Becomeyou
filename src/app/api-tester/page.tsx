@@ -125,7 +125,7 @@ export default function BecomeYou_API_TesterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen" style={{ backgroundColor: '#F5F1E8' }}>
       {/* Toast Notification */}
       {toast && (
         <Toast 
@@ -138,10 +138,10 @@ export default function BecomeYou_API_TesterPage() {
       <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8 space-y-4 sm:space-y-6 lg:space-y-8">
         {/* Main Workflow Tester */}
         <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-sm sm:shadow-md p-4 sm:p-6">
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 sm:mb-4 text-gray-900">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 sm:mb-4" style={{ color: '#4A5D23', fontFamily: 'Georgia, Times New Roman, serif' }}>
             Complete SamCart → Assessment Workflow Tester
           </h1>
-          <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
+          <p className="text-sm sm:text-base mb-4 sm:mb-6" style={{ color: '#1A1A1A' }}>
             Simulate the full user journey: SamCart purchase → webhook → magic link → assessment → PDF.
           </p>
 
@@ -184,7 +184,8 @@ export default function BecomeYou_API_TesterPage() {
               <button
                 onClick={callWebhook}
                 disabled={loading}
-                className="w-full sm:w-auto bg-blue-600 text-white px-4 py-2 sm:py-3 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 text-sm sm:text-base font-medium"
+                className="w-full sm:w-auto text-white px-4 py-2 sm:py-3 rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 text-sm sm:text-base font-medium hover:opacity-90"
+                style={{ backgroundColor: '#4A5D23' }}
               >
                 {loading ? 'Processing…' : '1. Simulate SamCart Purchase'}
               </button>
@@ -234,7 +235,8 @@ export default function BecomeYou_API_TesterPage() {
             <button
               onClick={createSession}
               disabled={sessionLoading}
-              className="w-full sm:w-auto bg-indigo-600 text-white px-4 py-2 sm:py-3 rounded-md hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 text-sm sm:text-base font-medium"
+              className="w-full sm:w-auto text-white px-4 py-2 sm:py-3 rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 text-sm sm:text-base font-medium hover:opacity-90"
+              style={{ backgroundColor: '#4A5D23' }}
             >
               {sessionLoading ? 'Creating…' : 'Create Session'}
             </button>

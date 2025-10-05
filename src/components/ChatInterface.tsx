@@ -361,24 +361,24 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
   // Render different screens
   if (currentScreen === 'welcome') {
     return (
-      <div className="flex flex-col h-screen bg-white font-['-apple-system',_'BlinkMacSystemFont',_'SF_Pro_Display',_'Segoe_UI',_'system-ui',_'sans-serif']">
+      <div className="flex flex-col h-screen font-['-apple-system',_'BlinkMacSystemFont',_'SF_Pro_Display',_'Segoe_UI',_'system-ui',_'sans-serif']" style={{ backgroundColor: '#F5F1E8' }}>
         {/* Welcome Screen - Second Image Style (Client's Needs) */}
         <div className="flex-1 flex items-center justify-center p-6">
           <div className="max-w-[700px] w-full text-center">
             {/* Greeting */}
             <div className="mb-8">
               <div className="flex items-center justify-center mb-4">
-                <div className="w-6 h-6 bg-[#8B4513] rounded-full flex items-center justify-center mr-3">
+                <div className="w-6 h-6 rounded-full flex items-center justify-center mr-3" style={{ backgroundColor: '#4A5D23' }}>
                   <span className="text-white text-sm">★</span>
                 </div>
-                <h1 className="text-2xl font-serif text-[#8B4513]">
+                <h1 className="text-2xl font-serif" style={{ color: '#4A5D23' }}>
                   Hey there, {clientName || 'there'}
                 </h1>
               </div>
             </div>
 
             {/* Input Box - Clean and Minimalist */}
-            <div className="bg-white border border-gray-300 rounded-xl p-4 flex flex-col gap-2 transition-all duration-150 focus-within:border-[#284138] focus-within:shadow-[0_0_0_3px_rgba(40,65,56,0.08)]">
+            <div className="bg-white border border-gray-300 rounded-xl p-4 flex flex-col gap-2 transition-all duration-150 focus-within:shadow-[0_0_0_3px_rgba(74,93,35,0.08)]" style={{ borderColor: '#4A5D23' }}>
               <textarea
                 ref={textareaRef}
                 value={input}
@@ -423,7 +423,8 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                 <button
                   onClick={handleWelcomeSubmit}
                   disabled={!input.trim()}
-                  className="min-w-[80px] h-9 bg-[#284138] text-white border-none rounded-lg text-sm font-medium cursor-pointer flex items-center justify-center gap-1.5 transition-all duration-150 px-4 hover:bg-[#1f3329] hover:-translate-y-px hover:shadow-[0_4px_12px_rgba(40,65,56,0.2)] active:translate-y-0 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+                  className="min-w-[80px] h-9 text-white border-none rounded-lg text-sm font-medium cursor-pointer flex items-center justify-center gap-1.5 transition-all duration-150 px-4 hover:-translate-y-px active:translate-y-0 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none hover:opacity-90"
+                  style={{ backgroundColor: '#4A5D23' }}
                 >
                   Send <span className="text-base">→</span>
                 </button>
@@ -444,7 +445,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
 
   // Chat Screen - EXACT CLAUDE SPECIFICATIONS
   return (
-    <div className="flex flex-col h-screen bg-white font-['-apple-system',_'BlinkMacSystemFont',_'SF_Pro_Display',_'Segoe_UI',_'system-ui',_'sans-serif']">
+    <div className="flex flex-col h-screen font-['-apple-system',_'BlinkMacSystemFont',_'SF_Pro_Display',_'Segoe_UI',_'system-ui',_'sans-serif']" style={{ backgroundColor: '#F5F1E8' }}>
       {/* Messages Container - Exact Claude Layout */}
       <div 
         className="flex-1 overflow-y-auto overflow-x-hidden scroll-smooth py-6"
@@ -459,7 +460,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                     // AI Message - Exact Claude Styling
                     <div className="flex gap-4 mb-8">
                       {/* AI Avatar - Cute Robot */}
-                      <div className="w-8 h-8 flex-shrink-0 rounded-md bg-[#F3F4F6] flex items-center justify-center text-[#284138] text-base">
+                      <div className="w-8 h-8 flex-shrink-0 rounded-md flex items-center justify-center text-base" style={{ backgroundColor: '#F3F4F6', color: '#4A5D23' }}>
                         🤖
                       </div>
                       {/* AI Content - Fixed formatting with bold support */}
@@ -484,7 +485,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
               <div className="w-full flex justify-center mb-8 opacity-60">
                 <div className="max-w-[700px] w-full px-6">
                   <div className="flex gap-4">
-                    <div className="w-8 h-8 flex-shrink-0 rounded-md bg-[#F3F4F6] flex items-center justify-center text-[#284138] text-base">
+                    <div className="w-8 h-8 flex-shrink-0 rounded-md flex items-center justify-center text-base" style={{ backgroundColor: '#F3F4F6', color: '#4A5D23' }}>
                       🤖
                     </div>
                     <div className="flex items-center gap-1 pt-2">
@@ -502,7 +503,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
               <div className="w-full flex justify-center mb-8">
                 <div className="max-w-[700px] w-full px-6">
                   <div className="flex gap-4">
-                    <div className="w-8 h-8 flex-shrink-0 rounded-md bg-[#F3F4F6] flex items-center justify-center text-[#284138] text-base">
+                    <div className="w-8 h-8 flex-shrink-0 rounded-md flex items-center justify-center text-base" style={{ backgroundColor: '#F3F4F6', color: '#4A5D23' }}>
                       🤖
                     </div>
                     <div className="flex items-center gap-2">
@@ -543,7 +544,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
             )}
             
             {/* Input Box - EXACT CLAUDE SPECIFICATIONS */}
-            <div className="bg-white border border-[#D1D5DB] rounded-xl p-4 flex flex-col gap-2 transition-all duration-150 focus-within:border-[#284138] focus-within:shadow-[0_0_0_3px_rgba(40,65,56,0.08)]">
+            <div className="bg-white border border-[#D1D5DB] rounded-xl p-4 flex flex-col gap-2 transition-all duration-150 focus-within:shadow-[0_0_0_3px_rgba(74,93,35,0.08)]" style={{ borderColor: '#4A5D23' }}>
               {/* Textarea - Exact specs */}
               <textarea
                 ref={textareaRef}
@@ -600,7 +601,8 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                 <button
                   onClick={sendMessage}
                   disabled={isLoading || !input.trim()}
-                  className="min-w-[80px] h-9 bg-[#284138] text-white border-none rounded-lg text-sm font-medium cursor-pointer flex items-center justify-center gap-1.5 transition-all duration-150 px-4 hover:bg-[#1f3329] hover:-translate-y-px hover:shadow-[0_4px_12px_rgba(40,65,56,0.2)] active:translate-y-0 disabled:bg-[#E5E7EB] disabled:text-[#9CA3AF] disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+                  className="min-w-[80px] h-9 text-white border-none rounded-lg text-sm font-medium cursor-pointer flex items-center justify-center gap-1.5 transition-all duration-150 px-4 hover:-translate-y-px active:translate-y-0 disabled:bg-[#E5E7EB] disabled:text-[#9CA3AF] disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none hover:opacity-90"
+                  style={{ backgroundColor: '#4A5D23' }}
                   aria-label="Send message"
                 >
                   Send <span className="text-base" aria-hidden="true">↑</span>
