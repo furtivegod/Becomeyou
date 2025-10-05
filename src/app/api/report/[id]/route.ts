@@ -39,13 +39,13 @@ export async function GET(
           <title>Report Not Ready</title>
           <style>
             body { 
-              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              font-family: 'Georgia', 'Times New Roman', serif;
               display: flex;
               align-items: center;
               justify-content: center;
               min-height: 100vh;
               margin: 0;
-              background: #f8f9fa;
+              background: #F5F1E8;
             }
             .container {
               text-align: center;
@@ -59,16 +59,17 @@ export async function GET(
               width: 64px;
               height: 64px;
               margin: 0 auto 1rem;
-              background: #e3f2fd;
+              background: #FFF3CD;
               border-radius: 50%;
               display: flex;
               align-items: center;
               justify-content: center;
+              border: 2px solid #D4AF37;
             }
-            h1 { color: #1976d2; margin-bottom: 1rem; }
-            p { color: #666; line-height: 1.6; }
+            h1 { color: #4A5D23; margin-bottom: 1rem; font-family: 'Georgia', 'Times New Roman', serif; }
+            p { color: #1A1A1A; line-height: 1.6; }
             .retry-btn {
-              background: #1976d2;
+              background: #4A5D23;
               color: white;
               border: none;
               padding: 12px 24px;
@@ -76,8 +77,9 @@ export async function GET(
               cursor: pointer;
               font-size: 16px;
               margin-top: 1rem;
+              transition: opacity 0.2s;
             }
-            .retry-btn:hover { background: #1565c0; }
+            .retry-btn:hover { opacity: 0.9; }
           </style>
         </head>
         <body>
@@ -136,13 +138,13 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
       <title>Your You 3.0 Assessment Report</title>
       <style>
         body { 
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          font-family: 'Georgia', 'Times New Roman', serif;
           line-height: 1.6;
-          color: #333;
+          color: #1A1A1A;
           max-width: 800px;
           margin: 0 auto;
           padding: 20px;
-          background: #f8f9fa;
+          background: #F5F1E8;
         }
         .container {
           background: white;
@@ -152,26 +154,31 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
         }
         .header {
           text-align: center;
-          border-bottom: 3px solid #1976d2;
+          border-bottom: 3px solid #4A5D23;
           padding-bottom: 1rem;
           margin-bottom: 2rem;
         }
-        h1 { color: #1976d2; margin-bottom: 0.5rem; }
+        h1 { 
+          color: #4A5D23; 
+          margin-bottom: 0.5rem; 
+          font-family: 'Georgia', 'Times New Roman', serif;
+        }
         .subtitle { color: #666; font-style: italic; }
         .section {
           margin-bottom: 2rem;
           padding: 1rem;
-          border-left: 4px solid #1976d2;
-          background: #f8f9fa;
+          border-left: 4px solid #4A5D23;
+          background: #F5F1E8;
         }
         .section h2 {
-          color: #1976d2;
+          color: #4A5D23;
           margin-top: 0;
-          border-bottom: 1px solid #ddd;
+          border-bottom: 1px solid #D4AF37;
           padding-bottom: 0.5rem;
+          font-family: 'Georgia', 'Times New Roman', serif;
         }
         .pdf-button {
-          background: #1976d2;
+          background: #4A5D23;
           color: white;
           border: none;
           padding: 12px 24px;
@@ -179,8 +186,9 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
           cursor: pointer;
           font-size: 16px;
           margin: 1rem 0;
+          transition: opacity 0.2s;
         }
-        .pdf-button:hover { background: #1565c0; }
+        .pdf-button:hover { opacity: 0.9; }
         .pdf-button:disabled { 
           background: #ccc; 
           cursor: not-allowed; 
@@ -189,8 +197,9 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
           text-align: center;
           margin-top: 2rem;
           padding-top: 1rem;
-          border-top: 1px solid #ddd;
+          border-top: 1px solid #4A5D23;
           color: #666;
+          background: #F5F1E8;
         }
       </style>
     </head>
@@ -219,9 +228,9 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
           <div class="section">
             <h2>Sabotage Pattern Analysis</h2>
             ${Object.entries(planData.sabotage_analysis).map(([key, value]: [string, any]) => `
-              <div style="margin: 1rem 0; padding: 1rem; background: white; border-radius: 6px;">
-                <strong>${key.replace(/_/g, ' ').toUpperCase()}:</strong><br>
-                ${value}
+              <div style="margin: 1rem 0; padding: 1rem; background: white; border-radius: 6px; border-left: 3px solid #4A5D23;">
+                <strong style="color: #4A5D23;">${key.replace(/_/g, ' ').toUpperCase()}:</strong><br>
+                <span style="color: #1A1A1A;">${value}</span>
               </div>
             `).join('')}
           </div>
@@ -232,9 +241,9 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
             <h2>Domain Breakdown</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
               ${Object.entries(planData.domain_breakdown).map(([domain, data]: [string, any]) => `
-                <div style="padding: 1rem; background: #e3f2fd; border-radius: 6px;">
-                  <strong>${domain.toUpperCase()}:</strong><br>
-                  ${data}
+                <div style="padding: 1rem; background: #FFF3CD; border-radius: 6px; border: 1px solid #D4AF37;">
+                  <strong style="color: #4A5D23;">${domain.toUpperCase()}:</strong><br>
+                  <span style="color: #1A1A1A;">${data}</span>
                 </div>
               `).join('')}
             </div>
@@ -244,7 +253,7 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
         ${planData.nervous_system_assessment ? `
           <div class="section">
             <h2>Nervous System Assessment</h2>
-            <div style="padding: 1rem; background: #fff3cd; border-radius: 6px;">
+            <div style="padding: 1rem; background: #FFF3CD; border-radius: 6px; border: 1px solid #D4AF37; color: #1A1A1A;">
               ${planData.nervous_system_assessment}
             </div>
           </div>
@@ -254,9 +263,9 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
           <div class="section">
             <h2>30-Day Recommended Protocol</h2>
             ${Object.entries(planData.thirty_day_protocol).map(([key, value]: [string, any]) => `
-              <div style="margin: 1rem 0; padding: 1rem; background: #d4edda; border-radius: 6px;">
-                <strong>${key.replace(/_/g, ' ').toUpperCase()}:</strong><br>
-                ${value}
+              <div style="margin: 1rem 0; padding: 1rem; background: #FFF3CD; border-radius: 6px; border: 1px solid #D4AF37;">
+                <strong style="color: #4A5D23;">${key.replace(/_/g, ' ').toUpperCase()}:</strong><br>
+                <span style="color: #1A1A1A;">${value}</span>
               </div>
             `).join('')}
           </div>
@@ -265,7 +274,7 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
         ${planData.bottom_line ? `
           <div class="section">
             <h2>Bottom Line</h2>
-            <div style="padding: 1rem; background: #f8d7da; border-radius: 6px; font-weight: bold;">
+            <div style="padding: 1rem; background: #FFF3CD; border-radius: 6px; border: 1px solid #D4AF37; font-weight: bold; color: #1A1A1A;">
               ${planData.bottom_line}
             </div>
           </div>
@@ -283,7 +292,7 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
 
         <div class="footer">
           <p>Generated on ${new Date().toLocaleDateString()} | Your You 3.0 Behavioral Optimization Assessment</p>
-          <p style="color: #1976d2; font-weight: bold;">📧 A downloadable PDF has been sent to your email!</p>
+          <p style="color: #4A5D23; font-weight: bold;">📧 A downloadable PDF has been sent to your email!</p>
         </div>
       </div>
 

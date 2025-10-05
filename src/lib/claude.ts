@@ -331,7 +331,7 @@ export async function generateClaudeResponse(messages: Array<{role: "user" | "as
 
     const response = await anthropic.messages.create({
       model: "claude-sonnet-4-5-20250929",
-      max_tokens: 200,
+      max_tokens: 300,
       system: SYSTEM_PROMPT,
       messages: messages
     })
@@ -355,7 +355,7 @@ export async function generateStructuredPlan(conversationHistory: string) {
     }
 
     // Truncate conversation if too long to prevent timeouts
-    const maxLength = 3000
+    const maxLength = 6000
     const truncatedHistory = conversationHistory.length > maxLength 
       ? conversationHistory.substring(0, maxLength) + '...'
       : conversationHistory
@@ -367,11 +367,13 @@ export async function generateStructuredPlan(conversationHistory: string) {
       max_tokens: 6000,
       system: `You are a professional behavioral optimization specialist. Based on the You 3.0 assessment conversation, create a comprehensive client-facing report in valid JSON format.
 
-IMPORTANT: Return ONLY valid JSON. No markdown, no explanations, no extra text. Just the JSON object.
-
-CRITICAL: All arrays (daily_actions, weekly_goals, resources, reflection_prompts, progress_markers) MUST contain actual content. Do not leave them empty or use placeholder text.
-
-REQUIRED: Every field in the JSON structure must be populated with meaningful, personalized content based on the client's responses. No empty strings or generic placeholders.
+CRITICAL INSTRUCTIONS:
+1. Return ONLY valid JSON. No markdown, no explanations, no extra text, no commentary.
+2. Start your response with { and end with }
+3. Do not include any text before or after the JSON object
+4. All arrays (daily_actions, weekly_goals, resources, reflection_prompts, progress_markers) MUST contain actual content
+5. Every field must be populated with meaningful, personalized content based on the client's responses
+6. No empty strings or generic placeholders allowed
 
 Format:
 {
@@ -501,13 +503,20 @@ FINAL CHECK: Ensure every field contains meaningful, personalized content. No em
       jsonString = jsonString.replace(/^```\s*/, '').replace(/\s*```$/, '')
     }
     
-    // Try to find the JSON object
+    // Try to find the JSON object - look for the first complete JSON object
     const jsonMatch = jsonString.match(/\{[\s\S]*\}/)
     if (jsonMatch) {
       jsonString = jsonMatch[0]
+    } else {
+      // If no JSON object found, try to find JSON array
+      const arrayMatch = jsonString.match(/\[[\s\S]*\]/)
+      if (arrayMatch) {
+        jsonString = arrayMatch[0]
+      }
     }
     
     console.log('Cleaned JSON string length:', jsonString.length)
+    console.log('First 200 chars of cleaned JSON:', jsonString.substring(0, 200))
     
     try {
       const planData = JSON.parse(jsonString)

@@ -550,7 +550,6 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           <div class="brand-logo">
             <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" />
           </div>
-          <div class="brand-tagline">LIVE INSPIRED</div>
           <div class="brand-line"></div>
         </div>
         
