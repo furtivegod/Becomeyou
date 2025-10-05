@@ -121,7 +121,7 @@ export async function sendMagicLink(email: string, sessionId: string) {
   }
 }
 
-export async function sendReportEmail(email: string, pdfUrl: string, pdfBuffer?: Buffer) {
+export async function sendReportEmail(email: string, pdfUrl: string, pdfBuffer?: Buffer, planData?: any) {
   console.log('Sending report email to:', email)
   
   if (!process.env.RESEND_API_KEY) {
@@ -131,27 +131,97 @@ export async function sendReportEmail(email: string, pdfUrl: string, pdfBuffer?:
   try {
     console.log('Sending email via Resend...')
     
+    // Extract user's name from email (first part before @)
+    const userName = email.split('@')[0].split('.').map(part => 
+      part.charAt(0).toUpperCase() + part.slice(1)
+    ).join(' ')
+    
+    // Generate personalized P.S. based on assessment data
+    let personalizedPS = ''
+    if (planData) {
+      const sabotageAnalysis = planData.sabotage_analysis
+      const domainBreakdown = planData.domain_breakdown
+      
+      if (sabotageAnalysis?.protective_pattern) {
+        personalizedPS = `You mentioned "${sabotageAnalysis.protective_pattern.substring(0, 50)}...". If you want help designing the environment and structure that makes change automatic instead of exhausting, [book a call].`
+      } else if (planData.thirty_day_protocol?.thirty_day_approach) {
+        personalizedPS = `You're building toward your transformation goals. If you want to map out how your patterns are affecting your momentum, [book a call].`
+      } else if (domainBreakdown?.spirit) {
+        personalizedPS = `You shared insights about your spiritual connection. If you want to understand how your protective patterns show up in your closest relationships, [book a call].`
+      } else if (domainBreakdown?.body) {
+        personalizedPS = `You described your relationship with your body. If you want to rebuild that connection without force or punishment, [book a call].`
+      } else {
+        personalizedPS = `Your assessment revealed important patterns. If you want to understand how these patterns are affecting your progress, [book a call].`
+      }
+    }
+    
     const emailData: any = {
       from: 'Become You <noreply@becomeyou.ai>',
       to: [email],
-      subject: 'Your Personalized 30-Day Protocol is Ready!',
+      subject: 'Your You 3.0 roadmap is ready',
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h1 style="color: #007bff; text-align: center;">Your Protocol is Ready!</h1>
-          
-          <p style="font-size: 18px; color: #333; text-align: center; margin: 30px 0;">
-            Your personalized 30-day transformation protocol has been generated and is attached to this email.
-          </p>
-          
-          <div style="text-align: center; margin: 40px 0;">
-            <p style="color: #007bff; font-size: 16px; font-weight: bold;">
-              📎 Your personalized protocol is attached as a PDF file
-            </p>
+        <div style="font-family: 'Georgia', 'Times New Roman', serif; max-width: 600px; margin: 0 auto; background-color: #F5F1E8;">
+          <!-- Header Section -->
+          <div style="background-color: white; padding: 40px 20px 30px 20px; text-align: center;">
+            <!-- Logo -->
+            <div style="margin-bottom: 40px;">
+              <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 100px; width: auto;" />
+            </div>
+            <!-- Green Line -->
+            <div style="height: 3px; background-color: #4A5D23; width: 200px; margin: 0 auto;"></div>
           </div>
           
-          <p style="color: #666; font-size: 14px; text-align: center; margin-top: 30px;">
-            Download the attachment to view your complete 30-day transformation plan.
-          </p>
+          <!-- Body Section -->
+          <div style="background-color: #F5F1E8; padding: 40px 20px;">
+            <!-- Main Content -->
+            <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: Arial, sans-serif;">
+              <strong>${userName},</strong><br><br>
+              Your complete assessment is attached.
+            </p>
+            
+            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: Arial, sans-serif;">
+              Before you read it, know this: Everything in that report—every pattern, every protective 
+              mechanism, every stuck point—made perfect sense at the time it formed. Your nervous system 
+              has been doing exactly what it was designed to do: keep you safe.
+            </p>
+            
+            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: Arial, sans-serif;">
+              The question now is: Are those same strategies still serving you, or is it time to update them?
+            </p>
+            
+            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: Arial, sans-serif;">
+              Read it when you're ready. Then take the 72-hour action.
+            </p>
+            
+            <p style="font-size: 16px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: Arial, sans-serif;">
+              Your Teammate,<br>
+              <strong style="color: #4A5D23;">Matthew</strong>
+            </p>
+            
+            ${personalizedPS ? `
+            <div style="background-color: #FFF3CD; border: 1px solid #D4AF37; padding: 20px; border-radius: 8px; margin: 30px 0;">
+              <p style="color: #856404; font-size: 14px; margin: 0; font-family: Arial, sans-serif;">
+                <strong>P.S.</strong> ${personalizedPS}
+              </p>
+            </div>
+            ` : ''}
+            
+            <!-- PDF Attachment Notice -->
+            <div style="text-align: center; margin: 40px 0;">
+              <div style="background-color: white; padding: 25px; border-radius: 8px; border: 2px solid #4A5D23;">
+                <p style="color: #4A5D23; font-size: 18px; font-weight: bold; margin: 0; font-family: Arial, sans-serif;">
+                  📎 Your personalized protocol is attached as a PDF file
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Footer -->
+          <div style="background-color: #F5F1E8; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
+            <p style="color: #666; font-size: 12px; margin: 0; font-family: Arial, sans-serif;">
+              Need support? Contact us at support@becomeyou.ai
+            </p>
+          </div>
         </div>
       `
     }

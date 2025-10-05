@@ -34,7 +34,7 @@ export default function SuccessPage() {
                 </strong>
               </p>
               <div className="rounded-lg p-4 text-sm" style={{ backgroundColor: '#FFF3CD' }}>
-                <p style={{ color: '#1A1A1A' }}><strong>Subject line:</strong> "Your You 3.0 Assessment Link – Start Now"</p>
+                <p style={{ color: '#1A1A1A' }}><strong>Subject line:</strong> "Your You 3.0 Assessment Link – Ready to Begin"</p>
                 <p style={{ color: '#1A1A1A' }}><strong>From:</strong> becomeyou.ai</p>
               </div>
               <p className="text-sm" style={{ color: '#666' }}>

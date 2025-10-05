@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
     // Send email with PDF
     console.log('Sending report email with PDF attachment')
     try {
-      await sendReportEmail(userData.email, pdfUrl, pdfBuffer)
+      await sendReportEmail(userData.email, pdfUrl, pdfBuffer, planData)
       console.log('Report email sent successfully')
     } catch (emailError) {
       console.error('Error sending email:', emailError)
