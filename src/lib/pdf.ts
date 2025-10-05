@@ -319,7 +319,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>${planData.title || 'You 3.0 Assessment Report'}</title>
       <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
         
         * {
           margin: 0;
@@ -393,7 +393,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         }
         
         .assessment-title h1 {
-          font-family: 'Playfair Display', serif;
+          font-family: 'Crimson Text', serif;
           font-size: 2.2em;
           font-weight: 700;
           color: #4A5D23;
@@ -406,7 +406,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         }
         
         .client-line {
-          font-family: 'Playfair Display', serif;
+          font-family: 'Crimson Text', serif;
           font-size: 1.6em;
           font-weight: 400;
           color: #1A1A1A;
@@ -424,7 +424,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         }
         
         .disclaimer-box p {
-          font-family: 'Playfair Display', serif;
+          font-family: 'Crimson Text', serif;
           font-style: normal;
           font-size: 1.2em;
           color: #856404;
@@ -441,7 +441,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         /* Content wrapper no longer needed - PDFShift handles footer */
         
         .section-title {
-          font-family: 'Playfair Display', serif;
+          font-family: 'Crimson Text', serif;
           font-size: 3.2em;
           font-weight: 700;
           color: #4A5D23;
@@ -539,36 +539,6 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         
         
         
-        /* Motivational Message Page */
-        .motivational-container {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          min-height: 60vh;
-          padding: 40px;
-        }
-        
-        .motivational-box {
-          background: #FFF3CD;
-          padding: 40px;
-          border-radius: 8px;
-          border: 1px solid #D4AF37;
-          max-width: 600px;
-          text-align: left;
-        }
-        
-        .motivational-box p {
-          font-family: 'Playfair Display', serif;
-          font-size: 1.1em;
-          color: #856404;
-          line-height: 1.6;
-          margin: 0;
-        }
-        
-        .motivational-box em {
-          font-style: italic;
-          font-weight: 600;
-        }
       </style>
     </head>
     <body>
@@ -578,7 +548,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         <div class="brand-header">
           <div class="brand-line"></div>
           <div class="brand-logo">
-            <img src="${process.env.NEXT_PUBLIC_APP_URL ? `https://${process.env.NEXT_PUBLIC_APP_URL}` : 'http://localhost:3000'}/logo.png" alt="Become You Logo" />
+            <img src="https://${process.env.NEXT_PUBLIC_APP_URL || 'localhost:3000'}/logo.png" alt="Become You Logo" />
           </div>
           <div class="brand-tagline">LIVE INSPIRED</div>
           <div class="brand-line"></div>
@@ -1000,17 +970,6 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
       </div>
 
 
-      <!-- Motivational Message Page -->
-      <div class="page page-break">
-        <div class="content-wrapper">
-          <div class="motivational-container">
-            <div class="motivational-box">
-              <p>This assessment was built with care, respect, and the belief that you already have everything you need to become the person you described. The only thing left to do is <em>take action</em>.</p>
-            </div>
-          </div>
-        
-        <!-- Footer handled by PDFShift natively -->
-      </div>
     </body>
     </html>
   `
