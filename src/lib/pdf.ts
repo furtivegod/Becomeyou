@@ -12,7 +12,9 @@ export interface PlanData {
     how_it_serves_you?: string
     go_to_patterns?: string
     success_proof?: string
+    anchor?: string
   }
+  in_the_moment_reset?: string
   domain_breakdown?: {
     mind?: string
     body?: string
@@ -30,6 +32,7 @@ export interface PlanData {
     weekly_goals?: string[]
   }
   reminder_quote?: string
+  development_reminders?: string[]
   book_recommendations?: string[]
   resources?: string[]
   reflection_prompts?: string[]
@@ -251,6 +254,10 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
   const howItServesYou = sabotageAnalysis.how_it_serves_you || 'These patterns provide you with safety and comfort in difficult situations.'
   const goToPatterns = sabotageAnalysis.go_to_patterns || 'Your current patterns help you navigate daily life and challenges.'
   const successProof = sabotageAnalysis.success_proof || 'You\'ve demonstrated the ability to overcome challenges in the past.'
+  const anchor = sabotageAnalysis.anchor || 'You have existing habits that provide stability and can be leveraged for growth.'
+  
+  // Extract in-the-moment reset
+  const inTheMomentReset = planData.in_the_moment_reset || 'When you notice the pattern starting, pause and take 3 deep breaths—in for 4 counts, hold for 4, out for 6. Then ask yourself: "What\'s one small thing I can do right now that moves me forward instead of away?"'
   
   // Extract domain breakdown
   const domainBreakdown = planData.domain_breakdown || {}
@@ -293,6 +300,16 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
   const reflectionPrompts = Array.isArray(planData.reflection_prompts) 
     ? planData.reflection_prompts 
     : ['What was one moment today where I felt truly aligned with my values?', 'What pattern did I notice in myself today, and how did I respond?']
+  
+  const developmentReminders = Array.isArray(planData.development_reminders) 
+    ? planData.development_reminders 
+    : [
+        'Growth is cyclical; regression is protection, not failure',
+        'Integration comes through consistent practice, not more awareness',
+        'Your nervous system is the foundation — regulate first, then grow',
+        'Your sabotage patterns have wisdom - honor them while updating them',
+        'Identity shifts over time with deliberate practice'
+      ]
 
   return `
     <!DOCTYPE html>
@@ -627,6 +644,18 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="domain-item">
               <strong>Your Success Proof:</strong> ${successProof}
             </div>
+            
+            <div class="domain-item">
+              <strong>Your Anchor:</strong> ${anchor}
+            </div>
+          </div>
+          
+          <!-- In-the-Moment Reset -->
+          <div class="section">
+            <div class="section-title">Your In-the-Moment Reset</div>
+            <div class="domain-item">
+              ${inTheMomentReset}
+            </div>
           </div>
         
         <!-- Footer handled by PDFShift natively -->
@@ -835,12 +864,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             
             <div class="content">
               <ul>
-                <li>Growth is cyclical; regression is protection, not failure</li>
-                <li>Integration comes through consistent practice, not more awareness</li>
-                <li>Your nervous system is the foundation—regulate first, then grow</li>
-                <li>Your sabotage patterns have wisdom; honor them while updating them</li>
-                <li>Identity shifts over time with deliberate practice</li>
-                <li>You're not broken—you're context-dependent. Build better contexts.</li>
+                ${developmentReminders.map(reminder => `<li>${reminder}</li>`).join('')}
               </ul>
             </div>
           </div>

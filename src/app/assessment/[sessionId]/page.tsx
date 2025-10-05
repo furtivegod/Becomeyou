@@ -51,10 +51,31 @@ export default function AssessmentPage({ params, searchParams }: AssessmentPageP
     return () => { isMounted = false }
   }, [searchParams.token, sessionId])
 
-  const handleComplete = () => {
+  const handleComplete = async () => {
     setIsComplete(true)
+    
+    // Trigger report generation
+    try {
+      const response = await fetch('/api/report/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ sessionId })
+      })
+      
+      if (response.ok) {
+        console.log('Report generation triggered successfully')
+      } else {
+        console.error('Failed to trigger report generation')
+      }
+    } catch (error) {
+      console.error('Error triggering report generation:', error)
+    }
+    
+    // Show completion message for 3 seconds
     setTimeout(() => {
-      router.push(`/api/report/${sessionId}`)
+      // Could redirect to a success page or show a message
     }, 3000)
   }
 
