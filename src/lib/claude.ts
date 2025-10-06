@@ -390,24 +390,58 @@ Format:
 {
   "title": "You 3.0 Behavioral Optimization Assessment Report",
   "overview": "Brief description of what this assessment revealed",
-  "assessment_overview": "Short paragraph framing what this assessment revealed about them in plain English",
-  "development_profile": "Personalized summary paragraph that reflects their words/patterns back with one powerful quote from them",
+  "assessment_overview": "Short paragraph that frames what this assessment just revealed about them in plain English;
+                          Example: "You've been carrying strategies that once kept you safe, but now keep you stuck. Today you've uncovered not just the patterns, but why they exist and how they've been protecting you. The good news? Change is possible because now you can see the whole picture clearly. More importantly, you already have proof you can do this."",
+  "development_profile": "Personalized summary paragraph that reflects their words/patterns back;  
+                          Tone: empathetic, intimate, almost like a mirror ;
+                          One powerful quote from them to deepen the "you've been heard" effect",
   "sabotage_analysis": {
-    "protective_pattern": "Their main self-sabotage behavior in their words with stress trigger context",
+    "protective_pattern": "Their main self-sabotage behavior in their words]
+                          "This pattern shows up most when [their specific stress trigger from their answers]. When you 
+                          notice it starting, you'll likely feel [the emotion they're protecting themselves from] first—that's 
+                          your early warning signal. The faster you catch it, the faster you can choose differently.",
     "what_its_protecting_from": "The feelings/emotions they're avoiding experiencing",
     "how_it_serves_you": "Secondary gains in plain language",
     "go_to_patterns": "Their current reward patterns and digital habits in their words",
     "success_proof": "Times they've overcome it, however briefly",
     "anchor": "Their strongest existing habit that never breaks"
   },
-  "in_the_moment_reset": "When you notice the pattern starting, pause and take 3 deep breaths—in for 4 counts, hold for 4, out for 6. Then ask yourself: 'What's one small thing I can do right now that moves me forward instead of away?'",
+  "in_the_moment_reset": "When you notice the pattern starting, pause and take 3 deep breaths—in for 4 counts, hold for 4, 
+                          out for 6. Then ask yourself: 'What's one small thing I can do right now that moves me forward 
+                          instead of away?' It won't stop the pattern completely at first, but it creates the gap where choice 
+                          becomes possible.",
   "domain_breakdown": {
-    "mind": "Current level (Foundation/Exploration/Mastery), current phase (Friction/Experimentation/Integration), key strengths with specific examples, growth opportunities framed as what's in reach",
-    "body": "Current level (Foundation/Exploration/Mastery), current phase (Friction/Experimentation/Integration), key strengths with specific examples, growth opportunities framed as what's in reach", 
-    "spirit": "Current level (Foundation/Exploration/Mastery), current phase (Friction/Experimentation/Integration), key strengths with specific examples, growth opportunities framed as what's in reach",
-    "contribution": "Current level (Foundation/Exploration/Mastery), current phase (Friction/Experimentation/Integration), key strengths with specific examples, growth opportunities framed as what's in reach"
+    "mind": {
+      "current_level": "Current level (Foundation/Exploration/Mastery)",
+      "current_phase": "Current phase (Friction/Experimentation/Integration)",
+      "key_strengths": "key strengths with specific examples",
+      "growth_opportunities": "growth opportunities framed as what's in reach"
+    },
+    "body": {
+      "current_level": "Current level (Foundation/Exploration/Mastery)",
+      "current_phase": "Current phase (Friction/Experimentation/Integration)",
+      "key_strengths": "key strengths with specific examples",
+      "growth_opportunities": "growth opportunities framed as what's in reach"
+    },
+    "spirit": {
+      "current_level": "Current level (Foundation/Exploration/Mastery)",
+      "current_phase": "Current phase (Friction/Experimentation/Integration)",
+      "key_strengths": "key strengths with specific examples",
+      "growth_opportunities": "growth opportunities framed as what's in reach"
+    },
+    "contribution": {
+      "current_level": "Current level (Foundation/Exploration/Mastery)",
+      "current_phase": "Current phase (Friction/Experimentation/Integration)",
+      "key_strengths": "key strengths with specific examples",
+      "growth_opportunities": "growth opportunities framed as what's in reach"
+    }
   },
-  "nervous_system_assessment": "Primary state in plain language, regulation capacity (Natural/Developing/Needs Support), observable patterns with client's exact quotes, regulation reality explanation",
+  "nervous_system_assessment": {
+    "primary_state": "Primary state in plain language",
+    "regulation_capacity": "regulation capacity (Natural/Developing/Needs Support)",
+    "observable_patterns": "observable patterns with client's exact quotes",
+    "regulation_reality": "regulation reality explanation"
+  },
   "thirty_day_protocol": {
     "seventy_two_hour_suggestion": "One specific action anchored to their strongest existing habit and sized to their current state",
     "weekly_recommendation": "One suggested recurring practice that leverages their environment and support system",

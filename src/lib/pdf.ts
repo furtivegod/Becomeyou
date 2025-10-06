@@ -16,12 +16,37 @@ export interface PlanData {
   }
   in_the_moment_reset?: string
   domain_breakdown?: {
-    mind?: string
-    body?: string
-    spirit?: string
-    contribution?: string
+    mind?: {
+      current_level?: string
+      current_phase?: string
+      key_strengths?: string
+      growth_opportunities?: string
+    }
+    body?: {
+      current_level?: string
+      current_phase?: string
+      key_strengths?: string
+      growth_opportunities?: string
+    }
+    spirit?: {
+      current_level?: string
+      current_phase?: string
+      key_strengths?: string
+      growth_opportunities?: string
+    }
+    contribution?: {
+      current_level?: string
+      current_phase?: string
+      key_strengths?: string
+      growth_opportunities?: string
+    }
   }
-  nervous_system_assessment?: string
+  nervous_system_assessment?: {
+    primary_state?: string
+    regulation_capacity?: string
+    observable_patterns?: string
+    regulation_reality?: string
+  }
   thirty_day_protocol?: {
     seventy_two_hour_suggestion?: string
     weekly_recommendation?: string
@@ -259,15 +284,40 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
   // Extract in-the-moment reset
   const inTheMomentReset = planData.in_the_moment_reset || 'When you notice the pattern starting, pause and take 3 deep breaths—in for 4 counts, hold for 4, out for 6. Then ask yourself: "What\'s one small thing I can do right now that moves me forward instead of away?"'
   
-  // Extract domain breakdown
+  // Extract domain breakdown with new nested structure
   const domainBreakdown = planData.domain_breakdown || {}
-  const mindDomain = domainBreakdown.mind || 'Your mental approach shows both strengths and areas for development.'
-  const bodyDomain = domainBreakdown.body || 'Your relationship with your physical self has both supportive and challenging aspects.'
-  const spiritDomain = domainBreakdown.spirit || 'Your spiritual and relational connections provide both support and growth opportunities.'
-  const contributionDomain = domainBreakdown.contribution || 'Your approach to work and contribution shows both current capabilities and potential for expansion.'
+  const mindDomain = domainBreakdown.mind || {
+    current_level: 'Your mental approach shows both strengths and areas for development.',
+    current_phase: 'Your current phase of development.',
+    key_strengths: 'Your key mental strengths and capabilities.',
+    growth_opportunities: 'Areas where you can grow and develop further.'
+  }
+  const bodyDomain = domainBreakdown.body || {
+    current_level: 'Your relationship with your physical self has both supportive and challenging aspects.',
+    current_phase: 'Your current phase of physical development.',
+    key_strengths: 'Your key physical strengths and capabilities.',
+    growth_opportunities: 'Areas where you can grow and develop further.'
+  }
+  const spiritDomain = domainBreakdown.spirit || {
+    current_level: 'Your spiritual and relational connections provide both support and growth opportunities.',
+    current_phase: 'Your current phase of spiritual development.',
+    key_strengths: 'Your key spiritual strengths and capabilities.',
+    growth_opportunities: 'Areas where you can grow and develop further.'
+  }
+  const contributionDomain = domainBreakdown.contribution || {
+    current_level: 'Your approach to work and contribution shows both current capabilities and potential for expansion.',
+    current_phase: 'Your current phase of contribution development.',
+    key_strengths: 'Your key contribution strengths and capabilities.',
+    growth_opportunities: 'Areas where you can grow and develop further.'
+  }
   
-  // Extract nervous system assessment
-  const nervousSystemAssessment = planData.nervous_system_assessment || 'Your nervous system shows patterns of both activation and regulation that we can work with.'
+  // Extract nervous system assessment with new structure
+  const nervousSystemAssessment = planData.nervous_system_assessment || {
+    primary_state: 'Your nervous system shows patterns of both activation and regulation that we can work with.',
+    regulation_capacity: 'Your capacity for regulation and self-regulation.',
+    observable_patterns: 'Patterns you can observe in your nervous system responses.',
+    regulation_reality: 'The reality of your nervous system regulation capabilities.'
+  }
   
   // Extract 30-day protocol
   const thirtyDayProtocol = planData.thirty_day_protocol || {}
@@ -643,25 +693,31 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="section-title">Domain Breakdown</div>
             <div class="domain-title">MIND</div>
             
-            <div class="domain-breakdown-content">
-              <div class="domain-breakdown-item">
-                <strong>Current Level:</strong> ${mindDomain}
+            <div class="main-section">
+              <div class="main-section-title">Current Level</div>
+              <div class="content-enhanced">
+                ${mindDomain.current_level}
               </div>
-              
-              <div class="domain-breakdown-item">
-                <strong>Current Phase:</strong> ${mindDomain}
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">Current Phase</div>
+              <div class="content-enhanced">
+                ${mindDomain.current_phase}
               </div>
-              
-              <div class="domain-breakdown-item">
-                <strong>Key Strengths:</strong> ${mindDomain}
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">Key Strengths</div>
+              <div class="content-enhanced">
+                ${mindDomain.key_strengths}
               </div>
-              
-              <div class="domain-breakdown-item">
-                <strong>Here's what you're already proving works:</strong> ${mindDomain}
-              </div>
-              
-              <div class="domain-breakdown-item">
-                <strong>Growth Opportunities:</strong> ${mindDomain}
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">Growth Opportunities</div>
+              <div class="content-enhanced">
+                ${mindDomain.growth_opportunities}
               </div>
             </div>
           </div>
@@ -675,25 +731,31 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="section-title">Domain Breakdown</div>
             <div class="domain-title">BODY</div>
             
-            <div class="domain-breakdown-content">
-              <div class="domain-breakdown-item">
-                <strong>Current Level:</strong> ${bodyDomain}
+            <div class="main-section">
+              <div class="main-section-title">Current Level</div>
+              <div class="content-enhanced">
+                ${bodyDomain.current_level}
               </div>
-              
-              <div class="domain-breakdown-item">
-                <strong>Current Phase:</strong> ${bodyDomain}
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">Current Phase</div>
+              <div class="content-enhanced">
+                ${bodyDomain.current_phase}
               </div>
-              
-              <div class="domain-breakdown-item">
-                <strong>Key Strengths:</strong> ${bodyDomain}
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">Key Strengths</div>
+              <div class="content-enhanced">
+                ${bodyDomain.key_strengths}
               </div>
-              
-              <div class="domain-breakdown-item">
-                <strong>Here's what you're already proving works:</strong> ${bodyDomain}
-              </div>
-              
-              <div class="domain-breakdown-item">
-                <strong>Growth Opportunities:</strong> ${bodyDomain}
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">Growth Opportunities</div>
+              <div class="content-enhanced">
+                ${bodyDomain.growth_opportunities}
               </div>
             </div>
           </div>
@@ -707,25 +769,31 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="section-title">Domain Breakdown</div>
             <div class="domain-title">SPIRIT & RELATIONSHIPS</div>
             
-            <div class="domain-breakdown-content">
-              <div class="domain-breakdown-item">
-                <strong>Current Level:</strong> ${spiritDomain}
+            <div class="main-section">
+              <div class="main-section-title">Current Level</div>
+              <div class="content-enhanced">
+                ${spiritDomain.current_level}
               </div>
-              
-              <div class="domain-breakdown-item">
-                <strong>Current Phase:</strong> ${spiritDomain}
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">Current Phase</div>
+              <div class="content-enhanced">
+                ${spiritDomain.current_phase}
               </div>
-              
-              <div class="domain-breakdown-item">
-                <strong>Key Strengths:</strong> ${spiritDomain}
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">Key Strengths</div>
+              <div class="content-enhanced">
+                ${spiritDomain.key_strengths}
               </div>
-              
-              <div class="domain-breakdown-item">
-                <strong>Here's what you're already proving works:</strong> ${spiritDomain}
-              </div>
-              
-              <div class="domain-breakdown-item">
-                <strong>Growth Opportunities:</strong> ${spiritDomain}
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">Growth Opportunities</div>
+              <div class="content-enhanced">
+                ${spiritDomain.growth_opportunities}
               </div>
             </div>
           </div>
@@ -739,25 +807,31 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="section-title">Domain Breakdown</div>
             <div class="domain-title">CONTRIBUTION</div>
             
-            <div class="domain-breakdown-content">
-              <div class="domain-breakdown-item">
-                <strong>Current Level:</strong> ${contributionDomain}
+            <div class="main-section">
+              <div class="main-section-title">Current Level</div>
+              <div class="content-enhanced">
+                ${contributionDomain.current_level}
               </div>
-              
-              <div class="domain-breakdown-item">
-                <strong>Current Phase:</strong> ${contributionDomain}
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">Current Phase</div>
+              <div class="content-enhanced">
+                ${contributionDomain.current_phase}
               </div>
-              
-              <div class="domain-breakdown-item">
-                <strong>Key Strengths:</strong> ${contributionDomain}
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">Key Strengths</div>
+              <div class="content-enhanced">
+                ${contributionDomain.key_strengths}
               </div>
-              
-              <div class="domain-breakdown-item">
-                <strong>Here's what you're already proving works:</strong> ${contributionDomain}
-              </div>
-              
-              <div class="domain-breakdown-item">
-                <strong>Growth Opportunities:</strong> ${contributionDomain}
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">Growth Opportunities</div>
+              <div class="content-enhanced">
+                ${contributionDomain.growth_opportunities}
               </div>
             </div>
           </div>
@@ -771,8 +845,33 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
       <div class="page page-break">
         <div class="section">
             <div class="section-title">Nervous System Assessment</div>
-            <div class="content">
-              <p>${nervousSystemAssessment}</p>
+            
+            <div class="main-section">
+              <div class="main-section-title">Primary State</div>
+              <div class="content-enhanced">
+                ${nervousSystemAssessment.primary_state}
+              </div>
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">Regulation Capacity</div>
+              <div class="content-enhanced">
+                ${nervousSystemAssessment.regulation_capacity}
+              </div>
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">Observable Patterns</div>
+              <div class="content-enhanced">
+                ${nervousSystemAssessment.observable_patterns}
+              </div>
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">Your Regulation Reality</div>
+              <div class="content-enhanced">
+                ${nervousSystemAssessment.regulation_reality}
+              </div>
             </div>
           </div>
         
@@ -782,27 +881,61 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
       <!-- 30-Day Protocol -->
       <div class="page page-break">
         <div class="section">
-            <div class="section-title">30-Day Recommend Growth Protocol</div>
-            <div class="content">
-              <p><strong>72-Hour Suggestion:</strong> ${seventyTwoHourSuggestion}</p>
-              <p><strong>Weekly Recommendation:</strong> ${weeklyRecommendation}</p>
-              <p><strong>30-Day Approach:</strong> ${thirtyDayApproach}</p>
-              <p><strong>Environmental Optimization:</strong> ${environmentalOptimization}</p>
-              
-              <p><strong>Suggested Progress Markers:</strong></p>
-              <ol>
-                ${progressMarkers.map(marker => `<li>${marker}</li>`).join('')}
-              </ol>
-              
-              <p><strong>Daily Actions:</strong></p>
-              <ol>
-                ${dailyActions.map(action => `<li>${action}</li>`).join('')}
-              </ol>
-              
-              <p><strong>Weekly Goals:</strong></p>
-              <ol>
-                ${weeklyGoals.map(goal => `<li>${goal}</li>`).join('')}
-              </ol>
+            <div class="section-title">30-Day Recommended Growth Protocol</div>
+            
+            <div class="main-section">
+              <div class="main-section-title">72-Hour Suggestion</div>
+              <div class="content-enhanced">
+                ${seventyTwoHourSuggestion}
+              </div>
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">Weekly Recommendation</div>
+              <div class="content-enhanced">
+                ${weeklyRecommendation}
+              </div>
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">30-Day Approach</div>
+              <div class="content-enhanced">
+                ${thirtyDayApproach}
+              </div>
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">Environmental Optimization</div>
+              <div class="content-enhanced">
+                ${environmentalOptimization}
+              </div>
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">Suggested Progress Markers</div>
+              <div class="content-enhanced">
+                <ul class="bullet-list">
+                  ${progressMarkers.map(marker => `<li>${marker}</li>`).join('')}
+                </ul>
+              </div>
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">Daily Actions</div>
+              <div class="content-enhanced">
+                <ul class="bullet-list">
+                  ${dailyActions.map(action => `<li>${action}</li>`).join('')}
+                </ul>
+              </div>
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">Weekly Goals</div>
+              <div class="content-enhanced">
+                <ul class="bullet-list">
+                  ${weeklyGoals.map(goal => `<li>${goal}</li>`).join('')}
+                </ul>
+              </div>
             </div>
           </div>
         
@@ -838,8 +971,8 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         <div class="section">
             <div class="section-title">Development Reminders</div>
             
-            <div class="content">
-              <ul>
+            <div class="content-enhanced">
+              <ul class="bullet-list">
                 ${developmentReminders.map(reminder => `<li>${reminder}</li>`).join('')}
               </ul>
             </div>
@@ -853,10 +986,10 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         <div class="section">
             <div class="section-title">Book Recommendations</div>
             
-            <div class="content">
-              <ol>
+            <div class="content-enhanced">
+              <ul class="bullet-list">
                 ${bookRecommendations.map(book => `<li><strong>${book}</strong></li>`).join('')}
-              </ol>
+              </ul>
             </div>
           </div>
         
@@ -881,10 +1014,10 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
                 <div class="section">
                   <div class="section-title">Resources ${totalPages > 1 ? `(Part ${page + 1} of ${totalPages})` : ''}</div>
                   
-                  <div class="content">
-                    <ol start="${startIndex + 1}">
+                  <div class="content-enhanced">
+                    <ul class="bullet-list">
                       ${pageResources.map(resource => `<li>${resource}</li>`).join('')}
-                    </ol>
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -912,10 +1045,10 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
                 <div class="section">
                   <div class="section-title">Reflection Prompts ${totalPages > 1 ? `(Part ${page + 1} of ${totalPages})` : ''}</div>
                   
-                  <div class="content">
-                    <ol start="${startIndex + 1}">
+                  <div class="content-enhanced">
+                    <ul class="bullet-list">
                       ${pagePrompts.map(prompt => `<li>${prompt}</li>`).join('')}
-                    </ol>
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -931,26 +1064,33 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         <div class="section">
             <div class="section-title">Next Steps</div>
             
-            <div class="content">
-              <div class="protocol-section">
-                <div class="protocol-item">
-                  <strong>6-Month Follow-Up Assessment Recommended:</strong> ${planData.next_assessment?.six_month_followup || 'Personalized timeline and expected progress tracking'}
-                </div>
-                
-                <div class="protocol-item">
-                  <strong>Monthly Check-In Options:</strong> ${planData.next_assessment?.monthly_checkin || 'Brief progress reviews to track your development'}
-                </div>
-                
-                <div class="protocol-item">
-                  <strong>Focus Areas for Next Phase:</strong>
-                  <ol>
-                    ${(planData.next_assessment?.focus_areas || ['Focus Area 1', 'Focus Area 2', 'Focus Area 3', 'Focus Area 4']).map(area => `<li>${area}</li>`).join('')}
-                  </ol>
-                </div>
-                
-                <div class="protocol-item">
-                  <strong>How to Stay Connected:</strong> ${planData.next_assessment?.stay_connected || 'Newsletter signup, community links, and ongoing support resources'}
-                </div>
+            <div class="main-section">
+              <div class="main-section-title">6-Month Follow-Up Assessment Recommended</div>
+              <div class="content-enhanced">
+                ${planData.next_assessment?.six_month_followup || 'Personalized timeline and expected progress tracking'}
+              </div>
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">Monthly Check-In Options</div>
+              <div class="content-enhanced">
+                ${planData.next_assessment?.monthly_checkin || 'Brief progress reviews to track your development'}
+              </div>
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">Focus Areas for Next Phase</div>
+              <div class="content-enhanced">
+                <ul class="bullet-list">
+                  ${(planData.next_assessment?.focus_areas || ['Focus Area 1', 'Focus Area 2', 'Focus Area 3', 'Focus Area 4']).map(area => `<li>${area}</li>`).join('')}
+                </ul>
+              </div>
+            </div>
+            
+            <div class="main-section">
+              <div class="main-section-title">How to Stay Connected</div>
+              <div class="content-enhanced">
+                ${planData.next_assessment?.stay_connected || 'Newsletter signup, community links, and ongoing support resources'}
               </div>
             </div>
           </div>
