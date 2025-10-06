@@ -23,57 +23,57 @@ export default function SuccessPage() {
           </p>
 
           {/* Email Confirmation */}
-          <div className="bg-white rounded-lg shadow-lg p-8 mb-12">
-            <h2 className="text-2xl font-semibold mb-6" style={{ color: '#4A5D23', fontFamily: 'Georgia, Times New Roman, serif' }}>
+          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 lg:p-8 mb-8 sm:mb-12">
+            <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6" style={{ color: '#4A5D23', fontFamily: 'Georgia, Times New Roman, serif' }}>
               📧 Check Your Email Right Now
             </h2>
-            <div className="text-left space-y-4">
-              <p style={{ color: '#1A1A1A' }}>
+            <div className="text-left space-y-3 sm:space-y-4">
+              <p className="text-sm sm:text-base" style={{ color: '#1A1A1A' }}>
                 We've sent your assessment link to <strong>
                   {isLoading ? '...' : userEmail}
                 </strong>
               </p>
-              <div className="rounded-lg p-4 text-sm" style={{ backgroundColor: '#FFF3CD' }}>
+              <div className="rounded-lg p-3 sm:p-4 text-xs sm:text-sm" style={{ backgroundColor: '#FFF3CD' }}>
                 <p style={{ color: '#1A1A1A' }}><strong>Subject line:</strong> "Your You 3.0 Assessment Link – Ready to Begin"</p>
                 <p style={{ color: '#1A1A1A' }}><strong>From:</strong> becomeyou.ai</p>
               </div>
-              <p className="text-sm" style={{ color: '#666' }}>
+              <p className="text-xs sm:text-sm" style={{ color: '#666' }}>
                 Can't find it? Check your spam folder or contact support
               </p>
             </div>
           </div>
 
           {/* What Happens Next */}
-          <div className="rounded-lg p-8 mb-8" style={{ backgroundColor: 'white' }}>
-            <h3 className="text-2xl font-semibold mb-8" style={{ color: '#4A5D23', fontFamily: 'Georgia, Times New Roman, serif' }}>
+          <div className="rounded-lg p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8" style={{ backgroundColor: 'white' }}>
+            <h3 className="text-xl sm:text-2xl font-semibold mb-6 sm:mb-8" style={{ color: '#4A5D23', fontFamily: 'Georgia, Times New Roman, serif' }}>
               What Happens Next
             </h3>
-            <div className="text-left space-y-6">
+            <div className="text-left space-y-4 sm:space-y-6">
               <div className="flex items-start">
-                <span className="w-8 h-8 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 mt-1 flex-shrink-0" style={{ backgroundColor: '#4A5D23' }}>1</span>
+                <span className="w-6 h-6 sm:w-8 sm:h-8 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold mr-3 sm:mr-4 mt-1 flex-shrink-0" style={{ backgroundColor: '#4A5D23' }}>1</span>
                 <div>
-                  <h4 className="font-semibold mb-2" style={{ color: '#4A5D23' }}>Click the link in your email</h4>
-                  <p style={{ color: '#1A1A1A' }}>
+                  <h4 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base" style={{ color: '#4A5D23' }}>Click the link in your email</h4>
+                  <p className="text-sm sm:text-base" style={{ color: '#1A1A1A' }}>
                     Your personalized assessment is ready and waiting. Find a quiet space where you can be honest 
                     and reflective.
                   </p>
                 </div>
               </div>
               <div className="flex items-start">
-                <span className="w-8 h-8 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 mt-1 flex-shrink-0" style={{ backgroundColor: '#4A5D23' }}>2</span>
+                <span className="w-6 h-6 sm:w-8 sm:h-8 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold mr-3 sm:mr-4 mt-1 flex-shrink-0" style={{ backgroundColor: '#4A5D23' }}>2</span>
                 <div>
-                  <h4 className="font-semibold mb-2" style={{ color: '#4A5D23' }}>Complete your assessment (20-35 minutes)</h4>
-                  <p style={{ color: '#1A1A1A' }}>
+                  <h4 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base" style={{ color: '#4A5D23' }}>Complete your assessment (20-35 minutes)</h4>
+                  <p className="text-sm sm:text-base" style={{ color: '#1A1A1A' }}>
                     The AI will ask follow-up questions based on your answers to map your specific patterns with 
                     precision. There's no time limit—take breaks if you need them.
                   </p>
                 </div>
               </div>
               <div className="flex items-start">
-                <span className="w-8 h-8 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 mt-1 flex-shrink-0" style={{ backgroundColor: '#4A5D23' }}>3</span>
+                <span className="w-6 h-6 sm:w-8 sm:h-8 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold mr-3 sm:mr-4 mt-1 flex-shrink-0" style={{ backgroundColor: '#4A5D23' }}>3</span>
                 <div>
-                  <h4 className="font-semibold mb-2" style={{ color: '#4A5D23' }}>Receive your protocol (Immediately after completion)</h4>
-                  <p style={{ color: '#1A1A1A' }}>
+                  <h4 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base" style={{ color: '#4A5D23' }}>Receive your protocol (Immediately after completion)</h4>
+                  <p className="text-sm sm:text-base" style={{ color: '#1A1A1A' }}>
                     Your personalized 30-day transformation protocol will be delivered to your email the moment 
                     you finish. Save it. Reference it. Use it.
                   </p>
@@ -83,7 +83,7 @@ export default function SuccessPage() {
           </div>
 
           {/* Support */}
-          <div className="text-sm" style={{ color: '#666' }}>
+          <div className="text-xs sm:text-sm" style={{ color: '#666' }}>
             <p>Need help? <a href="mailto:support@becomeyou.ai" className="hover:underline" style={{ color: '#4A5D23' }}>Contact support</a></p>
           </div>
         </div>
