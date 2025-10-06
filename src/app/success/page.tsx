@@ -10,7 +10,7 @@ export default function SuccessPage() {
     fetchLatestSession()
   }, [])
 
-  const fetchLatestSession = async () => {
+  const fetchLatestSession = async (retryCount = 0) => {
     try {
       const response = await fetch('/api/latest-session')
       if (response.ok) {
@@ -18,14 +18,24 @@ export default function SuccessPage() {
         setUserEmail(data.email)
         setIsLoading(false)
       } else {
-        // Fallback if no session found
-        setUserEmail('the email you used for purchase')
-        setIsLoading(false)
+        // If no session found and we haven't retried too many times, wait and retry
+        if (retryCount < 3) {
+          console.log(`No session found, retrying in 2 seconds... (attempt ${retryCount + 1})`)
+          setTimeout(() => fetchLatestSession(retryCount + 1), 2000)
+        } else {
+          // Fallback if no session found after retries
+          setUserEmail('the email you used for purchase')
+          setIsLoading(false)
+        }
       }
     } catch (error) {
       console.error('Error fetching latest session:', error)
-      setUserEmail('the email you used for purchase')
-      setIsLoading(false)
+      if (retryCount < 3) {
+        setTimeout(() => fetchLatestSession(retryCount + 1), 2000)
+      } else {
+        setUserEmail('the email you used for purchase')
+        setIsLoading(false)
+      }
     }
   }
 
@@ -53,7 +63,13 @@ export default function SuccessPage() {
             <div className="text-left space-y-3 sm:space-y-4">
               <p className="text-sm sm:text-base" style={{ color: '#1A1A1A' }}>
                 We've sent your assessment link to <strong>
-                  {isLoading ? '...' : userEmail}
+                  {isLoading ? (
+                    <span className="inline-flex items-center">
+                      <span className="animate-pulse">loading your email...</span>
+                    </span>
+                  ) : (
+                    userEmail
+                  )}
                 </strong>
               </p>
               <div className="rounded-lg p-3 sm:p-4 text-xs sm:text-sm" style={{ backgroundColor: '#FFF3CD' }}>

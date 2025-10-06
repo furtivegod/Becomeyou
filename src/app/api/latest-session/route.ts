@@ -3,6 +3,9 @@ import { supabase } from '@/lib/supabase'
 
 export async function GET(request: NextRequest) {
   try {
+    // Only look for sessions created in the last 5 minutes
+    const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000)
+    
     // Get the most recent session based on started_at timestamp
     const { data: sessionData, error: sessionError } = await supabase
       .from('sessions')
@@ -11,6 +14,7 @@ export async function GET(request: NextRequest) {
         started_at,
         users!inner(email, user_name)
       `)
+      .gte('started_at', fiveMinutesAgo.toISOString())
       .order('started_at', { ascending: false })
       .limit(1)
       .single()
