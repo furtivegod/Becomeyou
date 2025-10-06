@@ -20,8 +20,8 @@ export default function SuccessPage() {
       } else {
         // If no session found and we haven't retried too many times, wait and retry
         if (retryCount < 3) {
-          console.log(`No session found, retrying in 2 seconds... (attempt ${retryCount + 1})`)
-          setTimeout(() => fetchLatestSession(retryCount + 1), 2000)
+          console.log(`No session found, retrying in 5 seconds... (attempt ${retryCount + 1})`)
+          setTimeout(() => fetchLatestSession(retryCount + 1), 5000)
         } else {
           // Fallback if no session found after retries
           setUserEmail('the email you used for purchase')
@@ -31,7 +31,7 @@ export default function SuccessPage() {
     } catch (error) {
       console.error('Error fetching latest session:', error)
       if (retryCount < 3) {
-        setTimeout(() => fetchLatestSession(retryCount + 1), 2000)
+        setTimeout(() => fetchLatestSession(retryCount + 1), 5000)
       } else {
         setUserEmail('the email you used for purchase')
         setIsLoading(false)
