@@ -6,6 +6,29 @@ export default function SuccessPage() {
   const [userEmail, setUserEmail] = useState('your email.')
   const [isLoading, setIsLoading] = useState(true)
 
+  useEffect(() => {
+    fetchLatestSession()
+  }, [])
+
+  const fetchLatestSession = async () => {
+    try {
+      const response = await fetch('/api/latest-session')
+      if (response.ok) {
+        const data = await response.json()
+        setUserEmail(data.email)
+        setIsLoading(false)
+      } else {
+        // Fallback if no session found
+        setUserEmail('the email you used for purchase')
+        setIsLoading(false)
+      }
+    } catch (error) {
+      console.error('Error fetching latest session:', error)
+      setUserEmail('the email you used for purchase')
+      setIsLoading(false)
+    }
+  }
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F5F1E8' }}>
       <div className="container mx-auto px-4 py-16">
