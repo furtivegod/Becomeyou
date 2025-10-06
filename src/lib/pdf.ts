@@ -717,32 +717,24 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="section-title">Domain Breakdown</div>
             <div class="domain-title">MIND</div>
             
-            <div class="main-section">
-              <div class="main-section-title">Current Level</div>
-              <div class="content-enhanced">
-                ${mindDomain.current_level}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Current Level:</div>
+              <div class="sub-section-content">${mindDomain.current_level}</div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">Current Phase</div>
-              <div class="content-enhanced">
-                ${mindDomain.current_phase}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Current Phase:</div>
+              <div class="sub-section-content">${mindDomain.current_phase}</div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">Key Strengths</div>
-              <div class="content-enhanced">
-                ${mindDomain.key_strengths}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Key Strengths:</div>
+              <div class="sub-section-content">${mindDomain.key_strengths}</div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">Growth Opportunities</div>
-              <div class="content-enhanced">
-                ${mindDomain.growth_opportunities}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Growth Opportunities:</div>
+              <div class="sub-section-content">${mindDomain.growth_opportunities}</div>
             </div>
           </div>
         
@@ -755,32 +747,24 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="section-title">Domain Breakdown</div>
             <div class="domain-title">BODY</div>
             
-            <div class="main-section">
-              <div class="main-section-title">Current Level</div>
-              <div class="content-enhanced">
-                ${bodyDomain.current_level}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Current Level:</div>
+              <div class="sub-section-content">${bodyDomain.current_level}</div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">Current Phase</div>
-              <div class="content-enhanced">
-                ${bodyDomain.current_phase}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Current Phase:</div>
+              <div class="sub-section-content">${bodyDomain.current_phase}</div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">Key Strengths</div>
-              <div class="content-enhanced">
-                ${bodyDomain.key_strengths}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Key Strengths:</div>
+              <div class="sub-section-content">${bodyDomain.key_strengths}</div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">Growth Opportunities</div>
-              <div class="content-enhanced">
-                ${bodyDomain.growth_opportunities}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Growth Opportunities:</div>
+              <div class="sub-section-content">${bodyDomain.growth_opportunities}</div>
             </div>
           </div>
         
@@ -793,32 +777,24 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="section-title">Domain Breakdown</div>
             <div class="domain-title">SPIRIT & RELATIONSHIPS</div>
             
-            <div class="main-section">
-              <div class="main-section-title">Current Level</div>
-              <div class="content-enhanced">
-                ${spiritDomain.current_level}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Current Level:</div>
+              <div class="sub-section-content">${spiritDomain.current_level}</div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">Current Phase</div>
-              <div class="content-enhanced">
-                ${spiritDomain.current_phase}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Current Phase:</div>
+              <div class="sub-section-content">${spiritDomain.current_phase}</div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">Key Strengths</div>
-              <div class="content-enhanced">
-                ${spiritDomain.key_strengths}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Key Strengths:</div>
+              <div class="sub-section-content">${spiritDomain.key_strengths}</div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">Growth Opportunities</div>
-              <div class="content-enhanced">
-                ${spiritDomain.growth_opportunities}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Growth Opportunities:</div>
+              <div class="sub-section-content">${spiritDomain.growth_opportunities}</div>
             </div>
           </div>
         
@@ -831,32 +807,24 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="section-title">Domain Breakdown</div>
             <div class="domain-title">CONTRIBUTION</div>
             
-            <div class="main-section">
-              <div class="main-section-title">Current Level</div>
-              <div class="content-enhanced">
-                ${contributionDomain.current_level}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Current Level:</div>
+              <div class="sub-section-content">${contributionDomain.current_level}</div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">Current Phase</div>
-              <div class="content-enhanced">
-                ${contributionDomain.current_phase}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Current Phase:</div>
+              <div class="sub-section-content">${contributionDomain.current_phase}</div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">Key Strengths</div>
-              <div class="content-enhanced">
-                ${contributionDomain.key_strengths}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Key Strengths:</div>
+              <div class="sub-section-content">${contributionDomain.key_strengths}</div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">Growth Opportunities</div>
-              <div class="content-enhanced">
-                ${contributionDomain.growth_opportunities}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Growth Opportunities:</div>
+              <div class="sub-section-content">${contributionDomain.growth_opportunities}</div>
             </div>
           </div>
         
@@ -870,32 +838,24 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         <div class="section">
             <div class="section-title">Nervous System Assessment</div>
             
-            <div class="main-section">
-              <div class="main-section-title">Primary State</div>
-              <div class="content-enhanced">
-                ${nervousSystemAssessment.primary_state}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Primary State:</div>
+              <div class="sub-section-content">${nervousSystemAssessment.primary_state}</div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">Regulation Capacity</div>
-              <div class="content-enhanced">
-                ${nervousSystemAssessment.regulation_capacity}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Regulation Capacity:</div>
+              <div class="sub-section-content">${nervousSystemAssessment.regulation_capacity}</div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">Observable Patterns</div>
-              <div class="content-enhanced">
-                ${nervousSystemAssessment.observable_patterns}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Observable Patterns:</div>
+              <div class="sub-section-content">${nervousSystemAssessment.observable_patterns}</div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">Your Regulation Reality</div>
-              <div class="content-enhanced">
-                ${nervousSystemAssessment.regulation_reality}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Your Regulation Reality:</div>
+              <div class="sub-section-content">${nervousSystemAssessment.regulation_reality}</div>
             </div>
           </div>
         
@@ -987,7 +947,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         <div class="section">
             <div class="section-title">Development Reminders</div>
             
-            <div class="content-enhanced">
+            <div class="sub-section-content">
               <ul class="bullet-list">
                 ${developmentReminders.map(reminder => `<li>${reminder}</li>`).join('')}
               </ul>
@@ -1002,7 +962,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         <div class="section">
             <div class="section-title">Book Recommendations</div>
             
-            <div class="content-enhanced">
+            <div class="sub-section-content">
               <ul class="bullet-list">
                 ${bookRecommendations.map(book => `<li><strong>${book}</strong></li>`).join('')}
               </ul>
@@ -1030,7 +990,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
                 <div class="section">
                   <div class="section-title">Resources ${totalPages > 1 ? `(Part ${page + 1} of ${totalPages})` : ''}</div>
                   
-                  <div class="content-enhanced">
+                  <div class="sub-section-content">
                     <ul class="bullet-list">
                       ${pageResources.map(resource => `<li>${resource}</li>`).join('')}
                     </ul>
@@ -1061,7 +1021,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
                 <div class="section">
                   <div class="section-title">Reflection Prompts ${totalPages > 1 ? `(Part ${page + 1} of ${totalPages})` : ''}</div>
                   
-                  <div class="content-enhanced">
+                  <div class="sub-section-content">
                     <ul class="bullet-list">
                       ${pagePrompts.map(prompt => `<li>${prompt}</li>`).join('')}
                     </ul>
