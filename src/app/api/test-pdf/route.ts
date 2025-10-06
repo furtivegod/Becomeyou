@@ -27,15 +27,42 @@ export async function GET(request: NextRequest) {
         what_its_protecting_from: "Fear of failure and judgment from others",
         how_it_serves_you: "Keeps you safe from potential criticism and disappointment",
         go_to_patterns: "Researching extensively before taking action, seeking multiple opinions",
-        success_proof: "You've made good decisions when you trusted your instincts"
+        success_proof: "You've made good decisions when you trusted your instincts",
+        anchor: "Your morning routine of coffee and planning - this is your strongest daily habit"
       },
+      in_the_moment_reset: "When you notice the overthinking starting, pause and take 3 deep breaths—in for 4 counts, hold for 4, out for 6. Then ask yourself: 'What's one small thing I can do right now that moves me forward instead of away?'",
       domain_breakdown: {
-        mind: "Foundation level - You have good self-awareness but need to trust your judgment more",
-        body: "Exploration level - You're beginning to understand your physical needs and responses",
-        spirit: "Foundation level - You value relationships but sometimes struggle with boundaries",
-        contribution: "Exploration level - You have skills but need to build confidence in sharing them"
+        mind: {
+          current_level: "Foundation level - You have good self-awareness but need to trust your judgment more",
+          current_phase: "Friction - You're aware of your patterns but still struggle with overthinking",
+          key_strengths: "Strong analytical skills, good self-reflection, and ability to see patterns in your behavior",
+          growth_opportunities: "Learning to trust your instincts and make decisions with less analysis"
+        },
+        body: {
+          current_level: "Exploration level - You're beginning to understand your physical needs and responses",
+          current_phase: "Experimentation - You're trying new approaches to physical wellness",
+          key_strengths: "Good awareness of your body's signals and willingness to try new approaches",
+          growth_opportunities: "Building consistent physical practices that support your mental clarity"
+        },
+        spirit: {
+          current_level: "Foundation level - You value relationships but sometimes struggle with boundaries",
+          current_phase: "Friction - You know what healthy relationships look like but struggle to implement boundaries",
+          key_strengths: "Deep care for others, strong values, and desire for meaningful connections",
+          growth_opportunities: "Learning to set boundaries while maintaining connection and authenticity"
+        },
+        contribution: {
+          current_level: "Exploration level - You have skills but need to build confidence in sharing them",
+          current_phase: "Experimentation - You're exploring how to share your gifts with the world",
+          key_strengths: "Strong skills and knowledge, genuine desire to help others, and good work ethic",
+          growth_opportunities: "Building confidence to share your expertise and take on leadership roles"
+        }
       },
-      nervous_system_assessment: "You tend toward overthinking and analysis paralysis, but show good self-regulation when you trust your process.",
+      nervous_system_assessment: {
+        primary_state: "You tend toward overthinking and analysis paralysis, but show good self-regulation when you trust your process",
+        regulation_capacity: "Developing - You have the tools but need to practice using them consistently",
+        observable_patterns: "Overthinking before decisions, seeking external validation, analysis paralysis on important choices",
+        regulation_reality: "You're not broken - you already regulate well in areas where you feel confident. We're expanding where you allow this to happen."
+      },
       thirty_day_protocol: {
         seventy_two_hour_suggestion: "Take one small action each day without overthinking it first",
         weekly_recommendation: "Practice making one decision per day based on your first instinct",
@@ -71,6 +98,13 @@ export async function GET(request: NextRequest) {
         ]
       },
       reminder_quote: "Trust yourself - you know more than you think you do",
+      development_reminders: [
+        "Growth is cyclical; regression is protection, not failure",
+        "Integration comes through consistent practice, not more awareness",
+        "Your nervous system is the foundation — regulate first, then grow",
+        "Your sabotage patterns have wisdom - honor them while updating them",
+        "Identity shifts over time with deliberate practice"
+      ],
       book_recommendations: [
         "The Confidence Code by Katty Kay and Claire Shipman - Understanding confidence and decision-making",
         "Blink by Malcolm Gladwell - The power of intuitive decision-making",
@@ -133,3 +167,5 @@ export async function GET(request: NextRequest) {
     }, { status: 500 })
   }
 }
+
+
