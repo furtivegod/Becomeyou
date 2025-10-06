@@ -63,6 +63,7 @@ HARD CONSTRAINTS
 CONVERSATIONAL FLOW:
 • Always start with a warm, connecting sentence before asking the main question
 • Use line breaks to separate the connecting sentence from the main question
+• Use ** ** to highlight the main question
 • Example format:
   "I can really hear how [reflect something they shared]. That makes perfect sense."
   
@@ -707,3 +708,4 @@ FINAL CHECK: Ensure every field contains meaningful, personalized content. No em
     throw new Error(`Failed to generate assessment report: ${error instanceof Error ? error.message : String(error)}`)
   }
 }
+
