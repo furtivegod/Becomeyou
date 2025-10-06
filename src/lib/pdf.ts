@@ -571,6 +571,24 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           font-weight: 600;
         }
         
+        /* Consistent green sub-section styling for all sections */
+        .sub-section-green {
+          color: #4A5D23;
+          font-weight: 600;
+          font-size: 16px;
+          display: block;
+          margin-bottom: 8px;
+          font-family: 'Inter', sans-serif;
+        }
+        
+        .sub-section-content {
+          color: #1A1A1A;
+          font-size: 15px;
+          line-height: 1.6;
+          margin-bottom: 15px;
+          font-family: 'Inter', sans-serif;
+        }
+        
         
         
         /* Footer is now handled by PDFShift natively - no CSS needed */
@@ -652,34 +670,40 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="section-title">Sabotage Pattern Analysis</div>
             
             <div class="domain-item">
-              <strong>Your Protective Pattern:</strong> ${protectivePattern}
+              <div class="sub-section-green">Your Protective Pattern:</div>
+              <div class="sub-section-content">${protectivePattern}</div>
             </div>
             
             <div class="domain-item">
-              <strong>What It's Protecting You From:</strong> ${whatItsProtectingFrom}
+              <div class="sub-section-green">What It's Protecting You From:</div>
+              <div class="sub-section-content">${whatItsProtectingFrom}</div>
             </div>
             
             <div class="domain-item">
-              <strong>How It Serves You:</strong> ${howItServesYou}
+              <div class="sub-section-green">How It Serves You:</div>
+              <div class="sub-section-content">${howItServesYou}</div>
             </div>
             
             <div class="domain-item">
-              <strong>Your Go-To Patterns:</strong> ${goToPatterns}
+              <div class="sub-section-green">Your Go-To Patterns:</div>
+              <div class="sub-section-content">${goToPatterns}</div>
             </div>
             
             <div class="domain-item">
-              <strong>Your Success Proof:</strong> ${successProof}
+              <div class="sub-section-green">Your Success Proof:</div>
+              <div class="sub-section-content">${successProof}</div>
             </div>
             
             <div class="domain-item">
-              <strong>Your Anchor:</strong> ${anchor}
+              <div class="sub-section-green">Your Anchor:</div>
+              <div class="sub-section-content">${anchor}</div>
             </div>
           </div>
           
           <!-- In-the-Moment Reset -->
           <div class="section">
             <div class="section-title">Your In-the-Moment Reset</div>
-            <div class="domain-item">
+            <div class="sub-section-content">
               ${inTheMomentReset}
             </div>
           </div>
@@ -883,55 +907,47 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         <div class="section">
             <div class="section-title">30-Day Recommended Growth Protocol</div>
             
-            <div class="main-section">
-              <div class="main-section-title">72-Hour Suggestion</div>
-              <div class="content-enhanced">
-                ${seventyTwoHourSuggestion}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">72-Hour Suggestion:</div>
+              <div class="sub-section-content">${seventyTwoHourSuggestion}</div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">Weekly Recommendation</div>
-              <div class="content-enhanced">
-                ${weeklyRecommendation}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Weekly Recommendation:</div>
+              <div class="sub-section-content">${weeklyRecommendation}</div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">30-Day Approach</div>
-              <div class="content-enhanced">
-                ${thirtyDayApproach}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">30-Day Approach:</div>
+              <div class="sub-section-content">${thirtyDayApproach}</div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">Environmental Optimization</div>
-              <div class="content-enhanced">
-                ${environmentalOptimization}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Environmental Optimization:</div>
+              <div class="sub-section-content">${environmentalOptimization}</div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">Suggested Progress Markers</div>
-              <div class="content-enhanced">
+            <div class="domain-item">
+              <div class="sub-section-green">Suggested Progress Markers:</div>
+              <div class="sub-section-content">
                 <ul class="bullet-list">
                   ${progressMarkers.map(marker => `<li>${marker}</li>`).join('')}
                 </ul>
               </div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">Daily Actions</div>
-              <div class="content-enhanced">
+            <div class="domain-item">
+              <div class="sub-section-green">Daily Actions:</div>
+              <div class="sub-section-content">
                 <ul class="bullet-list">
                   ${dailyActions.map(action => `<li>${action}</li>`).join('')}
                 </ul>
               </div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">Weekly Goals</div>
-              <div class="content-enhanced">
+            <div class="domain-item">
+              <div class="sub-section-green">Weekly Goals:</div>
+              <div class="sub-section-content">
                 <ul class="bullet-list">
                   ${weeklyGoals.map(goal => `<li>${goal}</li>`).join('')}
                 </ul>
@@ -946,7 +962,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
       <div class="page page-break">
         <div class="section">
             <div class="section-title">Reminder Box</div>
-            <div class="content">
+            <div class="sub-section-content">
               <p>"${reminderQuote}"</p>
             </div>
           </div>
@@ -958,7 +974,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
       <div class="page page-break">
         <div class="section">
             <div class="section-title">Bottom Line</div>
-            <div class="content">
+            <div class="sub-section-content">
               <p>${bottomLine}</p>
             </div>
           </div>
@@ -1064,34 +1080,28 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         <div class="section">
             <div class="section-title">Next Steps</div>
             
-            <div class="main-section">
-              <div class="main-section-title">6-Month Follow-Up Assessment Recommended</div>
-              <div class="content-enhanced">
-                ${planData.next_assessment?.six_month_followup || 'Personalized timeline and expected progress tracking'}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">6-Month Follow-Up Assessment Recommended:</div>
+              <div class="sub-section-content">${planData.next_assessment?.six_month_followup || 'Personalized timeline and expected progress tracking'}</div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">Monthly Check-In Options</div>
-              <div class="content-enhanced">
-                ${planData.next_assessment?.monthly_checkin || 'Brief progress reviews to track your development'}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">Monthly Check-In Options:</div>
+              <div class="sub-section-content">${planData.next_assessment?.monthly_checkin || 'Brief progress reviews to track your development'}</div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">Focus Areas for Next Phase</div>
-              <div class="content-enhanced">
+            <div class="domain-item">
+              <div class="sub-section-green">Focus Areas for Next Phase:</div>
+              <div class="sub-section-content">
                 <ul class="bullet-list">
                   ${(planData.next_assessment?.focus_areas || ['Focus Area 1', 'Focus Area 2', 'Focus Area 3', 'Focus Area 4']).map(area => `<li>${area}</li>`).join('')}
                 </ul>
               </div>
             </div>
             
-            <div class="main-section">
-              <div class="main-section-title">How to Stay Connected</div>
-              <div class="content-enhanced">
-                ${planData.next_assessment?.stay_connected || 'Newsletter signup, community links, and ongoing support resources'}
-              </div>
+            <div class="domain-item">
+              <div class="sub-section-green">How to Stay Connected:</div>
+              <div class="sub-section-content">${planData.next_assessment?.stay_connected || 'Newsletter signup, community links, and ongoing support resources'}</div>
             </div>
           </div>
         
