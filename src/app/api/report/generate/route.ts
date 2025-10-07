@@ -126,19 +126,68 @@ export async function POST(request: NextRequest) {
         sendDirectInvitationEmail
       } = await import('@/lib/email')
 
-      // Send all 6 emails immediately
-      await Promise.all([
-        sendPatternRecognitionEmail(userData.email, userData.user_name, planData),
-        sendEvidence7DayEmail(userData.email, userData.user_name, planData),
-        sendIntegrationThresholdEmail(userData.email, userData.user_name, planData),
-        sendCompoundEffectEmail(userData.email, userData.user_name, planData),
-        sendDirectInvitationEmail(userData.email, userData.user_name, planData)
-      ])
+      // Send emails one by one with delays to respect Resend rate limits (2 requests per second)
+      const emailResults = []
       
-      console.log('All 6 follow-up emails sent successfully')
+      // Helper function to add delay
+      const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+      
+      try {
+        console.log('Sending Pattern Recognition Email (48h)...')
+        await sendPatternRecognitionEmail(userData.email, userData.user_name, planData)
+        emailResults.push('Pattern Recognition: ✅ Sent')
+      } catch (error) {
+        console.error('Pattern Recognition Email failed:', error)
+        emailResults.push('Pattern Recognition: ❌ Failed')
+      }
+
+      await delay(1000) // Wait 1 second
+
+      try {
+        console.log('Sending Evidence 7-Day Email...')
+        await sendEvidence7DayEmail(userData.email, userData.user_name, planData)
+        emailResults.push('Evidence 7-Day: ✅ Sent')
+      } catch (error) {
+        console.error('Evidence 7-Day Email failed:', error)
+        emailResults.push('Evidence 7-Day: ❌ Failed')
+      }
+
+      await delay(1000) // Wait 1 second
+
+      try {
+        console.log('Sending Integration Threshold Email (14 days)...')
+        await sendIntegrationThresholdEmail(userData.email, userData.user_name, planData)
+        emailResults.push('Integration Threshold: ✅ Sent')
+      } catch (error) {
+        console.error('Integration Threshold Email failed:', error)
+        emailResults.push('Integration Threshold: ❌ Failed')
+      }
+
+      await delay(1000) // Wait 1 second
+
+      try {
+        console.log('Sending Compound Effect Email (21 days)...')
+        await sendCompoundEffectEmail(userData.email, userData.user_name, planData)
+        emailResults.push('Compound Effect: ✅ Sent')
+      } catch (error) {
+        console.error('Compound Effect Email failed:', error)
+        emailResults.push('Compound Effect: ❌ Failed')
+      }
+
+      await delay(1000) // Wait 1 second
+
+      try {
+        console.log('Sending Direct Invitation Email (30 days)...')
+        await sendDirectInvitationEmail(userData.email, userData.user_name, planData)
+        emailResults.push('Direct Invitation: ✅ Sent')
+      } catch (error) {
+        console.error('Direct Invitation Email failed:', error)
+        emailResults.push('Direct Invitation: ❌ Failed')
+      }
+      
+      console.log('Email sending results:', emailResults)
     } catch (emailError) {
-      console.error('Error sending follow-up emails:', emailError)
-      // Don't fail the whole request if email sending fails
+      console.error('Error in email sending process:', emailError)
     }
 
     return NextResponse.json({ 
