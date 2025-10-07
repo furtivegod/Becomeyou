@@ -28,6 +28,27 @@ export default function TestPDFPage() {
     }
   }
 
+  const testEmailQueue = async () => {
+    setLoading(true)
+    setError(null)
+    setResult(null)
+
+    try {
+      const response = await fetch('/api/test-email-queue')
+      const data = await response.json()
+      
+      if (data.success) {
+        setResult(data)
+      } else {
+        setError(data.error || 'Email queue test failed')
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unknown error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="min-h-screen py-12 px-4" style={{ backgroundColor: '#F5F1E8' }}>
       <div className="max-w-4xl mx-auto">
@@ -59,6 +80,24 @@ export default function TestPDFPage() {
                     style={{ backgroundColor: '#4A5D23' }}
                   >
                     {loading ? '🔄 Generating PDF...' : '📄 Generate Sample PDF'}
+                  </button>
+                </div>
+                
+                <div className="mt-6 pt-6 border-t border-gray-200">
+                  <h3 className="text-lg font-medium mb-2" style={{ color: '#1A1A1A' }}>
+                    Test Email Queue Processing
+                  </h3>
+                  <p className="mb-4" style={{ color: '#1A1A1A' }}>
+                    Manually trigger the email queue processing to test the cron job functionality.
+                    This will process all pending emails that are due to be sent.
+                  </p>
+                  <button
+                    onClick={testEmailQueue}
+                    disabled={loading}
+                    className="text-white px-8 py-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 text-lg font-semibold"
+                    style={{ backgroundColor: '#8B5CF6' }}
+                  >
+                    {loading ? '🔄 Processing...' : '📧 Test Email Queue'}
                   </button>
                 </div>
               </div>
