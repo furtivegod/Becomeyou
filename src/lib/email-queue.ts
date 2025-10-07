@@ -80,22 +80,38 @@ export async function processEmailQueue() {
 
     for (const email of emails) {
       try {
+        // Fetch planData for personalization (optional)
+        let planData = null
+        try {
+          const { data: planOutput } = await supabase
+            .from('plan_outputs')
+            .select('plan_json')
+            .eq('session_id', email.session_id)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .single()
+          
+          planData = planOutput?.plan_json
+        } catch (planError) {
+          console.warn(`No plan data found for session ${email.session_id}, sending generic email.`)
+        }
+
         // Send the appropriate email
         switch (email.email_type) {
           case 'pattern_recognition':
-            await sendPatternRecognitionEmail(email.email, email.user_name)
+            await sendPatternRecognitionEmail(email.email, email.user_name, planData)
             break
           case 'evidence_7day':
-            await sendEvidence7DayEmail(email.email, email.user_name)
+            await sendEvidence7DayEmail(email.email, email.user_name, planData)
             break
           case 'integration_threshold':
-            await sendIntegrationThresholdEmail(email.email, email.user_name)
+            await sendIntegrationThresholdEmail(email.email, email.user_name, planData)
             break
           case 'compound_effect':
-            await sendCompoundEffectEmail(email.email, email.user_name)
+            await sendCompoundEffectEmail(email.email, email.user_name, planData)
             break
           case 'direct_invitation':
-            await sendDirectInvitationEmail(email.email, email.user_name)
+            await sendDirectInvitationEmail(email.email, email.user_name, planData)
             break
           default:
             console.error('Unknown email type:', email.email_type)

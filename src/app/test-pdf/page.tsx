@@ -49,6 +49,27 @@ export default function TestPDFPage() {
     }
   }
 
+  const createSampleEmails = async () => {
+    setLoading(true)
+    setError(null)
+    setResult(null)
+
+    try {
+      const response = await fetch('/api/test-create-sample-emails')
+      const data = await response.json()
+      
+      if (data.success) {
+        setResult(data)
+      } else {
+        setError(data.error || 'Failed to create sample emails')
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unknown error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="min-h-screen py-12 px-4" style={{ backgroundColor: '#F5F1E8' }}>
       <div className="max-w-4xl mx-auto">
@@ -88,17 +109,45 @@ export default function TestPDFPage() {
                     Test Email Queue Processing
                   </h3>
                   <p className="mb-4" style={{ color: '#1A1A1A' }}>
-                    Manually trigger the email queue processing to test the cron job functionality.
-                    This will process all pending emails that are due to be sent.
+                    First create sample emails, then test the email queue processing.
+                    This will help you verify the complete email system.
                   </p>
-                  <button
-                    onClick={testEmailQueue}
-                    disabled={loading}
-                    className="text-white px-8 py-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 text-lg font-semibold"
-                    style={{ backgroundColor: '#8B5CF6' }}
-                  >
-                    {loading ? '🔄 Processing...' : '📧 Test Email Queue'}
-                  </button>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="font-medium mb-2" style={{ color: '#1A1A1A' }}>
+                        Step 1: Create Sample Emails
+                      </h4>
+                      <p className="text-sm mb-3" style={{ color: '#666' }}>
+                        Creates test emails in the queue (2 due now, 1 scheduled for tomorrow)
+                      </p>
+                      <button
+                        onClick={createSampleEmails}
+                        disabled={loading}
+                        className="text-white px-6 py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 font-semibold"
+                        style={{ backgroundColor: '#F59E0B' }}
+                      >
+                        {loading ? '🔄 Creating...' : '📝 Create Sample Emails'}
+                      </button>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium mb-2" style={{ color: '#1A1A1A' }}>
+                        Step 2: Test Email Processing
+                      </h4>
+                      <p className="text-sm mb-3" style={{ color: '#666' }}>
+                        Processes all pending emails that are due to be sent
+                      </p>
+                      <button
+                        onClick={testEmailQueue}
+                        disabled={loading}
+                        className="text-white px-6 py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 font-semibold"
+                        style={{ backgroundColor: '#8B5CF6' }}
+                      >
+                        {loading ? '🔄 Processing...' : '📧 Test Email Queue'}
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
