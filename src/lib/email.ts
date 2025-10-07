@@ -121,7 +121,7 @@ export async function sendMagicLink(email: string, sessionId: string) {
   }
 }
 
-export async function sendReportEmail(email: string, pdfUrl: string, pdfBuffer?: Buffer, planData?: any) {
+export async function sendReportEmail(email: string, userName: string, pdfUrl: string, pdfBuffer?: Buffer, planData?: any) {
   console.log('Sending report email to:', email)
   
   if (!process.env.RESEND_API_KEY) {
@@ -131,8 +131,8 @@ export async function sendReportEmail(email: string, pdfUrl: string, pdfBuffer?:
   try {
     console.log('Sending email via Resend...')
     
-    // Extract user's name from email (first part before @)
-    const userName = email.split('@')[0].split('.').map(part => 
+    // Use the provided user name, fallback to email extraction if not provided
+    const displayName = userName || email.split('@')[0].split('.').map(part => 
       part.charAt(0).toUpperCase() + part.slice(1)
     ).join(' ')
     
@@ -175,7 +175,7 @@ export async function sendReportEmail(email: string, pdfUrl: string, pdfBuffer?:
           <div style="background-color: #F5F1E8; padding: 40px 20px;">
             <!-- Main Content -->
             <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: Arial, sans-serif;">
-              <strong>${userName},</strong><br><br>
+              <strong>${displayName},</strong><br><br>
               Your complete assessment is attached.
             </p>
             
