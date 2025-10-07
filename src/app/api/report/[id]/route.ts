@@ -243,7 +243,14 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
               ${Object.entries(planData.domain_breakdown).map(([domain, data]: [string, any]) => `
                 <div style="padding: 1rem; background: #FFF3CD; border-radius: 6px; border: 1px solid #D4AF37;">
                   <strong style="color: #4A5D23;">${domain.toUpperCase()}:</strong><br>
-                  <span style="color: #1A1A1A;">${data}</span>
+                  ${typeof data === 'object' && data !== null ? `
+                    <div style="margin-top: 0.5rem;">
+                      ${data.current_level ? `<div style="margin: 0.5rem 0;"><strong>Current Level:</strong> ${data.current_level}</div>` : ''}
+                      ${data.current_phase ? `<div style="margin: 0.5rem 0;"><strong>Current Phase:</strong> ${data.current_phase}</div>` : ''}
+                      ${data.key_strengths ? `<div style="margin: 0.5rem 0;"><strong>Key Strengths:</strong> ${data.key_strengths}</div>` : ''}
+                      ${data.growth_opportunities ? `<div style="margin: 0.5rem 0;"><strong>Growth Opportunities:</strong> ${data.growth_opportunities}</div>` : ''}
+                    </div>
+                  ` : `<span style="color: #1A1A1A;">${data}</span>`}
                 </div>
               `).join('')}
             </div>
@@ -254,7 +261,14 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
           <div class="section">
             <h2>Nervous System Assessment</h2>
             <div style="padding: 1rem; background: #FFF3CD; border-radius: 6px; border: 1px solid #D4AF37; color: #1A1A1A;">
-              ${planData.nervous_system_assessment}
+              ${typeof planData.nervous_system_assessment === 'object' && planData.nervous_system_assessment !== null ? `
+                <div>
+                  ${planData.nervous_system_assessment.primary_state ? `<div style="margin: 0.5rem 0;"><strong>Primary State:</strong> ${planData.nervous_system_assessment.primary_state}</div>` : ''}
+                  ${planData.nervous_system_assessment.regulation_capacity ? `<div style="margin: 0.5rem 0;"><strong>Regulation Capacity:</strong> ${planData.nervous_system_assessment.regulation_capacity}</div>` : ''}
+                  ${planData.nervous_system_assessment.observable_patterns ? `<div style="margin: 0.5rem 0;"><strong>Observable Patterns:</strong> ${planData.nervous_system_assessment.observable_patterns}</div>` : ''}
+                  ${planData.nervous_system_assessment.regulation_reality ? `<div style="margin: 0.5rem 0;"><strong>Regulation Reality:</strong> ${planData.nervous_system_assessment.regulation_reality}</div>` : ''}
+                </div>
+              ` : planData.nervous_system_assessment}
             </div>
           </div>
         ` : ''}
