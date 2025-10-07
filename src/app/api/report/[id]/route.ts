@@ -279,9 +279,67 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
             ${Object.entries(planData.thirty_day_protocol).map(([key, value]: [string, any]) => `
               <div style="margin: 1rem 0; padding: 1rem; background: #FFF3CD; border-radius: 6px; border: 1px solid #D4AF37;">
                 <strong style="color: #4A5D23;">${key.replace(/_/g, ' ').toUpperCase()}:</strong><br>
-                <span style="color: #1A1A1A;">${value}</span>
+                ${Array.isArray(value) ? `
+                  <ul style="margin: 0.5rem 0; padding-left: 1.5rem; color: #1A1A1A;">
+                    ${value.map((item: any) => `<li style="margin: 0.25rem 0;">${item}</li>`).join('')}
+                  </ul>
+                ` : `
+                  <span style="color: #1A1A1A;">${value}</span>
+                `}
               </div>
             `).join('')}
+          </div>
+        ` : ''}
+
+        ${planData.development_reminders ? `
+          <div class="section">
+            <h2>Development Reminders</h2>
+            <div style="padding: 1rem; background: #FFF3CD; border-radius: 6px; border: 1px solid #D4AF37;">
+              ${Array.isArray(planData.development_reminders) ? `
+                <ul style="margin: 0; padding-left: 1.5rem; color: #1A1A1A;">
+                  ${planData.development_reminders.map((reminder: string) => `<li style="margin: 0.5rem 0;">${reminder}</li>`).join('')}
+                </ul>
+              ` : `<span style="color: #1A1A1A;">${planData.development_reminders}</span>`}
+            </div>
+          </div>
+        ` : ''}
+
+        ${planData.book_recommendations ? `
+          <div class="section">
+            <h2>Book Recommendations</h2>
+            <div style="padding: 1rem; background: #FFF3CD; border-radius: 6px; border: 1px solid #D4AF37;">
+              ${Array.isArray(planData.book_recommendations) ? `
+                <ul style="margin: 0; padding-left: 1.5rem; color: #1A1A1A;">
+                  ${planData.book_recommendations.map((book: string) => `<li style="margin: 0.5rem 0;">${book}</li>`).join('')}
+                </ul>
+              ` : `<span style="color: #1A1A1A;">${planData.book_recommendations}</span>`}
+            </div>
+          </div>
+        ` : ''}
+
+        ${planData.resources ? `
+          <div class="section">
+            <h2>Resources</h2>
+            <div style="padding: 1rem; background: #FFF3CD; border-radius: 6px; border: 1px solid #D4AF37;">
+              ${Array.isArray(planData.resources) ? `
+                <ul style="margin: 0; padding-left: 1.5rem; color: #1A1A1A;">
+                  ${planData.resources.map((resource: string) => `<li style="margin: 0.5rem 0;">${resource}</li>`).join('')}
+                </ul>
+              ` : `<span style="color: #1A1A1A;">${planData.resources}</span>`}
+            </div>
+          </div>
+        ` : ''}
+
+        ${planData.reflection_prompts ? `
+          <div class="section">
+            <h2>Reflection Prompts</h2>
+            <div style="padding: 1rem; background: #FFF3CD; border-radius: 6px; border: 1px solid #D4AF37;">
+              ${Array.isArray(planData.reflection_prompts) ? `
+                <ul style="margin: 0; padding-left: 1.5rem; color: #1A1A1A;">
+                  ${planData.reflection_prompts.map((prompt: string) => `<li style="margin: 0.5rem 0;">${prompt}</li>`).join('')}
+                </ul>
+              ` : `<span style="color: #1A1A1A;">${planData.reflection_prompts}</span>`}
+            </div>
           </div>
         ` : ''}
 
