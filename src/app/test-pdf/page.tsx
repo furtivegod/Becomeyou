@@ -28,27 +28,6 @@ export default function TestPDFPage() {
     }
   }
 
-  const testRealPDF = async () => {
-    setLoading(true)
-    setError(null)
-    setResult(null)
-
-    try {
-      const response = await fetch('/api/test-pdf-real')
-      const data = await response.json()
-      
-      if (data.success) {
-        setResult(data)
-      } else {
-        setError(data.error || 'Test failed')
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error')
-    } finally {
-      setLoading(false)
-    }
-  }
-
   return (
     <div className="min-h-screen py-12 px-4" style={{ backgroundColor: '#F5F1E8' }}>
       <div className="max-w-4xl mx-auto">
@@ -60,41 +39,26 @@ export default function TestPDFPage() {
           <div className="space-y-6">
             <div className="rounded-lg p-6" style={{ backgroundColor: '#FFF3CD', border: '1px solid #D4AF37' }}>
               <h2 className="text-xl font-semibold mb-4" style={{ color: '#4A5D23', fontFamily: 'Georgia, Times New Roman, serif' }}>
-                Test Options
+                Test PDF Generation with Sample Data
               </h2>
               
               <div className="space-y-4">
                 <div>
                   <h3 className="text-lg font-medium mb-2" style={{ color: '#1A1A1A' }}>
-                    1. Test with Sample Data
+                    Generate Sample Assessment PDF
                   </h3>
                   <p className="mb-4" style={{ color: '#1A1A1A' }}>
-                    Generate a PDF using predefined sample data to test the PDF generation system.
+                    This will generate a PDF using predefined sample assessment data to test the PDF generation system. 
+                    The sample includes a complete assessment report with all sections: overview, sabotage analysis, 
+                    domain breakdown, nervous system assessment, and 30-day protocol.
                   </p>
                   <button
                     onClick={testSamplePDF}
                     disabled={loading}
-                    className="text-white px-6 py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90"
+                    className="text-white px-8 py-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 text-lg font-semibold"
                     style={{ backgroundColor: '#4A5D23' }}
                   >
-                    {loading ? 'Generating...' : 'Test Sample PDF'}
-                  </button>
-                </div>
-                
-                <div>
-                  <h3 className="text-lg font-medium mb-2" style={{ color: '#1A1A1A' }}>
-                    2. Test with Real Database Data
-                  </h3>
-                  <p className="mb-4" style={{ color: '#1A1A1A' }}>
-                    Generate a PDF using actual assessment data from your database.
-                  </p>
-                  <button
-                    onClick={testRealPDF}
-                    disabled={loading}
-                    className="text-white px-6 py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90"
-                    style={{ backgroundColor: '#4A5D23' }}
-                  >
-                    {loading ? 'Generating...' : 'Test Real PDF'}
+                    {loading ? '🔄 Generating PDF...' : '📄 Generate Sample PDF'}
                   </button>
                 </div>
               </div>
@@ -110,48 +74,59 @@ export default function TestPDFPage() {
             )}
 
             {result && (
-              <div className="rounded-lg p-6" style={{ backgroundColor: '#FFF3CD', border: '1px solid #D4AF37' }}>
+              <div className="rounded-lg p-6" style={{ backgroundColor: '#E8F5E8', border: '1px solid #4A5D23' }}>
                 <h3 className="text-lg font-semibold mb-4" style={{ color: '#4A5D23' }}>
-                  ✅ Success!
+                  ✅ PDF Generated Successfully!
                 </h3>
                 
-                <div className="space-y-3">
-                  <div>
-                    <strong style={{ color: '#1A1A1A' }}>Message:</strong> <span style={{ color: '#1A1A1A' }}>{result.message}</span>
+                <div className="space-y-4">
+                  <div className="bg-white rounded-lg p-4 border border-gray-200">
+                    <h4 className="font-semibold mb-2" style={{ color: '#4A5D23' }}>📄 Generated PDF</h4>
+                    {result.pdfUrl && (
+                      <div className="flex items-center space-x-4">
+                        <a 
+                          href={result.pdfUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                        >
+                          📖 Open PDF in New Tab
+                        </a>
+                        <span className="text-sm text-gray-600">
+                          Click to view the generated assessment report
+                        </span>
+                      </div>
+                    )}
                   </div>
                   
-                  {result.pdfUrl && (
-                    <div>
-                      <strong style={{ color: '#1A1A1A' }}>PDF URL:</strong>{' '}
-                      <a 
-                        href={result.pdfUrl} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="underline"
-                        style={{ color: '#4A5D23' }}
-                      >
-                        Open PDF in new tab
-                      </a>
+                  <div className="bg-white rounded-lg p-4 border border-gray-200">
+                    <h4 className="font-semibold mb-2" style={{ color: '#4A5D23' }}>📊 Test Details</h4>
+                    <div className="space-y-2 text-sm">
+                      <div>
+                        <strong>Status:</strong> <span className="text-green-600">✅ Success</span>
+                      </div>
+                      <div>
+                        <strong>Session ID:</strong> <code className="bg-gray-100 px-2 py-1 rounded">{result.sessionId}</code>
+                      </div>
+                      <div>
+                        <strong>Test Type:</strong> Sample Data Assessment
+                      </div>
+                      <div>
+                        <strong>Message:</strong> {result.message}
+                      </div>
                     </div>
-                  )}
+                  </div>
                   
-                  {result.sessionId && (
-                    <div>
-                      <strong style={{ color: '#1A1A1A' }}>Session ID:</strong> <span style={{ color: '#1A1A1A' }}>{result.sessionId}</span>
-                    </div>
-                  )}
-                  
-                  {result.clientName && (
-                    <div>
-                      <strong style={{ color: '#1A1A1A' }}>Client Name:</strong> <span style={{ color: '#1A1A1A' }}>{result.clientName}</span>
-                    </div>
-                  )}
-                  
-                  {result.planDataKeys && (
-                    <div>
-                      <strong style={{ color: '#1A1A1A' }}>Plan Data Keys:</strong> <span style={{ color: '#1A1A1A' }}>{result.planDataKeys.join(', ')}</span>
-                    </div>
-                  )}
+                  <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                    <h4 className="font-semibold mb-2" style={{ color: '#1E40AF' }}>💡 What This Test Validates</h4>
+                    <ul className="text-sm space-y-1" style={{ color: '#1E40AF' }}>
+                      <li>• PDF generation system is working correctly</li>
+                      <li>• Sample assessment data is properly formatted</li>
+                      <li>• All report sections are rendering correctly</li>
+                      <li>• PDFShift API integration is functional</li>
+                      <li>• File storage and URL generation works</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             )}

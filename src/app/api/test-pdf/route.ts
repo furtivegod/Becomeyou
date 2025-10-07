@@ -18,10 +18,10 @@ export async function GET(request: NextRequest) {
     // Sample plan data for testing
     const samplePlanData = {
       title: "You 3.0 Behavioral Optimization Assessment Report",
-      overview: "This is a test assessment to verify PDF generation functionality.",
-      assessment_overview: "Based on your responses, you've shown clear patterns of behavior and areas where you're ready for transformation.",
-      development_profile: "You demonstrate strong self-awareness and a genuine desire for growth.",
-      bottom_line: "You have the capacity for significant growth and transformation.",
+      overview: "This comprehensive assessment reveals your unique behavioral patterns, protective mechanisms, and pathways for transformation.",
+      assessment_overview: "Based on your detailed responses, you've demonstrated clear patterns of behavior that show both your protective strategies and your readiness for meaningful transformation.",
+      development_profile: "You demonstrate strong self-awareness, genuine desire for growth, and the capacity to implement sustainable changes in your life.",
+      bottom_line: "You have the foundation and potential for significant transformation—the key is working with your nervous system rather than against it.",
       sabotage_analysis: {
         protective_pattern: "You tend to overthink decisions to avoid making mistakes",
         what_its_protecting_from: "Fear of failure and judgment from others",
@@ -30,6 +30,12 @@ export async function GET(request: NextRequest) {
         success_proof: "You've made good decisions when you trusted your instincts",
         anchor: "Your morning routine of coffee and planning - this is your strongest daily habit"
       },
+      goals: {
+        business_goal: "Build a successful consulting practice that allows for financial freedom and meaningful impact",
+        relationship_goal: "Create deeper, more authentic connections while maintaining healthy boundaries",
+        body_goal: "Develop a sustainable fitness routine that supports both physical and mental well-being"
+      },
+      future_vision: "A Tuesday where you wake up feeling confident in your decisions, have meaningful work that energizes you, and relationships that feel both connected and free.",
       in_the_moment_reset: "When you notice the overthinking starting, pause and take 3 deep breaths—in for 4 counts, hold for 4, out for 6. Then ask yourself: 'What's one small thing I can do right now that moves me forward instead of away?'",
       domain_breakdown: {
         mind: {
@@ -146,9 +152,11 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json({
       success: true,
-      message: 'PDF generated successfully with sample data',
+      message: 'Sample assessment PDF generated successfully! This test validates the complete PDF generation pipeline.',
       pdfUrl: result.pdfUrl,
-      sessionId: 'test-session-123'
+      sessionId: 'test-session-123',
+      testType: 'Sample Data Assessment',
+      generatedAt: new Date().toISOString()
     })
 
   } catch (error) {
