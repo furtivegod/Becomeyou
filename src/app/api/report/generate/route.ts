@@ -115,15 +115,30 @@ export async function POST(request: NextRequest) {
       // Don't fail the whole request if email fails
     }
 
-    // Create email sequence for follow-up emails
-    console.log('Creating email sequence for user:', userData.id)
+    // Send all 6 follow-up emails immediately for testing
+    console.log('Sending all 6 follow-up emails immediately for testing...')
     try {
-      const { createEmailSequence } = await import('@/lib/email-queue')
-      await createEmailSequence(userData.id, sessionId, userData.email, userData.user_name)
-      console.log('Email sequence created successfully')
-    } catch (sequenceError) {
-      console.error('Error creating email sequence:', sequenceError)
-      // Don't fail the whole request if sequence creation fails
+      const { 
+        sendPatternRecognitionEmail,
+        sendEvidence7DayEmail,
+        sendIntegrationThresholdEmail,
+        sendCompoundEffectEmail,
+        sendDirectInvitationEmail
+      } = await import('@/lib/email')
+
+      // Send all 6 emails immediately
+      await Promise.all([
+        sendPatternRecognitionEmail(userData.email, userData.user_name, planData),
+        sendEvidence7DayEmail(userData.email, userData.user_name, planData),
+        sendIntegrationThresholdEmail(userData.email, userData.user_name, planData),
+        sendCompoundEffectEmail(userData.email, userData.user_name, planData),
+        sendDirectInvitationEmail(userData.email, userData.user_name, planData)
+      ])
+      
+      console.log('All 6 follow-up emails sent successfully')
+    } catch (emailError) {
+      console.error('Error sending follow-up emails:', emailError)
+      // Don't fail the whole request if email sending fails
     }
 
     return NextResponse.json({ 
