@@ -205,7 +205,11 @@ protocol, your 72-hour action step, and the exact roadmap for what comes next.
 
 Check your email (and spam folder just in case).
 
-You did the hard part. Now let's build on it."
+You did the hard part. Now let's build on it.
+
+---
+
+**ASSESSMENT COMPLETE - DO NOT CONTINUE THE CONVERSATION BEYOND THIS POINT**"
 
 OUTPUT FORMAT (Client-Facing Report)
 
