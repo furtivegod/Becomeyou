@@ -52,6 +52,8 @@ export async function createEmailSequence(userId: string, sessionId: string, use
 }
 
 // Process pending emails (called by cron job)
+// Note: On Hobby plan, this runs once daily at 9 AM UTC
+// All pending emails for the day will be processed in this single run
 export async function processEmailQueue() {
   try {
     console.log('Processing email queue...')
