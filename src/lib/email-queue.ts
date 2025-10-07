@@ -7,6 +7,14 @@ import {
   sendDirectInvitationEmail
 } from './email'
 
+/**
+ * Email Queue Management System
+ * 
+ * This module handles the creation and processing of automated email sequences
+ * for users who complete the You 3.0 assessment. It schedules follow-up emails
+ * and processes them via Vercel cron jobs.
+ */
+
 // Create email sequence for a user
 export async function createEmailSequence(userId: string, sessionId: string, userEmail: string, userName: string) {
   try {
@@ -52,8 +60,6 @@ export async function createEmailSequence(userId: string, sessionId: string, use
 }
 
 // Process pending emails (called by cron job)
-// Note: On Hobby plan, this runs once daily at 9 AM UTC
-// All pending emails for the day will be processed in this single run
 export async function processEmailQueue() {
   try {
     console.log('Processing email queue...')
@@ -80,41 +86,39 @@ export async function processEmailQueue() {
 
     for (const email of emails) {
       try {
-        // Fetch planData for personalization (optional)
-        let planData = null
-        try {
-          const { data: planOutput } = await supabase
-            .from('plan_outputs')
-            .select('plan_json')
-            .eq('session_id', email.session_id)
-            .order('created_at', { ascending: false })
-            .limit(1)
-            .single()
-          
-          planData = planOutput?.plan_json
-        } catch (planError) {
+        // Fetch planData for personalization
+        const { data: planOutput, error: planError } = await supabase
+          .from('plan_outputs')
+          .select('plan_json')
+          .eq('session_id', email.session_id)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single()
+
+        if (planError || !planOutput) {
           console.warn(`No plan data found for session ${email.session_id}, sending generic email.`)
         }
 
         // Send the appropriate email
         switch (email.email_type) {
           case 'pattern_recognition':
-            await sendPatternRecognitionEmail(email.email, email.user_name, planData)
+            await sendPatternRecognitionEmail(email.email, email.user_name, planOutput?.plan_json)
             break
           case 'evidence_7day':
-            await sendEvidence7DayEmail(email.email, email.user_name, planData)
+            await sendEvidence7DayEmail(email.email, email.user_name, planOutput?.plan_json)
             break
           case 'integration_threshold':
-            await sendIntegrationThresholdEmail(email.email, email.user_name, planData)
+            await sendIntegrationThresholdEmail(email.email, email.user_name, planOutput?.plan_json)
             break
           case 'compound_effect':
-            await sendCompoundEffectEmail(email.email, email.user_name, planData)
+            await sendCompoundEffectEmail(email.email, email.user_name, planOutput?.plan_json)
             break
           case 'direct_invitation':
-            await sendDirectInvitationEmail(email.email, email.user_name, planData)
+            await sendDirectInvitationEmail(email.email, email.user_name, planOutput?.plan_json)
             break
           default:
-            console.error('Unknown email type:', email.email_type)
+            console.warn(`Unknown email type in queue: ${email.email_type}`)
+            errors++
             continue
         }
 
@@ -128,17 +132,18 @@ export async function processEmailQueue() {
           .eq('id', email.id)
 
         processed++
-        console.log(`Email sent: ${email.email_type} to ${email.email}`)
+        console.log(`Email sent successfully: ${email.email_type} to ${email.email}`)
 
       } catch (error) {
-        console.error(`Failed to send email ${email.id}:`, error)
+        console.error(`Failed to send email ${email.id} (${email.email_type}):`, error)
         
-        // Mark as failed
+        // Mark as failed with error details
         await supabase
           .from('email_queue')
           .update({ 
             status: 'failed',
-            sent_at: new Date().toISOString()
+            sent_at: new Date().toISOString(),
+            error_message: error instanceof Error ? error.message : 'Unknown error'
           })
           .eq('id', email.id)
 
