@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
 
     const { data: userData, error: userError } = await supabase
       .from('users')
-      .select('email')
+      .select('email, id, user_name')
       .eq('id', sessionData.user_id)
       .single()
 
@@ -113,6 +113,17 @@ export async function POST(request: NextRequest) {
     } catch (emailError) {
       console.error('Error sending email:', emailError)
       // Don't fail the whole request if email fails
+    }
+
+    // Create email sequence for follow-up emails
+    console.log('Creating email sequence for user:', userData.id)
+    try {
+      const { createEmailSequence } = await import('@/lib/email-queue')
+      await createEmailSequence(userData.id, sessionId, userData.email, userData.user_name)
+      console.log('Email sequence created successfully')
+    } catch (sequenceError) {
+      console.error('Error creating email sequence:', sequenceError)
+      // Don't fail the whole request if sequence creation fails
     }
 
     return NextResponse.json({ 
