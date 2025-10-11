@@ -973,68 +973,6 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
       </div>
       
       
-      <!-- Resources - Split into multiple pages if needed -->
-      ${(() => {
-        const itemsPerPage = 10; // Limit items per page for resources
-        const totalPages = Math.ceil(resources.length / itemsPerPage);
-        let html = '';
-        
-        for (let page = 0; page < totalPages; page++) {
-          const startIndex = page * itemsPerPage;
-          const endIndex = Math.min(startIndex + itemsPerPage, resources.length);
-          const pageResources = resources.slice(startIndex, endIndex);
-          
-          html += `
-            <div class="page ${page > 0 ? 'page-break' : ''}">
-              <div class="content-wrapper">
-                <div class="section">
-                  <div class="section-title">Resources ${totalPages > 1 ? `(Part ${page + 1} of ${totalPages})` : ''}</div>
-                  
-                  <div class="sub-section-content">
-                    <ul class="bullet-list">
-                      ${pageResources.map(resource => `<li>${resource}</li>`).join('')}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          `;
-        }
-        
-        return html;
-      })()}
-      
-      <!-- Reflection Prompts - Split into multiple pages if needed -->
-      ${(() => {
-        const itemsPerPage = 8; // Limit items per page for reflection prompts
-        const totalPages = Math.ceil(reflectionPrompts.length / itemsPerPage);
-        let html = '';
-        
-        for (let page = 0; page < totalPages; page++) {
-          const startIndex = page * itemsPerPage;
-          const endIndex = Math.min(startIndex + itemsPerPage, reflectionPrompts.length);
-          const pagePrompts = reflectionPrompts.slice(startIndex, endIndex);
-          
-          html += `
-            <div class="page ${page > 0 ? 'page-break' : ''}">
-              <div class="content-wrapper">
-                <div class="section">
-                  <div class="section-title">Reflection Prompts ${totalPages > 1 ? `(Part ${page + 1} of ${totalPages})` : ''}</div>
-                  
-                  <div class="sub-section-content">
-                    <ul class="bullet-list">
-                      ${pagePrompts.map(prompt => `<li>${prompt}</li>`).join('')}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          `;
-        }
-        
-        return html;
-      })()}
-      
       <!-- Next Steps -->
       <div class="page page-break">
         <div class="section">
@@ -1067,7 +1005,19 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         
         <!-- Footer handled by PDFShift natively -->
       </div>
-
+      
+      <!-- Final Motivational Page -->
+      <div class="page page-break">
+        <div class="content-wrapper" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; text-align: center;">
+          <div style="background: #FFF3CD; border-radius: 8px; border: 1px solid #D4AF37; padding: 2rem; margin: 2rem; max-width: 80%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <p style="font-family: 'Times New Roman', serif; font-size: 18px; line-height: 1.6; color: #1A1A1A; margin: 0;">
+              This assessment was built with care, respect, and the belief that<br>
+              you already have everything you need to become the person you<br>
+              described. The only thing left to do is <em>take action</em>.
+            </p>
+          </div>
+        </div>
+      </div>
 
     </body>
     </html>

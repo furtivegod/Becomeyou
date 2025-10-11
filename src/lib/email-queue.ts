@@ -23,13 +23,13 @@ export async function createEmailSequence(userId: string, sessionId: string, use
     const email = userEmail
     const name = userName || email.split('@')[0]
 
-    // Schedule emails with delays
+    // Schedule emails with delays (in milliseconds)
     const emailSchedule = [
-      { delay: 48 * 60 * 60 * 1000, function: sendPatternRecognitionEmail, name: 'pattern_recognition' },
-      { delay: 7 * 24 * 60 * 60 * 1000, function: sendEvidence7DayEmail, name: 'evidence_7day' },
-      { delay: 14 * 24 * 60 * 60 * 1000, function: sendIntegrationThresholdEmail, name: 'integration_threshold' },
-      { delay: 21 * 24 * 60 * 60 * 1000, function: sendCompoundEffectEmail, name: 'compound_effect' },
-      { delay: 30 * 24 * 60 * 60 * 1000, function: sendDirectInvitationEmail, name: 'direct_invitation' }
+      { delay: 2 * 60 * 1000, function: sendPatternRecognitionEmail, name: 'pattern_recognition' }, // 2 minutes
+      { delay: 3 * 60 * 1000, function: sendEvidence7DayEmail, name: 'evidence_7day' }, // 3 minutes  
+      { delay: 4 * 60 * 1000, function: sendIntegrationThresholdEmail, name: 'integration_threshold' }, // 4 minutes
+      { delay: 5 * 60 * 1000, function: sendCompoundEffectEmail, name: 'compound_effect' }, // 5 minutes
+      { delay: 6 * 60 * 1000, function: sendDirectInvitationEmail, name: 'direct_invitation' } // 6 minutes
     ]
 
     // Schedule each email
@@ -37,7 +37,7 @@ export async function createEmailSequence(userId: string, sessionId: string, use
       const scheduledTime = new Date(Date.now() + emailItem.delay)
       
       // Store in database for cron job to process
-      await supabase
+      const { error: insertError } = await supabase
         .from('email_queue')
         .insert({
           user_id: userId,
@@ -48,6 +48,11 @@ export async function createEmailSequence(userId: string, sessionId: string, use
           scheduled_for: scheduledTime.toISOString(),
           status: 'pending'
         })
+
+      if (insertError) {
+        console.error(`Failed to schedule email ${emailItem.name}:`, insertError)
+        throw new Error(`Failed to schedule email ${emailItem.name}: ${insertError.message}`)
+      }
     }
 
     console.log('Email sequence created successfully')
@@ -123,13 +128,17 @@ export async function processEmailQueue() {
         }
 
         // Mark as sent
-        await supabase
+        const { error: updateError } = await supabase
           .from('email_queue')
           .update({ 
             status: 'sent',
             sent_at: new Date().toISOString()
           })
           .eq('id', email.id)
+
+        if (updateError) {
+          console.error(`Failed to update email status for ${email.id}:`, updateError)
+        }
 
         processed++
         console.log(`Email sent successfully: ${email.email_type} to ${email.email}`)
@@ -138,7 +147,7 @@ export async function processEmailQueue() {
         console.error(`Failed to send email ${email.id} (${email.email_type}):`, error)
         
         // Mark as failed with error details
-        await supabase
+        const { error: failUpdateError } = await supabase
           .from('email_queue')
           .update({ 
             status: 'failed',
@@ -146,6 +155,10 @@ export async function processEmailQueue() {
             error_message: error instanceof Error ? error.message : 'Unknown error'
           })
           .eq('id', email.id)
+
+        if (failUpdateError) {
+          console.error(`Failed to update failed email status for ${email.id}:`, failUpdateError)
+        }
 
         errors++
       }

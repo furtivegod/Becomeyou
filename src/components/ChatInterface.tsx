@@ -458,9 +458,9 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                   {message.role === 'assistant' ? (
                     // AI Message - Exact Claude Styling
                     <div className="flex gap-4 mb-8">
-                      {/* AI Avatar - Cute Robot */}
-                      <div className="w-8 h-8 flex-shrink-0 rounded-md flex items-center justify-center text-base" style={{ backgroundColor: '#F3F4F6', color: '#4A5D23' }}>
-                        🤖
+                      {/* AI Avatar - Simple Circle */}
+                      <div className="w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center text-base" style={{ backgroundColor: '#4A5D23', color: '#FFFFFF' }}>
+                        ●
                       </div>
                       {/* AI Content - Fixed formatting with bold support */}
                       <div className="flex-1 text-base leading-[1.7] text-[#1F2937] font-normal tracking-[-0.01em]">
@@ -484,8 +484,8 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
               <div className="w-full flex justify-center mb-8 opacity-60">
                 <div className="max-w-[700px] w-full px-6">
                   <div className="flex gap-4">
-                    <div className="w-8 h-8 flex-shrink-0 rounded-md flex items-center justify-center text-base" style={{ backgroundColor: '#F3F4F6', color: '#4A5D23' }}>
-                      🤖
+                    <div className="w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center text-base" style={{ backgroundColor: '#4A5D23', color: '#FFFFFF' }}>
+                      ●
                     </div>
                     <div className="flex items-center gap-1 pt-2">
                       <div className="w-2 h-2 bg-[#9CA3AF] rounded-full animate-[typingBounce_1.4s_infinite_ease-in-out]"></div>
@@ -502,8 +502,8 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
               <div className="w-full flex justify-center mb-8">
                 <div className="max-w-[700px] w-full px-6">
                   <div className="flex gap-4">
-                    <div className="w-8 h-8 flex-shrink-0 rounded-md flex items-center justify-center text-base" style={{ backgroundColor: '#F3F4F6', color: '#4A5D23' }}>
-                      🤖
+                    <div className="w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center text-base" style={{ backgroundColor: '#4A5D23', color: '#FFFFFF' }}>
+                      ●
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-4 h-4 border-2 border-green-500 border-t-transparent rounded-full animate-spin"></div>
