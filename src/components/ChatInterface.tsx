@@ -103,6 +103,21 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
     }
   }, [transcript])
 
+  // Check for assessment completion after messages update
+  useEffect(() => {
+    if (messages.length > 0 && !assessmentComplete && !isGeneratingReport) {
+      const lastMessage = messages[messages.length - 1]
+      if (lastMessage.role === 'assistant' && 
+          (lastMessage.content.includes('Thank you for showing up fully for this assessment') ||
+           lastMessage.content.includes('ASSESSMENT COMPLETE') ||
+           lastMessage.content.includes('You did the hard part. Now let\'s build on it.'))) {
+        console.log('Assessment completion detected, triggering report generation...')
+        setAssessmentComplete(true)
+        triggerReportGeneration()
+      }
+    }
+  }, [messages, assessmentComplete, isGeneratingReport])
+
   // Handle keyboard shortcuts
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -297,7 +312,9 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
       }
 
       // Check if assessment is complete
-      if (assistantMessage.content.includes('thank you for showing up fully for this assessment')){
+      if (assistantMessage.content.includes('Thank you for showing up fully for this assessment') || 
+          assistantMessage.content.includes('ASSESSMENT COMPLETE') ||
+          assistantMessage.content.includes('You did the hard part. Now let\'s build on it.')) {
         setAssessmentComplete(true)
         
         // Generate the report first

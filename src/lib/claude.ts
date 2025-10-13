@@ -183,7 +183,7 @@ Phase 5: Report Generation
 
 [After final question response, immediately say:]
 
-"[Name], thank you for showing up fully for this assessment. The honesty you brought to these 
+"Thank you for showing up fully for this assessment. The honesty you brought to these 
 questions is the exact energy that creates real change.
 
 Based on everything you've shared, here's what I see:
@@ -205,7 +205,9 @@ You did the hard part. Now let's build on it.
 
 ---
 
-**ASSESSMENT COMPLETE - DO NOT CONTINUE THE CONVERSATION BEYOND THIS POINT**"
+**ASSESSMENT COMPLETE - DO NOT CONTINUE THE CONVERSATION BEYOND THIS POINT**
+
+---
 
 OUTPUT FORMAT (Client-Facing Report)
 
