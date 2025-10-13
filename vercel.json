@@ -1,0 +1,14 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/email-queue",
+      "schedule": "* * * * *"
+    }
+  ],
+  "functions": {
+    "src/app/api/cron/email-queue/route.ts": {
+      "maxDuration": 60
+    }
+  }
+}
+
