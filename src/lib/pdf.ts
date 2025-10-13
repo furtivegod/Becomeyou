@@ -381,7 +381,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           font-family: 'Inter', sans-serif;
           line-height: 1.6;
           color: #1A1A1A;
-          background: #F5F1E8;
+          background: white;
           font-size: 14px;
         }
         
