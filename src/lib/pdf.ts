@@ -1007,15 +1007,11 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
       </div>
       
       <!-- Final Motivational Page -->
-      <div class="page page-break">
-        <div class="content-wrapper" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; text-align: center;">
-          <div style="background: #FFF3CD; border-radius: 8px; border: 1px solid #D4AF37; padding: 2rem; margin: 2rem; max-width: 80%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-            <p style="font-family: 'Times New Roman', serif; font-size: 18px; line-height: 1.6; color: #1A1A1A; margin: 0;">
-              This assessment was built with care, respect, and the belief that<br>
-              you already have everything you need to become the person you<br>
-              described. The only thing left to do is <em>take action</em>.
-            </p>
-          </div>
+      <div class="page page-break" style="display: flex; align-items: center; justify-content: center; min-height: 100vh;">
+        <div style="background: #FFF3CD; border-radius: 8px; border: 1px solid #D4AF37; padding: 3rem; margin: 2rem; max-width: 70%; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+          <p style="font-family: 'Times New Roman', serif; font-size: 18px; line-height: 1.6; color: #1A1A1A; margin: 0;">
+            This assessment was built with care, respect, and the belief that you already have everything you need to become the person you described. The only thing left to do is <em>take action</em>.
+          </p>
         </div>
       </div>
 
