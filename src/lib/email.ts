@@ -87,11 +87,11 @@ export async function sendMagicLink(email: string, sessionId: string) {
                 Some questions will make you stop and think. That's intentional.
               </p>
               <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin-bottom: 15px; font-family: 'Inter', sans-serif;">
-                Your responses are completely private. No human will see your answers. Your data is 
+                <strong>Your responses are completely private.</strong> No human will see your answers. Your data is 
                 automatically deleted after your personalized protocol is generated.
               </p>
               <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; font-family: 'Inter', sans-serif;">
-                Immediately after completion, your 30-Day Transformation Protocol will be 
+                <strong>Immediately after completion</strong>, your 30-Day Transformation Protocol will be 
                 delivered to this email address. Save it. Reference it. Use it.
               </p>
             </div>
@@ -325,7 +325,7 @@ export async function sendPatternRecognitionEmail(email: string, userName: strin
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
-              Or you felt motivated to take action, then reached for your usual escape behavior instead.
+              Or you felt motivated to ${planData?.sabotage_analysis?.protective_pattern || '[their specific pattern]'}, then reached for ${planData?.sabotage_analysis?.escape_behavior || '[their identified escape behavior]'} instead.
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
@@ -333,7 +333,7 @@ export async function sendPatternRecognitionEmail(email: string, userName: strin
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
-              The difference now? You see it happening in real time.
+              The difference now? <strong>You see it happening in real time.</strong>
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
@@ -439,7 +439,7 @@ export async function sendEvidence7DayEmail(email: string, userName: string, pla
             
             <ul style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 20px 0; padding-left: 20px; font-family: 'Inter', sans-serif;">
               <li style="margin-bottom: 8px;">One conversation you didn't avoid</li>
-              <li style="margin-bottom: 8px;">One evening you chose positive behavior over escape behavior</li>
+              <li style="margin-bottom: 8px;">One evening you chose ${planData?.sabotage_analysis?.positive_behavior || '[their identified positive behavior]'} over ${planData?.sabotage_analysis?.escape_behavior || '[their identified escape behavior]'}</li>
               <li style="margin-bottom: 8px;">One moment you caught the spiral before it hijacked your whole day</li>
             </ul>
             
@@ -448,7 +448,7 @@ export async function sendEvidence7DayEmail(email: string, userName: string, pla
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
-              They're proof your nervous system is recalibrating.
+              They're <strong>proof your nervous system is recalibrating.</strong>
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
@@ -550,7 +550,7 @@ export async function sendIntegrationThresholdEmail(email: string, userName: str
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
-              But because awareness without structure = temporary inspiration.
+              But because <strong>awareness without structure = temporary inspiration.</strong>
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
@@ -566,13 +566,13 @@ export async function sendIntegrationThresholdEmail(email: string, userName: str
             </p>
             
             <ol style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 20px 0; padding-left: 20px; font-family: 'Inter', sans-serif;">
-              <li style="margin-bottom: 8px;">Daily micro-practices that build new neural pathways (not willpower marathons)</li>
-              <li style="margin-bottom: 8px;">Environmental design that removes friction (not forcing yourself to "be disciplined")</li>
-              <li style="margin-bottom: 8px;">Accountability structure that prevents regression when life gets hard</li>
+              <li style="margin-bottom: 8px;"><strong>Daily micro-practices</strong> that build new neural pathways (not willpower marathons)</li>
+              <li style="margin-bottom: 8px;"><strong>Environmental design</strong> that removes friction (not forcing yourself to "be disciplined")</li>
+              <li style="margin-bottom: 8px;"><strong>Accountability structure</strong> that prevents regression when life gets hard</li>
             </ol>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
-              You've proven you can do hard things. The question is: Are you ready to apply that same capability to your own nervous system?
+              You've proven you can do hard things—you built ${planData?.goals?.business_goal || planData?.goals?.financial_goal || planData?.goals?.relationship_goal || planData?.goals?.body_goal || planData?.goals?.health_goal || '[something specific from their assessment]'}. The question is: Are you ready to apply that same capability to your own nervous system?
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
@@ -664,7 +664,7 @@ export async function sendCompoundEffectEmail(email: string, userName: string, p
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
-              The ones who transform don't feel dramatically different at 21 days.
+              <strong>The ones who transform don't feel dramatically different at 21 days.</strong>
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
@@ -680,7 +680,19 @@ export async function sendCompoundEffectEmail(email: string, userName: string, p
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               That's not small progress. That's your nervous system learning a new default.
             </p>
-            
+
+            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+               But here's the catch: <strong>This is exactly when most people quit.</strong>
+            </p>
+
+            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+                Not because nothing's working—but because the initial insight has worn off and the daily practice feels boring. Unsexy. Repetitive.
+            </p>
+
+            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+                Which is exactly what rewiring your nervous system requires.
+            </p>
+
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               You've already proven you can do this—you showed up for the assessment, you read the report, you've been noticing your patterns. The question is: Are you willing to keep going through the unsexy middle where nothing feels dramatic but everything is shifting?
             </p>
@@ -770,7 +782,7 @@ export async function sendDirectInvitationEmail(email: string, userName: string,
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
-              Instead, I'm asking: What's one thing that's different—even slightly—compared to 30 days ago?
+              Instead, I'm asking: <strong>What's one thing that's different—even slightly—compared to 30 days ago?</strong>
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
@@ -780,11 +792,19 @@ export async function sendDirectInvitationEmail(email: string, userName: string,
             <ul style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 20px 0; padding-left: 20px; font-family: 'Inter', sans-serif;">
               <li style="margin-bottom: 8px;">Caught yourself mid-spiral and interrupted it (even once)</li>
               <li style="margin-bottom: 8px;">Had a hard conversation you would have avoided before</li>
-              <li style="margin-bottom: 8px;">Chose positive behavior when you normally would have reached for escape behavior</li>
+              <li style="margin-bottom: 8px;">Chose ${planData?.sabotage_analysis?.positive_behavior || '[positive behavior]'} when you normally would have reached for ${planData?.sabotage_analysis?.escape_behavior || '[escape behavior]'}</li>
             </ul>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               If you can name even one shift, that's proof the assessment was accurate and you're capable of change.
+            </p>
+            
+            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+              If nothing's different? That's also useful information—it means you're in the "knowing" phase but haven't moved to the "doing" phase yet.
+            </p>
+            
+            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+              Either way, here's what I know after working with 680+ people:
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
@@ -799,10 +819,24 @@ export async function sendDirectInvitationEmail(email: string, userName: string,
               The question is: Do you want to keep trying to build structure and accountability on your own, or do you want help designing a system that actually fits your nervous system?
             </p>
             
-            <div style="background-color: #4A5D23; color: white; padding: 20px; border-radius: 8px; margin: 30px 0; text-align: center;">
-              <p style="font-size: 18px; margin: 0; font-family: 'Inter', sans-serif;">
-                <strong>[Book Your Discovery Call]</strong>
-              </p>
+            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+              If you want help, book a Discovery Call. We'll get clear on:
+            </p>
+            
+            <ul style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 20px 0; padding-left: 20px; font-family: 'Inter', sans-serif;">
+              <li style="margin-bottom: 8px;">Where you actually are (not where you "should" be)</li>
+              <li style="margin-bottom: 8px;">What's realistically possible in the next 90 days given your current capacity</li>
+              <li style="margin-bottom: 8px;">Whether working together 1:1 makes sense or if you need something else first</li>
+            </ul>
+            
+            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+              If you're not ready yet, that's completely fine. Keep the assessment. Come back to it when the gap between who you are and who you want to be gets uncomfortable enough to act on.
+            </p>
+            
+            <div style="text-align: center; margin: 40px 0;">
+              <a href="https://calendly.com/matthewpaetz/discovery-call" style="background-color: #4A5D23; color: white; padding: 18px 36px; text-decoration: none; border-radius: 8px; font-size: 18px; font-weight: bold; display: inline-block; font-family: 'Inter', sans-serif;">
+                Book Your Discovery Call
+              </a>
             </div>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">

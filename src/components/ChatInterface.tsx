@@ -388,7 +388,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                   <span className="text-white text-sm">★</span>
                 </div>
                 <h1 className="text-2xl font-serif" style={{ color: '#4A5D23' }}>
-                  Hey there, {clientName || 'there'}
+                  Hey there, {clientName || ''}
                 </h1>
               </div>
             </div>
