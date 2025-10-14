@@ -27,7 +27,6 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [assessmentComplete, setAssessmentComplete] = useState(false)
-  const [isGeneratingReport, setIsGeneratingReport] = useState(false)
   const [questionCount, setQuestionCount] = useState(0)
   
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -94,7 +93,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
 
   useEffect(() => {
     smartScroll()
-  }, [messages, isLoading, isGeneratingReport])
+  }, [messages, isLoading])
 
   // Update input when transcript changes
   useEffect(() => {
@@ -105,18 +104,18 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
 
   // Check for assessment completion after messages update
   useEffect(() => {
-    if (messages.length > 0 && !assessmentComplete && !isGeneratingReport) {
+    if (messages.length > 0 && !assessmentComplete) {
       const lastMessage = messages[messages.length - 1]
       if (lastMessage.role === 'assistant' && 
           (lastMessage.content.includes('Thank you for showing up fully for this assessment') ||
            lastMessage.content.includes('ASSESSMENT COMPLETE') ||
            lastMessage.content.includes('You did the hard part. Now let\'s build on it.'))) {
-        console.log('Assessment completion detected, triggering report generation...')
+        console.log('Assessment completion detected, showing completion message...')
         setAssessmentComplete(true)
-        triggerReportGeneration()
+        showCompletionMessage()
       }
     }
-  }, [messages, assessmentComplete, isGeneratingReport])
+  }, [messages, assessmentComplete])
 
   // Handle keyboard shortcuts
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -317,8 +316,8 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
           assistantMessage.content.includes('You did the hard part. Now let\'s build on it.')) {
         setAssessmentComplete(true)
         
-        // Generate the report first
-        await triggerReportGeneration()
+        // Show completion message
+        showCompletionMessage()
       }
 
     } catch (error) {
@@ -328,30 +327,27 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
     }
   }
 
-  const triggerReportGeneration = async () => {
-    if (isGeneratingReport) return
+  const showCompletionMessage = () => {
+    // Add a completion message to the chat
+    const completionMessage: Message = {
+      id: Date.now().toString(),
+      role: 'assistant',
+      content: `🎉 **Assessment Complete!**
 
-    setIsGeneratingReport(true)
-    try {
-      // Call your existing report generation API
-      const response = await fetch(`/api/report/generate`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId })
-      })
+Your personalized You 3.0 assessment has been processed and your detailed report is being generated. 
 
-      if (!response.ok) {
-        throw new Error('Failed to generate report')
-      }
+**What happens next:**
+• Your complete assessment report will be emailed to you within the next minute
+• You'll receive a PDF attachment with your personalized protocol
+• Follow-up emails will arrive over the next 6 days to support your journey
 
-      // Redirect to your existing result page
-      window.location.href = `/api/report/${sessionId}`
+**Check your email now** - your full assessment results should arrive shortly!
 
-    } catch (error) {
-      console.error('Error generating report:', error)
-    } finally {
-      setIsGeneratingReport(false)
+*This is where your transformation begins.*`,
+      timestamp: new Date()
     }
+    
+    setMessages(prev => [...prev, completionMessage])
   }
 
   // Track message sent
@@ -514,24 +510,6 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
               </div>
             )}
             
-            {/* Report Generation Indicator */}
-            {isGeneratingReport && (
-              <div className="w-full flex justify-center mb-8">
-                <div className="max-w-[700px] w-full px-6">
-                  <div className="flex gap-4">
-                    <div className="w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center text-base" style={{ backgroundColor: '#4A5D23', color: '#FFFFFF' }}>
-                      ●
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-4 h-4 border-2 border-green-500 border-t-transparent rounded-full animate-spin"></div>
-                      <span className="text-green-700 text-sm font-medium">
-                        Generating your You 3.0 assessment report...
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
             
             {/* Auto-scroll anchor */}
             <div ref={messagesEndRef} />
@@ -541,16 +519,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
 
       {/* Input Container - EXACT CLAUDE SPECS */}
       <div className="flex-shrink-0 border-t border-[#E5E7EB] p-4 bg-white">
-        {assessmentComplete ? (
-          <div className="max-w-[700px] mx-auto text-center">
-            <div className="inline-flex items-center space-x-2 text-green-600 font-semibold bg-green-50 px-4 py-2 rounded-lg">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              <span>Assessment Complete! Your You 3.0 report will be generated within a few minutes.</span>
-            </div>
-          </div>
-        ) : (
+        {!assessmentComplete && (
           <div className="max-w-[700px] mx-auto">
             {/* Speech Error Display */}
             {speechError && (

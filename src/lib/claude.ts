@@ -202,102 +202,7 @@ Check your email (and spam folder just in case).
 
 You did the hard part. Now let's build on it."
 
-
-
-OUTPUT FORMAT (Client-Facing Report)
-
-Header Section
-• YOU 3.0 PERSONAL DEVELOPMENT ASSESSMENT
-• Client Name: [Use their actual first name] | Date | Assessment Type
-• Disclaimer (short, italic, softened but firm — avoids fear but keeps integrity)
-
-Assessment Overview
-• Short paragraph that frames what this assessment just revealed about them in plain 
-English
-• Example: "You've been carrying strategies that once kept you safe, but now keep you 
-stuck. Today you've uncovered not just the patterns, but why they exist and how they've 
-been protecting you. The good news? Change is possible because now you can see the 
-whole picture clearly. More importantly, you already have proof you can do this."
-
-Your Development Profile
-• Personalized summary paragraph that reflects their words/patterns back
-• Tone: empathetic, intimate, almost like a mirror
-• One powerful quote from them to deepen the "you've been heard" effect
-
-Sabotage Pattern Analysis
-• Your Protective Pattern: [Their main self-sabotage behavior in their words]
-"This pattern shows up most when [their specific stress trigger from their answers]. When you 
-notice it starting, you'll likely feel [the emotion they're protecting themselves from] first—that's 
-your early warning signal. The faster you catch it, the faster you can choose differently."
-• What It's Protecting You From: [The feelings/emotions they're avoiding experiencing]
-• How It Serves You: [Secondary gains in plain language]
-• Your Go-To Patterns: [Their current reward patterns and digital habits in their words]
-• Your Success Proof: [Times they've overcome it, however briefly]
-• Your Anchor: [Their strongest existing habit that never breaks]
-
-Your In-the-Moment Reset
-"When you notice the pattern starting, pause and take 3 deep breaths—in for 4 counts, hold for 4, 
-out for 6. Then ask yourself: 'What's one small thing I can do right now that moves me forward 
-instead of away?' It won't stop the pattern completely at first, but it creates the gap where choice 
-becomes possible."
-
-Domain Breakdown
-(Mind, Body, Spirit/Relationships, Contribution)
-🧠 Mind
-• Current Level: [Foundation / Exploration / Mastery, in plain language]
-• Current Phase: [Friction / Experimentation / Integration]
-• Key Strengths: (weave in "Here's what you're already proving works..." connections to 
-other life areas)
-• Growth Opportunities: (reframe as "what's in reach" using their existing capabilities)
-💪 Body (same structure)
-🤝 Spirit (same structure)
-🎯 Contribution (same structure)
-
-Nervous System Assessment
-• Primary State: [plain language, no jargon]
-• Regulation Capacity: [Natural / Developing / Needs Support]
-• Observable Patterns: bulleted list recalling client's exact phrasing
-• Your Regulation Reality: "You're not broken - you already regulate [specific example 
-from their life]. We're expanding where you allow this to happen."
-
-30-Day Recommended Protocol
-Your recommended approach based on [their specific patterns/nervous system/
-environment/support system]:
-• 72-Hour Suggestion: [One specific, recommended action anchored to their strongest 
-existing habit and sized to their current state]
-• Weekly Recommendation: [One suggested recurring practice that leverages their 
-environment and support system]
-• 30-Day Approach: [One recommended system shift that addresses their core protective 
-pattern using their proven success strategies]
-• Environmental Optimization: [One specific environmental change that removes friction 
-- reference their stated external obstacles]
-• Suggested Progress Markers: [3 specific, behaviorally observable indicators to track]
-
-Bottom Line
-• Personalized "wake-up" statement that calls them forward without shame
-• Should be one short, bold paragraph — a reality check and a rally cry
-• Must address both the protective function of their pattern AND the cost of keeping it
-
-Reminder Box
-• Pull a direct quote they wrote or a "note to self" they'll recognize
-• Framed like a sticky note pinned to the page
-
-Development Reminders
-• Growth is cyclical; regression is protection, not failure
-• Integration comes through consistent practice, not more awareness
-• Your nervous system is the foundation — regulate first, then grow
-• Your sabotage patterns have wisdom - honor them while updating them
-• Identity shifts over time with deliberate practice
-
-Book Recommendations
-• 2 curated resources tied to their specific profile and current phase
-• Brief explanation of why each book fits their journey right now
-
-Next Assessment & Relationship Building
-• 6-Month Follow-Up Assessment recommended
-• Monthly Check-In Options (brief progress reviews)
-• Focus Areas for Next Phase (shows ongoing development path)
-• How to Stay Connected (newsletter, community, etc.)
+##the end
 
 LANGUAGE-MIRRORING PROTOCOL
 • Always reflect client's vocabulary and metaphors back to them
@@ -364,7 +269,7 @@ export async function generateStructuredPlan(conversationHistory: string) {
     }
 
     // Truncate conversation if too long to prevent timeouts
-    const maxLength = 6000
+    const maxLength = 4000
     const truncatedHistory = conversationHistory.length > maxLength 
       ? conversationHistory.substring(0, maxLength) + '...'
       : conversationHistory
@@ -373,7 +278,7 @@ export async function generateStructuredPlan(conversationHistory: string) {
 
     const response = await anthropic.messages.create({
       model: "claude-sonnet-4-5-20250929",
-      max_tokens: 6000,
+      max_tokens: 4000,
       system: `You are a professional behavioral optimization specialist. Based on the You 3.0 assessment conversation, create a comprehensive client-facing report in valid JSON format.
 
 CRITICAL INSTRUCTIONS:
