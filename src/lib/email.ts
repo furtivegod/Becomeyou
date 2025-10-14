@@ -47,7 +47,7 @@ export async function sendMagicLink(email: string, sessionId: string) {
           <div style="background-color: #f0e29d; padding: 40px 20px;">
             <!-- Main Headline -->
             <h1 style="color: #4A5D23; text-align: center; font-size: 32px; font-weight: bold; margin-bottom: 30px; font-family: 'Cormorant Garamond', serif;">
-              You Just Made the Right Decision.
+              Your transformation starts now.
             </h1>
             
             <!-- Main Content -->
@@ -84,13 +84,15 @@ export async function sendMagicLink(email: string, sessionId: string) {
                 protective strategies.
               </p>
               <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin-bottom: 15px; font-family: 'Inter', sans-serif;">
+                Some questions will make you stop and think. That's intentional.
+              </p>
+              <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin-bottom: 15px; font-family: 'Inter', sans-serif;">
                 Your responses are completely private. No human will see your answers. Your data is 
                 automatically deleted after your personalized protocol is generated.
               </p>
               <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; font-family: 'Inter', sans-serif;">
-                Immediately after completion, your recommended 30-Day Transformation Protocol will be 
-                delivered to this email address. 
-                Save it. Reference it. Use it.
+                Immediately after completion, your 30-Day Transformation Protocol will be 
+                delivered to this email address. Save it. Reference it. Use it.
               </p>
             </div>
             
