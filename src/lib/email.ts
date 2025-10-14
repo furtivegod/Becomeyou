@@ -58,12 +58,12 @@ export async function sendMagicLink(email: string, sessionId: string) {
             </p>
             
             <!-- Before You Begin -->
-            <div style="background-color: #FFF3CD; padding: 25px; border-radius: 8px; margin: 30px 0;">
+            <div style="margin: 30px 0;">
               <h2 style="color: #4A5D23; font-size: 20px; margin-bottom: 15px; font-family: 'Cormorant Garamond', serif;">Before You Begin:</h2>
               <ul style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 0; padding-left: 20px; font-family: 'Inter', sans-serif;">
-                <li style="margin-bottom: 8px;">✓ Find a quiet space where you can be honest and reflective</li>
-                <li style="margin-bottom: 8px;">✓ Set aside 20-35 uninterrupted minutes (there's no time limit—you can take breaks)</li>
-                <li style="margin-bottom: 8px;">✓ Answer honestly – the more specific you are, the more precise your protocol will be</li>
+                <li style="margin-bottom: 8px;">Find a quiet space where you can be honest and reflective</li>
+                <li style="margin-bottom: 8px;">Set aside 20-35 uninterrupted minutes (there's no time limit—you can take breaks)</li>
+                <li style="margin-bottom: 8px;">Answer honestly – the more specific you are, the more precise your protocol will be</li>
               </ul>
             </div>
             
@@ -76,7 +76,7 @@ export async function sendMagicLink(email: string, sessionId: string) {
             </div>
             
             <!-- What to Expect -->
-            <div style="background-color: white; padding: 25px; border-radius: 8px; margin: 30px 0;">
+            <div style="margin: 30px 0;">
               <h2 style="color: #4A5D23; font-size: 20px; margin-bottom: 15px; font-family: 'Cormorant Garamond', serif;">What to Expect:</h2>
               <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin-bottom: 15px; font-family: 'Inter', sans-serif;">
                 The assessment uses adaptive AI to ask follow-up questions based on your answers. This isn't a 
@@ -97,8 +97,8 @@ export async function sendMagicLink(email: string, sessionId: string) {
             </div>
             
             <!-- Disclaimer -->
-            <div style="background-color: #FFF3CD; border: 1px solid #D4AF37; padding: 20px; border-radius: 8px; margin: 30px 0;">
-              <p style="color: #856404; font-size: 14px; margin: 0; text-align: center; font-family: 'Inter', sans-serif;">
+            <div style="margin: 30px 0;">
+              <p style="color: #666; font-size: 14px; margin: 0; text-align: center; font-family: 'Inter', sans-serif;">
                 <strong>Disclaimer:</strong> This assessment is not a diagnostic tool and does not replace 
                 professional mental health support. If you are experiencing crisis-level distress, please seek 
                 immediate professional care.
@@ -153,15 +153,15 @@ export async function sendReportEmail(email: string, userName: string, pdfUrl: s
       const domainBreakdown = planData.domain_breakdown
       
       if (sabotageAnalysis?.protective_pattern) {
-        personalizedPS = `You mentioned "${sabotageAnalysis.protective_pattern.substring(0, 50)}...". If you want help designing the environment and structure that makes change automatic instead of exhausting, [book a call].`
+        personalizedPS = `You mentioned "${sabotageAnalysis.protective_pattern.substring(0, 50)}...". If you want help designing the environment and structure that makes change automatic instead of exhausting, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`
       } else if (planData.thirty_day_protocol?.thirty_day_approach) {
-        personalizedPS = `You're building toward your transformation goals. If you want to map out how your patterns are affecting your momentum, [book a call].`
+        personalizedPS = `You're building toward your transformation goals. If you want to map out how your patterns are affecting your momentum, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`
       } else if (domainBreakdown?.spirit) {
-        personalizedPS = `You shared insights about your spiritual connection. If you want to understand how your protective patterns show up in your closest relationships, [book a call].`
+        personalizedPS = `You shared insights about your spiritual connection. If you want to understand how your protective patterns show up in your closest relationships, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`
       } else if (domainBreakdown?.body) {
-        personalizedPS = `You described your relationship with your body. If you want to rebuild that connection without force or punishment, [book a call].`
+        personalizedPS = `You described your relationship with your body. If you want to rebuild that connection without force or punishment, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`
       } else {
-        personalizedPS = `Your assessment revealed important patterns. If you want to understand how these patterns are affecting your progress, [book a call].`
+        personalizedPS = `Your assessment revealed important patterns. If you want to understand how these patterns are affecting your progress, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`
       }
     }
     
@@ -215,20 +215,16 @@ export async function sendReportEmail(email: string, userName: string, pdfUrl: s
             </p>
             
             ${personalizedPS ? `
-            <div style="background-color: #FFF3CD; border: 1px solid #D4AF37; padding: 20px; border-radius: 8px; margin: 30px 0;">
-              <p style="color: #856404; font-size: 14px; margin: 0; font-family: 'Inter', sans-serif;">
-                <strong>P.S.</strong> ${personalizedPS}
-              </p>
-            </div>
+            <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+              <strong>P.S.</strong> ${personalizedPS}
+            </p>
             ` : ''}
             
             <!-- PDF Attachment Notice -->
             <div style="text-align: center; margin: 40px 0;">
-              <div style="background-color: white; padding: 25px; border-radius: 8px; border: 2px solid #4A5D23;">
-                <p style="color: #4A5D23; font-size: 18px; font-weight: bold; margin: 0; font-family: 'Inter', sans-serif;">
-                  📎 Your personalized protocol is attached as a PDF file
-                </p>
-              </div>
+              <p style="color: #4A5D23; font-size: 18px; font-weight: bold; margin: 0; font-family: 'Inter', sans-serif;">
+                Your personalized protocol is attached as a PDF file
+              </p>
             </div>
           </div>
           
@@ -286,16 +282,16 @@ export async function sendPatternRecognitionEmail(email: string, userName: strin
       if (nervousSystemAssessment?.primary_state) {
         const pattern = nervousSystemAssessment.primary_state.toLowerCase()
         if (pattern.includes('sympathetic') || pattern.includes('stress') || pattern.includes('overthinking')) {
-          personalizedPS = "In a Discovery Call, we map the exact moments your nervous system shifts into protection mode—and build specific interrupts that work with your wiring. [Book here] when you're ready."
+          personalizedPS = "In a Discovery Call, we map the exact moments your nervous system shifts into protection mode—and build specific interrupts that work with your wiring. <a href=\"https://calendly.com/matthewpaetz/discovery-call\" style=\"color: #4A5D23; text-decoration: underline;\">Book here</a> when you're ready."
         } else if (pattern.includes('dorsal') || pattern.includes('avoidance') || pattern.includes('numbing')) {
-          personalizedPS = "In a Discovery Call, we identify what safety looks like for your nervous system—so action doesn't require forcing yourself through shutdown. [Book here] when you're ready."
+          personalizedPS = "In a Discovery Call, we identify what safety looks like for your nervous system—so action doesn't require forcing yourself through shutdown. <a href=\"https://calendly.com/matthewpaetz/discovery-call\" style=\"color: #4A5D23; text-decoration: underline;\">Book here</a> when you're ready."
         } else if (pattern.includes('ventral') || pattern.includes('regulation')) {
-          personalizedPS = "In a Discovery Call, we design practices that help you stay regulated under pressure—not just when life is calm. [Book here] when you're ready."
+          personalizedPS = "In a Discovery Call, we design practices that help you stay regulated under pressure—not just when life is calm. <a href=\"https://calendly.com/matthewpaetz/discovery-call\" style=\"color: #4A5D23; text-decoration: underline;\">Book here</a> when you're ready."
         } else {
-          personalizedPS = "In a Discovery Call, we design pattern interrupts tailored to your nervous system. [Book here] when you're ready to build new responses."
+          personalizedPS = "In a Discovery Call, we design pattern interrupts tailored to your nervous system. <a href=\"https://calendly.com/matthewpaetz/discovery-call\" style=\"color: #4A5D23; text-decoration: underline;\">Book here</a> when you're ready to build new responses."
         }
       } else {
-        personalizedPS = "In a Discovery Call, we design pattern interrupts tailored to your nervous system. [Book here] when you're ready to build new responses."
+        personalizedPS = "In a Discovery Call, we design pattern interrupts tailored to your nervous system. <a href=\"https://calendly.com/matthewpaetz/discovery-call\" style=\"color: #4A5D23; text-decoration: underline;\">Book here</a> when you're ready to build new responses."
       }
     }
 
@@ -350,11 +346,9 @@ export async function sendPatternRecognitionEmail(email: string, userName: strin
             </p>
             
             ${personalizedPS ? `
-            <div style="background-color: #FFF3CD; border: 1px solid #D4AF37; padding: 20px; border-radius: 8px; margin: 30px 0;">
-              <p style="color: #856404; font-size: 14px; margin: 0; font-family: 'Inter', sans-serif;">
-                <strong>P.S.</strong> ${personalizedPS}
-              </p>
-            </div>
+            <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+              <strong>P.S.</strong> ${personalizedPS}
+            </p>
             ` : ''}
           </div>
           
@@ -398,16 +392,16 @@ export async function sendEvidence7DayEmail(email: string, userName: string, pla
       if (sabotageAnalysis?.protective_pattern) {
         const pattern = sabotageAnalysis.protective_pattern.toLowerCase()
         if (pattern.includes('perfectionism') || pattern.includes('overthinking')) {
-          personalizedPS = `You mentioned ${sabotageAnalysis.protective_pattern.substring(0, 50)}. In a Discovery Call, we identify what 'good enough' actually looks like for your nervous system—so you can ship without the spiral. [Book here].`
+          personalizedPS = `You mentioned ${sabotageAnalysis.protective_pattern.substring(0, 50)}. In a Discovery Call, we identify what 'good enough' actually looks like for your nervous system—so you can ship without the spiral. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`
         } else if (pattern.includes('avoidance') || pattern.includes('procrastination')) {
-          personalizedPS = `You shared that ${sabotageAnalysis.protective_pattern.substring(0, 50)}. In a Discovery Call, we build momentum systems that work with your energy cycles instead of fighting them. [Book here].`
+          personalizedPS = `You shared that ${sabotageAnalysis.protective_pattern.substring(0, 50)}. In a Discovery Call, we build momentum systems that work with your energy cycles instead of fighting them. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`
         } else if (pattern.includes('people-pleasing') || pattern.includes('conflict')) {
-          personalizedPS = `You described ${sabotageAnalysis.protective_pattern.substring(0, 50)}. In a Discovery Call, we practice saying what's true without triggering your abandonment alarm. [Book here].`
+          personalizedPS = `You described ${sabotageAnalysis.protective_pattern.substring(0, 50)}. In a Discovery Call, we practice saying what's true without triggering your abandonment alarm. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`
         } else {
-          personalizedPS = "The assessment mapped the patterns. A Discovery Call helps you see progress you're missing and builds momentum structures. [Book here]."
+          personalizedPS = "The assessment mapped the patterns. A Discovery Call helps you see progress you're missing and builds momentum structures. <a href=\"https://calendly.com/matthewpaetz/discovery-call\" style=\"color: #4A5D23; text-decoration: underline;\">Book here</a>."
         }
       } else {
-        personalizedPS = "The assessment mapped the patterns. A Discovery Call helps you see progress you're missing and builds momentum structures. [Book here]."
+        personalizedPS = "The assessment mapped the patterns. A Discovery Call helps you see progress you're missing and builds momentum structures. <a href=\"https://calendly.com/matthewpaetz/discovery-call\" style=\"color: #4A5D23; text-decoration: underline;\">Book here</a>."
       }
     }
     const { data, error } = await resend.emails.send({
@@ -471,11 +465,9 @@ export async function sendEvidence7DayEmail(email: string, userName: string, pla
             </p>
             
             ${personalizedPS ? `
-            <div style="background-color: #FFF3CD; border: 1px solid #D4AF37; padding: 20px; border-radius: 8px; margin: 30px 0;">
-              <p style="color: #856404; font-size: 14px; margin: 0; font-family: 'Inter', sans-serif;">
-                <strong>P.S.</strong> ${personalizedPS}
-              </p>
-            </div>
+            <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+              <strong>P.S.</strong> ${personalizedPS}
+            </p>
             ` : ''}
           </div>
           
@@ -518,14 +510,14 @@ export async function sendIntegrationThresholdEmail(email: string, userName: str
       const goals = planData.goals
       if (goals?.business_goal || goals?.financial_goal) {
         const businessGoal = goals.business_goal || goals.financial_goal
-        personalizedPS = `You're building toward ${businessGoal}. In a Discovery Call, we map how your nervous system patterns are affecting your business momentum—and what to shift first. [Book here].`
+        personalizedPS = `You're building toward ${businessGoal}. In a Discovery Call, we map how your nervous system patterns are affecting your business momentum—and what to shift first. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`
       } else if (goals?.relationship_goal) {
-        personalizedPS = `You want ${goals.relationship_goal}. In a Discovery Call, we identify how your protective patterns show up in intimacy—and practice new responses. [Book here].`
+        personalizedPS = `You want ${goals.relationship_goal}. In a Discovery Call, we identify how your protective patterns show up in intimacy—and practice new responses. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`
       } else if (goals?.body_goal || goals?.health_goal) {
         const bodyGoal = goals.body_goal || goals.health_goal
-        personalizedPS = `You described wanting ${bodyGoal}. In a Discovery Call, we rebuild your relationship with your body without punishment or force. [Book here].`
+        personalizedPS = `You described wanting ${bodyGoal}. In a Discovery Call, we rebuild your relationship with your body without punishment or force. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`
       } else {
-        personalizedPS = "A Discovery Call clarifies whether you're ready for implementation or still gathering insights. Both are valid—but knowing saves months. [Book here]."
+        personalizedPS = "A Discovery Call clarifies whether you're ready for implementation or still gathering insights. Both are valid—but knowing saves months. <a href=\"https://calendly.com/matthewpaetz/discovery-call\" style=\"color: #4A5D23; text-decoration: underline;\">Book here</a>."
       }
     }
     const { data, error } = await resend.emails.send({
@@ -589,11 +581,9 @@ export async function sendIntegrationThresholdEmail(email: string, userName: str
             </p>
             
             ${personalizedPS ? `
-            <div style="background-color: #FFF3CD; border: 1px solid #D4AF37; padding: 20px; border-radius: 8px; margin: 30px 0;">
-              <p style="color: #856404; font-size: 14px; margin: 0; font-family: 'Inter', sans-serif;">
-                <strong>P.S.</strong> ${personalizedPS}
-              </p>
-            </div>
+            <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+              <strong>P.S.</strong> ${personalizedPS}
+            </p>
             ` : ''}
           </div>
           
@@ -635,13 +625,13 @@ export async function sendCompoundEffectEmail(email: string, userName: string, p
     if (planData) {
       const protocol = planData.thirty_day_protocol
       if (protocol?.specific_action) {
-        personalizedPS = `You committed to ${protocol.specific_action}. Whether you did it once or daily, that's data. In a Discovery Call, we use that data to design what's actually sustainable for your nervous system. [Book here].`
+        personalizedPS = `You committed to ${protocol.specific_action}. Whether you did it once or daily, that's data. In a Discovery Call, we use that data to design what's actually sustainable for your nervous system. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`
       } else if (protocol?.environmental_change) {
-        personalizedPS = `You identified ${protocol.environmental_change}. In a Discovery Call, we refine your environment so the default choice is the right choice—no willpower required. [Book here].`
+        personalizedPS = `You identified ${protocol.environmental_change}. In a Discovery Call, we refine your environment so the default choice is the right choice—no willpower required. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`
       } else if (protocol?.weekly_practice) {
-        personalizedPS = `You planned ${protocol.weekly_practice}. In a Discovery Call, we figure out why it stuck or why it didn't—and adjust from there. [Book here].`
+        personalizedPS = `You planned ${protocol.weekly_practice}. In a Discovery Call, we figure out why it stuck or why it didn't—and adjust from there. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`
       } else {
-        personalizedPS = "Three weeks of data is enough to see your patterns clearly. In a Discovery Call, we turn that data into a sustainable system. [Book here]."
+        personalizedPS = "Three weeks of data is enough to see your patterns clearly. In a Discovery Call, we turn that data into a sustainable system. <a href=\"https://calendly.com/matthewpaetz/discovery-call\" style=\"color: #4A5D23; text-decoration: underline;\">Book here</a>."
       }
     }
     const { data, error } = await resend.emails.send({
@@ -701,11 +691,9 @@ export async function sendCompoundEffectEmail(email: string, userName: string, p
             </p>
             
             ${personalizedPS ? `
-            <div style="background-color: #FFF3CD; border: 1px solid #D4AF37; padding: 20px; border-radius: 8px; margin: 30px 0;">
-              <p style="color: #856404; font-size: 14px; margin: 0; font-family: 'Inter', sans-serif;">
-                <strong>P.S.</strong> ${personalizedPS}
-              </p>
-            </div>
+            <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+              <strong>P.S.</strong> ${personalizedPS}
+            </p>
             ` : ''}
           </div>
           
@@ -747,9 +735,9 @@ export async function sendDirectInvitationEmail(email: string, userName: string,
     if (planData) {
       const futureVision = planData.future_vision || planData.goals?.future_state
       if (futureVision) {
-        personalizedPS = `You described a Tuesday where ${futureVision}. That version of you exists—you just need the path to get there. [Book here] to map it out together.`
+        personalizedPS = `You described a Tuesday where ${futureVision}. That version of you exists—you just need the path to get there. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a> to map it out together.`
       } else {
-        personalizedPS = "You've had the map for 30 days. Ready to build the path? [Book here]."
+        personalizedPS = "You've had the map for 30 days. Ready to build the path? <a href=\"https://calendly.com/matthewpaetz/discovery-call\" style=\"color: #4A5D23; text-decoration: underline;\">Book here</a>."
       }
     }
     const { data, error } = await resend.emails.send({
@@ -823,11 +811,9 @@ export async function sendDirectInvitationEmail(email: string, userName: string,
             </p>
             
             ${personalizedPS ? `
-            <div style="background-color: #FFF3CD; border: 1px solid #D4AF37; padding: 20px; border-radius: 8px; margin: 30px 0;">
-              <p style="color: #856404; font-size: 14px; margin: 0; font-family: 'Inter', sans-serif;">
-                <strong>P.S.</strong> ${personalizedPS}
-              </p>
-            </div>
+            <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+              <strong>P.S.</strong> ${personalizedPS}
+            </p>
             ` : ''}
           </div>
           
