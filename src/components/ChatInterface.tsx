@@ -110,9 +110,8 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
           (lastMessage.content.includes('Thank you for showing up fully for this assessment') ||
            lastMessage.content.includes('ASSESSMENT COMPLETE') ||
            lastMessage.content.includes('You did the hard part. Now let\'s build on it.'))) {
-        console.log('Assessment completion detected, showing completion message...')
+        console.log('Assessment completion detected...')
         setAssessmentComplete(true)
-        showCompletionMessage()
       }
     }
   }, [messages, assessmentComplete])
@@ -315,9 +314,6 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
           assistantMessage.content.includes('ASSESSMENT COMPLETE') ||
           assistantMessage.content.includes('You did the hard part. Now let\'s build on it.')) {
         setAssessmentComplete(true)
-        
-        // Show completion message
-        showCompletionMessage()
       }
 
     } catch (error) {
@@ -327,28 +323,6 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
     }
   }
 
-  const showCompletionMessage = () => {
-    // Add a completion message to the chat
-    const completionMessage: Message = {
-      id: Date.now().toString(),
-      role: 'assistant',
-      content: `🎉 **Assessment Complete!**
-
-Your personalized You 3.0 assessment has been processed and your detailed report is being generated. 
-
-**What happens next:**
-• Your complete assessment report will be emailed to you within the next minute
-• You'll receive a PDF attachment with your personalized protocol
-• Follow-up emails will arrive over the next 6 days to support your journey
-
-**Check your email now** - your full assessment results should arrive shortly!
-
-*This is where your transformation begins.*`,
-      timestamp: new Date()
-    }
-    
-    setMessages(prev => [...prev, completionMessage])
-  }
 
   // Track message sent
   useEffect(() => {
@@ -492,8 +466,8 @@ Your personalized You 3.0 assessment has been processed and your detailed report
               </div>
             ))}
             
-            {/* Typing Indicator - Exact Claude Animation */}
-            {isLoading && (
+            {/* Typing Indicator - Exact Claude Animation - Hidden when assessment complete */}
+            {isLoading && !assessmentComplete && (
               <div className="w-full flex justify-center mb-8 opacity-60">
                 <div className="max-w-[700px] w-full px-6">
                   <div className="flex gap-4">
@@ -528,8 +502,9 @@ Your personalized You 3.0 assessment has been processed and your detailed report
               </div>
             )}
             
-            {/* Input Box - EXACT CLAUDE SPECIFICATIONS */}
-            <div className="bg-white border border-[#D1D5DB] rounded-xl p-4 flex flex-col gap-2 transition-all duration-150 focus-within:shadow-[0_0_0_3px_rgba(74,93,35,0.08)]" style={{ borderColor: '#4A5D23' }}>
+            {/* Input Box - EXACT CLAUDE SPECIFICATIONS - Hidden when assessment complete */}
+            {!assessmentComplete && (
+              <div className="bg-white border border-[#D1D5DB] rounded-xl p-4 flex flex-col gap-2 transition-all duration-150 focus-within:shadow-[0_0_0_3px_rgba(74,93,35,0.08)]" style={{ borderColor: '#4A5D23' }}>
               {/* Textarea - Exact specs */}
               <textarea
                 ref={textareaRef}
@@ -594,6 +569,7 @@ Your personalized You 3.0 assessment has been processed and your detailed report
                 </button>
               </div>
             </div>
+            )}
             
             {/* Voice Input Status */}
             {isListening && (
