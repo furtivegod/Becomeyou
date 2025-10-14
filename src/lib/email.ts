@@ -26,7 +26,7 @@ export async function sendMagicLink(email: string, sessionId: string) {
       to: [email],
       subject: 'Your You 3.0 Assessment Link – Ready to Begin',
       html: `
-        <div style="font-family: 'Georgia', 'Times New Roman', serif; max-width: 600px; margin: 0 auto; background-color: #F5F1E8;">
+        <div style="font-family: 'Georgia', 'Times New Roman', serif; max-width: 600px; margin: 0 auto; background-color: #f0e29d;">
           <!-- Header Section -->
           <div style="background-color: white; padding: 40px 20px 30px 20px; text-align: center;">
             <!-- Logo -->
@@ -38,7 +38,7 @@ export async function sendMagicLink(email: string, sessionId: string) {
           </div>
           
           <!-- Body Section -->
-          <div style="background-color: #F5F1E8; padding: 40px 20px;">
+          <div style="background-color: #f0e29d; padding: 40px 20px;">
             <!-- Main Headline -->
             <h1 style="color: #4A5D23; text-align: center; font-size: 32px; font-weight: bold; margin-bottom: 30px; font-family: 'Georgia', 'Times New Roman', serif;">
               You Just Made the Right Decision.
@@ -99,7 +99,7 @@ export async function sendMagicLink(email: string, sessionId: string) {
           </div>
           
           <!-- Footer -->
-          <div style="background-color: #F5F1E8; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
+          <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
             <p style="color: #666; font-size: 12px; margin: 0; font-family: Arial, sans-serif;">
               Need support? Contact us at support@becomeyou.ai
             </p>
@@ -160,7 +160,7 @@ export async function sendReportEmail(email: string, userName: string, pdfUrl: s
       to: [email],
       subject: 'Your You 3.0 roadmap is ready',
       html: `
-        <div style="font-family: 'Georgia', 'Times New Roman', serif; max-width: 600px; margin: 0 auto; background-color: #F5F1E8;">
+        <div style="font-family: 'Georgia', 'Times New Roman', serif; max-width: 600px; margin: 0 auto; background-color: #f0e29d;">
           <!-- Header Section -->
           <div style="background-color: white; padding: 40px 20px 30px 20px; text-align: center;">
             <!-- Logo -->
@@ -172,7 +172,7 @@ export async function sendReportEmail(email: string, userName: string, pdfUrl: s
           </div>
           
           <!-- Body Section -->
-          <div style="background-color: #F5F1E8; padding: 40px 20px;">
+          <div style="background-color: #f0e29d; padding: 40px 20px;">
             <!-- Main Content -->
             <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: Arial, sans-serif;">
               <strong>${displayName},</strong><br><br>
@@ -217,7 +217,7 @@ export async function sendReportEmail(email: string, userName: string, pdfUrl: s
           </div>
           
           <!-- Footer -->
-          <div style="background-color: #F5F1E8; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
+          <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
             <p style="color: #666; font-size: 12px; margin: 0; font-family: Arial, sans-serif;">
               Need support? Contact us at support@becomeyou.ai
             </p>
@@ -286,7 +286,7 @@ export async function sendPatternRecognitionEmail(email: string, userName: strin
       to: [email],
       subject: 'You probably already noticed it',
       html: `
-        <div style="font-family: 'Georgia', 'Times New Roman', serif; max-width: 600px; margin: 0 auto; background-color: #F5F1E8;">
+        <div style="font-family: 'Georgia', 'Times New Roman', serif; max-width: 600px; margin: 0 auto; background-color: #f0e29d;">
           <div style="background-color: white; padding: 40px 20px 30px 20px; text-align: center;">
             <div style="margin-bottom: 40px;">
               <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 100px; width: auto;" />
@@ -294,7 +294,7 @@ export async function sendPatternRecognitionEmail(email: string, userName: strin
             <div style="height: 3px; background-color: #4A5D23; width: 200px; margin: 0 auto;"></div>
           </div>
           
-          <div style="background-color: #F5F1E8; padding: 40px 20px;">
+          <div style="background-color: #f0e29d; padding: 40px 20px;">
             <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: Arial, sans-serif;">
               <strong>${userName},</strong><br><br>
               I'm curious—since reading your assessment, have you caught yourself doing exactly the thing it described?
@@ -334,7 +334,7 @@ export async function sendPatternRecognitionEmail(email: string, userName: strin
             ` : ''}
           </div>
           
-          <div style="background-color: #F5F1E8; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
+          <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
             <p style="color: #666; font-size: 12px; margin: 0; font-family: Arial, sans-serif;">
               Need support? Contact us at support@becomeyou.ai
             </p>
@@ -389,7 +389,7 @@ export async function sendEvidence7DayEmail(email: string, userName: string, pla
       to: [email],
       subject: 'The shift you might not be noticing',
       html: `
-        <div style="font-family: 'Georgia', 'Times New Roman', serif; max-width: 600px; margin: 0 auto; background-color: #F5F1E8;">
+        <div style="font-family: 'Georgia', 'Times New Roman', serif; max-width: 600px; margin: 0 auto; background-color: #f0e29d;">
           <div style="background-color: white; padding: 40px 20px 30px 20px; text-align: center;">
             <div style="margin-bottom: 40px;">
               <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 100px; width: auto;" />
@@ -397,7 +397,7 @@ export async function sendEvidence7DayEmail(email: string, userName: string, pla
             <div style="height: 3px; background-color: #4A5D23; width: 200px; margin: 0 auto;"></div>
           </div>
           
-          <div style="background-color: #F5F1E8; padding: 40px 20px;">
+          <div style="background-color: #f0e29d; padding: 40px 20px;">
             <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: Arial, sans-serif;">
               <strong>${userName},</strong><br><br>
               Most people wait for transformation to feel like a lightning bolt.
@@ -447,7 +447,7 @@ export async function sendEvidence7DayEmail(email: string, userName: string, pla
             ` : ''}
           </div>
           
-          <div style="background-color: #F5F1E8; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
+          <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
             <p style="color: #666; font-size: 12px; margin: 0; font-family: Arial, sans-serif;">
               Need support? Contact us at support@becomeyou.ai
             </p>
@@ -499,7 +499,7 @@ export async function sendIntegrationThresholdEmail(email: string, userName: str
       to: [email],
       subject: "You're at the make-or-break point",
       html: `
-        <div style="font-family: 'Georgia', 'Times New Roman', serif; max-width: 600px; margin: 0 auto; background-color: #F5F1E8;">
+        <div style="font-family: 'Georgia', 'Times New Roman', serif; max-width: 600px; margin: 0 auto; background-color: #f0e29d;">
           <div style="background-color: white; padding: 40px 20px 30px 20px; text-align: center;">
             <div style="margin-bottom: 40px;">
               <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 100px; width: auto;" />
@@ -507,7 +507,7 @@ export async function sendIntegrationThresholdEmail(email: string, userName: str
             <div style="height: 3px; background-color: #4A5D23; width: 200px; margin: 0 auto;"></div>
           </div>
           
-          <div style="background-color: #F5F1E8; padding: 40px 20px;">
+          <div style="background-color: #f0e29d; padding: 40px 20px;">
             <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: Arial, sans-serif;">
               <strong>${userName},</strong><br><br>
               Two weeks is when most people quit.
@@ -557,7 +557,7 @@ export async function sendIntegrationThresholdEmail(email: string, userName: str
             ` : ''}
           </div>
           
-          <div style="background-color: #F5F1E8; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
+          <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
             <p style="color: #666; font-size: 12px; margin: 0; font-family: Arial, sans-serif;">
               Need support? Contact us at support@becomeyou.ai
             </p>
@@ -607,7 +607,7 @@ export async function sendCompoundEffectEmail(email: string, userName: string, p
       to: [email],
       subject: "Three weeks in—this is where it gets real",
       html: `
-        <div style="font-family: 'Georgia', 'Times New Roman', serif; max-width: 600px; margin: 0 auto; background-color: #F5F1E8;">
+        <div style="font-family: 'Georgia', 'Times New Roman', serif; max-width: 600px; margin: 0 auto; background-color: #f0e29d;">
           <div style="background-color: white; padding: 40px 20px 30px 20px; text-align: center;">
             <div style="margin-bottom: 40px;">
               <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 100px; width: auto;" />
@@ -615,7 +615,7 @@ export async function sendCompoundEffectEmail(email: string, userName: string, p
             <div style="height: 3px; background-color: #4A5D23; width: 200px; margin: 0 auto;"></div>
           </div>
           
-          <div style="background-color: #F5F1E8; padding: 40px 20px;">
+          <div style="background-color: #f0e29d; padding: 40px 20px;">
             <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: Arial, sans-serif;">
               <strong>${userName},</strong><br><br>
               Three weeks is the threshold where temporary motivation either becomes sustainable practice or fades completely.
@@ -661,7 +661,7 @@ export async function sendCompoundEffectEmail(email: string, userName: string, p
             ` : ''}
           </div>
           
-          <div style="background-color: #F5F1E8; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
+          <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
             <p style="color: #666; font-size: 12px; margin: 0; font-family: Arial, sans-serif;">
               Need support? Contact us at support@becomeyou.ai
             </p>
@@ -707,7 +707,7 @@ export async function sendDirectInvitationEmail(email: string, userName: string,
       to: [email],
       subject: "30 days later—what's actually different?",
       html: `
-        <div style="font-family: 'Georgia', 'Times New Roman', serif; max-width: 600px; margin: 0 auto; background-color: #F5F1E8;">
+        <div style="font-family: 'Georgia', 'Times New Roman', serif; max-width: 600px; margin: 0 auto; background-color: #f0e29d;">
           <div style="background-color: white; padding: 40px 20px 30px 20px; text-align: center;">
             <div style="margin-bottom: 40px;">
               <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 100px; width: auto;" />
@@ -715,7 +715,7 @@ export async function sendDirectInvitationEmail(email: string, userName: string,
             <div style="height: 3px; background-color: #4A5D23; width: 200px; margin: 0 auto;"></div>
           </div>
           
-          <div style="background-color: #F5F1E8; padding: 40px 20px;">
+          <div style="background-color: #f0e29d; padding: 40px 20px;">
             <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: Arial, sans-serif;">
               <strong>${userName},</strong><br><br>
               It's been a month since you took your You 3.0 Assessment.
@@ -775,7 +775,7 @@ export async function sendDirectInvitationEmail(email: string, userName: string,
             ` : ''}
           </div>
           
-          <div style="background-color: #F5F1E8; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
+          <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
             <p style="color: #666; font-size: 12px; margin: 0; font-family: Arial, sans-serif;">
               Need support? Contact us at support@becomeyou.ai
             </p>

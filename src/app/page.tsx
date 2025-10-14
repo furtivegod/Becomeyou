@@ -7,7 +7,7 @@ export default function HomePage() {
 
   
   const router = useRouter()
-  router.push('/test-pdf');
+  // router.push('/test-pdf');
 
   useEffect(() => {
     // Get SamCart URL from environment variable
