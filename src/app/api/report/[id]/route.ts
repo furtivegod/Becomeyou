@@ -130,258 +130,622 @@ async function getSignedPDFUrl(sessionId: string): Promise<string | null> {
 }
 
 function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: string | null) {
+  const clientName = planData.client_name || 'Client';
+  const currentDate = new Date().toLocaleDateString('en-US', { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  });
+
   return new NextResponse(`
     <!DOCTYPE html>
-    <html>
+    <html lang="en">
     <head>
-      <meta charset="UTF-8">
-      <title>Your You 3.0 Assessment Report</title>
-      <style>
-        body { 
-          font-family: 'Georgia', 'Times New Roman', serif;
-          line-height: 1.6;
-          color: #1A1A1A;
-          max-width: 800px;
-          margin: 0 auto;
-          padding: 20px;
-          background: #F5F1E8;
-        }
-        .container {
-          background: white;
-          border-radius: 10px;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          padding: 2rem;
-        }
-        .header {
-          text-align: center;
-          border-bottom: 3px solid #4A5D23;
-          padding-bottom: 1rem;
-          margin-bottom: 2rem;
-        }
-        h1 { 
-          color: #4A5D23; 
-          margin-bottom: 0.5rem; 
-          font-family: 'Georgia', 'Times New Roman', serif;
-        }
-        .subtitle { color: #666; font-style: italic; }
-        .section {
-          margin-bottom: 2rem;
-          padding: 1rem;
-          border-left: 4px solid #4A5D23;
-          background: #F5F1E8;
-        }
-        .section h2 {
-          color: #4A5D23;
-          margin-top: 0;
-          border-bottom: 1px solid #D4AF37;
-          padding-bottom: 0.5rem;
-          font-family: 'Georgia', 'Times New Roman', serif;
-        }
-        .pdf-button {
-          background: #4A5D23;
-          color: white;
-          border: none;
-          padding: 12px 24px;
-          border-radius: 6px;
-          cursor: pointer;
-          font-size: 16px;
-          margin: 1rem 0;
-          transition: opacity 0.2s;
-        }
-        .pdf-button:hover { opacity: 0.9; }
-        .pdf-button:disabled { 
-          background: #ccc; 
-          cursor: not-allowed; 
-        }
-        .footer {
-          text-align: center;
-          margin-top: 2rem;
-          padding-top: 1rem;
-          border-top: 1px solid #4A5D23;
-          color: #666;
-          background: #F5F1E8;
-        }
-      </style>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>YOU 3.0 Assessment - ${clientName}</title>
+        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            :root {
+                --cream: #F9F6F1;
+                --warm-white: #FEFDFB;
+                --deep-charcoal: #2A2A2A;
+                --soft-gold: #C9A96E;
+            }
+
+            body {
+                font-family: 'Inter', -apple-system, sans-serif;
+                font-size: 11pt;
+                font-weight: 300;
+                line-height: 1.8;
+                color: var(--deep-charcoal);
+                background: #f5f5f5;
+                overflow-x: hidden;
+            }
+
+            .page {
+                min-height: 100vh;
+                padding: 80px 60px;
+                background: var(--warm-white);
+                margin-bottom: 2px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                position: relative;
+            }
+
+            .page-content {
+                max-width: 720px;
+                margin: 0 auto;
+                width: 100%;
+            }
+
+            /* COVER PAGE */
+            .cover {
+                background: linear-gradient(180deg, var(--warm-white) 0%, var(--cream) 100%);
+                text-align: center;
+                position: relative;
+            }
+
+            .cover::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-image: 
+                    repeating-linear-gradient(90deg, transparent, transparent 1px, rgba(201, 169, 110, 0.03) 1px, rgba(201, 169, 110, 0.03) 2px),
+                    repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(201, 169, 110, 0.03) 1px, rgba(201, 169, 110, 0.03) 2px);
+                background-size: 60px 60px;
+                opacity: 0.5;
+            }
+
+            .cover-content {
+                position: relative;
+                z-index: 1;
+            }
+
+            .logo-mark {
+                font-size: 10px;
+                letter-spacing: 0.3em;
+                color: var(--soft-gold);
+                margin-bottom: 80px;
+                font-weight: 500;
+            }
+
+            h1 {
+                font-family: 'Cormorant Garamond', Georgia, serif;
+                font-size: 72px;
+                font-weight: 300;
+                color: var(--deep-charcoal);
+                line-height: 1.1;
+                letter-spacing: -0.02em;
+                margin-bottom: 60px;
+            }
+
+            h2 {
+                font-family: 'Cormorant Garamond', Georgia, serif;
+                font-size: 42px;
+                font-weight: 300;
+                line-height: 1.2;
+                margin-bottom: 40px;
+            }
+
+            .client-name {
+                font-size: 14px;
+                font-weight: 300;
+                letter-spacing: 0.1em;
+                color: #666;
+                margin-bottom: 120px;
+            }
+
+            .cover-tagline {
+                font-family: 'Cormorant Garamond', serif;
+                font-size: 20px;
+                font-style: italic;
+                font-weight: 300;
+                color: #666;
+                line-height: 1.6;
+            }
+
+            /* SECTION HEADERS */
+            .section-header {
+                margin-bottom: 80px;
+                text-align: center;
+            }
+
+            .section-label {
+                font-size: 10px;
+                font-weight: 500;
+                letter-spacing: 0.2em;
+                text-transform: uppercase;
+                color: var(--soft-gold);
+                margin-bottom: 30px;
+            }
+
+            .section-title {
+                font-family: 'Cormorant Garamond', serif;
+                font-size: 48px;
+                font-weight: 300;
+                letter-spacing: -0.01em;
+                line-height: 1.2;
+            }
+
+            /* CONTENT BLOCKS */
+            .content-block {
+                margin: 60px 0;
+            }
+
+            .block-title {
+                font-size: 10px;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                color: var(--soft-gold);
+                font-weight: 500;
+                margin-bottom: 20px;
+            }
+
+            .block-content {
+                font-size: 13px;
+                line-height: 2;
+                font-weight: 300;
+            }
+
+            /* DOMAIN HERO */
+            .domain-hero {
+                font-size: 96px;
+                font-weight: 300;
+                text-align: center;
+                margin-bottom: 80px;
+                letter-spacing: -0.03em;
+                font-family: 'Cormorant Garamond', serif;
+            }
+
+            /* METRICS */
+            .metric-row {
+                display: flex;
+                justify-content: space-between;
+                padding: 30px 0;
+                border-bottom: 1px solid rgba(0,0,0,0.08);
+            }
+
+            .metric-row:first-of-type {
+                border-top: 1px solid rgba(0,0,0,0.08);
+            }
+
+            .metric-label {
+                font-size: 10px;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                color: var(--soft-gold);
+                font-weight: 500;
+            }
+
+            .metric-value {
+                font-family: 'Cormorant Garamond', serif;
+                font-size: 18px;
+                font-weight: 400;
+            }
+
+            /* PULL QUOTE */
+            .pull-quote {
+                margin: 100px 0;
+                padding: 60px 0;
+                border-top: 1px solid rgba(201, 169, 110, 0.3);
+                border-bottom: 1px solid rgba(201, 169, 110, 0.3);
+                text-align: center;
+            }
+
+            .pull-quote-text {
+                font-family: 'Cormorant Garamond', serif;
+                font-size: 28px;
+                font-style: italic;
+                font-weight: 300;
+                line-height: 1.6;
+                margin-bottom: 30px;
+            }
+
+            /* BOTTOM LINE */
+            .bottom-line-page {
+                background: var(--deep-charcoal);
+                color: var(--warm-white);
+            }
+
+            .bottom-line-page h2 {
+                color: var(--warm-white);
+            }
+
+            .bottom-line-page p {
+                font-size: 15px;
+                line-height: 2;
+                color: rgba(255,255,255,0.85);
+            }
+
+            /* PAGE NUMBER */
+            .page-number {
+                position: absolute;
+                bottom: 40px;
+                right: 60px;
+                font-size: 9px;
+                letter-spacing: 0.1em;
+                color: #999;
+            }
+
+            .divider {
+                width: 60px;
+                height: 1px;
+                background: var(--soft-gold);
+                margin: 80px auto;
+            }
+
+            p {
+                margin-bottom: 28px;
+                line-height: 1.9;
+            }
+
+            /* PROTOCOL */
+            .protocol-item {
+                margin: 50px 0;
+                padding-bottom: 50px;
+                border-bottom: 1px solid rgba(0,0,0,0.06);
+            }
+
+            .protocol-timeline {
+                font-size: 10px;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                color: var(--soft-gold);
+                font-weight: 500;
+                margin-bottom: 15px;
+            }
+
+            .protocol-action {
+                font-size: 15px;
+                line-height: 1.8;
+                font-weight: 300;
+            }
+
+            /* REMINDERS */
+            .reminder-item {
+                padding: 25px 0;
+                border-bottom: 1px solid rgba(0,0,0,0.06);
+                font-size: 13px;
+                line-height: 1.9;
+                font-weight: 300;
+            }
+
+            /* PDF BUTTON */
+            .pdf-button {
+                background: var(--soft-gold);
+                color: var(--deep-charcoal);
+                border: none;
+                padding: 15px 30px;
+                border-radius: 0;
+                cursor: pointer;
+                font-size: 12px;
+                font-weight: 500;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                margin: 40px 0;
+                transition: all 0.3s ease;
+            }
+
+            .pdf-button:hover { 
+                background: var(--deep-charcoal);
+                color: var(--warm-white);
+            }
+
+            .pdf-button:disabled { 
+                background: #ccc; 
+                cursor: not-allowed; 
+            }
+
+            @media (max-width: 768px) {
+                .page {
+                    padding: 60px 30px;
+                }
+                h1 {
+                    font-size: 48px;
+                }
+                .domain-hero {
+                    font-size: 56px;
+                }
+            }
+        </style>
     </head>
     <body>
-      <div class="container">
-        <div class="header">
-          <h1>${planData.title || 'Your You 3.0 Assessment Report'}</h1>
-          <p class="subtitle">${planData.overview || 'Your personalized behavioral optimization assessment is complete.'}</p>
+
+        <!-- PAGE 1: COVER -->
+        <div class="page cover">
+            <div class="cover-content">
+                <div class="logo-mark">BECOME YOU</div>
+                <h1>YOUR FULL<br>YOU 3.0<br>SUMMARY</h1>
+                <div class="client-name">${clientName.toUpperCase()}</div>
+                <div class="cover-tagline">This is where<br>transformation begins</div>
+            </div>
         </div>
 
-        ${planData.assessment_overview ? `
-          <div class="section">
-            <h2>Assessment Overview</h2>
-            <p>${planData.assessment_overview}</p>
-          </div>
-        ` : ''}
+        <!-- PAGE 2: TITLE -->
+        <div class="page">
+            <div class="page-content" style="text-align: center;">
+                <div style="margin-bottom: 80px; font-size: 14px; letter-spacing: 8px; color: var(--soft-gold); font-weight: 300;">
+                    become / you
+                </div>
+                
+                <h2 style="margin-bottom: 60px;">YOU 3.0 PERSONAL<br>DEVELOPMENT ASSESSMENT</h2>
+                
+                <div style="font-size: 12px; line-height: 2.5; color: #666;">
+                    <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Client</span><br>${clientName}</p>
+                    <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Date</span><br>${currentDate}</p>
+                    <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Type</span><br>Behavioral Optimization</p>
+                </div>
+                
+                <div class="divider"></div>
+                
+                <p style="font-size: 11px; font-style: italic; color: #999; max-width: 500px; margin: 0 auto;">
+                    This assessment is not a diagnostic tool and does not replace professional mental health support. If you are experiencing crisis-level distress, please seek immediate professional care.
+                </p>
+            </div>
+            <div class="page-number">02</div>
+        </div>
 
-        ${planData.development_profile ? `
-          <div class="section">
-            <h2>Your Development Profile</h2>
-            <p>${planData.development_profile}</p>
-          </div>
-        ` : ''}
+        <!-- PAGE 3: ASSESSMENT OVERVIEW -->
+        <div class="page">
+            <div class="page-content">
+                <div class="section-header">
+                    <div class="section-label">Overview</div>
+                    <div class="section-title">Assessment Overview</div>
+                </div>
+                
+                <p style="font-size: 15px; line-height: 2;">${planData.assessment_overview || 'Your personalized behavioral optimization assessment reveals the patterns that have been keeping you stuck and provides a clear path forward.'}</p>
+            </div>
+            <div class="page-number">03</div>
+        </div>
 
-        ${planData.sabotage_analysis ? `
-          <div class="section">
-            <h2>Sabotage Pattern Analysis</h2>
-            ${Object.entries(planData.sabotage_analysis).map(([key, value]: [string, any]) => `
-              <div style="margin: 1rem 0; padding: 1rem; background: white; border-radius: 6px; border-left: 3px solid #4A5D23;">
-                <strong style="color: #4A5D23;">${key.replace(/_/g, ' ').toUpperCase()}:</strong><br>
-                <span style="color: #1A1A1A;">${value}</span>
-              </div>
-            `).join('')}
-          </div>
-        ` : ''}
-
-        ${planData.domain_breakdown ? `
-          <div class="section">
-            <h2>Domain Breakdown</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
-              ${Object.entries(planData.domain_breakdown).map(([domain, data]: [string, any]) => `
-                <div style="padding: 1rem; background: #FFF3CD; border-radius: 6px; border: 1px solid #D4AF37;">
-                  <strong style="color: #4A5D23;">${domain.toUpperCase()}:</strong><br>
-                  ${typeof data === 'object' && data !== null ? `
-                    <div style="margin-top: 0.5rem;">
-                      ${data.current_level ? `<div style="margin: 0.5rem 0;"><strong>Current Level:</strong> ${data.current_level}</div>` : ''}
-                      ${data.current_phase ? `<div style="margin: 0.5rem 0;"><strong>Current Phase:</strong> ${data.current_phase}</div>` : ''}
-                      ${data.key_strengths ? `<div style="margin: 0.5rem 0;"><strong>Key Strengths:</strong> ${data.key_strengths}</div>` : ''}
-                      ${data.growth_opportunities ? `<div style="margin: 0.5rem 0;"><strong>Growth Opportunities:</strong> ${data.growth_opportunities}</div>` : ''}
+        <!-- PAGE 4: DEVELOPMENT PROFILE -->
+        <div class="page">
+            <div class="page-content">
+                <div class="section-header">
+                    <div class="section-label">Your Profile</div>
+                    <div class="section-title">Your Development<br>Profile</div>
+                </div>
+                
+                <p style="font-size: 15px; line-height: 2;">${planData.development_profile || 'Your core development pattern and how it shows up in your daily life.'}</p>
+                
+                ${planData.client_quote ? `
+                <div class="content-block">
+                    <div class="block-title">Your Words</div>
+                    <div class="block-content" style="font-style: italic;">
+                        "${planData.client_quote}"
                     </div>
-                  ` : `<span style="color: #1A1A1A;">${data}</span>`}
                 </div>
-              `).join('')}
+                ` : ''}
             </div>
-          </div>
-        ` : ''}
+            <div class="page-number">04</div>
+        </div>
 
-        ${planData.nervous_system_assessment ? `
-          <div class="section">
-            <h2>Nervous System Assessment</h2>
-            <div style="padding: 1rem; background: #FFF3CD; border-radius: 6px; border: 1px solid #D4AF37; color: #1A1A1A;">
-              ${typeof planData.nervous_system_assessment === 'object' && planData.nervous_system_assessment !== null ? `
-                <div>
-                  ${planData.nervous_system_assessment.primary_state ? `<div style="margin: 0.5rem 0;"><strong>Primary State:</strong> ${planData.nervous_system_assessment.primary_state}</div>` : ''}
-                  ${planData.nervous_system_assessment.regulation_capacity ? `<div style="margin: 0.5rem 0;"><strong>Regulation Capacity:</strong> ${planData.nervous_system_assessment.regulation_capacity}</div>` : ''}
-                  ${planData.nervous_system_assessment.observable_patterns ? `<div style="margin: 0.5rem 0;"><strong>Observable Patterns:</strong> ${planData.nervous_system_assessment.observable_patterns}</div>` : ''}
-                  ${planData.nervous_system_assessment.regulation_reality ? `<div style="margin: 0.5rem 0;"><strong>Regulation Reality:</strong> ${planData.nervous_system_assessment.regulation_reality}</div>` : ''}
+        <!-- PAGE 5: SABOTAGE PATTERN -->
+        <div class="page">
+            <div class="page-content">
+                <div class="section-header">
+                    <div class="section-label">Pattern Analysis</div>
+                    <div class="section-title">Sabotage Pattern<br>Analysis</div>
                 </div>
-              ` : planData.nervous_system_assessment}
+                
+                ${planData.sabotage_analysis ? `
+                <div class="content-block">
+                    <div class="block-title">Your Protective Pattern</div>
+                    <div class="block-content">${planData.sabotage_analysis.protective_pattern || 'Your specific protective pattern'}</div>
+                </div>
+                
+                <div class="content-block">
+                    <div class="block-title">What It's Protecting You From</div>
+                    <div class="block-content">${planData.sabotage_analysis.protective_function || 'The underlying fear driving your patterns'}</div>
+                </div>
+                
+                <div class="content-block">
+                    <div class="block-title">Your Success Proof</div>
+                    <div class="block-content">${planData.sabotage_analysis.success_proof || 'Evidence that you can overcome this pattern'}</div>
+                </div>
+                ` : ''}
             </div>
-          </div>
-        ` : ''}
+            <div class="page-number">05</div>
+        </div>
 
-        ${planData.thirty_day_protocol ? `
-          <div class="section">
-            <h2>30-Day Recommended Protocol</h2>
-            ${Object.entries(planData.thirty_day_protocol).map(([key, value]: [string, any]) => `
-              <div style="margin: 1rem 0; padding: 1rem; background: #FFF3CD; border-radius: 6px; border: 1px solid #D4AF37;">
-                <strong style="color: #4A5D23;">${key.replace(/_/g, ' ').toUpperCase()}:</strong><br>
-                ${Array.isArray(value) ? `
-                  <ul style="margin: 0.5rem 0; padding-left: 1.5rem; color: #1A1A1A;">
-                    ${value.map((item: any) => `<li style="margin: 0.25rem 0;">${item}</li>`).join('')}
-                  </ul>
-                ` : `
-                  <span style="color: #1A1A1A;">${value}</span>
+        <!-- PAGE 6: DOMAIN DIVIDER -->
+        <div class="page" style="display: flex; align-items: center; justify-content: center;">
+            <div style="text-align: center;">
+                <div class="section-label">The Four Domains</div>
+                <h2 style="font-size: 52px; margin-top: 40px;">Domain Breakdown</h2>
+            </div>
+            <div class="page-number">06</div>
+        </div>
+
+        ${planData.domain_breakdown ? Object.entries(planData.domain_breakdown).map(([domain, data]: [string, any], index: number) => `
+        <!-- PAGE ${7 + index}: ${domain.toUpperCase()} -->
+        <div class="page">
+            <div class="page-content">
+                <h1 class="domain-hero">${domain.toUpperCase()}</h1>
+                
+                ${data.current_level ? `
+                <div class="metric-row">
+                    <div class="metric-label">Current Level</div>
+                    <div class="metric-value">${data.current_level}</div>
+                </div>
+                ` : ''}
+                
+                ${data.current_phase ? `
+                <div class="metric-row">
+                    <div class="metric-label">Current Phase</div>
+                    <div class="metric-value">${data.current_phase}</div>
+                </div>
+                ` : ''}
+                
+                ${data.key_strengths ? `
+                <div class="content-block">
+                    <div class="block-title">Key Strengths</div>
+                    <div class="block-content">${data.key_strengths}</div>
+                </div>
+                ` : ''}
+                
+                ${data.growth_opportunities ? `
+                <div class="content-block">
+                    <div class="block-title">Growth Opportunities</div>
+                    <div class="block-content">${data.growth_opportunities}</div>
+                </div>
+                ` : ''}
+            </div>
+            <div class="page-number">${7 + index}</div>
+        </div>
+        `).join('') : ''}
+
+        <!-- NERVOUS SYSTEM PAGE -->
+        <div class="page">
+            <div class="page-content">
+                <div class="section-header">
+                    <div class="section-label">Foundation</div>
+                    <div class="section-title">Nervous System<br>Assessment</div>
+                </div>
+                
+                ${planData.nervous_system_assessment ? `
+                ${planData.nervous_system_assessment.primary_state ? `
+                <div class="metric-row">
+                    <div class="metric-label">Primary State</div>
+                    <div class="metric-value">${planData.nervous_system_assessment.primary_state}</div>
+                </div>
+                ` : ''}
+                
+                ${planData.nervous_system_assessment.regulation_capacity ? `
+                <div class="metric-row">
+                    <div class="metric-label">Regulation Capacity</div>
+                    <div class="metric-value">${planData.nervous_system_assessment.regulation_capacity}</div>
+                </div>
+                ` : ''}
+                
+                ${planData.nervous_system_assessment.observable_patterns ? `
+                <div class="content-block">
+                    <div class="block-title">Observable Patterns</div>
+                    <div class="block-content">
+                        ${Array.isArray(planData.nervous_system_assessment.observable_patterns) 
+                            ? planData.nervous_system_assessment.observable_patterns.map((pattern: string) => `<p>${pattern}</p>`).join('')
+                            : `<p>${planData.nervous_system_assessment.observable_patterns}</p>`
+                        }
+                    </div>
+                </div>
+                ` : ''}
+                ` : ''}
+            </div>
+            <div class="page-number">${7 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
+        </div>
+
+        <!-- 30-DAY PROTOCOL PAGE -->
+        <div class="page">
+            <div class="page-content">
+                <div class="section-header">
+                    <div class="section-label">Your Protocol</div>
+                    <div class="section-title">30-Day Growth<br>Protocol</div>
+                </div>
+                
+                ${planData.thirty_day_protocol ? `
+                ${planData.thirty_day_protocol.specific_action ? `
+                <div class="protocol-item">
+                    <div class="protocol-timeline">72-Hour Suggestion</div>
+                    <div class="protocol-action">${planData.thirty_day_protocol.specific_action}</div>
+                </div>
+                ` : ''}
+                
+                ${planData.thirty_day_protocol.weekly_practice ? `
+                <div class="protocol-item">
+                    <div class="protocol-timeline">Weekly Recommendation</div>
+                    <div class="protocol-action">${planData.thirty_day_protocol.weekly_practice}</div>
+                </div>
+                ` : ''}
+                
+                ${planData.thirty_day_protocol.thirty_day_approach ? `
+                <div class="protocol-item">
+                    <div class="protocol-timeline">30-Day Approach</div>
+                    <div class="protocol-action">${planData.thirty_day_protocol.thirty_day_approach}</div>
+                </div>
+                ` : ''}
+                ` : ''}
+            </div>
+            <div class="page-number">${8 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
+        </div>
+
+        <!-- BOTTOM LINE PAGE -->
+        <div class="page bottom-line-page">
+            <div class="page-content" style="text-align: center; max-width: 700px;">
+                <h2>Bottom Line</h2>
+                <p>${planData.bottom_line || 'Your personalized bottom line insight based on your assessment.'}</p>
+            </div>
+        </div>
+
+        <!-- DEVELOPMENT REMINDERS PAGE -->
+        <div class="page">
+            <div class="page-content">
+                <div class="section-header">
+                    <div class="section-label">Reminders</div>
+                    <div class="section-title">Development<br>Reminders</div>
+                </div>
+                
+                ${planData.development_reminders ? `
+                ${Array.isArray(planData.development_reminders) ? planData.development_reminders.map((reminder: string) => `
+                <div class="reminder-item">${reminder}</div>
+                `).join('') : `
+                <div class="reminder-item">${planData.development_reminders}</div>
                 `}
-              </div>
-            `).join('')}
-          </div>
-        ` : ''}
-
-        ${planData.development_reminders ? `
-          <div class="section">
-            <h2>Development Reminders</h2>
-            <div style="padding: 1rem; background: #FFF3CD; border-radius: 6px; border: 1px solid #D4AF37;">
-              ${Array.isArray(planData.development_reminders) ? `
-                <ul style="margin: 0; padding-left: 1.5rem; color: #1A1A1A;">
-                  ${planData.development_reminders.map((reminder: string) => `<li style="margin: 0.5rem 0;">${reminder}</li>`).join('')}
-                </ul>
-              ` : `<span style="color: #1A1A1A;">${planData.development_reminders}</span>`}
+                ` : `
+                <div class="reminder-item">Growth is cyclical; regression is protection, not failure</div>
+                <div class="reminder-item">Integration comes through consistent practice, not more awareness</div>
+                <div class="reminder-item">Your nervous system is the foundation—regulate first, then grow</div>
+                <div class="reminder-item">Your sabotage patterns have wisdom; honor them while updating them</div>
+                <div class="reminder-item">Identity shifts over time with deliberate practice</div>
+                <div class="reminder-item">You're not broken—you're context-dependent. Build better contexts</div>
+                `}
             </div>
-          </div>
-        ` : ''}
-
-        ${planData.book_recommendations ? `
-          <div class="section">
-            <h2>Book Recommendations</h2>
-            <div style="padding: 1rem; background: #FFF3CD; border-radius: 6px; border: 1px solid #D4AF37;">
-              ${Array.isArray(planData.book_recommendations) ? `
-                <ul style="margin: 0; padding-left: 1.5rem; color: #1A1A1A;">
-                  ${planData.book_recommendations.map((book: string) => `<li style="margin: 0.5rem 0;">${book}</li>`).join('')}
-                </ul>
-              ` : `<span style="color: #1A1A1A;">${planData.book_recommendations}</span>`}
-            </div>
-          </div>
-        ` : ''}
-
-        ${planData.resources ? `
-          <div class="section">
-            <h2>Resources</h2>
-            <div style="padding: 1rem; background: #FFF3CD; border-radius: 6px; border: 1px solid #D4AF37;">
-              ${Array.isArray(planData.resources) ? `
-                <ul style="margin: 0; padding-left: 1.5rem; color: #1A1A1A;">
-                  ${planData.resources.map((resource: string) => `<li style="margin: 0.5rem 0;">${resource}</li>`).join('')}
-                </ul>
-              ` : `<span style="color: #1A1A1A;">${planData.resources}</span>`}
-            </div>
-          </div>
-        ` : ''}
-
-        ${planData.reflection_prompts ? `
-          <div class="section">
-            <h2>Reflection Prompts</h2>
-            <div style="padding: 1rem; background: #FFF3CD; border-radius: 6px; border: 1px solid #D4AF37;">
-              ${Array.isArray(planData.reflection_prompts) ? `
-                <ul style="margin: 0; padding-left: 1.5rem; color: #1A1A1A;">
-                  ${planData.reflection_prompts.map((prompt: string) => `<li style="margin: 0.5rem 0;">${prompt}</li>`).join('')}
-                </ul>
-              ` : `<span style="color: #1A1A1A;">${planData.reflection_prompts}</span>`}
-            </div>
-          </div>
-        ` : ''}
-
-        ${planData.bottom_line ? `
-          <div class="section">
-            <h2>Bottom Line</h2>
-            <div style="padding: 1rem; background: #FFF3CD; border-radius: 6px; border: 1px solid #D4AF37; font-weight: bold; color: #1A1A1A;">
-              ${planData.bottom_line}
-            </div>
-          </div>
-        ` : ''}
-
-        <div style="text-align: center; margin: 2rem 0;">
-          <button 
-            class="pdf-button" 
-            onclick="showPDF()"
-            ${!signedPdfUrl ? 'disabled' : ''}
-          >
-            ${signedPdfUrl ? 'View PDF Report' : 'Open PDF in this tab...'}
-          </button>
+            <div class="page-number">${9 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
         </div>
 
-        <div class="footer">
-          <p>Generated on ${new Date().toLocaleDateString()} | Your You 3.0 Behavioral Optimization Assessment</p>
-          <p style="color: #4A5D23; font-weight: bold;">📧 A downloadable PDF has been sent to your email!</p>
+        <!-- FINAL PAGE -->
+        <div class="page" style="display: flex; align-items: center; justify-content: center;">
+            <div style="background: var(--cream); padding: 60px; text-align: center; max-width: 600px; border-left: 2px solid var(--soft-gold);">
+                <p style="font-size: 13px; line-height: 2.2; font-style: italic;">
+                    This assessment was built with care, respect, and the belief that you already have everything you need to become the person you described. The only thing left to do is <em>take action</em>.
+                </p>
+                
+                <div style="text-align: center; margin: 40px 0;">
+                    <button 
+                        class="pdf-button" 
+                        onclick="showPDF()"
+                        ${!signedPdfUrl ? 'disabled' : ''}
+                    >
+                        ${signedPdfUrl ? 'Download PDF Report' : 'PDF Still Generating...'}
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <script>
-        function showPDF() {
-          ${signedPdfUrl ? `
-            const link = document.createElement('a');
-            link.href = '${signedPdfUrl}';
-            link.download = 'your-protocol.pdf';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-          ` : `
-            alert('PDF is still being generated. Please wait a moment and refresh the page.');
-          `}
-        }
-      </script>
+        <script>
+            function showPDF() {
+                ${signedPdfUrl ? `
+                    const link = document.createElement('a');
+                    link.href = '${signedPdfUrl}';
+                    link.download = 'your-protocol.pdf';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                ` : `
+                    alert('PDF is still being generated. Please wait a moment and refresh the page.');
+                `}
+            }
+        </script>
     </body>
     </html>
   `, {

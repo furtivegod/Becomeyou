@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOU 3.0 Assessment - Preview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cream: #F9F6F1;
+            --warm-white: #FEFDFB;
+            --deep-charcoal: #2A2A2A;
+            --soft-gold: #C9A96E;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-size: 11pt;
+            font-weight: 300;
+            line-height: 1.8;
+            color: var(--deep-charcoal);
+            background: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        .page {
+            min-height: 100vh;
+            padding: 80px 60px;
+            background: var(--warm-white);
+            margin-bottom: 2px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .page-content {
+            max-width: 720px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* COVER PAGE */
+        .cover {
+            background: linear-gradient(180deg, var(--warm-white) 0%, var(--cream) 100%);
+            text-align: center;
+            position: relative;
+        }
+
+        .cover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                repeating-linear-gradient(90deg, transparent, transparent 1px, rgba(201, 169, 110, 0.03) 1px, rgba(201, 169, 110, 0.03) 2px),
+                repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(201, 169, 110, 0.03) 1px, rgba(201, 169, 110, 0.03) 2px);
+            background-size: 60px 60px;
+            opacity: 0.5;
+        }
+
+        .cover-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-mark {
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            color: var(--soft-gold);
+            margin-bottom: 80px;
+            font-weight: 500;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 72px;
+            font-weight: 300;
+            color: var(--deep-charcoal);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 60px;
+        }
+
+        h2 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 42px;
+            font-weight: 300;
+            line-height: 1.2;
+            margin-bottom: 40px;
+        }
+
+        .client-name {
+            font-size: 14px;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            color: #666;
+            margin-bottom: 120px;
+        }
+
+        .cover-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            font-style: italic;
+            font-weight: 300;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* SECTION HEADERS */
+        .section-header {
+            margin-bottom: 80px;
+            text-align: center;
+        }
+
+        .section-label {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--soft-gold);
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 48px;
+            font-weight: 300;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+        }
+
+        /* CONTENT BLOCKS */
+        .content-block {
+            margin: 60px 0;
+        }
+
+        .block-title {
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--soft-gold);
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .block-content {
+            font-size: 13px;
+            line-height: 2;
+            font-weight: 300;
+        }
+
+        /* DOMAIN HERO */
+        .domain-hero {
+            font-size: 96px;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 80px;
+            letter-spacing: -0.03em;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        /* METRICS */
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .metric-row:first-of-type {
+            border-top: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .metric-label {
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--soft-gold);
+            font-weight: 500;
+        }
+
+        .metric-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        /* PULL QUOTE */
+        .pull-quote {
+            margin: 100px 0;
+            padding: 60px 0;
+            border-top: 1px solid rgba(201, 169, 110, 0.3);
+            border-bottom: 1px solid rgba(201, 169, 110, 0.3);
+            text-align: center;
+        }
+
+        .pull-quote-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-style: italic;
+            font-weight: 300;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* BOTTOM LINE */
+        .bottom-line-page {
+            background: var(--deep-charcoal);
+            color: var(--warm-white);
+        }
+
+        .bottom-line-page h2 {
+            color: var(--warm-white);
+        }
+
+        .bottom-line-page p {
+            font-size: 15px;
+            line-height: 2;
+            color: rgba(255,255,255,0.85);
+        }
+
+        /* PAGE NUMBER */
+        .page-number {
+            position: absolute;
+            bottom: 40px;
+            right: 60px;
+            font-size: 9px;
+            letter-spacing: 0.1em;
+            color: #999;
+        }
+
+        .divider {
+            width: 60px;
+            height: 1px;
+            background: var(--soft-gold);
+            margin: 80px auto;
+        }
+
+        p {
+            margin-bottom: 28px;
+            line-height: 1.9;
+        }
+
+        /* PROTOCOL */
+        .protocol-item {
+            margin: 50px 0;
+            padding-bottom: 50px;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .protocol-timeline {
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--soft-gold);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .protocol-action {
+            font-size: 15px;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        /* REMINDERS */
+        .reminder-item {
+            padding: 25px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            font-size: 13px;
+            line-height: 1.9;
+            font-weight: 300;
+        }
+
+        @media (max-width: 768px) {
+            .page {
+                padding: 60px 30px;
+            }
+            h1 {
+                font-size: 48px;
+            }
+            .domain-hero {
+                font-size: 56px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PAGE 1: COVER -->
+    <div class="page cover">
+        <div class="cover-content">
+            <div class="logo-mark">BECOME YOU</div>
+            <h1>YOUR FULL<br>YOU 3.0<br>SUMMARY</h1>
+            <div class="client-name">MATTHEW PAETZ</div>
+            <div class="cover-tagline">This is where<br>transformation begins</div>
+        </div>
+    </div>
+
+    <!-- PAGE 2: TITLE -->
+    <div class="page">
+        <div class="page-content" style="text-align: center;">
+            <div style="margin-bottom: 80px; font-size: 14px; letter-spacing: 8px; color: var(--soft-gold); font-weight: 300;">
+                become / you
+            </div>
+            
+            <h2 style="margin-bottom: 60px;">YOU 3.0 PERSONAL<br>DEVELOPMENT ASSESSMENT</h2>
+            
+            <div style="font-size: 12px; line-height: 2.5; color: #666;">
+                <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Client</span><br>Matthew Paetz</p>
+                <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Date</span><br>October 13, 2025</p>
+                <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Type</span><br>Behavioral Optimization</p>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <p style="font-size: 11px; font-style: italic; color: #999; max-width: 500px; margin: 0 auto;">
+                This assessment is not a diagnostic tool and does not replace professional mental health support. If you are experiencing crisis-level distress, please seek immediate professional care.
+            </p>
+        </div>
+        <div class="page-number">02</div>
+    </div>
+
+    <!-- PAGE 3: ASSESSMENT OVERVIEW -->
+    <div class="page">
+        <div class="page-content">
+            <div class="section-header">
+                <div class="section-label">Overview</div>
+                <div class="section-title">Assessment Overview</div>
+            </div>
+            
+            <p style="font-size: 15px; line-height: 2;">You're a man standing at the intersection of profound self-awareness and paralyzing self-protection. You have Level 3 intuitive gifts trapped behind Level 1 nervous system patterns. Your development isn't about learning more—it's about finally feeling safe enough to use what you already know.</p>
+        </div>
+        <div class="page-number">03</div>
+    </div>
+
+    <!-- PAGE 4: DEVELOPMENT PROFILE -->
+    <div class="page">
+        <div class="page-content">
+            <div class="section-header">
+                <div class="section-label">Your Profile</div>
+                <div class="section-title">Your Development<br>Profile</div>
+            </div>
+            
+            <p style="font-size: 15px; line-height: 2;">Your core pattern: Trauma-driven shutdown at the moment of visibility, creating cycles of excitement → preparation → paralysis → shame. You're trying to earn worthiness through performance while your body keeps protecting you from being seen.</p>
+            
+            <div class="content-block">
+                <div class="block-title">Your Words</div>
+                <div class="block-content" style="font-style: italic;">
+                    "Matty, it was never about the money. I love you."
+                </div>
+            </div>
+        </div>
+        <div class="page-number">04</div>
+    </div>
+
+    <!-- PAGE 5: SABOTAGE PATTERN -->
+    <div class="page">
+        <div class="page-content">
+            <div class="section-header">
+                <div class="section-label">Pattern Analysis</div>
+                <div class="section-title">Sabotage Pattern<br>Analysis</div>
+            </div>
+            
+            <div class="content-block">
+                <div class="block-title">Your Protective Pattern</div>
+                <div class="block-content">Performance perfectionism masking fear of being truly seen</div>
+            </div>
+            
+            <div class="content-block">
+                <div class="block-title">What It's Protecting You From</div>
+                <div class="block-content">The vulnerability of being seen as "not enough" - which would mean rejection, which your nervous system reads as life-threatening based on childhood trauma.</div>
+            </div>
+            
+            <div class="content-block">
+                <div class="block-title">Your Success Proof</div>
+                <div class="block-content">You've already overcome this pattern multiple times - in recovery from addiction, in rebuilding your relationship with your wife, in creating your coaching business despite fear.</div>
+            </div>
+        </div>
+        <div class="page-number">05</div>
+    </div>
+
+    <!-- PAGE 6: DOMAIN DIVIDER -->
+    <div class="page" style="display: flex; align-items: center; justify-content: center;">
+        <div style="text-align: center;">
+            <div class="section-label">The Four Domains</div>
+            <h2 style="font-size: 52px; margin-top: 40px;">Domain Breakdown</h2>
+        </div>
+        <div class="page-number">06</div>
+    </div>
+
+    <!-- PAGE 7: MIND -->
+    <div class="page">
+        <div class="page-content">
+            <h1 class="domain-hero">MIND</h1>
+            
+            <div class="metric-row">
+                <div class="metric-label">Current Level</div>
+                <div class="metric-value">Active Exploration (Level 2)</div>
+            </div>
+            
+            <div class="metric-row">
+                <div class="metric-label">Current Phase</div>
+                <div class="metric-value">Friction (Phase 1)</div>
+            </div>
+            
+            <div class="content-block">
+                <div class="block-title">Key Strengths</div>
+                <div class="block-content">Exceptional pattern recognition and self-awareness. You can articulate complex internal processes and have an intuitive grasp of others' developmental patterns.</div>
+            </div>
+            
+            <div class="content-block">
+                <div class="block-title">Growth Opportunities</div>
+                <div class="block-content">Bridge the knowing-doing gap. Transform insight into embodied practice. Release perfectionism disguised as integrity.</div>
+            </div>
+        </div>
+        <div class="page-number">07</div>
+    </div>
+
+    <!-- PAGE 8: BODY -->
+    <div class="page">
+        <div class="page-content">
+            <h1 class="domain-hero">BODY</h1>
+            
+            <div class="metric-row">
+                <div class="metric-label">Current Level</div>
+                <div class="metric-value">Foundation Building (Level 1)</div>
+            </div>
+            
+            <div class="metric-row">
+                <div class="metric-label">Current Phase</div>
+                <div class="metric-value">Friction (Phase 1)</div>
+            </div>
+            
+            <div class="content-block">
+                <div class="block-title">Key Strengths</div>
+                <div class="block-content">Capable of intense physical output when motivated. Your body communicates clearly and you're learning to listen.</div>
+            </div>
+            
+            <div class="content-block">
+                <div class="block-title">Growth Opportunities</div>
+                <div class="block-content">Develop safety in embodiment. Build consistent gentle practices, not just intense ones. Address trauma stored in the body through professional support.</div>
+            </div>
+        </div>
+        <div class="page-number">08</div>
+    </div>
+
+    <!-- PAGE 9: SPIRIT -->
+    <div class="page">
+        <div class="page-content">
+            <h1 class="domain-hero">SPIRIT &<br>RELATIONSHIPS</h1>
+            
+            <div class="metric-row">
+                <div class="metric-label">Current Level</div>
+                <div class="metric-value">Foundation/Exploration Bridge</div>
+            </div>
+            
+            <div class="metric-row">
+                <div class="metric-label">Current Phase</div>
+                <div class="metric-value">Friction (Phase 1)</div>
+            </div>
+            
+            <div class="content-block">
+                <div class="block-title">Key Strengths</div>
+                <div class="block-content">Deep love and commitment to your wife. Capacity for profound connection when feeling safe. Best friend relationship with partner maintained.</div>
+            </div>
+            
+            <div class="content-block">
+                <div class="block-title">Growth Opportunities</div>
+                <div class="block-content">Replace "peacekeeping" with authentic relating. Develop capacity for productive conflict. Practice vulnerability without performance.</div>
+            </div>
+        </div>
+        <div class="page-number">09</div>
+    </div>
+
+    <!-- PAGE 10: CONTRIBUTION -->
+    <div class="page">
+        <div class="page-content">
+            <h1 class="domain-hero">CONTRIBUTION</h1>
+            
+            <div class="metric-row">
+                <div class="metric-label">Current Level</div>
+                <div class="metric-value">Split: Level 3 Execution, Level 1 Promotion</div>
+            </div>
+            
+            <div class="metric-row">
+                <div class="metric-label">Current Phase</div>
+                <div class="metric-value">Experimentation (Phase 2)</div>
+            </div>
+            
+            <div class="content-block">
+                <div class="block-title">Key Strengths</div>
+                <div class="block-content">Masterful intuitive coaching ability. You create genuine breakthrough moments and see patterns others miss.</div>
+            </div>
+            
+            <div class="content-block">
+                <div class="block-title">Growth Opportunities</div>
+                <div class="block-content">Own your gifts without external validation. Separate worth from guaranteed outcomes. Build sustainable business model.</div>
+            </div>
+        </div>
+        <div class="page-number">10</div>
+    </div>
+
+    <!-- PAGE 11: NERVOUS SYSTEM -->
+    <div class="page">
+        <div class="page-content">
+            <div class="section-header">
+                <div class="section-label">Foundation</div>
+                <div class="section-title">Nervous System<br>Assessment</div>
+            </div>
+            
+            <div class="metric-row">
+                <div class="metric-label">Primary State</div>
+                <div class="metric-value">Dorsal Vagal Dominance (Shutdown/Freeze)</div>
+            </div>
+            
+            <div class="metric-row">
+                <div class="metric-label">Regulation Capacity</div>
+                <div class="metric-value">Needs Support</div>
+            </div>
+            
+            <div class="content-block">
+                <div class="block-title">Observable Patterns</div>
+                <div class="block-content">
+                    <p>Numbness beginning in chest spreading outward</p>
+                    <p>Cognitive fog under social/financial pressure</p>
+                    <p>"I don't care" nihilism as protection</p>
+                </div>
+            </div>
+        </div>
+        <div class="page-number">11</div>
+    </div>
+
+    <!-- PAGE 12: 30-DAY PROTOCOL -->
+    <div class="page">
+        <div class="page-content">
+            <div class="section-header">
+                <div class="section-label">Your Protocol</div>
+                <div class="section-title">30-Day Growth<br>Protocol</div>
+            </div>
+            
+            <div class="protocol-item">
+                <div class="protocol-timeline">72-Hour Suggestion</div>
+                <div class="protocol-action">Tell your wife the complete financial truth. Not managed, not partial—complete transparency.</div>
+            </div>
+            
+            <div class="protocol-item">
+                <div class="protocol-timeline">Weekly Recommendation</div>
+                <div class="protocol-action">Daily 2-minute body stretch + 3-minute breathing practice. Start with just this.</div>
+            </div>
+            
+            <div class="protocol-item">
+                <div class="protocol-timeline">30-Day Approach</div>
+                <div class="protocol-action">Financial transparency achieved, therapy sessions scheduled, daily practices completed 5/7 days.</div>
+            </div>
+        </div>
+        <div class="page-number">12</div>
+    </div>
+
+    <!-- PAGE 13: BOTTOM LINE -->
+    <div class="page bottom-line-page">
+        <div class="page-content" style="text-align: center; max-width: 700px;">
+            <h2>Bottom Line</h2>
+            <p>You're not broken—you're a trauma survivor whose protective patterns have become a prison. Your development path isn't about doing more or being better. It's about safety: safety in your body, safety in truth, safety in being seen exactly as you are.</p>
+            <p style="margin-top: 40px; font-size: 17px;"><strong>Your mother knew you were enough. Your wife knows you're enough. The only person who needs convincing is you.</strong></p>
+        </div>
+    </div>
+
+    <!-- PAGE 14: REMINDER BOX -->
+    <div class="page">
+        <div class="page-content">
+            <div class="pull-quote">
+                <div class="pull-quote-text">"Matty, it was never about the money. I love you."</div>
+                <div style="font-size: 11px; letter-spacing: 0.1em; color: #999;">Your mother's truth, your wife's truth, the only truth that matters</div>
+            </div>
+        </div>
+        <div class="page-number">14</div>
+    </div>
+
+    <!-- PAGE 15: DEVELOPMENT REMINDERS -->
+    <div class="page">
+        <div class="page-content">
+            <div class="section-header">
+                <div class="section-label">Reminders</div>
+                <div class="section-title">Development<br>Reminders</div>
+            </div>
+            
+            <div class="reminder-item">Growth is cyclical; regression is protection, not failure</div>
+            <div class="reminder-item">Integration comes through consistent practice, not more awareness</div>
+            <div class="reminder-item">Your nervous system is the foundation—regulate first, then grow</div>
+            <div class="reminder-item">Your sabotage patterns have wisdom; honor them while updating them</div>
+            <div class="reminder-item">Identity shifts over time with deliberate practice</div>
+            <div class="reminder-item">You're not broken—you're context-dependent. Build better contexts</div>
+        </div>
+        <div class="page-number">15</div>
+    </div>
+
+    <!-- PAGE 16: BOOK RECOMMENDATIONS -->
+    <div class="page">
+        <div class="page-content">
+            <div class="section-header">
+                <div class="section-label">Recommended Reading</div>
+                <div class="section-title">Book<br>Recommendations</div>
+            </div>
+            
+            <div class="content-block">
+                <div class="block-title">1. The Body Keeps the Score</div>
+                <div class="block-content">By Bessel van der Kolk<br><br>Essential for understanding trauma's impact on your nervous system and why your body responds the way it does.</div>
+            </div>
+            
+            <div class="content-block">
+                <div class="block-title">2. Waking the Tiger</div>
+                <div class="block-content">By Peter Levine<br><br>Somatic experiencing approach to healing trauma stored in the body—directly relevant to your shutdown patterns.</div>
+            </div>
+        </div>
+        <div class="page-number">16</div>
+    </div>
+
+    <!-- PAGE 17: NEXT STEPS -->
+    <div class="page">
+        <div class="page-content">
+            <div class="section-header">
+                <div class="section-label">Moving Forward</div>
+                <div class="section-title">Next Steps</div>
+            </div>
+            
+            <div class="content-block">
+                <div class="block-title">6-Month Follow-Up Assessment Recommended</div>
+                <div class="block-content">After implementing your 30-day protocol and establishing therapy, we'll reassess your nervous system regulation, business execution patterns, and relationship dynamics.</div>
+            </div>
+            
+            <div class="content-block">
+                <div class="block-title">Focus Areas for Next Phase</div>
+                <div class="block-content">
+                    <p>Nervous system regulation through professional support</p>
+                    <p>Financial transparency and sustainable money practices</p>
+                    <p>Embodied action over intellectual understanding</p>
+                    <p>Authentic relating vs. performance in relationships</p>
+                </div>
+            </div>
+        </div>
+        <div class="page-number">17</div>
+    </div>
+
+    <!-- FINAL PAGE -->
+    <div class="page" style="display: flex; align-items: center; justify-content: center;">
+        <div style="background: var(--cream); padding: 60px; text-align: center; max-width: 600px; border-left: 2px solid var(--soft-gold);">
+            <p style="font-size: 13px; line-height: 2.2; font-style: italic;">
+                This assessment was built with care, respect, and the belief that you already have everything you need to become the person you described. The only thing left to do is <em>take action</em>.
+            </p>
+        </div>
+    </div>
+
+</body>
+</html>
