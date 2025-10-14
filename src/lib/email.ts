@@ -109,7 +109,7 @@ export async function sendMagicLink(email: string, sessionId: string) {
           <!-- Footer -->
           <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
             <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-              Need support? Contact us at support@becomeyou.ai
+              Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #4A5D23; text-decoration: underline;">support@becomeyou.ai</a>
             </p>
           </div>
         </div>
@@ -231,7 +231,7 @@ export async function sendReportEmail(email: string, userName: string, pdfUrl: s
           <!-- Footer -->
           <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
             <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-              Need support? Contact us at support@becomeyou.ai
+              Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #4A5D23; text-decoration: underline;">support@becomeyou.ai</a>
             </p>
           </div>
         </div>
@@ -354,7 +354,7 @@ export async function sendPatternRecognitionEmail(email: string, userName: strin
           
           <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
             <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-              Need support? Contact us at support@becomeyou.ai
+              Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #4A5D23; text-decoration: underline;">support@becomeyou.ai</a>
             </p>
           </div>
         </div>
@@ -473,7 +473,7 @@ export async function sendEvidence7DayEmail(email: string, userName: string, pla
           
           <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
             <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-              Need support? Contact us at support@becomeyou.ai
+              Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #4A5D23; text-decoration: underline;">support@becomeyou.ai</a>
             </p>
           </div>
         </div>
@@ -589,7 +589,7 @@ export async function sendIntegrationThresholdEmail(email: string, userName: str
           
           <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
             <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-              Need support? Contact us at support@becomeyou.ai
+              Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #4A5D23; text-decoration: underline;">support@becomeyou.ai</a>
             </p>
           </div>
         </div>
@@ -699,7 +699,7 @@ export async function sendCompoundEffectEmail(email: string, userName: string, p
           
           <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
             <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-              Need support? Contact us at support@becomeyou.ai
+              Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #4A5D23; text-decoration: underline;">support@becomeyou.ai</a>
             </p>
           </div>
         </div>
@@ -819,7 +819,7 @@ export async function sendDirectInvitationEmail(email: string, userName: string,
           
           <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
             <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-              Need support? Contact us at support@becomeyou.ai
+              Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #4A5D23; text-decoration: underline;">support@becomeyou.ai</a>
             </p>
           </div>
         </div>
