@@ -572,7 +572,7 @@ export async function sendIntegrationThresholdEmail(email: string, userName: str
             </ol>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
-              You've proven you can do hard things—you built ${planData?.goals?.business_goal || planData?.goals?.financial_goal || planData?.goals?.relationship_goal || planData?.goals?.body_goal || planData?.goals?.health_goal || '[something specific from their assessment]'}. The question is: Are you ready to apply that same capability to your own nervous system?
+              You've proven you can do hard things—you built ${planData?.sabotage_analysis?.success_proof || planData?.sabotage_analysis?.anchor || 'something meaningful in your life'}. The question is: Are you ready to apply that same capability to your own nervous system?
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
