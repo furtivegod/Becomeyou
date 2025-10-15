@@ -278,7 +278,7 @@ export async function generateStructuredPlan(conversationHistory: string) {
 
     const response = await anthropic.messages.create({
       model: "claude-sonnet-4-5-20250929",
-      max_tokens: 6000,
+      max_tokens: 4000,
       system: `You are a professional behavioral optimization specialist. Based on the You 3.0 assessment conversation, create a comprehensive client-facing report in valid JSON format.
 
 CRITICAL INSTRUCTIONS:
@@ -288,6 +288,7 @@ CRITICAL INSTRUCTIONS:
 4. All arrays (daily_actions, weekly_goals, resources, reflection_prompts, progress_markers) MUST contain actual content
 5. Every field must be populated with meaningful, personalized content based on the client's responses
 6. No empty strings or generic placeholders allowed
+7. Don't use long sentences. Your total tokens must be less than 4000.
 
 Format:
 {
