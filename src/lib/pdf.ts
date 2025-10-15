@@ -395,17 +395,18 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
 
         .page {
           min-height: 100vh;
-          padding: 80px 60px;
+          padding: 60px 50px;
           background: var(--warm-white);
           margin-bottom: 2px;
           display: flex;
           flex-direction: column;
-          justify-content: center;
+          justify-content: flex-start;
           position: relative;
+          page-break-after: always;
         }
 
         .page-content {
-          max-width: 720px;
+          max-width: 650px;
           margin: 0 auto;
           width: 100%;
         }
@@ -446,20 +447,20 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
 
         h1 {
           font-family: 'Cormorant Garamond', Georgia, serif;
-          font-size: 72px;
+          font-size: 56px;
           font-weight: 300;
           color: var(--deep-charcoal);
           line-height: 1.1;
           letter-spacing: -0.02em;
-          margin-bottom: 60px;
+          margin-bottom: 40px;
         }
 
         h2 {
           font-family: 'Cormorant Garamond', Georgia, serif;
-          font-size: 42px;
+          font-size: 32px;
           font-weight: 300;
           line-height: 1.2;
-          margin-bottom: 40px;
+          margin-bottom: 30px;
         }
 
         .client-name {
@@ -481,7 +482,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
 
         /* SECTION HEADERS */
         .section-header {
-          margin-bottom: 80px;
+          margin-bottom: 50px;
           text-align: center;
         }
 
@@ -491,12 +492,12 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           letter-spacing: 0.2em;
           text-transform: uppercase;
           color: var(--soft-gold);
-          margin-bottom: 30px;
+          margin-bottom: 20px;
         }
 
         .section-title {
           font-family: 'Cormorant Garamond', serif;
-          font-size: 48px;
+          font-size: 36px;
           font-weight: 300;
           letter-spacing: -0.01em;
           line-height: 1.2;
@@ -504,7 +505,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
 
         /* CONTENT BLOCKS */
         .content-block {
-          margin: 60px 0;
+          margin: 40px 0;
         }
 
         .block-title {
@@ -513,21 +514,21 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           text-transform: uppercase;
           color: var(--soft-gold);
           font-weight: 500;
-          margin-bottom: 20px;
+          margin-bottom: 15px;
         }
 
         .block-content {
           font-size: 13px;
-          line-height: 2;
+          line-height: 1.8;
           font-weight: 300;
         }
 
         /* DOMAIN HERO */
         .domain-hero {
-          font-size: 96px;
+          font-size: 72px;
           font-weight: 300;
           text-align: center;
-          margin-bottom: 80px;
+          margin-bottom: 50px;
           letter-spacing: -0.03em;
           font-family: 'Cormorant Garamond', serif;
         }
@@ -536,7 +537,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         .metric-row {
           display: flex;
           justify-content: space-between;
-          padding: 30px 0;
+          padding: 20px 0;
           border-bottom: 1px solid rgba(0,0,0,0.08);
         }
 
@@ -554,14 +555,14 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
 
         .metric-value {
           font-family: 'Cormorant Garamond', serif;
-          font-size: 18px;
+          font-size: 16px;
           font-weight: 400;
         }
 
         /* PULL QUOTE */
         .pull-quote {
-          margin: 100px 0;
-          padding: 60px 0;
+          margin: 60px 0;
+          padding: 40px 0;
           border-top: 1px solid rgba(201, 169, 110, 0.3);
           border-bottom: 1px solid rgba(201, 169, 110, 0.3);
           text-align: center;
@@ -569,11 +570,11 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
 
         .pull-quote-text {
           font-family: 'Cormorant Garamond', serif;
-          font-size: 28px;
+          font-size: 24px;
           font-style: italic;
           font-weight: 300;
           line-height: 1.6;
-          margin-bottom: 30px;
+          margin-bottom: 20px;
         }
 
         /* BOTTOM LINE */
@@ -610,14 +611,14 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         }
 
         p {
-          margin-bottom: 28px;
-          line-height: 1.9;
+          margin-bottom: 20px;
+          line-height: 1.7;
         }
 
         /* PROTOCOL */
         .protocol-item {
-          margin: 50px 0;
-          padding-bottom: 50px;
+          margin: 30px 0;
+          padding-bottom: 30px;
           border-bottom: 1px solid rgba(0,0,0,0.06);
         }
 
@@ -627,21 +628,21 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           text-transform: uppercase;
           color: var(--soft-gold);
           font-weight: 500;
-          margin-bottom: 15px;
+          margin-bottom: 10px;
         }
 
         .protocol-action {
-          font-size: 15px;
-          line-height: 1.8;
+          font-size: 14px;
+          line-height: 1.6;
           font-weight: 300;
         }
 
         /* REMINDERS */
         .reminder-item {
-          padding: 25px 0;
+          padding: 15px 0;
           border-bottom: 1px solid rgba(0,0,0,0.06);
-          font-size: 13px;
-          line-height: 1.9;
+          font-size: 12px;
+          line-height: 1.7;
           font-weight: 300;
         }
 
@@ -711,16 +712,15 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         <div class="page-number">04</div>
       </div>
 
-      <!-- PAGE 5: SABOTAGE PATTERN -->
+      <!-- PAGE 5: PROTECTIVE PATTERN -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Pattern Analysis</div>
-            <div class="section-title">Sabotage Pattern<br>Analysis</div>
+            <div class="section-title">Your Protective<br>Pattern</div>
           </div>
           
           <div class="content-block">
-            <div class="block-title">Your Protective Pattern</div>
             <div class="block-content">${protectivePattern}</div>
           </div>
           
@@ -728,9 +728,19 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="block-title">What It's Protecting You From</div>
             <div class="block-content">${whatItsProtectingFrom}</div>
           </div>
+        </div>
+        <div class="page-number">05</div>
+      </div>
+
+      <!-- PAGE 6: HOW IT SERVES YOU -->
+      <div class="page">
+        <div class="page-content">
+          <div class="section-header">
+            <div class="section-label">Pattern Analysis</div>
+            <div class="section-title">How It Serves You</div>
+          </div>
           
           <div class="content-block">
-            <div class="block-title">How It Serves You</div>
             <div class="block-content">${howItServesYou}</div>
           </div>
           
@@ -739,19 +749,19 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="block-content">${successProof}</div>
           </div>
         </div>
-        <div class="page-number">05</div>
+        <div class="page-number">06</div>
       </div>
 
-      <!-- PAGE 6: DOMAIN DIVIDER -->
+      <!-- PAGE 7: DOMAIN DIVIDER -->
       <div class="page" style="display: flex; align-items: center; justify-content: center;">
         <div style="text-align: center;">
           <div class="section-label">The Four Domains</div>
           <h2 style="font-size: 52px; margin-top: 40px;">Domain Breakdown</h2>
         </div>
-        <div class="page-number">06</div>
+        <div class="page-number">07</div>
       </div>
 
-      <!-- PAGE 7: MIND -->
+      <!-- PAGE 8: MIND -->
       <div class="page">
         <div class="page-content">
           <h1 class="domain-hero">MIND</h1>
@@ -804,7 +814,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="block-content">${bodyDomain.growth_opportunities}</div>
           </div>
         </div>
-        <div class="page-number">08</div>
+        <div class="page-number">17</div>
       </div>
 
       <!-- PAGE 9: SPIRIT -->
@@ -832,7 +842,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="block-content">${spiritDomain.growth_opportunities}</div>
           </div>
         </div>
-        <div class="page-number">09</div>
+        <div class="page-number">17</div>
       </div>
 
       <!-- PAGE 10: CONTRIBUTION -->
@@ -860,7 +870,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="block-content">${contributionDomain.growth_opportunities}</div>
           </div>
         </div>
-        <div class="page-number">10</div>
+        <div class="page-number">17</div>
       </div>
 
       <!-- PAGE 11: NERVOUS SYSTEM -->
@@ -886,7 +896,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="block-content">${nervousSystemAssessment.observable_patterns}</div>
           </div>
         </div>
-        <div class="page-number">11</div>
+        <div class="page-number">17</div>
       </div>
 
       <!-- PAGE 12: 30-DAY PROTOCOL -->
@@ -912,7 +922,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="protocol-action">${thirtyDayApproach}</div>
           </div>
         </div>
-        <div class="page-number">12</div>
+        <div class="page-number">17</div>
       </div>
 
       <!-- PAGE 13: BOTTOM LINE -->
@@ -931,7 +941,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div style="font-size: 11px; letter-spacing: 0.1em; color: #999;">Your truth, the only truth that matters</div>
           </div>
         </div>
-        <div class="page-number">14</div>
+        <div class="page-number">17</div>
       </div>
 
       <!-- PAGE 15: DEVELOPMENT REMINDERS -->
@@ -944,7 +954,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           
           ${developmentReminders.map(reminder => `<div class="reminder-item">${reminder}</div>`).join('')}
         </div>
-        <div class="page-number">15</div>
+        <div class="page-number">17</div>
       </div>
 
       <!-- PAGE 16: BOOK RECOMMENDATIONS -->
@@ -961,7 +971,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             </div>
           `).join('')}
         </div>
-        <div class="page-number">16</div>
+        <div class="page-number">17</div>
       </div>
 
       <!-- PAGE 17: NEXT STEPS -->
