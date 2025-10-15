@@ -98,7 +98,28 @@ export async function GET(
     }
 
     const planData = planOutput.plan_json
-    return generateHTMLReport(planData, sessionId, signedPdfUrl)
+    
+    // Get user data to display the correct name
+    const { data: sessionData, error: sessionError } = await supabase
+      .from('sessions')
+      .select('user_id')
+      .eq('id', sessionId)
+      .single()
+
+    let userName = 'Client' // Default fallback
+    if (!sessionError && sessionData) {
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select('user_name')
+        .eq('id', sessionData.user_id)
+        .single()
+      
+      if (!userError && userData?.user_name) {
+        userName = userData.user_name
+      }
+    }
+    
+    return generateHTMLReport(planData, sessionId, signedPdfUrl, userName)
 
   } catch (error) {
     console.error('Report viewer error:', error)
@@ -129,8 +150,8 @@ async function getSignedPDFUrl(sessionId: string): Promise<string | null> {
   }
 }
 
-function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: string | null) {
-  const clientName = planData.client_name || 'Client';
+function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: string | null, userName?: string) {
+  const clientName = userName || 'Client';
   const currentDate = new Date().toLocaleDateString('en-US', { 
     year: 'numeric', 
     month: 'long', 
@@ -726,7 +747,7 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                         onclick="showPDF()"
                         ${!signedPdfUrl ? 'disabled' : ''}
                     >
-                        ${signedPdfUrl ? 'Download PDF Report' : 'PDF Still Generating...'}
+                        ${signedPdfUrl ? 'View PDF Report' : 'PDF Still Generating...'}
                     </button>
                 </div>
             </div>
