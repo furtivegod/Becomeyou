@@ -15,6 +15,7 @@ export default function AssessmentPage({ params, searchParams }: AssessmentPageP
   const [hasConsented, setHasConsented] = useState(false)
   const [isValid, setIsValid] = useState<boolean | null>(null)
   const [isComplete, setIsComplete] = useState(false)
+  const [isGeneratingReport, setIsGeneratingReport] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -52,10 +53,12 @@ export default function AssessmentPage({ params, searchParams }: AssessmentPageP
   }, [searchParams.token, sessionId])
 
   const handleComplete = async () => {
-    setIsComplete(true)
+    // Show loading state while generating report
+    setIsGeneratingReport(true)
     
-    // Trigger report generation
+    // Trigger report generation FIRST
     try {
+      console.log('Starting report generation...')
       const response = await fetch('/api/report/generate', {
         method: 'POST',
         headers: {
@@ -65,18 +68,22 @@ export default function AssessmentPage({ params, searchParams }: AssessmentPageP
       })
       
       if (response.ok) {
-        console.log('Report generation triggered successfully')
+        console.log('Report generation completed successfully')
+        // Only show completion screen AFTER email is sent
+        setIsGeneratingReport(false)
+        setIsComplete(true)
       } else {
         console.error('Failed to trigger report generation')
+        // Show error state instead of completion
+        setIsGeneratingReport(false)
+        setIsComplete(true) // Still show completion but with error message
       }
     } catch (error) {
       console.error('Error triggering report generation:', error)
+      // Show error state
+      setIsGeneratingReport(false)
+      setIsComplete(true)
     }
-    
-    // Show completion message for 3 seconds
-    setTimeout(() => {
-      // Could redirect to a success page or show a message
-    }, 3000)
   }
 
   if (isValid === null) {
@@ -125,6 +132,27 @@ export default function AssessmentPage({ params, searchParams }: AssessmentPageP
     )
   }
 
+  if (isGeneratingReport) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#F5F1E8' }}>
+        <div className="text-center max-w-md w-full bg-white rounded-lg shadow-lg p-6 sm:p-8">
+          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-8 h-8 border-4 border-t-transparent rounded-full animate-spin" style={{ borderColor: '#4A5D23', borderTopColor: 'transparent' }}></div>
+          </div>
+          <h1 className="text-xl sm:text-2xl font-bold mb-2" style={{ color: '#4A5D23', fontFamily: 'Georgia, Times New Roman, serif' }}>Generating Your Report</h1>
+          <p className="mb-6 text-sm sm:text-base" style={{ color: '#1A1A1A' }}>
+            Creating your personalized You 3.0 assessment report and sending it to your email...
+          </p>
+          <div className="rounded-md p-4" style={{ backgroundColor: '#E3F2FD', border: '1px solid #2196F3' }}>
+            <p className="text-sm" style={{ color: '#1565C0' }}>
+              ⏳ This usually takes 30-60 seconds
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   if (isComplete) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#F5F1E8' }}>
@@ -136,7 +164,7 @@ export default function AssessmentPage({ params, searchParams }: AssessmentPageP
           </div>
           <h1 className="text-xl sm:text-2xl font-bold mb-2" style={{ color: '#4A5D23', fontFamily: 'Georgia, Times New Roman, serif' }}>Assessment Complete!</h1>
           <p className="mb-6 text-sm sm:text-base" style={{ color: '#1A1A1A' }}>
-            Your personalized You 3.0 report is being generated and will be sent to your email shortly.
+            Your personalized You 3.0 report has been generated and sent to your email.
           </p>
           <div className="rounded-md p-4" style={{ backgroundColor: '#FFF3CD', border: '1px solid #D4AF37' }}>
             <p className="text-sm" style={{ color: '#856404' }}>

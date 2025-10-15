@@ -105,27 +105,35 @@ export async function POST(request: NextRequest) {
 
     console.log('User email found:', userData.email)
 
-    // Send email with PDF asynchronously (don't wait for it)
-    console.log('Sending report email with PDF attachment (async)')
-    sendReportEmail(userData.email, userData.user_name, pdfUrl, pdfBuffer, planData)
-      .then(() => console.log('Report email sent successfully'))
-      .catch((emailError) => console.error('Error sending email:', emailError))
+    // Send email with PDF synchronously (wait for it to complete)
+    console.log('Sending report email with PDF attachment...')
+    try {
+      await sendReportEmail(userData.email, userData.user_name, pdfUrl, pdfBuffer, planData)
+      console.log('Report email sent successfully to:', userData.email)
+    } catch (emailError) {
+      console.error('Error sending email:', emailError)
+      return NextResponse.json({ error: 'Failed to send email' }, { status: 500 })
+    }
 
     // Create email sequence for follow-up emails asynchronously
-    console.log('Creating email sequence for follow-up emails (async)...')
-    import('@/lib/email-queue')
-      .then(({ createEmailSequence }) => createEmailSequence(
+    console.log('Creating email sequence for follow-up emails...')
+    try {
+      const { createEmailSequence } = await import('@/lib/email-queue')
+      await createEmailSequence(
         userData.id,
         sessionId,
         userData.email,
         userData.user_name
-      ))
-      .then(() => console.log('Email sequence created successfully - follow-up emails will be sent over the next 6 minutes'))
-      .catch((emailError) => console.error('Error creating email sequence:', emailError))
+      )
+      console.log('Email sequence created successfully - follow-up emails will be sent over the next 6 minutes')
+    } catch (emailError) {
+      console.error('Error creating email sequence:', emailError)
+      // Don't fail the request if email sequence creation fails
+    }
 
-    // Return immediately - email will be sent in background
+    // Return success after email is sent
     return NextResponse.json({ 
-      message: 'Report generated successfully - check your email for the full results',
+      message: 'Report generated and email sent successfully - check your email for the full results',
       planData,
       pdfUrl
     })
