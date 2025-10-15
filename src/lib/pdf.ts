@@ -215,10 +215,6 @@ async function convertHTMLToPDF(htmlContent: string, clientName: string = 'Clien
           height: '40px', // Space between content and footer
           start_at: 1 // Start footer from page 1
         },
-        // Optimize for speed
-        wait_for: 'networkidle0', // Don't wait for network requests
-        timeout: 30000, // 30 second timeout
-        cache: false // Don't cache
       })
     })
 
