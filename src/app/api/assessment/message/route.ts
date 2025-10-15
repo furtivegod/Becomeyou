@@ -68,7 +68,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if assessment is complete
-    const isComplete = response.includes('assessment is complete') || (questionCount && questionCount >= 15)
+    const isComplete = response.includes('Thank you for showing up fully for this assessment') || 
+                       response.includes('ASSESSMENT COMPLETE') ||
+                       response.includes('You did the hard part. Now let\'s build on it.') ||
+                       (questionCount && questionCount >= 15)
 
     // Create streaming response
     const encoder = new TextEncoder()

@@ -112,9 +112,11 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
            lastMessage.content.includes('You did the hard part. Now let\'s build on it.'))) {
         console.log('Assessment completion detected...')
         setAssessmentComplete(true)
+        // Trigger report generation
+        onComplete()
       }
     }
-  }, [messages, assessmentComplete])
+  }, [messages, assessmentComplete, onComplete])
 
   // Handle keyboard shortcuts
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -239,6 +241,18 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
   // Chat message handling
   const sendMessage = async () => {
     if (!input.trim() || isLoading || assessmentComplete) return
+    
+    // Double-check for completion phrases in the last message to prevent race conditions
+    if (messages.length > 0) {
+      const lastMessage = messages[messages.length - 1]
+      if (lastMessage.role === 'assistant' && 
+          (lastMessage.content.includes('Thank you for showing up fully for this assessment') ||
+           lastMessage.content.includes('ASSESSMENT COMPLETE') ||
+           lastMessage.content.includes('You did the hard part. Now let\'s build on it.'))) {
+        console.log('Assessment already complete, preventing new message')
+        return
+      }
+    }
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -294,6 +308,16 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
               const data = JSON.parse(line.slice(6))
               if (data.content && data.content !== 'undefined') {
                 assistantMessage.content += data.content
+                
+                // Check for completion phrases immediately during streaming
+                if (assistantMessage.content.includes('Thank you for showing up fully for this assessment') ||
+                    assistantMessage.content.includes('ASSESSMENT COMPLETE') ||
+                    assistantMessage.content.includes('You did the hard part. Now let\'s build on it.')) {
+                  console.log('Completion detected during streaming, stopping...')
+                  setAssessmentComplete(true)
+                  onComplete()
+                  break // Stop processing more content
+                }
               }
               setMessages(prev => 
                 prev.map(msg => 
@@ -309,12 +333,6 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
         }
       }
 
-      // Check if assessment is complete
-      if (assistantMessage.content.includes('Thank you for showing up fully for this assessment') || 
-          assistantMessage.content.includes('ASSESSMENT COMPLETE') ||
-          assistantMessage.content.includes('You did the hard part. Now let\'s build on it.')) {
-        setAssessmentComplete(true)
-      }
 
     } catch (error) {
       console.error('Error sending message:', error)
