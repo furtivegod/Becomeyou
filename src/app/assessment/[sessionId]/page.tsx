@@ -165,7 +165,7 @@ export default function AssessmentPage({ params, searchParams }: AssessmentPageP
           </p>
           <div className="rounded-md p-4" style={{ backgroundColor: '#E3F2FD', border: '1px solid #2196F3' }}>
             <p className="text-sm" style={{ color: '#1565C0' }}>
-              ⏳ This usually takes 30-60 seconds
+              This usually takes 1 - 2 minutes
             </p>
           </div>
         </div>

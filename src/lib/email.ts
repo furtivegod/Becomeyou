@@ -325,7 +325,7 @@ export async function sendPatternRecognitionEmail(email: string, userName: strin
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
-              Or you felt motivated to ${planData?.sabotage_analysis?.protective_pattern || '[their specific pattern]'}, then reached for ${planData?.sabotage_analysis?.escape_behavior || '[their identified escape behavior]'} instead.
+              Or you felt motivated to ${planData?.sabotage_analysis?.protective_pattern || '[their specific pattern]'}, then reached for ${planData?.sabotage_analysis?.escape_behavior || '[their escape behavior]'} instead.
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
@@ -439,7 +439,7 @@ export async function sendEvidence7DayEmail(email: string, userName: string, pla
             
             <ul style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 20px 0; padding-left: 20px; font-family: 'Inter', sans-serif;">
               <li style="margin-bottom: 8px;">One conversation you didn't avoid</li>
-              <li style="margin-bottom: 8px;">One evening you chose ${planData?.sabotage_analysis?.positive_behavior || '[their identified positive behavior]'} over ${planData?.sabotage_analysis?.escape_behavior || '[their identified escape behavior]'}</li>
+              <li style="margin-bottom: 8px;">One evening you chose ${planData?.sabotage_analysis?.positive_behavior || '[their positive behavior]'} over ${planData?.sabotage_analysis?.escape_behavior || '[their escape behavior]'}</li>
               <li style="margin-bottom: 8px;">One moment you caught the spiral before it hijacked your whole day</li>
             </ul>
             

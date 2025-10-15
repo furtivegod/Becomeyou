@@ -307,7 +307,9 @@ Format:
     "how_it_serves_you": "Secondary gains in plain language",
     "go_to_patterns": "Their current reward patterns and digital habits in their words",
     "success_proof": "Times they've overcome it, however briefly",
-    "anchor": "Their strongest existing habit that never breaks"
+    "anchor": "Their strongest existing habit that never breaks",
+    "escape_behavior": "Specific behavior they use to escape or avoid (e.g., 'sleep', 'gaming', 'scrolling', 'overthinking')",
+    "positive_behavior": "Specific positive behavior they can choose instead (e.g., 'taking action', 'having difficult conversations', 'staying present')"
   },
   "in_the_moment_reset": "When you notice the pattern starting, pause and take 3 deep breaths—in for 4 counts, hold for 4, 
                           out for 6. Then ask yourself: 'What's one small thing I can do right now that moves me forward 
@@ -529,7 +531,9 @@ FINAL CHECK: Ensure every field contains meaningful, personalized content. No em
           what_its_protecting_from: "These patterns protect you from experiences you find challenging.",
           how_it_serves_you: "These patterns provide you with safety and comfort in difficult situations.",
           go_to_patterns: "Your current patterns help you navigate daily life and challenges.",
-          success_proof: "You've demonstrated the ability to overcome challenges in the past."
+          success_proof: "You've demonstrated the ability to overcome challenges in the past.",
+          escape_behavior: "Your current escape patterns when facing challenges.",
+          positive_behavior: "Positive behaviors you can choose instead of your escape patterns."
         },
         domain_breakdown: {
           mind: "Your mental approach shows both strengths and areas for development.",
