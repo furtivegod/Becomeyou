@@ -59,6 +59,8 @@ export default function AssessmentPage({ params, searchParams }: AssessmentPageP
     // Trigger report generation FIRST
     try {
       console.log('Starting report generation...')
+      console.log('SessionId being sent:', sessionId)
+      
       const response = await fetch('/api/report/generate', {
         method: 'POST',
         headers: {
@@ -67,13 +69,18 @@ export default function AssessmentPage({ params, searchParams }: AssessmentPageP
         body: JSON.stringify({ sessionId })
       })
       
+      console.log('Response status:', response.status)
+      console.log('Response ok:', response.ok)
+      
       if (response.ok) {
-        console.log('Report generation completed successfully')
+        const result = await response.json()
+        console.log('Report generation completed successfully:', result)
         // Only show completion screen AFTER email is sent
         setIsGeneratingReport(false)
         setIsComplete(true)
       } else {
-        console.error('Failed to trigger report generation')
+        const errorData = await response.json()
+        console.error('Failed to trigger report generation:', errorData)
         // Show error state instead of completion
         setIsGeneratingReport(false)
         setIsComplete(true) // Still show completion but with error message

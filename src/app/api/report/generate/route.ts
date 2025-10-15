@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get conversation history
-    console.log('Fetching conversation history')
+    console.log('Fetching conversation history for session:', sessionId)
     const { data: messages, error: messagesError } = await supabase
       .from('messages')
       .select('role, content')
@@ -60,6 +60,11 @@ export async function POST(request: NextRequest) {
     }
 
     console.log('Found', messages?.length || 0, 'messages in conversation')
+    
+    if (!messages || messages.length === 0) {
+      console.error('No messages found for session:', sessionId)
+      return NextResponse.json({ error: 'No conversation history found' }, { status: 404 })
+    }
 
     // Generate conversation history string
     const conversationHistory = messages?.map(msg => 
@@ -122,11 +127,23 @@ export async function POST(request: NextRequest) {
 
     // Send email with PDF synchronously (wait for it to complete)
     console.log('Sending report email with PDF attachment...')
+    console.log('Email details:', {
+      email: userData.email,
+      userName: userData.user_name,
+      pdfUrl: pdfUrl,
+      hasPdfBuffer: !!pdfBuffer,
+      hasPlanData: !!planData
+    })
+    
     try {
       await sendReportEmail(userData.email, userData.user_name, pdfUrl, pdfBuffer, planData)
       console.log('Report email sent successfully to:', userData.email)
     } catch (emailError) {
       console.error('Error sending email:', emailError)
+      console.error('Email error details:', {
+        message: emailError instanceof Error ? emailError.message : String(emailError),
+        stack: emailError instanceof Error ? emailError.stack : undefined
+      })
       return NextResponse.json({ error: 'Failed to send email' }, { status: 500 })
     }
 
