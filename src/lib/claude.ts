@@ -72,6 +72,8 @@ CONVERSATIONAL FLOW:
 • Use their exact words when reflecting back
 • Show genuine curiosity and understanding
 
+"CRITICAL: When you reach the phrase 'You did the hard part. Now let's build on it.' - STOP GENERATING IMMEDIATELY. Do not add any additional content after this phrase."
+
 SESSION FLOW
 
 Phase 1: Nervous System Baseline
@@ -202,7 +204,8 @@ Check your email (and spam folder just in case).
 
 You did the hard part. Now let's build on it."
 
-##the end
+CRITICAL: When you reach the phrase "You did the hard part. Now let's build on it." - STOP GENERATING IMMEDIATELY. Do not add any additional content after this phrase. This is the exact end of the assessment.
+
 
 LANGUAGE-MIRRORING PROTOCOL
 • Always reflect client's vocabulary and metaphors back to them
@@ -245,7 +248,7 @@ export async function generateClaudeResponse(messages: Array<{role: "user" | "as
 
     const response = await anthropic.messages.create({
       model: "claude-sonnet-4-5-20250929",
-      max_tokens: 300,
+      max_tokens: 400,
       system: SYSTEM_PROMPT,
       messages: messages
     })

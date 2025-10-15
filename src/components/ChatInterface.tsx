@@ -305,7 +305,12 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                   console.log('Completion detected during streaming, stopping...')
                   completionTriggeredRef.current = true // Prevent multiple triggers
                   setAssessmentComplete(true)
-                  onComplete() // Call report generation immediately
+                  
+                  // Add delay before triggering report generation to let user see the full response
+                  setTimeout(() => {
+                    onComplete() // Call report generation after delay
+                  }, 10000) // 3 second delay
+                  
                   break // Stop processing more content
                 }
               }
