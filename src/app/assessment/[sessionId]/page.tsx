@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import ChatInterface from '@/components/ChatInterface'
 import ConsentScreen from '@/components/ConsentScreen'
@@ -52,7 +52,7 @@ export default function AssessmentPage({ params, searchParams }: AssessmentPageP
     return () => { isMounted = false }
   }, [searchParams.token, sessionId])
 
-  const handleComplete = async () => {
+  const handleComplete = useCallback(async () => {
     // Show loading state while generating report
     setIsGeneratingReport(true)
     
@@ -84,7 +84,7 @@ export default function AssessmentPage({ params, searchParams }: AssessmentPageP
       setIsGeneratingReport(false)
       setIsComplete(true)
     }
-  }
+  }, [sessionId])
 
   if (isValid === null) {
     return (

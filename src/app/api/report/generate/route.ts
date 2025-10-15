@@ -4,9 +4,15 @@ import { generatePDF } from '@/lib/pdf'
 import { sendReportEmail } from '@/lib/email'
 import { supabase } from '@/lib/supabase'
 
+// In-memory guard to prevent rapid successive calls
+const processingSessions = new Set<string>()
+
 export async function POST(request: NextRequest) {
+  let sessionId: string | undefined
+  
   try {
-    const { sessionId } = await request.json()
+    const body = await request.json()
+    sessionId = body.sessionId
     
     console.log('Report generation API called')
     console.log('Received sessionId:', sessionId)
@@ -14,6 +20,15 @@ export async function POST(request: NextRequest) {
     if (!sessionId) {
       return NextResponse.json({ error: 'Session ID is required' }, { status: 400 })
     }
+
+    // Check if session is already being processed
+    if (processingSessions.has(sessionId)) {
+      console.log('Session already being processed:', sessionId)
+      return NextResponse.json({ error: 'Report generation already in progress' }, { status: 409 })
+    }
+
+    // Mark session as being processed
+    processingSessions.add(sessionId)
 
     // Check if plan already exists
     const { data: existingPlan } = await supabase
@@ -131,6 +146,9 @@ export async function POST(request: NextRequest) {
       // Don't fail the request if email sequence creation fails
     }
 
+    // Remove session from processing set
+    processingSessions.delete(sessionId)
+
     // Return success after email is sent
     return NextResponse.json({ 
       message: 'Report generated and email sent successfully - check your email for the full results',
@@ -140,6 +158,10 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Report generation error:', error)
+    // Remove session from processing set on error
+    if (sessionId) {
+      processingSessions.delete(sessionId)
+    }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

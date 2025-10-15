@@ -31,6 +31,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
   
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const completionTriggeredRef = useRef(false)
 
   // Speech recognition hook
   const {
@@ -104,19 +105,20 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
 
   // Check for assessment completion after messages update
   useEffect(() => {
-    if (messages.length > 0 && !assessmentComplete) {
+    if (messages.length > 0 && !assessmentComplete && !completionTriggeredRef.current) {
       const lastMessage = messages[messages.length - 1]
       if (lastMessage.role === 'assistant' && 
           (lastMessage.content.includes('Thank you for showing up fully for this assessment') ||
            lastMessage.content.includes('ASSESSMENT COMPLETE') ||
            lastMessage.content.includes('You did the hard part. Now let\'s build on it.'))) {
         console.log('Assessment completion detected...')
+        completionTriggeredRef.current = true // Prevent multiple triggers
         setAssessmentComplete(true)
         // Trigger report generation
         onComplete()
       }
     }
-  }, [messages, assessmentComplete, onComplete])
+  }, [messages, assessmentComplete]) // Removed onComplete from dependencies
 
   // Handle keyboard shortcuts
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -310,12 +312,14 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                 assistantMessage.content += data.content
                 
                 // Check for completion phrases immediately during streaming
-                if (assistantMessage.content.includes('Thank you for showing up fully for this assessment') ||
-                    assistantMessage.content.includes('ASSESSMENT COMPLETE') ||
-                    assistantMessage.content.includes('You did the hard part. Now let\'s build on it.')) {
+                if (!completionTriggeredRef.current && 
+                    (assistantMessage.content.includes('Thank you for showing up fully for this assessment') ||
+                     assistantMessage.content.includes('ASSESSMENT COMPLETE') ||
+                     assistantMessage.content.includes('You did the hard part. Now let\'s build on it.'))) {
                   console.log('Completion detected during streaming, stopping...')
+                  completionTriggeredRef.current = true // Prevent multiple triggers
                   setAssessmentComplete(true)
-                  onComplete()
+                  // Don't call onComplete() here - let the useEffect handle it
                   break // Stop processing more content
                 }
               }
