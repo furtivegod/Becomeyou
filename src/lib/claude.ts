@@ -269,7 +269,7 @@ export async function generateStructuredPlan(conversationHistory: string) {
     }
 
     // Truncate conversation if too long to prevent timeouts
-    const maxLength = 4000
+    const maxLength = 6000
     const truncatedHistory = conversationHistory.length > maxLength 
       ? conversationHistory.substring(0, maxLength) + '...'
       : conversationHistory
@@ -278,7 +278,7 @@ export async function generateStructuredPlan(conversationHistory: string) {
 
     const response = await anthropic.messages.create({
       model: "claude-sonnet-4-5-20250929",
-      max_tokens: 4000,
+      max_tokens: 6000,
       system: `You are a professional behavioral optimization specialist. Based on the You 3.0 assessment conversation, create a comprehensive client-facing report in valid JSON format.
 
 CRITICAL INSTRUCTIONS:

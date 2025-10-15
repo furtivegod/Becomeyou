@@ -16,6 +16,11 @@ export default function AssessmentPage({ params, searchParams }: AssessmentPageP
   const [isValid, setIsValid] = useState<boolean | null>(null)
   const [isComplete, setIsComplete] = useState(false)
   const [isGeneratingReport, setIsGeneratingReport] = useState(false)
+
+  // Debug state changes
+  useEffect(() => {
+    console.log('State changed - isGeneratingReport:', isGeneratingReport, 'isComplete:', isComplete)
+  }, [isGeneratingReport, isComplete])
   const router = useRouter()
 
   useEffect(() => {
@@ -75,22 +80,30 @@ export default function AssessmentPage({ params, searchParams }: AssessmentPageP
       if (response.ok) {
         const result = await response.json()
         console.log('Report generation completed successfully:', result)
-        // Only show completion screen AFTER email is sent
-        setIsGeneratingReport(false)
-        setIsComplete(true)
+        console.log('Redirecting to report page...')
+        // Redirect to report page instead of showing completion screen
+        router.push(`/api/report/${sessionId}`)
       } else {
         const errorData = await response.json()
         console.error('Failed to trigger report generation:', errorData)
-        // Show error state instead of completion
-        setIsGeneratingReport(false)
-        setIsComplete(true) // Still show completion but with error message
+        console.log('Redirecting to report page despite error...')
+        // Redirect to report page even on error - report might still be generated
+        router.push(`/api/report/${sessionId}`)
       }
     } catch (error) {
       console.error('Error triggering report generation:', error)
-      // Show error state
-      setIsGeneratingReport(false)
-      setIsComplete(true)
+      console.log('Redirecting to report page despite catch error...')
+      // Redirect to report page even on catch error - report might still be generated
+      router.push(`/api/report/${sessionId}`)
     }
+
+    // Fallback timeout - redirect to report page after 2 minutes regardless
+    setTimeout(() => {
+      if (isGeneratingReport) {
+        console.log('Timeout reached - redirecting to report page')
+        router.push(`/api/report/${sessionId}`)
+      }
+    }, 120000) // 2 minutes
   }, [sessionId])
 
   if (isValid === null) {
