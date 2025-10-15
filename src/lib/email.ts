@@ -216,15 +216,15 @@ export async function sendReportEmail(email: string, userName: string, pdfUrl: s
             
             ${personalizedPS ? `
             <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
-              <strong>P.S.</strong> ${personalizedPS}
-            </p>
+                <strong>P.S.</strong> ${personalizedPS}
+              </p>
             ` : ''}
             
             <!-- PDF Attachment Notice -->
             <div style="text-align: center; margin: 40px 0;">
               <p style="color: #4A5D23; font-size: 18px; font-weight: bold; margin: 0; font-family: 'Inter', sans-serif;">
                 Your personalized protocol is attached as a PDF file
-              </p>
+                </p>
             </div>
           </div>
           
@@ -347,8 +347,8 @@ export async function sendPatternRecognitionEmail(email: string, userName: strin
             
             ${personalizedPS ? `
             <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
-              <strong>P.S.</strong> ${personalizedPS}
-            </p>
+                <strong>P.S.</strong> ${personalizedPS}
+              </p>
             ` : ''}
           </div>
           
@@ -466,8 +466,8 @@ export async function sendEvidence7DayEmail(email: string, userName: string, pla
             
             ${personalizedPS ? `
             <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
-              <strong>P.S.</strong> ${personalizedPS}
-            </p>
+                <strong>P.S.</strong> ${personalizedPS}
+              </p>
             ` : ''}
           </div>
           
@@ -582,8 +582,8 @@ export async function sendIntegrationThresholdEmail(email: string, userName: str
             
             ${personalizedPS ? `
             <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
-              <strong>P.S.</strong> ${personalizedPS}
-            </p>
+                <strong>P.S.</strong> ${personalizedPS}
+              </p>
             ` : ''}
           </div>
           
@@ -680,7 +680,7 @@ export async function sendCompoundEffectEmail(email: string, userName: string, p
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               That's not small progress. That's your nervous system learning a new default.
             </p>
-
+            
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
                But here's the catch: <strong>This is exactly when most people quit.</strong>
             </p>
@@ -704,8 +704,8 @@ export async function sendCompoundEffectEmail(email: string, userName: string, p
             
             ${personalizedPS ? `
             <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
-              <strong>P.S.</strong> ${personalizedPS}
-            </p>
+                <strong>P.S.</strong> ${personalizedPS}
+              </p>
             ` : ''}
           </div>
           
@@ -846,8 +846,8 @@ export async function sendDirectInvitationEmail(email: string, userName: string,
             
             ${personalizedPS ? `
             <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
-              <strong>P.S.</strong> ${personalizedPS}
-            </p>
+                <strong>P.S.</strong> ${personalizedPS}
+              </p>
             ` : ''}
           </div>
           

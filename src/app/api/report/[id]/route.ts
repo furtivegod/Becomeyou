@@ -162,11 +162,11 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
     <!DOCTYPE html>
     <html lang="en">
     <head>
-        <meta charset="UTF-8">
+      <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>YOU 3.0 Assessment - ${clientName}</title>
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-        <style>
+      <style>
             * {
                 margin: 0;
                 padding: 0;
@@ -180,7 +180,7 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 --soft-gold: #C9A96E;
             }
 
-            body {
+        body { 
                 font-family: 'Inter', -apple-system, sans-serif;
                 font-size: 11pt;
                 font-weight: 300;
@@ -273,7 +273,7 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 font-style: italic;
                 font-weight: 300;
                 color: #666;
-                line-height: 1.6;
+          line-height: 1.6;
             }
 
             /* SECTION HEADERS */
@@ -361,7 +361,7 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 padding: 60px 0;
                 border-top: 1px solid rgba(201, 169, 110, 0.3);
                 border-bottom: 1px solid rgba(201, 169, 110, 0.3);
-                text-align: center;
+          text-align: center;
             }
 
             .pull-quote-text {
@@ -443,13 +443,13 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
             }
 
             /* PDF BUTTON */
-            .pdf-button {
+        .pdf-button {
                 background: var(--soft-gold);
                 color: var(--deep-charcoal);
-                border: none;
+          border: none;
                 padding: 15px 30px;
                 border-radius: 0;
-                cursor: pointer;
+          cursor: pointer;
                 font-size: 12px;
                 font-weight: 500;
                 letter-spacing: 0.1em;
@@ -463,10 +463,10 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 color: var(--warm-white);
             }
 
-            .pdf-button:disabled { 
-                background: #ccc; 
-                cursor: not-allowed; 
-            }
+        .pdf-button:disabled { 
+          background: #ccc; 
+          cursor: not-allowed; 
+        }
 
             @media (max-width: 768px) {
                 .page {
@@ -478,8 +478,8 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 .domain-hero {
                     font-size: 56px;
                 }
-            }
-        </style>
+        }
+      </style>
     </head>
     <body>
 
@@ -506,7 +506,7 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                     <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Client</span><br>${clientName}</p>
                     <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Date</span><br>${currentDate}</p>
                     <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Type</span><br>Behavioral Optimization</p>
-                </div>
+          </div>
                 
                 <div class="divider"></div>
                 
@@ -523,12 +523,12 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 <div class="section-header">
                     <div class="section-label">Overview</div>
                     <div class="section-title">Assessment Overview</div>
-                </div>
+          </div>
                 
                 <p style="font-size: 15px; line-height: 2;">${planData.assessment_overview || 'Your personalized behavioral optimization assessment reveals the patterns that have been keeping you stuck and provides a clear path forward.'}</p>
             </div>
             <div class="page-number">03</div>
-        </div>
+              </div>
 
         <!-- PAGE 4: DEVELOPMENT PROFILE -->
         <div class="page">
@@ -536,7 +536,7 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 <div class="section-header">
                     <div class="section-label">Your Profile</div>
                     <div class="section-title">Your Development<br>Profile</div>
-                </div>
+          </div>
                 
                 <p style="font-size: 15px; line-height: 2;">${planData.development_profile || 'Your core development pattern and how it shows up in your daily life.'}</p>
                 
@@ -569,7 +569,7 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 <div class="content-block">
                     <div class="block-title">What It's Protecting You From</div>
                     <div class="block-content">${planData.sabotage_analysis.protective_function || 'The underlying fear driving your patterns'}</div>
-                </div>
+          </div>
                 
                 <div class="content-block">
                     <div class="block-title">Your Success Proof</div>
@@ -599,23 +599,23 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 <div class="metric-row">
                     <div class="metric-label">Current Level</div>
                     <div class="metric-value">${data.current_level}</div>
-                </div>
-                ` : ''}
-                
+          </div>
+        ` : ''}
+
                 ${data.current_phase ? `
                 <div class="metric-row">
                     <div class="metric-label">Current Phase</div>
                     <div class="metric-value">${data.current_phase}</div>
-                </div>
+              </div>
                 ` : ''}
                 
                 ${data.key_strengths ? `
                 <div class="content-block">
                     <div class="block-title">Key Strengths</div>
                     <div class="block-content">${data.key_strengths}</div>
-                </div>
-                ` : ''}
-                
+          </div>
+        ` : ''}
+
                 ${data.growth_opportunities ? `
                 <div class="content-block">
                     <div class="block-title">Growth Opportunities</div>
@@ -647,9 +647,9 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 <div class="metric-row">
                     <div class="metric-label">Regulation Capacity</div>
                     <div class="metric-value">${planData.nervous_system_assessment.regulation_capacity}</div>
-                </div>
-                ` : ''}
-                
+          </div>
+        ` : ''}
+
                 ${planData.nervous_system_assessment.observable_patterns ? `
                 <div class="content-block">
                     <div class="block-title">Observable Patterns</div>
@@ -658,9 +658,9 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                             ? planData.nervous_system_assessment.observable_patterns.map((pattern: string) => `<p>${pattern}</p>`).join('')
                             : `<p>${planData.nervous_system_assessment.observable_patterns}</p>`
                         }
-                    </div>
-                </div>
-                ` : ''}
+            </div>
+          </div>
+        ` : ''}
                 ` : ''}
             </div>
             <div class="page-number">${7 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
@@ -679,16 +679,16 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 <div class="protocol-item">
                     <div class="protocol-timeline">72-Hour Suggestion</div>
                     <div class="protocol-action">${planData.thirty_day_protocol.specific_action}</div>
-                </div>
-                ` : ''}
-                
+          </div>
+        ` : ''}
+
                 ${planData.thirty_day_protocol.weekly_practice ? `
                 <div class="protocol-item">
                     <div class="protocol-timeline">Weekly Recommendation</div>
                     <div class="protocol-action">${planData.thirty_day_protocol.weekly_practice}</div>
-                </div>
-                ` : ''}
-                
+          </div>
+        ` : ''}
+
                 ${planData.thirty_day_protocol.thirty_day_approach ? `
                 <div class="protocol-item">
                     <div class="protocol-timeline">30-Day Approach</div>
@@ -703,10 +703,10 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
         <!-- BOTTOM LINE PAGE -->
         <div class="page bottom-line-page">
             <div class="page-content" style="text-align: center; max-width: 700px;">
-                <h2>Bottom Line</h2>
+            <h2>Bottom Line</h2>
                 <p>${planData.bottom_line || 'Your personalized bottom line insight based on your assessment.'}</p>
             </div>
-        </div>
+          </div>
 
         <!-- DEVELOPMENT REMINDERS PAGE -->
         <div class="page">
@@ -742,31 +742,31 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 </p>
                 
                 <div style="text-align: center; margin: 40px 0;">
-                    <button 
-                        class="pdf-button" 
-                        onclick="showPDF()"
-                        ${!signedPdfUrl ? 'disabled' : ''}
-                    >
+          <button 
+            class="pdf-button" 
+            onclick="showPDF()"
+            ${!signedPdfUrl ? 'disabled' : ''}
+          >
                         ${signedPdfUrl ? 'View PDF Report' : 'PDF Still Generating...'}
-                    </button>
-                </div>
-            </div>
+          </button>
         </div>
+            </div>
+      </div>
 
-        <script>
-            function showPDF() {
-                ${signedPdfUrl ? `
-                    const link = document.createElement('a');
-                    link.href = '${signedPdfUrl}';
-                    link.download = 'your-protocol.pdf';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                ` : `
-                    alert('PDF is still being generated. Please wait a moment and refresh the page.');
-                `}
-            }
-        </script>
+      <script>
+        function showPDF() {
+          ${signedPdfUrl ? `
+            const link = document.createElement('a');
+            link.href = '${signedPdfUrl}';
+            link.download = 'your-protocol.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          ` : `
+            alert('PDF is still being generated. Please wait a moment and refresh the page.');
+          `}
+        }
+      </script>
     </body>
     </html>
   `, {

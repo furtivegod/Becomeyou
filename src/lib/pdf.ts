@@ -368,648 +368,629 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>${planData.title || 'You 3.0 Assessment Report'}</title>
+      <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
       <style>
-        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
-        
         * {
           margin: 0;
           padding: 0;
           box-sizing: border-box;
         }
-        
+
+        :root {
+          --cream: #F9F6F1;
+          --warm-white: #FEFDFB;
+          --deep-charcoal: #2A2A2A;
+          --soft-gold: #C9A96E;
+        }
+
         body {
-          font-family: 'Inter', sans-serif;
-          line-height: 1.6;
-          color: #1A1A1A;
-          background: white;
-          font-size: 14px;
+          font-family: 'Inter', -apple-system, sans-serif;
+          font-size: 11pt;
+          font-weight: 300;
+          line-height: 1.8;
+          color: var(--deep-charcoal);
+          background: #f5f5f5;
+          overflow-x: hidden;
         }
-        
+
         .page {
-          width: 100%;
           min-height: 100vh;
-          padding: 40px;
+          padding: 80px 60px;
+          background: var(--warm-white);
+          margin-bottom: 2px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
           position: relative;
-          background: white;
-          margin-bottom: 20px;
         }
-        
-        /* Cover Page Styles */
-        .brand-header {
+
+        .page-content {
+          max-width: 720px;
+          margin: 0 auto;
+          width: 100%;
+        }
+
+        /* COVER PAGE */
+        .cover {
+          background: linear-gradient(180deg, var(--warm-white) 0%, var(--cream) 100%);
           text-align: center;
-          margin-bottom: 30px;
+          position: relative;
         }
-        
-        .brand-line {
-          height: 2px;
-          background-color: #4A5D23;
-          margin: 20px 0;
-          width: 200px;
-          margin-left: auto;
-          margin-right: auto;
+
+        .cover::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-image: 
+            repeating-linear-gradient(90deg, transparent, transparent 1px, rgba(201, 169, 110, 0.03) 1px, rgba(201, 169, 110, 0.03) 2px),
+            repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(201, 169, 110, 0.03) 1px, rgba(201, 169, 110, 0.03) 2px);
+          background-size: 60px 60px;
+          opacity: 0.5;
         }
-        
-        .brand-logo {
-          text-align: center;
-          margin: 20px 0;
+
+        .cover-content {
+          position: relative;
+          z-index: 1;
         }
-        
-        .brand-logo img {
-          max-width: 300px;
-          height: auto;
+
+        .logo-mark {
+          font-size: 10px;
+          letter-spacing: 0.3em;
+          color: var(--soft-gold);
+          margin-bottom: 80px;
+          font-weight: 500;
         }
-        
-        .brand-text {
-          color: #1A1A1A;
+
+        h1 {
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: 72px;
+          font-weight: 300;
+          color: var(--deep-charcoal);
+          line-height: 1.1;
+          letter-spacing: -0.02em;
+          margin-bottom: 60px;
         }
-        
-        .brand-slash {
-          color: #D4AF37;
-          margin: 0 5px;
+
+        h2 {
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: 42px;
+          font-weight: 300;
+          line-height: 1.2;
+          margin-bottom: 40px;
         }
-        
-        .brand-tagline {
-          font-family: 'Inter', sans-serif;
-          font-size: 1.1em;
+
+        .client-name {
+          font-size: 14px;
+          font-weight: 300;
+          letter-spacing: 0.1em;
+          color: #666;
+          margin-bottom: 120px;
+        }
+
+        .cover-tagline {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 20px;
+          font-style: italic;
           font-weight: 300;
           color: #666;
-          letter-spacing: 3px;
-          margin: 15px 0;
+          line-height: 1.6;
         }
-        
-        .assessment-title {
-          text-align: center;
-          margin: 60px 0;
-        }
-        
-        .assessment-title h1 {
-          font-family: 'Crimson Text', serif;
-          font-size: 2.2em;
-          font-weight: 700;
-          color: #4A5D23;
-          margin: 0;
-          line-height: 1.2;
-        }
-        
-        .client-info {
-          margin: 40px 0;
-        }
-        
-        .client-line {
-          font-family: 'Crimson Text', serif;
-          font-size: 1.6em;
-          font-weight: 400;
-          color: #1A1A1A;
-          margin: 20px 0;
-          text-transform: uppercase;
-        }
-        
-        .disclaimer-box {
-          background: #FFF3CD;
-          padding: 25px;
-          margin: 80px 0 60px 0;
-          border-radius: 8px;
-          border: 1px solid #D4AF37;
-          text-align: center;
-        }
-        
-        .disclaimer-box p {
-          font-family: 'Crimson Text', serif;
-          font-style: normal;
-          font-size: 1.2em;
-          color: #856404;
-          line-height: 1.5;
-          margin: 0;
-        }
-        
-        .section {
-          margin-bottom: 50px;
-          page-break-inside: avoid;
-          flex: 1; /* Take up available space */
-        }
-        
-        /* Content wrapper no longer needed - PDFShift handles footer */
-        
-        .section-title {
-          font-family: 'Crimson Text', serif;
-          font-size: 3.2em;
-          font-weight: 700;
-          color: #4A5D23;
+
+        /* SECTION HEADERS */
+        .section-header {
           margin-bottom: 80px;
           text-align: center;
-          background: #FFF3CD;
-          padding: 40px;
-          border-radius: 8px;
-          letter-spacing: 1px;
         }
-        
-        .content {
-          font-size: 16px;
-          line-height: 1.8;
-          color: #1A1A1A;
+
+        .section-label {
+          font-size: 10px;
+          font-weight: 500;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: var(--soft-gold);
           margin-bottom: 30px;
         }
-        
-        .content ol, .content ul {
-          page-break-inside: auto; /* Allow page breaks within lists */
+
+        .section-title {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 48px;
+          font-weight: 300;
+          letter-spacing: -0.01em;
+          line-height: 1.2;
         }
-        
-        .content li {
-          page-break-inside: avoid; /* Keep individual list items together */
-          margin-bottom: 8px;
-          max-height: 200px; /* Prevent single items from being too tall */
-          overflow: hidden;
+
+        /* CONTENT BLOCKS */
+        .content-block {
+          margin: 60px 0;
         }
-        
-        /* Page break detection handled by PDFShift */
-        
-        .content p {
-          font-size: 16px;
-          line-height: 1.6;
-          color: #1A1A1A;
-          margin: 0;
-        }
-        
-        .domain-title {
-          font-size: 2.4em;
-          font-weight: 700;
-          color: #4A5D23;
-          margin-bottom: 5px;
+
+        .block-title {
+          font-size: 10px;
+          letter-spacing: 0.15em;
           text-transform: uppercase;
-          letter-spacing: 2px;
+          color: var(--soft-gold);
+          font-weight: 500;
+          margin-bottom: 20px;
+        }
+
+        .block-content {
+          font-size: 13px;
+          line-height: 2;
+          font-weight: 300;
+        }
+
+        /* DOMAIN HERO */
+        .domain-hero {
+          font-size: 96px;
+          font-weight: 300;
+          text-align: center;
+          margin-bottom: 80px;
+          letter-spacing: -0.03em;
+          font-family: 'Cormorant Garamond', serif;
+        }
+
+        /* METRICS */
+        .metric-row {
+          display: flex;
+          justify-content: space-between;
+          padding: 30px 0;
+          border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .metric-row:first-of-type {
+          border-top: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .metric-label {
+          font-size: 10px;
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
+          color: var(--soft-gold);
+          font-weight: 500;
+        }
+
+        .metric-value {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 18px;
+          font-weight: 400;
+        }
+
+        /* PULL QUOTE */
+        .pull-quote {
+          margin: 100px 0;
+          padding: 60px 0;
+          border-top: 1px solid rgba(201, 169, 110, 0.3);
+          border-bottom: 1px solid rgba(201, 169, 110, 0.3);
           text-align: center;
         }
-        
-        .domain-breakdown-content {
-          margin: 10px 0;
-        }
-        
-        .domain-breakdown-item {
-          margin-bottom: 20px;
+
+        .pull-quote-text {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 28px;
+          font-style: italic;
+          font-weight: 300;
           line-height: 1.6;
+          margin-bottom: 30px;
         }
-        
-        .domain-breakdown-item strong {
-          color: #4A5D23;
-          font-weight: 600;
-          font-size: 16px;
-          display: block;
-          margin-bottom: 5px;
+
+        /* BOTTOM LINE */
+        .bottom-line-page {
+          background: var(--deep-charcoal);
+          color: var(--warm-white);
         }
-        
-        .domain-breakdown-item {
-          color: #1A1A1A;
+
+        .bottom-line-page h2 {
+          color: var(--warm-white);
+        }
+
+        .bottom-line-page p {
           font-size: 15px;
+          line-height: 2;
+          color: rgba(255,255,255,0.85);
         }
-        
-        .domain-item {
+
+        /* PAGE NUMBER */
+        .page-number {
+          position: absolute;
+          bottom: 40px;
+          right: 60px;
+          font-size: 9px;
+          letter-spacing: 0.1em;
+          color: #999;
+        }
+
+        .divider {
+          width: 60px;
+          height: 1px;
+          background: var(--soft-gold);
+          margin: 80px auto;
+        }
+
+        p {
+          margin-bottom: 28px;
+          line-height: 1.9;
+        }
+
+        /* PROTOCOL */
+        .protocol-item {
+          margin: 50px 0;
+          padding-bottom: 50px;
+          border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .protocol-timeline {
+          font-size: 10px;
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
+          color: var(--soft-gold);
+          font-weight: 500;
           margin-bottom: 15px;
         }
-        
-        .domain-item strong {
-          color: #4A5D23;
-          font-weight: 600;
-        }
-        
-        /* Consistent green sub-section styling for all sections */
-        .sub-section-green {
-          color: #4A5D23;
-          font-weight: 600;
-          font-size: 16px;
-          display: block;
-          margin-bottom: 8px;
-          font-family: 'Inter', sans-serif;
-        }
-        
-        .sub-section-content {
-          color: #1A1A1A;
+
+        .protocol-action {
           font-size: 15px;
-          line-height: 1.6;
-          margin-bottom: 15px;
-          font-family: 'Inter', sans-serif;
+          line-height: 1.8;
+          font-weight: 300;
         }
-        
-        
-        
-        /* Footer is now handled by PDFShift natively - no CSS needed */
-        
+
+        /* REMINDERS */
+        .reminder-item {
+          padding: 25px 0;
+          border-bottom: 1px solid rgba(0,0,0,0.06);
+          font-size: 13px;
+          line-height: 1.9;
+          font-weight: 300;
+        }
+
         .page-break {
           page-break-before: always;
         }
-        
-        .quote {
-          font-style: italic;
-          color: #666;
-          border-left: 3px solid #bdc3c7;
-          padding-left: 20px;
-          margin: 20px 0;
-        }
-        
-        
-        
       </style>
     </head>
     <body>
-      <!-- Cover Page -->
+      <!-- PAGE 1: COVER -->
+      <div class="page cover">
+        <div class="cover-content">
+          <div class="logo-mark">BECOME YOU</div>
+          <h1>YOUR FULL<br>YOU 3.0<br>SUMMARY</h1>
+          <div class="client-name">${clientName.toUpperCase()}</div>
+          <div class="cover-tagline">This is where<br>transformation begins</div>
+        </div>
+      </div>
+
+      <!-- PAGE 2: TITLE -->
       <div class="page">
-        <!-- Brand Header -->
-        <div class="brand-header">
-          <div class="brand-line"></div>
-          <div class="brand-logo">
-            <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" />
-          </div>
-          <div class="brand-line"></div>
-        </div>
-        
-        <!-- Assessment Title -->
-        <div class="assessment-title">
-          <h1>YOU 3.0 PERSONAL DEVELOPMENT</h1>
-          <h1>ASSESSMENT</h1>
-        </div>
-        
-        <!-- Client Information -->
-        <div class="client-info">
-          <div class="client-line">CLIENT NAME: ${clientName}</div>
-          <div class="client-line">DATE: ${new Date().toLocaleDateString()}</div>
-          <div class="client-line">ASSESSMENT TYPE: BEHAVIORAL OPTIMIZATION</div>
-        </div>
-        
-        <!-- Disclaimer Box -->
-        <div class="disclaimer-box">
-          <p>This assessment is not a diagnostic tool and does not replace professional mental health support. If you are experiencing crisis-level distress, please seek immediate professional care.</p>
-        </div>
-      </div>
-      
-      <!-- Assessment Overview Page -->
-      <div class="page page-break">
-        <div class="section">
-            <div class="section-title">Assessment Overview</div>
-            <div class="content">
-              <p>${assessmentOverview}</p>
-            </div>
-          </div>
-        
-        <!-- Footer handled by PDFShift natively -->
-      </div>
-      
-      <!-- Your Development Profile Page -->
-      <div class="page page-break">
-        <div class="section">
-            <div class="section-title">Your Development Profile</div>
-            <div class="content">
-              <p>${developmentProfile}</p>
-            </div>
-          </div>
-        
-        <!-- Footer handled by PDFShift natively -->
-      </div>
-      
-      <!-- Sabotage Pattern Analysis -->
-      <div class="page page-break">
-        <div class="section">
-            <div class="section-title">Sabotage Pattern Analysis</div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Your Protective Pattern:</div>
-              <div class="sub-section-content">${protectivePattern}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">What It's Protecting You From:</div>
-              <div class="sub-section-content">${whatItsProtectingFrom}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">How It Serves You:</div>
-              <div class="sub-section-content">${howItServesYou}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Your Go-To Patterns:</div>
-              <div class="sub-section-content">${goToPatterns}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Your Success Proof:</div>
-              <div class="sub-section-content">${successProof}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Your Anchor:</div>
-              <div class="sub-section-content">${anchor}</div>
-            </div>
+        <div class="page-content" style="text-align: center;">
+          <div style="margin-bottom: 80px; font-size: 14px; letter-spacing: 8px; color: var(--soft-gold); font-weight: 300;">
+            become / you
           </div>
           
-          <!-- In-the-Moment Reset -->
-          <div class="section">
-            <div class="section-title">Your In-the-Moment Reset</div>
-            <div class="sub-section-content">
-              ${inTheMomentReset}
-            </div>
+          <h2 style="margin-bottom: 60px;">YOU 3.0 PERSONAL<br>DEVELOPMENT ASSESSMENT</h2>
+          
+          <div style="font-size: 12px; line-height: 2.5; color: #666;">
+            <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Client</span><br>${clientName}</p>
+            <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Date</span><br>${new Date().toLocaleDateString()}</p>
+            <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Type</span><br>Behavioral Optimization</p>
           </div>
-        
-        <!-- Footer handled by PDFShift natively -->
+          
+          <div class="divider"></div>
+          
+          <p style="font-size: 11px; font-style: italic; color: #999; max-width: 500px; margin: 0 auto;">
+            This assessment is not a diagnostic tool and does not replace professional mental health support. If you are experiencing crisis-level distress, please seek immediate professional care.
+          </p>
+        </div>
+        <div class="page-number">02</div>
       </div>
-      
-      <!-- Domain Breakdown - Mind -->
-      <div class="page page-break">
-        <div class="section">
-            <div class="section-title">Domain Breakdown</div>
-            <div class="domain-title">MIND</div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Current Level:</div>
-              <div class="sub-section-content">${mindDomain.current_level}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Current Phase:</div>
-              <div class="sub-section-content">${mindDomain.current_phase}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Key Strengths:</div>
-              <div class="sub-section-content">${mindDomain.key_strengths}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Growth Opportunities:</div>
-              <div class="sub-section-content">${mindDomain.growth_opportunities}</div>
-            </div>
+
+      <!-- PAGE 3: ASSESSMENT OVERVIEW -->
+      <div class="page">
+        <div class="page-content">
+          <div class="section-header">
+            <div class="section-label">Overview</div>
+            <div class="section-title">Assessment Overview</div>
           </div>
-        
-        <!-- Footer handled by PDFShift natively -->
+          
+          <p style="font-size: 15px; line-height: 2;">${assessmentOverview}</p>
+        </div>
+        <div class="page-number">03</div>
       </div>
-      
-      <!-- Domain Breakdown - Body -->
-      <div class="page page-break">
-        <div class="section">
-            <div class="section-title">Domain Breakdown</div>
-            <div class="domain-title">BODY</div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Current Level:</div>
-              <div class="sub-section-content">${bodyDomain.current_level}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Current Phase:</div>
-              <div class="sub-section-content">${bodyDomain.current_phase}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Key Strengths:</div>
-              <div class="sub-section-content">${bodyDomain.key_strengths}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Growth Opportunities:</div>
-              <div class="sub-section-content">${bodyDomain.growth_opportunities}</div>
-            </div>
+
+      <!-- PAGE 4: DEVELOPMENT PROFILE -->
+      <div class="page">
+        <div class="page-content">
+          <div class="section-header">
+            <div class="section-label">Your Profile</div>
+            <div class="section-title">Your Development<br>Profile</div>
           </div>
-        
-        <!-- Footer handled by PDFShift natively -->
+          
+          <p style="font-size: 15px; line-height: 2;">${developmentProfile}</p>
+        </div>
+        <div class="page-number">04</div>
       </div>
-      
-      <!-- Domain Breakdown - Spirit -->
-      <div class="page page-break">
-        <div class="section">
-            <div class="section-title">Domain Breakdown</div>
-            <div class="domain-title">SPIRIT & RELATIONSHIPS</div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Current Level:</div>
-              <div class="sub-section-content">${spiritDomain.current_level}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Current Phase:</div>
-              <div class="sub-section-content">${spiritDomain.current_phase}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Key Strengths:</div>
-              <div class="sub-section-content">${spiritDomain.key_strengths}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Growth Opportunities:</div>
-              <div class="sub-section-content">${spiritDomain.growth_opportunities}</div>
-            </div>
+
+      <!-- PAGE 5: SABOTAGE PATTERN -->
+      <div class="page">
+        <div class="page-content">
+          <div class="section-header">
+            <div class="section-label">Pattern Analysis</div>
+            <div class="section-title">Sabotage Pattern<br>Analysis</div>
           </div>
-        
-        <!-- Footer handled by PDFShift natively -->
-      </div>
-      
-      <!-- Domain Breakdown - Contribution -->
-      <div class="page page-break">
-        <div class="section">
-            <div class="section-title">Domain Breakdown</div>
-            <div class="domain-title">CONTRIBUTION</div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Current Level:</div>
-              <div class="sub-section-content">${contributionDomain.current_level}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Current Phase:</div>
-              <div class="sub-section-content">${contributionDomain.current_phase}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Key Strengths:</div>
-              <div class="sub-section-content">${contributionDomain.key_strengths}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Growth Opportunities:</div>
-              <div class="sub-section-content">${contributionDomain.growth_opportunities}</div>
-            </div>
+          
+          <div class="content-block">
+            <div class="block-title">Your Protective Pattern</div>
+            <div class="block-content">${protectivePattern}</div>
           </div>
-        
-        <!-- Footer handled by PDFShift natively -->
-      </div>
-      
-      
-      
-      <!-- Nervous System Assessment -->
-      <div class="page page-break">
-        <div class="section">
-            <div class="section-title">Nervous System Assessment</div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Primary State:</div>
-              <div class="sub-section-content">${nervousSystemAssessment.primary_state}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Regulation Capacity:</div>
-              <div class="sub-section-content">${nervousSystemAssessment.regulation_capacity}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Observable Patterns:</div>
-              <div class="sub-section-content">${nervousSystemAssessment.observable_patterns}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Your Regulation Reality:</div>
-              <div class="sub-section-content">${nervousSystemAssessment.regulation_reality}</div>
-            </div>
+          
+          <div class="content-block">
+            <div class="block-title">What It's Protecting You From</div>
+            <div class="block-content">${whatItsProtectingFrom}</div>
           </div>
-        
-        <!-- Footer handled by PDFShift natively -->
-      </div>
-      
-      <!-- 30-Day Protocol -->
-      <div class="page page-break">
-        <div class="section">
-            <div class="section-title">30-Day Recommended Growth Protocol</div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">72-Hour Suggestion:</div>
-              <div class="sub-section-content">${seventyTwoHourSuggestion}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Weekly Recommendation:</div>
-              <div class="sub-section-content">${weeklyRecommendation}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">30-Day Approach:</div>
-              <div class="sub-section-content">${thirtyDayApproach}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Environmental Optimization:</div>
-              <div class="sub-section-content">${environmentalOptimization}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Suggested Progress Markers:</div>
-              <div class="sub-section-content">
-                <ul class="bullet-list">
-                  ${progressMarkers.map(marker => `<li>${marker}</li>`).join('')}
-                </ul>
-              </div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Daily Actions:</div>
-              <div class="sub-section-content">
-                <ul class="bullet-list">
-                  ${dailyActions.map(action => `<li>${action}</li>`).join('')}
-                </ul>
-              </div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Weekly Goals:</div>
-              <div class="sub-section-content">
-                <ul class="bullet-list">
-                  ${weeklyGoals.map(goal => `<li>${goal}</li>`).join('')}
-                </ul>
-              </div>
-            </div>
+          
+          <div class="content-block">
+            <div class="block-title">How It Serves You</div>
+            <div class="block-content">${howItServesYou}</div>
           </div>
-        
-        <!-- Footer handled by PDFShift natively -->
-      </div>
-      
-      <!-- Reminder Box -->
-      <div class="page page-break">
-        <div class="section">
-            <div class="section-title">Reminder Box</div>
-            <div class="sub-section-content">
-              <p>"${reminderQuote}"</p>
-            </div>
+          
+          <div class="content-block">
+            <div class="block-title">Your Success Proof</div>
+            <div class="block-content">${successProof}</div>
           </div>
-        
-        <!-- Footer handled by PDFShift natively -->
+        </div>
+        <div class="page-number">05</div>
       </div>
-      
-      <!-- Bottom Line -->
-      <div class="page page-break">
-        <div class="section">
-            <div class="section-title">Bottom Line</div>
-            <div class="sub-section-content">
-              <p>${bottomLine}</p>
-            </div>
+
+      <!-- PAGE 6: DOMAIN DIVIDER -->
+      <div class="page" style="display: flex; align-items: center; justify-content: center;">
+        <div style="text-align: center;">
+          <div class="section-label">The Four Domains</div>
+          <h2 style="font-size: 52px; margin-top: 40px;">Domain Breakdown</h2>
+        </div>
+        <div class="page-number">06</div>
+      </div>
+
+      <!-- PAGE 7: MIND -->
+      <div class="page">
+        <div class="page-content">
+          <h1 class="domain-hero">MIND</h1>
+          
+          <div class="metric-row">
+            <div class="metric-label">Current Level</div>
+            <div class="metric-value">${mindDomain.current_level}</div>
           </div>
-        
-        <!-- Footer handled by PDFShift natively -->
-      </div>
-      
-      <!-- Development Reminders -->
-      <div class="page page-break">
-        <div class="section">
-            <div class="section-title">Development Reminders</div>
-            
-            <div class="sub-section-content">
-              <ul class="bullet-list">
-                ${developmentReminders.map(reminder => `<li>${reminder}</li>`).join('')}
-              </ul>
-            </div>
+          
+          <div class="metric-row">
+            <div class="metric-label">Current Phase</div>
+            <div class="metric-value">${mindDomain.current_phase}</div>
           </div>
-        
-        <!-- Footer handled by PDFShift natively -->
-      </div>
-      
-      <!-- Book Recommendations -->
-      <div class="page page-break">
-        <div class="section">
-            <div class="section-title">Book Recommendations</div>
-            
-            <div class="sub-section-content">
-              <ul class="bullet-list">
-                ${bookRecommendations.map(book => `<li><strong>${book}</strong></li>`).join('')}
-              </ul>
-            </div>
+          
+          <div class="content-block">
+            <div class="block-title">Key Strengths</div>
+            <div class="block-content">${mindDomain.key_strengths}</div>
           </div>
-        
-        <!-- Footer handled by PDFShift natively -->
+          
+          <div class="content-block">
+            <div class="block-title">Growth Opportunities</div>
+            <div class="block-content">${mindDomain.growth_opportunities}</div>
+          </div>
+        </div>
+        <div class="page-number">07</div>
       </div>
-      
-      
-      <!-- Next Steps -->
-      <div class="page page-break">
-        <div class="section">
+
+      <!-- PAGE 8: BODY -->
+      <div class="page">
+        <div class="page-content">
+          <h1 class="domain-hero">BODY</h1>
+          
+          <div class="metric-row">
+            <div class="metric-label">Current Level</div>
+            <div class="metric-value">${bodyDomain.current_level}</div>
+          </div>
+          
+          <div class="metric-row">
+            <div class="metric-label">Current Phase</div>
+            <div class="metric-value">${bodyDomain.current_phase}</div>
+          </div>
+          
+          <div class="content-block">
+            <div class="block-title">Key Strengths</div>
+            <div class="block-content">${bodyDomain.key_strengths}</div>
+          </div>
+          
+          <div class="content-block">
+            <div class="block-title">Growth Opportunities</div>
+            <div class="block-content">${bodyDomain.growth_opportunities}</div>
+          </div>
+        </div>
+        <div class="page-number">08</div>
+      </div>
+
+      <!-- PAGE 9: SPIRIT -->
+      <div class="page">
+        <div class="page-content">
+          <h1 class="domain-hero">SPIRIT &<br>RELATIONSHIPS</h1>
+          
+          <div class="metric-row">
+            <div class="metric-label">Current Level</div>
+            <div class="metric-value">${spiritDomain.current_level}</div>
+          </div>
+          
+          <div class="metric-row">
+            <div class="metric-label">Current Phase</div>
+            <div class="metric-value">${spiritDomain.current_phase}</div>
+          </div>
+          
+          <div class="content-block">
+            <div class="block-title">Key Strengths</div>
+            <div class="block-content">${spiritDomain.key_strengths}</div>
+          </div>
+          
+          <div class="content-block">
+            <div class="block-title">Growth Opportunities</div>
+            <div class="block-content">${spiritDomain.growth_opportunities}</div>
+          </div>
+        </div>
+        <div class="page-number">09</div>
+      </div>
+
+      <!-- PAGE 10: CONTRIBUTION -->
+      <div class="page">
+        <div class="page-content">
+          <h1 class="domain-hero">CONTRIBUTION</h1>
+          
+          <div class="metric-row">
+            <div class="metric-label">Current Level</div>
+            <div class="metric-value">${contributionDomain.current_level}</div>
+          </div>
+          
+          <div class="metric-row">
+            <div class="metric-label">Current Phase</div>
+            <div class="metric-value">${contributionDomain.current_phase}</div>
+          </div>
+          
+          <div class="content-block">
+            <div class="block-title">Key Strengths</div>
+            <div class="block-content">${contributionDomain.key_strengths}</div>
+          </div>
+          
+          <div class="content-block">
+            <div class="block-title">Growth Opportunities</div>
+            <div class="block-content">${contributionDomain.growth_opportunities}</div>
+          </div>
+        </div>
+        <div class="page-number">10</div>
+      </div>
+
+      <!-- PAGE 11: NERVOUS SYSTEM -->
+      <div class="page">
+        <div class="page-content">
+          <div class="section-header">
+            <div class="section-label">Foundation</div>
+            <div class="section-title">Nervous System<br>Assessment</div>
+          </div>
+          
+          <div class="metric-row">
+            <div class="metric-label">Primary State</div>
+            <div class="metric-value">${nervousSystemAssessment.primary_state}</div>
+          </div>
+          
+          <div class="metric-row">
+            <div class="metric-label">Regulation Capacity</div>
+            <div class="metric-value">${nervousSystemAssessment.regulation_capacity}</div>
+          </div>
+          
+          <div class="content-block">
+            <div class="block-title">Observable Patterns</div>
+            <div class="block-content">${nervousSystemAssessment.observable_patterns}</div>
+          </div>
+        </div>
+        <div class="page-number">11</div>
+      </div>
+
+      <!-- PAGE 12: 30-DAY PROTOCOL -->
+      <div class="page">
+        <div class="page-content">
+          <div class="section-header">
+            <div class="section-label">Your Protocol</div>
+            <div class="section-title">30-Day Growth<br>Protocol</div>
+          </div>
+          
+          <div class="protocol-item">
+            <div class="protocol-timeline">72-Hour Suggestion</div>
+            <div class="protocol-action">${seventyTwoHourSuggestion}</div>
+          </div>
+          
+          <div class="protocol-item">
+            <div class="protocol-timeline">Weekly Recommendation</div>
+            <div class="protocol-action">${weeklyRecommendation}</div>
+          </div>
+          
+          <div class="protocol-item">
+            <div class="protocol-timeline">30-Day Approach</div>
+            <div class="protocol-action">${thirtyDayApproach}</div>
+          </div>
+        </div>
+        <div class="page-number">12</div>
+      </div>
+
+      <!-- PAGE 13: BOTTOM LINE -->
+      <div class="page bottom-line-page">
+        <div class="page-content" style="text-align: center; max-width: 700px;">
+          <h2>Bottom Line</h2>
+          <p>${bottomLine}</p>
+        </div>
+      </div>
+
+      <!-- PAGE 14: REMINDER BOX -->
+      <div class="page">
+        <div class="page-content">
+          <div class="pull-quote">
+            <div class="pull-quote-text">"${reminderQuote}"</div>
+            <div style="font-size: 11px; letter-spacing: 0.1em; color: #999;">Your truth, the only truth that matters</div>
+          </div>
+        </div>
+        <div class="page-number">14</div>
+      </div>
+
+      <!-- PAGE 15: DEVELOPMENT REMINDERS -->
+      <div class="page">
+        <div class="page-content">
+          <div class="section-header">
+            <div class="section-label">Reminders</div>
+            <div class="section-title">Development<br>Reminders</div>
+          </div>
+          
+          ${developmentReminders.map(reminder => `<div class="reminder-item">${reminder}</div>`).join('')}
+        </div>
+        <div class="page-number">15</div>
+      </div>
+
+      <!-- PAGE 16: BOOK RECOMMENDATIONS -->
+      <div class="page">
+        <div class="page-content">
+          <div class="section-header">
+            <div class="section-label">Recommended Reading</div>
+            <div class="section-title">Book<br>Recommendations</div>
+          </div>
+          
+          ${bookRecommendations.map((book, index) => `
+            <div class="content-block">
+              <div class="block-title">${index + 1}. ${book}</div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="page-number">16</div>
+      </div>
+
+      <!-- PAGE 17: NEXT STEPS -->
+      <div class="page">
+        <div class="page-content">
+          <div class="section-header">
+            <div class="section-label">Moving Forward</div>
             <div class="section-title">Next Steps</div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">6-Month Follow-Up Assessment Recommended:</div>
-              <div class="sub-section-content">${planData.next_assessment?.six_month_followup || 'Personalized timeline and expected progress tracking'}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Monthly Check-In Options:</div>
-              <div class="sub-section-content">${planData.next_assessment?.monthly_checkin || 'Brief progress reviews to track your development'}</div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">Focus Areas for Next Phase:</div>
-              <div class="sub-section-content">
-                <ul class="bullet-list">
-                  ${(planData.next_assessment?.focus_areas || ['Focus Area 1', 'Focus Area 2', 'Focus Area 3', 'Focus Area 4']).map(area => `<li>${area}</li>`).join('')}
-                </ul>
-              </div>
-            </div>
-            
-            <div class="domain-item">
-              <div class="sub-section-green">How to Stay Connected:</div>
-              <div class="sub-section-content">${planData.next_assessment?.stay_connected || 'Newsletter signup, community links, and ongoing support resources'}</div>
+          </div>
+          
+          <div class="content-block">
+            <div class="block-title">6-Month Follow-Up Assessment Recommended</div>
+            <div class="block-content">${planData.next_assessment?.six_month_followup || 'Personalized timeline and expected progress tracking'}</div>
+          </div>
+          
+          <div class="content-block">
+            <div class="block-title">Focus Areas for Next Phase</div>
+            <div class="block-content">
+              ${(planData.next_assessment?.focus_areas || ['Focus Area 1', 'Focus Area 2', 'Focus Area 3', 'Focus Area 4']).map(area => `<p>${area}</p>`).join('')}
             </div>
           </div>
-        
-        <!-- Footer handled by PDFShift natively -->
+        </div>
+        <div class="page-number">17</div>
       </div>
-      
-      <!-- Final Motivational Page -->
-      <div class="page page-break" style="display: flex; align-items: center; justify-content: center; min-height: 100vh;">
-        <div style="background: #FFF3CD; border-radius: 8px; border: 1px solid #D4AF37; padding: 3rem; margin: 2rem; max-width: 70%; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-          <p style="font-family: 'Times New Roman', serif; font-size: 18px; line-height: 1.6; color: #1A1A1A; margin: 0;">
+
+      <!-- FINAL PAGE -->
+      <div class="page" style="display: flex; align-items: center; justify-content: center;">
+        <div style="background: var(--cream); padding: 60px; text-align: center; max-width: 600px; border-left: 2px solid var(--soft-gold);">
+          <p style="font-size: 13px; line-height: 2.2; font-style: italic;">
             This assessment was built with care, respect, and the belief that you already have everything you need to become the person you described. The only thing left to do is <em>take action</em>.
           </p>
         </div>

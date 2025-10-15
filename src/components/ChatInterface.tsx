@@ -309,7 +309,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                   // Add delay before triggering report generation to let user see the full response
                   setTimeout(() => {
                     onComplete() // Call report generation after delay
-                  }, 10000) // 3 second delay
+                  }, 15000) // 15 second delay
                   
                   break // Stop processing more content
                 }
@@ -517,7 +517,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
             
             {/* Input Box - EXACT CLAUDE SPECIFICATIONS - Hidden when assessment complete */}
             {!assessmentComplete && (
-              <div className="bg-white border border-[#D1D5DB] rounded-xl p-4 flex flex-col gap-2 transition-all duration-150 focus-within:shadow-[0_0_0_3px_rgba(74,93,35,0.08)]" style={{ borderColor: '#4A5D23' }}>
+            <div className="bg-white border border-[#D1D5DB] rounded-xl p-4 flex flex-col gap-2 transition-all duration-150 focus-within:shadow-[0_0_0_3px_rgba(74,93,35,0.08)]" style={{ borderColor: '#4A5D23' }}>
               {/* Textarea - Exact specs */}
               <textarea
                 ref={textareaRef}
