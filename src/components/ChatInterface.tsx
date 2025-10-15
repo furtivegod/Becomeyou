@@ -103,22 +103,8 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
     }
   }, [transcript])
 
-  // Check for assessment completion after messages update
-  useEffect(() => {
-    if (messages.length > 0 && !assessmentComplete && !completionTriggeredRef.current) {
-      const lastMessage = messages[messages.length - 1]
-      if (lastMessage.role === 'assistant' && 
-          (lastMessage.content.includes('Thank you for showing up fully for this assessment') ||
-           lastMessage.content.includes('ASSESSMENT COMPLETE') ||
-           lastMessage.content.includes('You did the hard part. Now let\'s build on it.'))) {
-        console.log('Assessment completion detected...')
-        completionTriggeredRef.current = true // Prevent multiple triggers
-        setAssessmentComplete(true)
-        // Trigger report generation
-        onComplete()
-      }
-    }
-  }, [messages, assessmentComplete]) // Removed onComplete from dependencies
+  // Note: Completion detection is now handled in the streaming message processing
+  // to ensure immediate response when completion phrases are detected
 
   // Handle keyboard shortcuts
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -319,7 +305,7 @@ export default function ChatInterface({ sessionId, onComplete }: ChatInterfacePr
                   console.log('Completion detected during streaming, stopping...')
                   completionTriggeredRef.current = true // Prevent multiple triggers
                   setAssessmentComplete(true)
-                  // Don't call onComplete() here - let the useEffect handle it
+                  onComplete() // Call report generation immediately
                   break // Stop processing more content
                 }
               }
