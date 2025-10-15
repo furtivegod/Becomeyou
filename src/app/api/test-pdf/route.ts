@@ -18,89 +18,106 @@ export async function GET(request: NextRequest) {
     // Sample plan data for testing
     const samplePlanData = {
       title: "You 3.0 Behavioral Optimization Assessment Report",
-      overview: "This comprehensive assessment reveals your unique behavioral patterns, protective mechanisms, and pathways for transformation.",
-      assessment_overview: "Based on your detailed responses, you've demonstrated clear patterns of behavior that show both your protective strategies and your readiness for meaningful transformation.",
-      development_profile: "You demonstrate strong self-awareness, genuine desire for growth, and the capacity to implement sustainable changes in your life.",
+      overview: "This assessment revealed a high-capacity individual with fast learning abilities and natural nervous system regulation, currently trapped in a cycle of escape behaviors (sleep, gaming) that protect against facing the discomfort of building a business without perceived 'talent.'",
+      assessment_overview: "You've been carrying a belief that's keeping you small: 'I don't have talent.' But here's what today revealed—you're a fast learner with proven ability to push through challenges when you're winning. Your nervous system regulates in minutes, which most people can't do. The pattern that's kept you stuck isn't lack of talent; it's that speaking without thinking, then escaping into sleep (3 hours daily) and games protects you from having to risk failure as a businessman. The good news? You already have proof you can do this—you push through when you're winning at games. Now we just need to transfer that same state to your business.",
+      development_profile: "You process the world quickly—'fast learner' were your exact words—and when decisions matter, you go deep. But there's a split between your capacity and your pattern: you speak without thinking, then your body forces rest through exhaustion and headaches when you've pushed too far. Your face flushing red is your early warning system. What stood out most was your honesty about what staying stuck protects you from: 'play football, or games.' You know the cost. You said your deepest meaning comes from 'desire, hope, work, money'—four powerful drivers. Yet something keeps pulling you toward sleep (3 hours daily) instead of toward building what you want. Your words: 'I wanna be a success business man, but I don't have talent.' That belief is the lock. Your fast learning and quick regulation are the keys.",
       bottom_line: "You have the foundation and potential for significant transformation—the key is working with your nervous system rather than against it.",
       sabotage_analysis: {
-        protective_pattern: "You tend to overthink decisions to avoid making mistakes",
-        what_its_protecting_from: "Fear of failure and judgment from others",
-        how_it_serves_you: "Keeps you safe from potential criticism and disappointment",
-        go_to_patterns: "Researching extensively before taking action, seeking multiple opinions",
-        success_proof: "You've made good decisions when you trusted your instincts",
-        anchor: "Your morning routine of coffee and planning - this is your strongest daily habit"
+        protective_pattern: "Speaking without deep thinking, then escaping into sleep (3 hours daily) and gaming when overwhelm hits. This pattern shows up most when facing the risk of business failure without perceived talent. When you notice it starting, you'll likely feel exhaustion first—that's your early warning signal. The faster you catch it, the faster you can choose differently.",
+        what_its_protecting_from: "Fear of failing as a businessman without natural talent; facing the discomfort of not knowing; risking loss of pleasure activities (football, games); experiencing inadequacy publicly",
+        how_it_serves_you: "Sleep provides immediate escape from discomfort; gaming gives you the 'winning' feeling you crave without real-world risk; speaking without thinking keeps you from facing deeper truths; avoiding conflict maintains surface-level peace; preserves your self-image by never truly testing yourself",
+        go_to_patterns: "Sleep (3 hours daily when avoiding), gaming until winning, reactive speaking, conflict avoidance, oscillating between optimistic decisions and 'bad mode' depending on body state",
+        success_proof: "You push through patterns when winning at computer games—mental state, environment, and support all shift differently in those moments. You regulate stress in minutes (unusual capacity). You're a fast learner. You go deep on important decisions despite reactive speaking habits.",
+        anchor: "Singing songs—the one thing you do daily no matter what, even when inconvenient"
       },
       goals: {
-        business_goal: "Build a successful consulting practice that allows for financial freedom and meaningful impact",
-        relationship_goal: "Create deeper, more authentic connections while maintaining healthy boundaries",
-        body_goal: "Develop a sustainable fitness routine that supports both physical and mental well-being"
+        business_goal: "Become a successful businessman by leveraging your fast learning abilities and transferring your gaming 'winning state' to business actions",
+        relationship_goal: "Build a support system for business growth while learning to navigate conflict directly rather than avoiding it",
+        body_goal: "Use your body's early warning signals (face flushing, exhaustion) to interrupt escape patterns and redirect energy toward business learning"
       },
-      future_vision: "A Tuesday where you wake up feeling confident in your decisions, have meaningful work that energizes you, and relationships that feel both connected and free.",
-      in_the_moment_reset: "When you notice the overthinking starting, pause and take 3 deep breaths—in for 4 counts, hold for 4, out for 6. Then ask yourself: 'What's one small thing I can do right now that moves me forward instead of away?'",
+      future_vision: "A Tuesday where you wake up after singing, complete your business learning action, and feel the same 'winning' energy you get from games—but now it's directed toward building your business. You've reduced your escape sleep to 1.5 hours, you catch your exhaustion signals early, and you're accumulating proof that you're a fast learner who can succeed in business.",
+      in_the_moment_reset: "When you notice the exhaustion starting or the pull toward sleep, pause and take 3 deep breaths—in for 4 counts, hold for 4, out for 6. Check if your face is flushing (your signal). Then ask yourself: 'If I were winning right now, what's one small action I'd take?' Match that gaming state to business. It won't stop the pattern completely at first, but it creates the gap where choice becomes possible.",
       domain_breakdown: {
         mind: {
-          current_level: "Foundation level - You have good self-awareness but need to trust your judgment more",
-          current_phase: "Friction - You're aware of your patterns but still struggle with overthinking",
-          key_strengths: "Strong analytical skills, good self-reflection, and ability to see patterns in your behavior",
-          growth_opportunities: "Learning to trust your instincts and make decisions with less analysis"
+          current_level: "Exploration",
+          current_phase: "Friction",
+          key_strengths: "Fast learner, capable of deep thinking on important decisions, quick nervous system regulation (minutes), natural cognitive processing speed, awareness of your reactive speaking pattern",
+          growth_opportunities: "Bridging the gap between reactive speaking and deep thinking capacity; learning to pause before responding; developing consistent decision-making that doesn't oscillate with body state ('optimistic way' vs 'bad mode'); building tolerance for not-knowing without escaping into sleep"
         },
         body: {
-          current_level: "Exploration level - You're beginning to understand your physical needs and responses",
-          current_phase: "Experimentation - You're trying new approaches to physical wellness",
-          key_strengths: "Good awareness of your body's signals and willingness to try new approaches",
-          growth_opportunities: "Building consistent physical practices that support your mental clarity"
+          current_level: "Foundation",
+          current_phase: "Friction",
+          key_strengths: "Clear body signals (face flushing, headaches, exhaustion), quick stress regulation (few minutes), energizing physical environment, intentional relationship with health ('very constructed, very clever')",
+          growth_opportunities: "Recognizing exhaustion as avoidance signal rather than just rest need; reducing 3-hour daily escape sleep; integrating body signals earlier (before headaches); stabilizing body state to support consistent decision-making; using physical state awareness to interrupt pattern"
         },
         spirit: {
-          current_level: "Foundation level - You value relationships but sometimes struggle with boundaries",
-          current_phase: "Friction - You know what healthy relationships look like but struggle to implement boundaries",
-          key_strengths: "Deep care for others, strong values, and desire for meaningful connections",
-          growth_opportunities: "Learning to set boundaries while maintaining connection and authenticity"
+          current_level: "Foundation",
+          current_phase: "Friction",
+          key_strengths: "Values honest conversation for connection, clear meaning drivers (desire, hope, work, money), awareness of conflict avoidance pattern, daily anchor practice (singing)",
+          growth_opportunities: "Learning to navigate conflict directly rather than avoiding; building tolerance for discomfort in relationships; developing support system for business growth; connecting singing anchor to business action; allowing vulnerability around 'not having talent' belief"
         },
         contribution: {
-          current_level: "Exploration level - You have skills but need to build confidence in sharing them",
-          current_phase: "Experimentation - You're exploring how to share your gifts with the world",
-          key_strengths: "Strong skills and knowledge, genuine desire to help others, and good work ethic",
-          growth_opportunities: "Building confidence to share your expertise and take on leadership roles"
+          current_level: "Foundation",
+          current_phase: "Friction",
+          key_strengths: "Clear business vision (success businessman), motivated by work and money, awareness that money is primary external obstacle, desire to contribute through business",
+          growth_opportunities: "Reframing 'talent' narrative to 'learning' mindset; transferring gaming 'winning state' to business actions; building daily business habits anchored to singing; reducing escape time (3 hours) and redirecting to skill building; taking action despite fear of inadequacy"
         }
       },
       nervous_system_assessment: {
-        primary_state: "You tend toward overthinking and analysis paralysis, but show good self-regulation when you trust your process",
-        regulation_capacity: "Developing - You have the tools but need to practice using them consistently",
-        observable_patterns: "Overthinking before decisions, seeking external validation, analysis paralysis on important choices",
-        regulation_reality: "You're not broken - you already regulate well in areas where you feel confident. We're expanding where you allow this to happen."
+        primary_state: "Alternating between regulated activation (when winning/optimistic) and defensive collapse (exhaustion, sleep escape, bad mode)—your system knows how to regulate quickly but defaults to shutdown when facing perceived inadequacy",
+        regulation_capacity: "Natural",
+        observable_patterns: "Face flushing red under stress, terrible headaches from overwhelm, deep exhaustion when avoiding, 3-hour sleep escapes, quick return to baseline (few minutes), decision quality oscillates with body state—'sometimes always make decisions in an optimistic way, but otherwise only make decisions in bad mode'",
+        regulation_reality: "Your nervous system is actually more flexible than you realize—regulating in minutes is uncommon. The issue isn't regulation capacity; it's that your system has learned to use sleep as primary coping mechanism (3 hours daily). When you're in 'winning state' from games, all three factors shift: mental state, environment, support. You have the hardware; you're just running old software that says escape is safer than attempting business without 'talent.'"
       },
       thirty_day_protocol: {
-        seventy_two_hour_suggestion: "Take one small action each day without overthinking it first",
-        weekly_recommendation: "Practice making one decision per day based on your first instinct",
-        thirty_day_approach: "Build confidence in your decision-making by taking small risks daily",
-        environmental_optimization: "Create a decision-making ritual that limits research time to 10 minutes",
+        seventy_two_hour_suggestion: "Anchor a 15-minute business learning action immediately after singing songs (your unbreakable habit). Before you can escape to sleep, complete one small learning task. Start with researching one successful businessman who wasn't 'talented'—just persistent. Your fast learning capacity handles this easily.",
+        weekly_recommendation: "Create a 'winning state log' every Sunday: write down when you felt like you were winning this week (gaming or otherwise), what your mental state was, and what one business action would have matched that energy. Your environment already energizes you; now use it intentionally. Set a weekly 30-minute honest conversation about business progress with one supportive person.",
+        thirty_day_approach: "Replace one hour of your 3-hour daily sleep escape with skill-building for business (courses, reading, networking). Keep the other 2 hours as actual rest. Reframe 'I don't have talent' to 'I'm a fast learner proving it daily.' Track face flushing and exhaustion signals, then pause and choose action over escape three times weekly. Build business systems in your optimistic body state, execute them even in bad mode. By day 30, you'll have 30 hours of learning invested and proof talent was never the variable.",
+        environmental_optimization: "Since money is your biggest external obstacle and your environment already energizes you, create a zero-cost business learning space using your existing setup. Use free online resources, YouTube, podcasts during activities you already do. Turn gaming time into business strategy game (gamify learning). Remove sleep escape triggers: set phone alarm after 2 hours max rest, no gaming before business learning task completed.",
         progress_markers: [
-          "Notice when you're overthinking and stop yourself",
-          "Take action on small decisions without extensive research",
-          "Feel more confident in your choices"
+          "Reducing daily escape sleep from 3 hours to 2 hours by week 2, to 1.5 hours by week 4",
+          "Completing business learning action after singing 5 days/week by week 2, 7 days/week by week 4",
+          "Catching face flush/exhaustion signal and choosing action over escape 3x in week 1, 6x by week 2, 10x by week 3, daily by week 4",
+          "Reframing 'no talent' thought to 'fast learner' evidence at least once daily starting week 1",
+          "Making decisions from optimistic state consciously 4x weekly by week 3"
         ],
         daily_actions: [
-          "Day 1: Make one small decision without researching it first",
-          "Day 2: Trust your first instinct on a choice today",
-          "Day 3: Notice when you start overthinking and take a breath",
-          "Day 4: Make a decision in under 5 minutes",
-          "Day 5: Practice saying 'I'll figure it out' instead of researching",
-          "Day 6: Take action on something you've been putting off",
-          "Day 7: Reflect on decisions you made this week",
-          "Day 8: Make a decision that feels slightly uncomfortable",
-          "Day 9: Trust your gut on a work-related choice",
-          "Day 10: Notice your confidence growing in decision-making",
-          "Day 11: Make a decision without asking anyone's opinion",
-          "Day 12: Take action on a creative project you've been avoiding",
-          "Day 13: Practice making quick decisions throughout the day",
-          "Day 14: Reflect on how your decision-making has improved",
-          "Day 15: Make a decision that requires you to trust yourself completely"
+          "Day 1: After singing, watch one 10-minute video on business fundamentals. Notice if exhaustion hits—breathe instead of sleeping.",
+          "Day 2: After singing, list three skills successful businessmen have. You're a fast learner—which one interests you most?",
+          "Day 3: When face flushes today, pause and take 3 deep breaths. Then take one small business action before escaping.",
+          "Day 4: After singing, research one entrepreneur who wasn't naturally talented. Read their origin story.",
+          "Day 5: Set timer for sleep—limit to 2 hours max today. Track how you feel after.",
+          "Day 6: After singing, write down: 'What would I do if I were winning at business right now?' Do that thing.",
+          "Day 7: After singing, review your week. When did exhaustion signal avoidance vs. real rest? Be honest.",
+          "Day 8: After singing, learn one new business concept (marketing, sales, operations). Fast learner—10 minutes is enough.",
+          "Day 9: When exhaustion hits today, ask: 'What am I avoiding?' Take opposite action for 5 minutes before resting.",
+          "Day 10: After singing, watch one interview with a successful businessman. Notice what they did, not what they had.",
+          "Day 11: Practice speaking after thinking today. Pause 3 seconds before responding in any conversation.",
+          "Day 12: After singing, write three pieces of evidence you're capable of learning business skills. You have proof.",
+          "Day 13: Set timer for sleep—still 2 hours max. Use saved hour for free online business course.",
+          "Day 14: After singing, review progress. Are you catching exhaustion earlier? Celebrate that.",
+          "Day 15: After singing, identify one business action you've been avoiding. Do it for 10 minutes today.",
+          "Day 16: When making a decision today, check your body state. If 'bad mode,' wait until regulated to decide.",
+          "Day 17: After singing, connect with one person doing what you want to do. Honest conversation—ask how they started.",
+          "Day 18: Notice face flushing today. That's your signal—breathe, then act toward business, not away into games.",
+          "Day 19: After singing, list five skills you've learned fast in life. Talent wasn't required then either.",
+          "Day 20: Set timer for sleep—reduce to 1.5 hours today. Track energy levels afterward.",
+          "Day 21: After singing, review three weeks. How much have you learned? Fast learner proof is accumulating.",
+          "Day 22: After singing, take one action that scares you slightly. Small risk, business-related. Breathe through it.",
+          "Day 23: Practice catching reactive speaking today. Pause before responding three times minimum.",
+          "Day 24: After singing, watch content on turning learning into business systems. You process quickly—take notes.",
+          "Day 25: When exhaustion hits, use it as data: 'What risk am I protecting myself from?' Then take tiny action toward it.",
+          "Day 26: After singing, write your 30-day post-assessment insights. What's different from day 1?",
+          "Day 27: Sleep timer—1.5 hours max. Are you using saved time intentionally? Adjust if needed.",
+          "Day 28: After singing, make one business decision from optimistic body state. Execute it regardless of tomorrow's state.",
+          "Day 29: Review all progress markers. Which ones improved most? That's your growth edge—keep pressure there.",
+          "Day 30: After singing, write: 'I'm a fast learner who has invested 30 hours in business skills this month. Talent was never the issue.' Read daily."
         ],
         weekly_goals: [
-          "Week 1: Make 5 decisions without overthinking them",
-          "Week 2: Take action on 3 things you've been avoiding",
-          "Week 3: Practice trusting your instincts daily",
-          "Week 4: Notice your growing confidence in decision-making"
+          "Week 1: Complete business learning after singing 5+ days, catch exhaustion/escape pattern 3+ times and choose action instead, reduce sleep escape to 2.5 hours daily average, reframe 'no talent' to 'fast learner' evidence once daily",
+          "Week 2: Complete business learning after singing 7 days, catch and redirect exhaustion 6+ times, reduce sleep to 2 hours daily average, practice 3-second pause before speaking 5+ times, connect with one person in business you admire",
+          "Week 3: Maintain daily business learning, catch and redirect exhaustion 10+ times, reduce sleep to 1.5-2 hours average, make 4+ conscious decisions from optimistic body state, identify and take action on one avoided business task",
+          "Week 4: Solidify daily business learning habit, redirect exhaustion into action 12+ times, stabilize sleep at 1.5 hours max, demonstrate consistent decision-making regardless of body state, accumulate 30+ hours total business learning, prepare 6-month business learning roadmap"
         ]
       },
       reminder_quote: "Trust yourself - you know more than you think you do",
