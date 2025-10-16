@@ -568,12 +568,37 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 
                 <div class="content-block">
                     <div class="block-title">What It's Protecting You From</div>
-                    <div class="block-content">${planData.sabotage_analysis.protective_function || 'The underlying fear driving your patterns'}</div>
-          </div>
+                    <div class="block-content">${planData.sabotage_analysis.what_its_protecting_from || 'The underlying fear driving your patterns'}</div>
+                </div>
                 
                 <div class="content-block">
                     <div class="block-title">Your Success Proof</div>
                     <div class="block-content">${planData.sabotage_analysis.success_proof || 'Evidence that you can overcome this pattern'}</div>
+                </div>
+                
+                <div class="content-block">
+                    <div class="block-title">Your Anchor</div>
+                    <div class="block-content">${planData.sabotage_analysis.anchor || 'Your daily anchor practice'}</div>
+                </div>
+                
+                <div class="content-block">
+                    <div class="block-title">Go To Patterns</div>
+                    <div class="block-content">${planData.sabotage_analysis.go_to_patterns || 'Your automatic response patterns'}</div>
+                </div>
+                
+                <div class="content-block">
+                    <div class="block-title">Escape Behavior</div>
+                    <div class="block-content">${planData.sabotage_analysis.escape_behavior || 'Your primary escape mechanism'}</div>
+                </div>
+                
+                <div class="content-block">
+                    <div class="block-title">How It Serves You</div>
+                    <div class="block-content">${planData.sabotage_analysis.how_it_serves_you || 'The function this pattern serves'}</div>
+                </div>
+                
+                <div class="content-block">
+                    <div class="block-title">Positive Behavior</div>
+                    <div class="block-content">${planData.sabotage_analysis.positive_behavior || 'The behavior you want to develop'}</div>
                 </div>
                 ` : ''}
             </div>
@@ -647,8 +672,15 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 <div class="metric-row">
                     <div class="metric-label">Regulation Capacity</div>
                     <div class="metric-value">${planData.nervous_system_assessment.regulation_capacity}</div>
-          </div>
-        ` : ''}
+                </div>
+                ` : ''}
+
+                ${planData.nervous_system_assessment.regulation_reality ? `
+                <div class="content-block">
+                    <div class="block-title">Regulation Reality</div>
+                    <div class="block-content">${planData.nervous_system_assessment.regulation_reality}</div>
+                </div>
+                ` : ''}
 
                 ${planData.nervous_system_assessment.observable_patterns ? `
                 <div class="content-block">
@@ -658,9 +690,9 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                             ? planData.nervous_system_assessment.observable_patterns.map((pattern: string) => `<p>${pattern}</p>`).join('')
                             : `<p>${planData.nervous_system_assessment.observable_patterns}</p>`
                         }
-            </div>
-          </div>
-        ` : ''}
+                    </div>
+                </div>
+                ` : ''}
                 ` : ''}
             </div>
             <div class="page-number">${7 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
@@ -675,19 +707,26 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 </div>
                 
                 ${planData.thirty_day_protocol ? `
-                ${planData.thirty_day_protocol.specific_action ? `
+                ${planData.thirty_day_protocol.seventy_two_hour_suggestion ? `
                 <div class="protocol-item">
                     <div class="protocol-timeline">72-Hour Suggestion</div>
-                    <div class="protocol-action">${planData.thirty_day_protocol.specific_action}</div>
-          </div>
-        ` : ''}
+                    <div class="protocol-action">${planData.thirty_day_protocol.seventy_two_hour_suggestion}</div>
+                </div>
+                ` : ''}
 
-                ${planData.thirty_day_protocol.weekly_practice ? `
+                ${planData.thirty_day_protocol.weekly_recommendation ? `
                 <div class="protocol-item">
                     <div class="protocol-timeline">Weekly Recommendation</div>
-                    <div class="protocol-action">${planData.thirty_day_protocol.weekly_practice}</div>
-          </div>
-        ` : ''}
+                    <div class="protocol-action">${planData.thirty_day_protocol.weekly_recommendation}</div>
+                </div>
+                ` : ''}
+
+                ${planData.thirty_day_protocol.environmental_optimization ? `
+                <div class="protocol-item">
+                    <div class="protocol-timeline">Environmental Optimization</div>
+                    <div class="protocol-action">${planData.thirty_day_protocol.environmental_optimization}</div>
+                </div>
+                ` : ''}
 
                 ${planData.thirty_day_protocol.thirty_day_approach ? `
                 <div class="protocol-item">
@@ -695,10 +734,77 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                     <div class="protocol-action">${planData.thirty_day_protocol.thirty_day_approach}</div>
                 </div>
                 ` : ''}
+
+                ${planData.thirty_day_protocol.progress_markers ? `
+                <div class="content-block">
+                    <div class="block-title">Suggested Progress Markers</div>
+                    <div class="block-content">
+                        ${Array.isArray(planData.thirty_day_protocol.progress_markers) 
+                            ? planData.thirty_day_protocol.progress_markers.map((marker: string) => `<div class="reminder-item">${marker}</div>`).join('')
+                            : `<div class="reminder-item">${planData.thirty_day_protocol.progress_markers}</div>`
+                        }
+                    </div>
+                </div>
+                ` : ''}
+
+                ${planData.thirty_day_protocol.daily_actions ? `
+                <div class="content-block">
+                    <div class="block-title">Daily Actions</div>
+                    <div class="block-content">
+                        ${Array.isArray(planData.thirty_day_protocol.daily_actions) 
+                            ? planData.thirty_day_protocol.daily_actions.map((action: string) => `<div class="reminder-item">${action}</div>`).join('')
+                            : `<div class="reminder-item">${planData.thirty_day_protocol.daily_actions}</div>`
+                        }
+                    </div>
+                </div>
+                ` : ''}
+
+                ${planData.thirty_day_protocol.weekly_goals ? `
+                <div class="content-block">
+                    <div class="block-title">Weekly Goals</div>
+                    <div class="block-content">
+                        ${Array.isArray(planData.thirty_day_protocol.weekly_goals) 
+                            ? planData.thirty_day_protocol.weekly_goals.map((goal: string) => `<div class="reminder-item">${goal}</div>`).join('')
+                            : `<div class="reminder-item">${planData.thirty_day_protocol.weekly_goals}</div>`
+                        }
+                    </div>
+                </div>
+                ` : ''}
                 ` : ''}
             </div>
             <div class="page-number">${8 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
         </div>
+
+        <!-- IN THE MOMENT RESET PAGE -->
+        ${planData.in_the_moment_reset ? `
+        <div class="page">
+            <div class="page-content">
+                <div class="section-header">
+                    <div class="section-label">Reset Strategy</div>
+                    <div class="section-title">In The Moment<br>Reset</div>
+                </div>
+                
+                <div class="content-block">
+                    <div class="block-content">
+                        <p>${planData.in_the_moment_reset}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="page-number">${9 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
+        </div>
+        ` : ''}
+
+        <!-- REMINDER QUOTE PAGE -->
+        ${planData.reminder_quote ? `
+        <div class="page" style="display: flex; align-items: center; justify-content: center;">
+            <div class="page-content" style="text-align: center; max-width: 700px;">
+                <div class="pull-quote">
+                    <div class="pull-quote-text">"${planData.reminder_quote}"</div>
+                </div>
+            </div>
+            <div class="page-number">${10 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
+        </div>
+        ` : ''}
 
         <!-- BOTTOM LINE PAGE -->
         <div class="page bottom-line-page">
@@ -731,7 +837,97 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 <div class="reminder-item">You're not broken—you're context-dependent. Build better contexts</div>
                 `}
             </div>
-            <div class="page-number">${9 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
+            <div class="page-number">${11 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
+        </div>
+
+        <!-- BOOK RECOMMENDATIONS PAGE -->
+        ${planData.book_recommendations ? `
+        <div class="page">
+            <div class="page-content">
+                <div class="section-header">
+                    <div class="section-label">Resources</div>
+                    <div class="section-title">Book<br>Recommendations</div>
+                </div>
+                
+                ${Array.isArray(planData.book_recommendations) ? planData.book_recommendations.map((book: string) => `
+                <div class="reminder-item">${book}</div>
+                `).join('') : `
+                <div class="reminder-item">${planData.book_recommendations}</div>
+                `}
+            </div>
+            <div class="page-number">${12 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
+        </div>
+        ` : ''}
+
+        <!-- RESOURCES PAGE -->
+        ${planData.resources ? `
+        <div class="page">
+            <div class="page-content">
+                <div class="section-header">
+                    <div class="section-label">Resources</div>
+                    <div class="section-title">Additional<br>Resources</div>
+                </div>
+                
+                ${Array.isArray(planData.resources) ? planData.resources.map((resource: string) => `
+                <div class="reminder-item">${resource}</div>
+                `).join('') : `
+                <div class="reminder-item">${planData.resources}</div>
+                `}
+            </div>
+            <div class="page-number">${13 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
+        </div>
+        ` : ''}
+
+        <!-- REFLECTION PROMPTS PAGE -->
+        ${planData.reflection_prompts ? `
+        <div class="page">
+            <div class="page-content">
+                <div class="section-header">
+                    <div class="section-label">Reflection</div>
+                    <div class="section-title">Reflection<br>Prompts</div>
+                </div>
+                
+                ${Array.isArray(planData.reflection_prompts) ? planData.reflection_prompts.map((prompt: string) => `
+                <div class="reminder-item">${prompt}</div>
+                `).join('') : `
+                <div class="reminder-item">${planData.reflection_prompts}</div>
+                `}
+            </div>
+            <div class="page-number">${14 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
+        </div>
+        ` : ''}
+
+        <!-- NEXT STEPS PAGE -->
+        <div class="page">
+            <div class="page-content">
+                <div class="section-header">
+                    <div class="section-label">Moving Forward</div>
+                    <div class="section-title">Next Steps</div>
+                </div>
+                
+                <div class="content-block">
+                    <div class="block-title">6-Month Follow-Up Assessment Recommended</div>
+                    <div class="block-content">${planData.next_assessment?.six_month_followup || 'Personalized timeline and expected progress tracking'}</div>
+                </div>
+                
+                <div class="content-block">
+                    <div class="block-title">Monthly Check-In Options</div>
+                    <div class="block-content">${planData.next_assessment?.monthly_checkin || 'Monthly check-ins to track progress and adjust strategies as needed'}</div>
+                </div>
+                
+                <div class="content-block">
+                    <div class="block-title">How to Stay Connected</div>
+                    <div class="block-content">${planData.next_assessment?.stay_connected || 'Join our community and stay connected for ongoing support and guidance'}</div>
+                </div>
+                
+                <div class="content-block">
+                    <div class="block-title">Focus Areas for Next Phase</div>
+                    <div class="block-content">
+                        ${(planData.next_assessment?.focus_areas || ['Focus Area 1', 'Focus Area 2', 'Focus Area 3', 'Focus Area 4']).map(area => `<p>${area}</p>`).join('')}
+                    </div>
+                </div>
+            </div>
+            <div class="page-number">${15 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
         </div>
 
         <!-- FINAL PAGE -->
