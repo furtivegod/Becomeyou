@@ -594,10 +594,20 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           margin-bottom: 20px;
         }
 
+        /* REMINDER BOX PAGE */
+        .reminder-box-page {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
         /* BOTTOM LINE */
         .bottom-line-page {
           background: var(--deep-charcoal);
           color: var(--warm-white);
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
         .bottom-line-page h2 {
@@ -764,8 +774,8 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="profile-text">
               ${developmentProfile.split('. ').map(sentence => 
                 sentence.trim() ? `${sentence.trim()}${sentence.endsWith('.') ? '' : '.'}` : ''
-              ).join('<br><br>')}
-      </div>
+              ).join('<br>')}
+            </div>
       
             <div class="your-words-section">
               <div class="block-title">YOUR WORDS</div>
@@ -785,46 +795,52 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           
           <div class="sabotage-content">
             <div class="sabotage-section">
+              <div class="block-title">YOUR PROTECTIVE PATTERN</div>
               <div class="sabotage-text">
                 ${protectivePattern.split('. ').map(sentence => 
                   sentence.trim() ? `${sentence.trim()}${sentence.endsWith('.') ? '' : '.'}` : ''
-                ).join('<br><br>')}
+                ).join('<br>')}
               </div>
             </div>
             
             <div class="sabotage-section">
+              <div class="block-title">WHAT IT'S PROTECTING YOU FROM</div>
               <div class="sabotage-text">
                 ${whatItsProtectingFrom.split(';').map(item => 
                   item.trim() ? `${item.trim()}${item.endsWith('.') ? '' : '.'}` : ''
-                ).join('<br><br>')}
+                ).join('<br>')}
               </div>
             </div>
             
             <div class="sabotage-section">
+              <div class="block-title">HOW IT SERVES YOU</div>
               <div class="sabotage-text">
                 ${howItServesYou.split(';').map(item => 
                   item.trim() ? `${item.trim()}${item.endsWith('.') ? '' : '.'}` : ''
-                ).join('<br><br>')}
+                ).join('<br>')}
               </div>
             </div>
             
             <div class="sabotage-section">
+              <div class="block-title">YOUR SUCCESS PROOF</div>
               <div class="sabotage-text">
                 ${successProof.split('. ').map(sentence => 
                   sentence.trim() ? `${sentence.trim()}${sentence.endsWith('.') ? '' : '.'}` : ''
-                ).join('<br><br>')}
+                ).join('<br>')}
               </div>
             </div>
             
             <div class="sabotage-section">
+              <div class="block-title">GO TO PATTERNS</div>
               <div class="sabotage-text">
                 ${goToPatterns.split(';').map(item => 
                   item.trim() ? `${item.trim()}${item.endsWith('.') ? '' : '.'}` : ''
-                ).join('<br><br>')}
+                ).join('<br>')}
               </div>
             </div>
             
             <div class="sabotage-section">
+              <div class="block-title">YOUR ANCHOR</div>
               <div class="sabotage-text">
                 ${anchor}
               </div>
@@ -987,6 +1003,11 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="block-title">Observable Patterns</div>
             <div class="block-content">${nervousSystemAssessment.observable_patterns}</div>
             </div>
+            
+          <div class="content-block">
+            <div class="block-title">Regulation Reality</div>
+            <div class="block-content">${nervousSystemAssessment.regulation_reality}</div>
+            </div>
               </div>
             </div>
             
@@ -1012,6 +1033,32 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="protocol-timeline">30-Day Approach</div>
             <div class="protocol-action">${thirtyDayApproach}</div>
             </div>
+            
+          <div class="protocol-item">
+            <div class="protocol-timeline">Environmental Optimization</div>
+            <div class="protocol-action">${environmentalOptimization}</div>
+            </div>
+            
+          <div class="content-block">
+            <div class="block-title">Suggested Progress Markers</div>
+            <div class="block-content">
+              ${progressMarkers.map(marker => `<div class="reminder-item">${marker}</div>`).join('')}
+            </div>
+          </div>
+            
+          <div class="content-block">
+            <div class="block-title">Daily Actions</div>
+            <div class="block-content">
+              ${dailyActions.map(action => `<div class="reminder-item">${action}</div>`).join('')}
+            </div>
+          </div>
+            
+          <div class="content-block">
+            <div class="block-title">Weekly Goals</div>
+            <div class="block-content">
+              ${weeklyGoals.map(goal => `<div class="reminder-item">${goal}</div>`).join('')}
+            </div>
+          </div>
           </div>
       </div>
       
@@ -1020,18 +1067,18 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         <div class="page-content" style="text-align: center; max-width: 700px;">
           <h2>Bottom Line</h2>
           <p>${bottomLine}</p>
-            </div>
-          </div>
+        </div>
+      </div>
         
       <!-- PAGE 15: REMINDER BOX -->
-      <div class="page">
+      <div class="page reminder-box-page">
         <div class="page-content">
           <div class="pull-quote">
             <div class="pull-quote-text">"${reminderQuote}"</div>
             <div style="font-size: 11px; letter-spacing: 0.1em; color: #999;">Your truth, the only truth that matters</div>
-      </div>
-            </div>
           </div>
+        </div>
+      </div>
         
       <!-- PAGE 16: DEVELOPMENT REMINDERS -->
       <div class="page">
@@ -1072,6 +1119,16 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           <div class="content-block">
             <div class="block-title">6-Month Follow-Up Assessment Recommended</div>
             <div class="block-content">${planData.next_assessment?.six_month_followup || 'Personalized timeline and expected progress tracking'}</div>
+            </div>
+            
+          <div class="content-block">
+            <div class="block-title">Monthly Check-In Options</div>
+            <div class="block-content">${planData.next_assessment?.monthly_checkin || 'Monthly check-ins to track progress and adjust strategies as needed'}</div>
+            </div>
+            
+          <div class="content-block">
+            <div class="block-title">How to Stay Connected</div>
+            <div class="block-content">${planData.next_assessment?.stay_connected || 'Join our community and stay connected for ongoing support and guidance'}</div>
             </div>
             
           <div class="content-block">
