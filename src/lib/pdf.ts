@@ -1127,15 +1127,15 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             </div>
             
           <div class="content-block">
-            <div class="block-title">How to Stay Connected</div>
-            <div class="block-content">${planData.next_assessment?.stay_connected || 'Join our community and stay connected for ongoing support and guidance'}</div>
-            </div>
-            
-          <div class="content-block">
             <div class="block-title">Focus Areas for Next Phase</div>
             <div class="block-content">
               ${(planData.next_assessment?.focus_areas || ['Focus Area 1', 'Focus Area 2', 'Focus Area 3', 'Focus Area 4']).map(area => `<p>${area}</p>`).join('')}
               </div>
+            </div>
+            
+          <div class="content-block">
+            <div class="block-title">How to Stay Connected</div>
+            <div class="block-content">${planData.next_assessment?.stay_connected || 'Join our community and stay connected for ongoing support and guidance'}</div>
             </div>
             </div>
           </div>
