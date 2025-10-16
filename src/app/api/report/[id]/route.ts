@@ -923,7 +923,7 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 <div class="content-block">
                     <div class="block-title">Focus Areas for Next Phase</div>
                     <div class="block-content">
-                        ${(planData.next_assessment?.focus_areas || ['Focus Area 1', 'Focus Area 2', 'Focus Area 3', 'Focus Area 4']).map(area => `<p>${area}</p>`).join('')}
+                        ${(planData.next_assessment?.focus_areas || ['Focus Area 1', 'Focus Area 2', 'Focus Area 3', 'Focus Area 4']).map((area: string) => `<p>${area}</p>`).join('')}
                     </div>
                 </div>
             </div>
