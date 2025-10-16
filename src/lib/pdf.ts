@@ -505,7 +505,15 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
 
         /* CONTENT BLOCKS */
         .content-block {
-          margin: 40px 0;
+          margin: 30px 0;
+        }
+
+        .content-block:first-child {
+          margin-top: 0;
+        }
+
+        .content-block:last-child {
+          margin-bottom: 0;
         }
 
         .block-title {
@@ -521,6 +529,15 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           font-size: 13px;
           line-height: 1.8;
           font-weight: 300;
+        }
+
+        .block-content p {
+          margin-bottom: 12px;
+          text-align: justify;
+        }
+
+        .block-content p:last-child {
+          margin-bottom: 0;
         }
 
         /* DOMAIN HERO */
@@ -593,15 +610,6 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           color: rgba(255,255,255,0.85);
         }
 
-        /* PAGE NUMBER */
-        .page-number {
-          position: absolute;
-          bottom: 40px;
-          right: 60px;
-          font-size: 9px;
-          letter-spacing: 0.1em;
-          color: #999;
-        }
 
         .divider {
           width: 60px;
@@ -649,6 +657,39 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         .page-break {
           page-break-before: always;
         }
+
+        /* DEVELOPMENT PROFILE */
+        .development-profile-content {
+          margin-top: 40px;
+        }
+
+        .profile-text {
+          font-size: 14px;
+          line-height: 1.8;
+          margin-bottom: 50px;
+          text-align: left;
+        }
+
+        .profile-text p {
+          margin-bottom: 20px;
+          text-align: justify;
+        }
+
+        .your-words-section {
+          margin-top: 60px;
+          padding-top: 40px;
+          border-top: 1px solid rgba(201, 169, 110, 0.3);
+        }
+
+        .your-words-quote {
+          font-size: 16px;
+          font-style: italic;
+          line-height: 1.6;
+          color: var(--deep-charcoal);
+          font-family: 'Cormorant Garamond', serif;
+          text-align: center;
+          padding: 20px 0;
+        }
       </style>
     </head>
     <body>
@@ -683,7 +724,6 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             This assessment is not a diagnostic tool and does not replace professional mental health support. If you are experiencing crisis-level distress, please seek immediate professional care.
           </p>
         </div>
-        <div class="page-number">02</div>
       </div>
 
       <!-- PAGE 3: ASSESSMENT OVERVIEW -->
@@ -696,7 +736,6 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           
           <p style="font-size: 15px; line-height: 2;">${assessmentOverview}</p>
         </div>
-        <div class="page-number">03</div>
       </div>
 
       <!-- PAGE 4: DEVELOPMENT PROFILE -->
@@ -707,9 +746,19 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="section-title">Your Development<br>Profile</div>
           </div>
           
-          <p style="font-size: 15px; line-height: 2;">${developmentProfile}</p>
+          <div class="development-profile-content">
+            <div class="profile-text">
+              ${developmentProfile.split('. ').map(sentence => 
+                sentence.trim() ? `<p>${sentence.trim()}${sentence.endsWith('.') ? '' : '.'}</p>` : ''
+              ).join('')}
+            </div>
+            
+            <div class="your-words-section">
+              <div class="block-title">YOUR WORDS</div>
+              <div class="your-words-quote">"I wanna be a success business man, but I don't have talent."</div>
+            </div>
+          </div>
         </div>
-        <div class="page-number">04</div>
       </div>
 
       <!-- PAGE 5: PROTECTIVE PATTERN -->
@@ -721,15 +770,22 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           </div>
           
           <div class="content-block">
-            <div class="block-content">${protectivePattern}</div>
+            <div class="block-content">
+              ${protectivePattern.split('. ').map(sentence => 
+                sentence.trim() ? `<p>${sentence.trim()}${sentence.endsWith('.') ? '' : '.'}</p>` : ''
+              ).join('')}
+            </div>
           </div>
           
           <div class="content-block">
             <div class="block-title">What It's Protecting You From</div>
-            <div class="block-content">${whatItsProtectingFrom}</div>
+            <div class="block-content">
+              ${whatItsProtectingFrom.split(';').map(item => 
+                item.trim() ? `<p>${item.trim()}${item.endsWith('.') ? '' : '.'}</p>` : ''
+              ).join('')}
+            </div>
           </div>
         </div>
-        <div class="page-number">05</div>
       </div>
 
       <!-- PAGE 6: HOW IT SERVES YOU -->
@@ -741,27 +797,65 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           </div>
           
           <div class="content-block">
-            <div class="block-content">${howItServesYou}</div>
+            <div class="block-content">
+              ${howItServesYou.split(';').map(item => 
+                item.trim() ? `<p>${item.trim()}${item.endsWith('.') ? '' : '.'}</p>` : ''
+              ).join('')}
+            </div>
           </div>
           
           <div class="content-block">
             <div class="block-title">Your Success Proof</div>
-            <div class="block-content">${successProof}</div>
+            <div class="block-content">
+              ${successProof.split('. ').map(sentence => 
+                sentence.trim() ? `<p>${sentence.trim()}${sentence.endsWith('.') ? '' : '.'}</p>` : ''
+              ).join('')}
+            </div>
+          </div>
+          
+          <div class="content-block">
+            <div class="block-title">Go To Patterns</div>
+            <div class="block-content">
+              ${goToPatterns.split(';').map(item => 
+                item.trim() ? `<p>${item.trim()}${item.endsWith('.') ? '' : '.'}</p>` : ''
+              ).join('')}
+            </div>
+          </div>
+          
+          <div class="content-block">
+            <div class="block-title">Your Anchor</div>
+            <div class="block-content">
+              <p>${anchor}</p>
+            </div>
           </div>
         </div>
-        <div class="page-number">06</div>
       </div>
 
-      <!-- PAGE 7: DOMAIN DIVIDER -->
+      <!-- PAGE 7: IN THE MOMENT RESET -->
+      <div class="page">
+        <div class="page-content">
+          <div class="section-header">
+            <div class="section-label">Reset Strategy</div>
+            <div class="section-title">In The Moment<br>Reset</div>
+          </div>
+          
+          <div class="content-block">
+            <div class="block-content">
+              <p>${inTheMomentReset}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE 8: DOMAIN DIVIDER -->
       <div class="page" style="display: flex; align-items: center; justify-content: center;">
         <div style="text-align: center;">
           <div class="section-label">The Four Domains</div>
           <h2 style="font-size: 52px; margin-top: 40px;">Domain Breakdown</h2>
         </div>
-        <div class="page-number">07</div>
       </div>
 
-      <!-- PAGE 8: MIND -->
+      <!-- PAGE 9: MIND -->
       <div class="page">
         <div class="page-content">
           <h1 class="domain-hero">MIND</h1>
@@ -786,10 +880,9 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="block-content">${mindDomain.growth_opportunities}</div>
           </div>
         </div>
-        <div class="page-number">07</div>
       </div>
 
-      <!-- PAGE 8: BODY -->
+      <!-- PAGE 10: BODY -->
       <div class="page">
         <div class="page-content">
           <h1 class="domain-hero">BODY</h1>
@@ -814,10 +907,9 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="block-content">${bodyDomain.growth_opportunities}</div>
           </div>
         </div>
-        <div class="page-number">17</div>
       </div>
 
-      <!-- PAGE 9: SPIRIT -->
+      <!-- PAGE 11: SPIRIT -->
       <div class="page">
         <div class="page-content">
           <h1 class="domain-hero">SPIRIT &<br>RELATIONSHIPS</h1>
@@ -842,10 +934,9 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="block-content">${spiritDomain.growth_opportunities}</div>
           </div>
         </div>
-        <div class="page-number">17</div>
       </div>
 
-      <!-- PAGE 10: CONTRIBUTION -->
+      <!-- PAGE 12: CONTRIBUTION -->
       <div class="page">
         <div class="page-content">
           <h1 class="domain-hero">CONTRIBUTION</h1>
@@ -870,10 +961,9 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="block-content">${contributionDomain.growth_opportunities}</div>
           </div>
         </div>
-        <div class="page-number">17</div>
       </div>
 
-      <!-- PAGE 11: NERVOUS SYSTEM -->
+      <!-- PAGE 13: NERVOUS SYSTEM -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
@@ -896,10 +986,9 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="block-content">${nervousSystemAssessment.observable_patterns}</div>
           </div>
         </div>
-        <div class="page-number">17</div>
       </div>
 
-      <!-- PAGE 12: 30-DAY PROTOCOL -->
+      <!-- PAGE 14: 30-DAY PROTOCOL -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
@@ -922,10 +1011,9 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="protocol-action">${thirtyDayApproach}</div>
           </div>
         </div>
-        <div class="page-number">17</div>
       </div>
 
-      <!-- PAGE 13: BOTTOM LINE -->
+      <!-- PAGE 15: BOTTOM LINE -->
       <div class="page bottom-line-page">
         <div class="page-content" style="text-align: center; max-width: 700px;">
           <h2>Bottom Line</h2>
@@ -933,7 +1021,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         </div>
       </div>
 
-      <!-- PAGE 14: REMINDER BOX -->
+      <!-- PAGE 16: REMINDER BOX -->
       <div class="page">
         <div class="page-content">
           <div class="pull-quote">
@@ -941,10 +1029,9 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div style="font-size: 11px; letter-spacing: 0.1em; color: #999;">Your truth, the only truth that matters</div>
           </div>
         </div>
-        <div class="page-number">17</div>
       </div>
 
-      <!-- PAGE 15: DEVELOPMENT REMINDERS -->
+      <!-- PAGE 17: DEVELOPMENT REMINDERS -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
@@ -954,10 +1041,9 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           
           ${developmentReminders.map(reminder => `<div class="reminder-item">${reminder}</div>`).join('')}
         </div>
-        <div class="page-number">17</div>
       </div>
 
-      <!-- PAGE 16: BOOK RECOMMENDATIONS -->
+      <!-- PAGE 18: BOOK RECOMMENDATIONS -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
@@ -971,10 +1057,9 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             </div>
           `).join('')}
         </div>
-        <div class="page-number">17</div>
       </div>
 
-      <!-- PAGE 17: NEXT STEPS -->
+      <!-- PAGE 19: NEXT STEPS -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
@@ -994,7 +1079,6 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             </div>
           </div>
         </div>
-        <div class="page-number">17</div>
       </div>
 
       <!-- FINAL PAGE -->
