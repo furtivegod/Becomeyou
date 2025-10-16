@@ -382,7 +382,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           --deep-charcoal: #2A2A2A;
           --soft-gold: #C9A96E;
         }
-
+        
         body {
           font-family: 'Inter', -apple-system, sans-serif;
           font-size: 11pt;
@@ -392,7 +392,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           background: #f5f5f5;
           overflow-x: hidden;
         }
-
+        
         .page {
           min-height: 100vh;
           padding: 60px 50px;
@@ -502,7 +502,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           letter-spacing: -0.01em;
           line-height: 1.2;
         }
-
+        
         /* CONTENT BLOCKS */
         .content-block {
           margin: 30px 0;
@@ -584,7 +584,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           border-bottom: 1px solid rgba(201, 169, 110, 0.3);
           text-align: center;
         }
-
+        
         .pull-quote-text {
           font-family: 'Cormorant Garamond', serif;
           font-size: 24px;
@@ -653,11 +653,11 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           line-height: 1.7;
           font-weight: 300;
         }
-
+        
         .page-break {
           page-break-before: always;
         }
-
+        
         /* DEVELOPMENT PROFILE */
         .development-profile-content {
           margin-top: 40px;
@@ -668,11 +668,6 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           line-height: 1.8;
           margin-bottom: 50px;
           text-align: left;
-        }
-
-        .profile-text p {
-          margin-bottom: 20px;
-          text-align: justify;
         }
 
         .your-words-section {
@@ -690,6 +685,25 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           text-align: center;
           padding: 20px 0;
         }
+
+        /* SABOTAGE PATTERN ANALYSIS */
+        .sabotage-content {
+          margin-top: 40px;
+        }
+
+        .sabotage-section {
+          margin-bottom: 30px;
+        }
+
+        .sabotage-section:last-child {
+          margin-bottom: 0;
+        }
+
+        .sabotage-text {
+          font-size: 14px;
+          line-height: 1.8;
+          text-align: left;
+        }
       </style>
     </head>
     <body>
@@ -700,24 +714,24 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           <h1>YOUR FULL<br>YOU 3.0<br>SUMMARY</h1>
           <div class="client-name">${clientName.toUpperCase()}</div>
           <div class="cover-tagline">This is where<br>transformation begins</div>
+          </div>
         </div>
-      </div>
-
+        
       <!-- PAGE 2: TITLE -->
       <div class="page">
         <div class="page-content" style="text-align: center;">
           <div style="margin-bottom: 80px; font-size: 14px; letter-spacing: 8px; color: var(--soft-gold); font-weight: 300;">
             become / you
-          </div>
-          
+        </div>
+        
           <h2 style="margin-bottom: 60px;">YOU 3.0 PERSONAL<br>DEVELOPMENT ASSESSMENT</h2>
           
           <div style="font-size: 12px; line-height: 2.5; color: #666;">
             <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Client</span><br>${clientName}</p>
             <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Date</span><br>${new Date().toLocaleDateString()}</p>
             <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Type</span><br>Behavioral Optimization</p>
-          </div>
-          
+        </div>
+        
           <div class="divider"></div>
           
           <p style="font-size: 11px; font-style: italic; color: #999; max-width: 500px; margin: 0 auto;">
@@ -725,7 +739,7 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           </p>
         </div>
       </div>
-
+      
       <!-- PAGE 3: ASSESSMENT OVERVIEW -->
       <div class="page">
         <div class="page-content">
@@ -733,11 +747,11 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="section-label">Overview</div>
             <div class="section-title">Assessment Overview</div>
           </div>
-          
+        
           <p style="font-size: 15px; line-height: 2;">${assessmentOverview}</p>
         </div>
       </div>
-
+      
       <!-- PAGE 4: DEVELOPMENT PROFILE -->
       <div class="page">
         <div class="page-content">
@@ -745,117 +759,105 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="section-label">Your Profile</div>
             <div class="section-title">Your Development<br>Profile</div>
           </div>
-          
+        
           <div class="development-profile-content">
             <div class="profile-text">
               ${developmentProfile.split('. ').map(sentence => 
-                sentence.trim() ? `<p>${sentence.trim()}${sentence.endsWith('.') ? '' : '.'}</p>` : ''
-              ).join('')}
-            </div>
-            
+                sentence.trim() ? `${sentence.trim()}${sentence.endsWith('.') ? '' : '.'}` : ''
+              ).join('<br><br>')}
+      </div>
+      
             <div class="your-words-section">
               <div class="block-title">YOUR WORDS</div>
               <div class="your-words-quote">"I wanna be a success business man, but I don't have talent."</div>
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- PAGE 5: PROTECTIVE PATTERN -->
+            </div>
+            
+      <!-- PAGE 5: SABOTAGE PATTERN ANALYSIS -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Pattern Analysis</div>
-            <div class="section-title">Your Protective<br>Pattern</div>
+            <div class="section-title">Sabotage Pattern<br>Analysis</div>
           </div>
           
-          <div class="content-block">
-            <div class="block-content">
-              ${protectivePattern.split('. ').map(sentence => 
-                sentence.trim() ? `<p>${sentence.trim()}${sentence.endsWith('.') ? '' : '.'}</p>` : ''
-              ).join('')}
+          <div class="sabotage-content">
+            <div class="sabotage-section">
+              <div class="sabotage-text">
+                ${protectivePattern.split('. ').map(sentence => 
+                  sentence.trim() ? `${sentence.trim()}${sentence.endsWith('.') ? '' : '.'}` : ''
+                ).join('<br><br>')}
+              </div>
             </div>
-          </div>
-          
-          <div class="content-block">
-            <div class="block-title">What It's Protecting You From</div>
-            <div class="block-content">
-              ${whatItsProtectingFrom.split(';').map(item => 
-                item.trim() ? `<p>${item.trim()}${item.endsWith('.') ? '' : '.'}</p>` : ''
-              ).join('')}
+            
+            <div class="sabotage-section">
+              <div class="sabotage-text">
+                ${whatItsProtectingFrom.split(';').map(item => 
+                  item.trim() ? `${item.trim()}${item.endsWith('.') ? '' : '.'}` : ''
+                ).join('<br><br>')}
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- PAGE 6: HOW IT SERVES YOU -->
-      <div class="page">
-        <div class="page-content">
-          <div class="section-header">
-            <div class="section-label">Pattern Analysis</div>
-            <div class="section-title">How It Serves You</div>
-          </div>
-          
-          <div class="content-block">
-            <div class="block-content">
-              ${howItServesYou.split(';').map(item => 
-                item.trim() ? `<p>${item.trim()}${item.endsWith('.') ? '' : '.'}</p>` : ''
-              ).join('')}
+            
+            <div class="sabotage-section">
+              <div class="sabotage-text">
+                ${howItServesYou.split(';').map(item => 
+                  item.trim() ? `${item.trim()}${item.endsWith('.') ? '' : '.'}` : ''
+                ).join('<br><br>')}
+              </div>
             </div>
-          </div>
-          
-          <div class="content-block">
-            <div class="block-title">Your Success Proof</div>
-            <div class="block-content">
-              ${successProof.split('. ').map(sentence => 
-                sentence.trim() ? `<p>${sentence.trim()}${sentence.endsWith('.') ? '' : '.'}</p>` : ''
-              ).join('')}
+            
+            <div class="sabotage-section">
+              <div class="sabotage-text">
+                ${successProof.split('. ').map(sentence => 
+                  sentence.trim() ? `${sentence.trim()}${sentence.endsWith('.') ? '' : '.'}` : ''
+                ).join('<br><br>')}
+              </div>
             </div>
-          </div>
-          
-          <div class="content-block">
-            <div class="block-title">Go To Patterns</div>
-            <div class="block-content">
-              ${goToPatterns.split(';').map(item => 
-                item.trim() ? `<p>${item.trim()}${item.endsWith('.') ? '' : '.'}</p>` : ''
-              ).join('')}
+            
+            <div class="sabotage-section">
+              <div class="sabotage-text">
+                ${goToPatterns.split(';').map(item => 
+                  item.trim() ? `${item.trim()}${item.endsWith('.') ? '' : '.'}` : ''
+                ).join('<br><br>')}
+              </div>
             </div>
-          </div>
-          
-          <div class="content-block">
-            <div class="block-title">Your Anchor</div>
-            <div class="block-content">
-              <p>${anchor}</p>
+            
+            <div class="sabotage-section">
+              <div class="sabotage-text">
+                ${anchor}
+              </div>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- PAGE 7: IN THE MOMENT RESET -->
+            
+      <!-- PAGE 6: IN THE MOMENT RESET -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Reset Strategy</div>
             <div class="section-title">In The Moment<br>Reset</div>
-          </div>
-          
+            </div>
+            
           <div class="content-block">
             <div class="block-content">
               <p>${inTheMomentReset}</p>
             </div>
           </div>
-        </div>
-      </div>
-
-      <!-- PAGE 8: DOMAIN DIVIDER -->
+            </div>
+          </div>
+        
+      <!-- PAGE 7: DOMAIN DIVIDER -->
       <div class="page" style="display: flex; align-items: center; justify-content: center;">
         <div style="text-align: center;">
           <div class="section-label">The Four Domains</div>
           <h2 style="font-size: 52px; margin-top: 40px;">Domain Breakdown</h2>
         </div>
       </div>
-
-      <!-- PAGE 9: MIND -->
+      
+      <!-- PAGE 8: MIND -->
       <div class="page">
         <div class="page-content">
           <h1 class="domain-hero">MIND</h1>
@@ -863,26 +865,26 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           <div class="metric-row">
             <div class="metric-label">Current Level</div>
             <div class="metric-value">${mindDomain.current_level}</div>
-          </div>
-          
+            </div>
+            
           <div class="metric-row">
             <div class="metric-label">Current Phase</div>
             <div class="metric-value">${mindDomain.current_phase}</div>
-          </div>
-          
+            </div>
+            
           <div class="content-block">
             <div class="block-title">Key Strengths</div>
             <div class="block-content">${mindDomain.key_strengths}</div>
-          </div>
-          
+            </div>
+            
           <div class="content-block">
             <div class="block-title">Growth Opportunities</div>
             <div class="block-content">${mindDomain.growth_opportunities}</div>
+            </div>
           </div>
-        </div>
       </div>
-
-      <!-- PAGE 10: BODY -->
+      
+      <!-- PAGE 9: BODY -->
       <div class="page">
         <div class="page-content">
           <h1 class="domain-hero">BODY</h1>
@@ -890,26 +892,26 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           <div class="metric-row">
             <div class="metric-label">Current Level</div>
             <div class="metric-value">${bodyDomain.current_level}</div>
-          </div>
-          
+            </div>
+            
           <div class="metric-row">
             <div class="metric-label">Current Phase</div>
             <div class="metric-value">${bodyDomain.current_phase}</div>
-          </div>
-          
+            </div>
+            
           <div class="content-block">
             <div class="block-title">Key Strengths</div>
             <div class="block-content">${bodyDomain.key_strengths}</div>
-          </div>
-          
+            </div>
+            
           <div class="content-block">
             <div class="block-title">Growth Opportunities</div>
             <div class="block-content">${bodyDomain.growth_opportunities}</div>
+            </div>
           </div>
-        </div>
       </div>
-
-      <!-- PAGE 11: SPIRIT -->
+      
+      <!-- PAGE 10: SPIRIT -->
       <div class="page">
         <div class="page-content">
           <h1 class="domain-hero">SPIRIT &<br>RELATIONSHIPS</h1>
@@ -917,26 +919,26 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           <div class="metric-row">
             <div class="metric-label">Current Level</div>
             <div class="metric-value">${spiritDomain.current_level}</div>
-          </div>
-          
+            </div>
+            
           <div class="metric-row">
             <div class="metric-label">Current Phase</div>
             <div class="metric-value">${spiritDomain.current_phase}</div>
-          </div>
-          
+            </div>
+            
           <div class="content-block">
             <div class="block-title">Key Strengths</div>
             <div class="block-content">${spiritDomain.key_strengths}</div>
-          </div>
-          
+            </div>
+            
           <div class="content-block">
             <div class="block-title">Growth Opportunities</div>
             <div class="block-content">${spiritDomain.growth_opportunities}</div>
+            </div>
           </div>
-        </div>
       </div>
-
-      <!-- PAGE 12: CONTRIBUTION -->
+      
+      <!-- PAGE 11: CONTRIBUTION -->
       <div class="page">
         <div class="page-content">
           <h1 class="domain-hero">CONTRIBUTION</h1>
@@ -944,143 +946,143 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           <div class="metric-row">
             <div class="metric-label">Current Level</div>
             <div class="metric-value">${contributionDomain.current_level}</div>
-          </div>
-          
+            </div>
+            
           <div class="metric-row">
             <div class="metric-label">Current Phase</div>
             <div class="metric-value">${contributionDomain.current_phase}</div>
-          </div>
-          
+            </div>
+            
           <div class="content-block">
             <div class="block-title">Key Strengths</div>
             <div class="block-content">${contributionDomain.key_strengths}</div>
-          </div>
-          
+            </div>
+            
           <div class="content-block">
             <div class="block-title">Growth Opportunities</div>
             <div class="block-content">${contributionDomain.growth_opportunities}</div>
+            </div>
           </div>
-        </div>
       </div>
-
-      <!-- PAGE 13: NERVOUS SYSTEM -->
+      
+      <!-- PAGE 12: NERVOUS SYSTEM -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Foundation</div>
             <div class="section-title">Nervous System<br>Assessment</div>
-          </div>
-          
+            </div>
+            
           <div class="metric-row">
             <div class="metric-label">Primary State</div>
             <div class="metric-value">${nervousSystemAssessment.primary_state}</div>
-          </div>
-          
+            </div>
+            
           <div class="metric-row">
             <div class="metric-label">Regulation Capacity</div>
             <div class="metric-value">${nervousSystemAssessment.regulation_capacity}</div>
-          </div>
-          
+            </div>
+            
           <div class="content-block">
             <div class="block-title">Observable Patterns</div>
             <div class="block-content">${nervousSystemAssessment.observable_patterns}</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- PAGE 14: 30-DAY PROTOCOL -->
+            </div>
+              </div>
+            </div>
+            
+      <!-- PAGE 13: 30-DAY PROTOCOL -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Your Protocol</div>
             <div class="section-title">30-Day Growth<br>Protocol</div>
-          </div>
+              </div>
           
           <div class="protocol-item">
             <div class="protocol-timeline">72-Hour Suggestion</div>
             <div class="protocol-action">${seventyTwoHourSuggestion}</div>
-          </div>
-          
+            </div>
+            
           <div class="protocol-item">
             <div class="protocol-timeline">Weekly Recommendation</div>
             <div class="protocol-action">${weeklyRecommendation}</div>
-          </div>
+              </div>
           
           <div class="protocol-item">
             <div class="protocol-timeline">30-Day Approach</div>
             <div class="protocol-action">${thirtyDayApproach}</div>
+            </div>
           </div>
-        </div>
       </div>
-
-      <!-- PAGE 15: BOTTOM LINE -->
+      
+      <!-- PAGE 14: BOTTOM LINE -->
       <div class="page bottom-line-page">
         <div class="page-content" style="text-align: center; max-width: 700px;">
           <h2>Bottom Line</h2>
           <p>${bottomLine}</p>
-        </div>
-      </div>
-
-      <!-- PAGE 16: REMINDER BOX -->
+            </div>
+          </div>
+        
+      <!-- PAGE 15: REMINDER BOX -->
       <div class="page">
         <div class="page-content">
           <div class="pull-quote">
             <div class="pull-quote-text">"${reminderQuote}"</div>
             <div style="font-size: 11px; letter-spacing: 0.1em; color: #999;">Your truth, the only truth that matters</div>
-          </div>
-        </div>
       </div>
-
-      <!-- PAGE 17: DEVELOPMENT REMINDERS -->
+            </div>
+          </div>
+        
+      <!-- PAGE 16: DEVELOPMENT REMINDERS -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Reminders</div>
             <div class="section-title">Development<br>Reminders</div>
-          </div>
-          
-          ${developmentReminders.map(reminder => `<div class="reminder-item">${reminder}</div>`).join('')}
-        </div>
       </div>
-
-      <!-- PAGE 18: BOOK RECOMMENDATIONS -->
+      
+          ${developmentReminders.map(reminder => `<div class="reminder-item">${reminder}</div>`).join('')}
+            </div>
+          </div>
+        
+      <!-- PAGE 17: BOOK RECOMMENDATIONS -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Recommended Reading</div>
             <div class="section-title">Book<br>Recommendations</div>
-          </div>
-          
+      </div>
+      
           ${bookRecommendations.map((book, index) => `
             <div class="content-block">
               <div class="block-title">${index + 1}. ${book}</div>
             </div>
           `).join('')}
-        </div>
+          </div>
       </div>
-
-      <!-- PAGE 19: NEXT STEPS -->
+      
+      <!-- PAGE 18: NEXT STEPS -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Moving Forward</div>
             <div class="section-title">Next Steps</div>
-          </div>
-          
+            </div>
+            
           <div class="content-block">
             <div class="block-title">6-Month Follow-Up Assessment Recommended</div>
             <div class="block-content">${planData.next_assessment?.six_month_followup || 'Personalized timeline and expected progress tracking'}</div>
-          </div>
-          
+            </div>
+            
           <div class="content-block">
             <div class="block-title">Focus Areas for Next Phase</div>
             <div class="block-content">
               ${(planData.next_assessment?.focus_areas || ['Focus Area 1', 'Focus Area 2', 'Focus Area 3', 'Focus Area 4']).map(area => `<p>${area}</p>`).join('')}
+              </div>
+            </div>
             </div>
           </div>
-        </div>
-      </div>
-
+        
       <!-- FINAL PAGE -->
       <div class="page" style="display: flex; align-items: center; justify-content: center;">
         <div style="background: var(--cream); padding: 60px; text-align: center; max-width: 600px; border-left: 2px solid var(--soft-gold);">
