@@ -605,17 +605,36 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
             <div class="page-number">05</div>
         </div>
 
-        <!-- PAGE 6: DOMAIN DIVIDER -->
+        <!-- IN THE MOMENT RESET PAGE -->
+        ${planData.in_the_moment_reset ? `
+        <div class="page">
+            <div class="page-content">
+                <div class="section-header">
+                    <div class="section-label">Reset Strategy</div>
+                    <div class="section-title">In The Moment<br>Reset</div>
+                </div>
+                
+                <div class="content-block">
+                    <div class="block-content">
+                        <p>${planData.in_the_moment_reset}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="page-number">06</div>
+        </div>
+        ` : ''}
+
+        <!-- PAGE 7: DOMAIN DIVIDER -->
         <div class="page" style="display: flex; align-items: center; justify-content: center;">
             <div style="text-align: center;">
                 <div class="section-label">The Four Domains</div>
                 <h2 style="font-size: 52px; margin-top: 40px;">Domain Breakdown</h2>
             </div>
-            <div class="page-number">06</div>
+            <div class="page-number">07</div>
         </div>
 
         ${planData.domain_breakdown ? Object.entries(planData.domain_breakdown).map(([domain, data]: [string, any], index: number) => `
-        <!-- PAGE ${7 + index}: ${domain.toUpperCase()} -->
+        <!-- PAGE ${8 + index}: ${domain.toUpperCase()} -->
         <div class="page">
             <div class="page-content">
                 <h1 class="domain-hero">${domain.toUpperCase()}</h1>
@@ -648,7 +667,7 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 </div>
                 ` : ''}
             </div>
-            <div class="page-number">${7 + index}</div>
+            <div class="page-number">${8 + index}</div>
         </div>
         `).join('') : ''}
 
@@ -695,7 +714,7 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 ` : ''}
                 ` : ''}
             </div>
-            <div class="page-number">${7 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
+            <div class="page-number">${8 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
         </div>
 
         <!-- 30-DAY PROTOCOL PAGE -->
@@ -711,8 +730,8 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 <div class="protocol-item">
                     <div class="protocol-timeline">72-Hour Suggestion</div>
                     <div class="protocol-action">${planData.thirty_day_protocol.seventy_two_hour_suggestion}</div>
-                </div>
-                ` : ''}
+          </div>
+        ` : ''}
 
                 ${planData.thirty_day_protocol.weekly_recommendation ? `
                 <div class="protocol-item">
@@ -725,8 +744,8 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 <div class="protocol-item">
                     <div class="protocol-timeline">Environmental Optimization</div>
                     <div class="protocol-action">${planData.thirty_day_protocol.environmental_optimization}</div>
-                </div>
-                ` : ''}
+          </div>
+        ` : ''}
 
                 ${planData.thirty_day_protocol.thirty_day_approach ? `
                 <div class="protocol-item">
@@ -772,27 +791,9 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 ` : ''}
                 ` : ''}
             </div>
-            <div class="page-number">${8 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
-        </div>
-
-        <!-- IN THE MOMENT RESET PAGE -->
-        ${planData.in_the_moment_reset ? `
-        <div class="page">
-            <div class="page-content">
-                <div class="section-header">
-                    <div class="section-label">Reset Strategy</div>
-                    <div class="section-title">In The Moment<br>Reset</div>
-                </div>
-                
-                <div class="content-block">
-                    <div class="block-content">
-                        <p>${planData.in_the_moment_reset}</p>
-                    </div>
-                </div>
-            </div>
             <div class="page-number">${9 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
         </div>
-        ` : ''}
+
 
         <!-- REMINDER QUOTE PAGE -->
         ${planData.reminder_quote ? `
