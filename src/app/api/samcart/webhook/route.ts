@@ -44,10 +44,11 @@ export async function POST(request: NextRequest) {
     const customerEmail = samcartData.customer?.email
     const orderId = samcartData.order?.id
     const status = samcartData.products?.[0]?.status || 'completed' // Get status from products array
+    const customerFirstName = samcartData.customer?.first_name
     const customerName = samcartData.customer?.first_name && samcartData.customer?.last_name ? 
                         `${samcartData.customer.first_name} ${samcartData.customer.last_name}` : null
     
-    console.log('Extracted data:', { customerEmail, orderId, status, customerName })
+    console.log('Extracted data:', { customerEmail, orderId, status, customerFirstName, customerName })
     
     // Only process successful orders (SamCart uses "Charged" status)
     if (status !== 'Charged') {
@@ -195,8 +196,8 @@ export async function POST(request: NextRequest) {
     let emailError: any = null
     
     try {
-      console.log('Sending magic link email to:', customerEmail)
-      await sendMagicLink(customerEmail, sessionId)
+      console.log('Sending magic link email to:', customerEmail, 'with firstName:', customerFirstName)
+      await sendMagicLink(customerEmail, sessionId, customerFirstName)
       emailed = true
       console.log('Magic link email sent successfully')
     } catch (emailErr) {

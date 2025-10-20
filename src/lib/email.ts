@@ -4,8 +4,8 @@ import jwt from 'jsonwebtoken'
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 
-export async function sendMagicLink(email: string, sessionId: string) {
-  console.log('Email service called with:', { email, sessionId })
+export async function sendMagicLink(email: string, sessionId: string, firstName?: string) {
+  console.log('Email service called with:', { email, sessionId, firstName })
   
   if (!process.env.RESEND_API_KEY) {
     throw new Error('RESEND_API_KEY not configured')
@@ -19,11 +19,13 @@ export async function sendMagicLink(email: string, sessionId: string) {
     throw new Error('NEXT_PUBLIC_APP_URL not configured')
   }
 
-  // Extract first name from email - better logic
-  const emailPrefix = email.split('@')[0]
-  const firstName = emailPrefix.includes('.') 
-    ? emailPrefix.split('.')[0].charAt(0).toUpperCase() + emailPrefix.split('.')[0].slice(1)
-    : emailPrefix.charAt(0).toUpperCase() + emailPrefix.slice(1)
+  // Use provided firstName or extract from email as fallback
+  const displayName = firstName || (() => {
+    const emailPrefix = email.split('@')[0]
+    return emailPrefix.includes('.') 
+      ? emailPrefix.split('.')[0].charAt(0).toUpperCase() + emailPrefix.split('.')[0].slice(1)
+      : emailPrefix.charAt(0).toUpperCase() + emailPrefix.slice(1)
+  })()
 
   try {
     console.log('Sending email via Resend...')
@@ -96,7 +98,7 @@ export async function sendMagicLink(email: string, sessionId: string) {
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <h1 style="margin: 0; font-size: 32px; font-weight: 300; color: #111A19; letter-spacing: -0.5px; line-height: 1.2;">
-                                        <span style="color: #284138;">${firstName}</span>,
+                                        <span style="color: #284138;">${displayName}</span>,
                                     </h1>
                                 </td>
                             </tr>
