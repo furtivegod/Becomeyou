@@ -19,100 +19,159 @@ export async function sendMagicLink(email: string, sessionId: string) {
     throw new Error('NEXT_PUBLIC_APP_URL not configured')
   }
 
+  // Extract first name from email
+  const firstName = email.split('@')[0].split('.').map(part => 
+    part.charAt(0).toUpperCase() + part.slice(1)
+  ).join(' ')
+
   try {
     console.log('Sending email via Resend...')
     const { data, error } = await resend.emails.send({
       from: 'Become You <noreply@becomeyou.ai>',
       to: [email],
-      subject: 'Your You 3.0 Assessment Link – Ready to Begin',
+      subject: 'Your You 3.0 Assessment Is Ready',
       html: `
         <!DOCTYPE html>
-        <html>
+        <html lang="en">
         <head>
-          <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Your You 3.0 Assessment Is Ready</title>
+            <style>
+                @media only screen and (min-width: 600px) {
+                    .cta-button:hover {
+                        background: #1f3329 !important;
+                    }
+                }
+                
+                @media only screen and (max-width: 600px) {
+                    .email-container {
+                        width: 100% !important;
+                    }
+                    
+                    h1 {
+                        font-size: 24px !important;
+                    }
+                    
+                    .cta-button {
+                        padding: 14px 32px !important;
+                        font-size: 15px !important;
+                    }
+                    
+                    .instruction-text {
+                        font-size: 13px !important;
+                        padding: 0 30px !important;
+                    }
+                }
+            </style>
         </head>
-        <body>
-        <div style="font-family: 'Inter', sans-serif; max-width: 600px; margin: 0 auto; background-color: #f0e29d;">
-          <!-- Header Section -->
-          <div style="background-color: white; padding: 40px 20px 30px 20px; text-align: center;">
-            <!-- Logo -->
-            <div style="margin-bottom: 40px;">
-              <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 100px; width: auto;" />
-            </div>
-            <!-- Green Line -->
-            <div style="height: 3px; background-color: #4A5D23; width: 200px; margin: 0 auto;"></div>
-          </div>
-          
-          <!-- Body Section -->
-          <div style="background-color: #f0e29d; padding: 40px 20px;">
-            <!-- Main Headline -->
-            <h1 style="color: #4A5D23; text-align: center; font-size: 32px; font-weight: bold; margin-bottom: 30px; font-family: 'Cormorant Garamond', serif;">
-              Your transformation starts now.
-            </h1>
+        <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif; background-color: #f5f5f5;">
             
-            <!-- Main Content -->
-            <p style="font-size: 18px; color: #1A1A1A; text-align: center; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
-              Your personalized You 3.0 assessment is ready. Over the next few minutes, you're going to 
-              uncover the exact patterns that have been keeping you stuck—and get a protocol built 
-              specifically for how your brain works.
-            </p>
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f5; padding: 40px 20px;">
+                <tr>
+                    <td align="center">
+                        
+                        <!-- Main Container -->
+                        <table role="presentation" width="600" cellpadding="0" cellspacing="0" class="email-container" style="background-color: #FDFCF9; border-radius: 8px; overflow: hidden;">
+                            
+                            <!-- Spacer -->
+                            <tr>
+                                <td height="60"></td>
+                            </tr>
+                            
+                            <!-- Icon (Optional - the slash) -->
+                            <tr>
+                                <td align="center" style="padding: 0 40px;">
+                                    <div style="font-size: 32px; color: #F8D794; font-style: italic; font-weight: 200;">/</div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Spacer -->
+                            <tr>
+                                <td height="40"></td>
+                            </tr>
+                            
+                            <!-- Greeting -->
+                            <tr>
+                                <td align="center" style="padding: 0 40px;">
+                                    <h1 style="margin: 0; font-size: 32px; font-weight: 300; color: #111A19; letter-spacing: -0.5px; line-height: 1.2;">
+                                        <span style="color: #284138;">${firstName}</span>,
+                                    </h1>
+                                </td>
+                            </tr>
+                            
+                            <!-- Spacer -->
+                            <tr>
+                                <td height="20"></td>
+                            </tr>
+                            
+                            <!-- Main Message -->
+                            <tr>
+                                <td align="center" style="padding: 0 40px;">
+                                    <p style="margin: 0; font-size: 18px; font-weight: 300; color: #111A19; line-height: 1.6;">
+                                        Your assessment is ready.
+                                    </p>
+                                </td>
+                            </tr>
+                            
+                            <!-- Spacer -->
+                            <tr>
+                                <td height="50"></td>
+                            </tr>
+                            
+                            <!-- CTA Button -->
+                            <tr>
+                                <td align="center" style="padding: 0 40px;">
+                                    <a href="${process.env.NEXT_PUBLIC_APP_URL}/assessment/${sessionId}?token=${jwt.sign({ sessionId, email }, process.env.JWT_SECRET!, { expiresIn: '7d' })}" class="cta-button" style="display: inline-block; background: #284138; color: #FFFFFF; text-decoration: none; padding: 16px 48px; border-radius: 8px; font-size: 16px; font-weight: 500; letter-spacing: 0.3px; transition: background 0.2s ease;">
+                                        Begin Your Assessment →
+                                    </a>
+                                </td>
+                            </tr>
+                            
+                            <!-- Spacer -->
+                            <tr>
+                                <td height="40"></td>
+                            </tr>
+                            
+                            <!-- Instructions -->
+                            <tr>
+                                <td align="center" class="instruction-text" style="padding: 0 60px;">
+                                    <p style="margin: 0; font-size: 14px; font-weight: 300; color: #80907B; line-height: 1.8;">
+                                        Takes 15 minutes. No rush.<br>
+                                        Find a quiet space where you can be honest.
+                                    </p>
+                                </td>
+                            </tr>
+                            
+                            <!-- Spacer -->
+                            <tr>
+                                <td height="60"></td>
+                            </tr>
+                            
+                        </table>
+                        
+                        <!-- Footer -->
+                        <table role="presentation" width="600" cellpadding="0" cellspacing="0" class="email-container">
+                            <tr>
+                                <td height="30"></td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="padding: 0 40px;">
+                                    <p style="margin: 0; font-size: 12px; color: #999; line-height: 1.6;">
+                                        Questions? Just reply to this email.<br>
+                                        We're here to help.
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="40"></td>
+                            </tr>
+                        </table>
+                        
+                    </td>
+                </tr>
+            </table>
             
-            <!-- Before You Begin -->
-            <div style="margin: 30px 0;">
-              <h2 style="color: #4A5D23; font-size: 20px; margin-bottom: 15px; font-family: 'Cormorant Garamond', serif;">Before You Begin:</h2>
-              <ul style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 0; padding-left: 20px; font-family: 'Inter', sans-serif;">
-                <li style="margin-bottom: 8px;">Find a quiet space where you can be honest and reflective</li>
-                <li style="margin-bottom: 8px;">Set aside 20-35 uninterrupted minutes (there's no time limit—you can take breaks)</li>
-                <li style="margin-bottom: 8px;">Answer honestly – the more specific you are, the more precise your protocol will be</li>
-              </ul>
-            </div>
-            
-            <!-- CTA Button -->
-            <div style="text-align: center; margin: 40px 0;">
-              <a href="${process.env.NEXT_PUBLIC_APP_URL}/assessment/${sessionId}?token=${jwt.sign({ sessionId, email }, process.env.JWT_SECRET!, { expiresIn: '7d' })}" 
-                 style="background-color: #4A5D23; color: white; padding: 18px 36px; text-decoration: none; border-radius: 8px; font-size: 18px; font-weight: bold; display: inline-block; font-family: 'Inter', sans-serif;">
-                Start Your Assessment
-              </a>
-            </div>
-            
-            <!-- What to Expect -->
-            <div style="margin: 30px 0;">
-              <h2 style="color: #4A5D23; font-size: 20px; margin-bottom: 15px; font-family: 'Cormorant Garamond', serif;">What to Expect:</h2>
-              <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin-bottom: 15px; font-family: 'Inter', sans-serif;">
-                The assessment uses adaptive AI to ask follow-up questions based on your answers. This isn't a 
-                generic quiz—it's a conversation designed to map YOUR specific sabotage patterns, triggers, and 
-                protective strategies.
-              </p>
-              <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin-bottom: 15px; font-family: 'Inter', sans-serif;">
-                Some questions will make you stop and think. That's intentional.
-              </p>
-              <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin-bottom: 15px; font-family: 'Inter', sans-serif;">
-                <strong>Your responses are completely private.</strong> No human will see your answers. Your data is 
-                automatically deleted after your personalized protocol is generated.
-              </p>
-              <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; font-family: 'Inter', sans-serif;">
-                <strong>Immediately after completion</strong>, your 30-Day Transformation Protocol will be 
-                delivered to this email address. Save it. Reference it. Use it.
-              </p>
-            </div>
-            
-            <!-- Disclaimer -->
-            <div style="margin: 30px 0;">
-              <p style="color: #666; font-size: 14px; margin: 0; text-align: center; font-family: 'Inter', sans-serif;">
-                <strong>Disclaimer:</strong> This assessment is not a diagnostic tool and does not replace 
-                professional mental health support. If you are experiencing crisis-level distress, please seek 
-                immediate professional care.
-              </p>
-            </div>
-          </div>
-          
-          <!-- Footer -->
-          <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
-            <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-              Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #4A5D23; text-decoration: underline;">support@becomeyou.ai</a>
-            </p>
-          </div>
-        </div>
         </body>
         </html>
       `
