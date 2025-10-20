@@ -519,7 +519,7 @@ export default function ChatInterface({
                         <img
                           src="/brain.png"
                           alt="AI Brain"
-                          className="w-6 h-6 object-contain filter brightness-0 invert"
+                          className="w-5 h-5 object-contain filter brightness-0 invert"
                           onError={(e) => {
                             console.error(
                               "Brain icon failed to load, using fallback"
@@ -570,7 +570,7 @@ export default function ChatInterface({
                       <img
                         src="/brain.png"
                         alt="AI Brain Thinking"
-                        className="w-6 h-6 object-contain filter brightness-0 invert"
+                        className="w-5 h-5 object-contain filter brightness-0 invert"
                         onError={(e) => {
                           console.error(
                             "Brain icon failed to load, using fallback"
