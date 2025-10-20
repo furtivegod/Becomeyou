@@ -511,12 +511,12 @@ export default function ChatInterface({
                   {message.role === "assistant" ? (
                     // AI Message - Green Circle Avatar (No Brain Icon)
                     <div className="flex gap-4 mb-8">
-                      {/* AI Avatar - Green Circle Only */}
+                      {/* AI Avatar - Green Circle with White Bullet */}
                       <div
                         className="w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center"
                         style={{ backgroundColor: "#4A5D23" }}
                       >
-                        {/* Empty - no icon for regular messages */}
+                        <span className="text-white text-lg">●</span>
                       </div>
                       {/* AI Content - Fixed formatting with bold support */}
                       <div className="flex-1 text-base leading-[1.7] text-[#1F2937] font-normal tracking-[-0.01em]">
