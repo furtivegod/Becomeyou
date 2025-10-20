@@ -698,8 +698,8 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 <div class="content-block">
                     <div class="block-title">Regulation Reality</div>
                     <div class="block-content">${planData.nervous_system_assessment.regulation_reality}</div>
-                </div>
-                ` : ''}
+          </div>
+        ` : ''}
 
                 ${planData.nervous_system_assessment.observable_patterns ? `
                 <div class="content-block">
