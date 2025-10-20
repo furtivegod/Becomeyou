@@ -533,10 +533,10 @@ export default function ChatInterface({
                             if (fallback) fallback.style.display = "block";
                           }}
                         />
-                        {/* Fallback brain emoji */}
+                        {/* Fallback brain emoji - always visible as backup */}
                         <span
                           className="brain-fallback text-white text-lg"
-                          style={{ display: "none" }}
+                          style={{ display: "block" }}
                         >
                           🧠
                         </span>
@@ -584,10 +584,10 @@ export default function ChatInterface({
                           if (fallback) fallback.style.display = "block";
                         }}
                       />
-                      {/* Fallback brain emoji */}
+                      {/* Fallback brain emoji - always visible as backup */}
                       <span
                         className="brain-fallback text-white text-lg"
-                        style={{ display: "none" }}
+                        style={{ display: "block" }}
                       >
                         🧠
                       </span>
