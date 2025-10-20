@@ -19,10 +19,11 @@ export async function sendMagicLink(email: string, sessionId: string) {
     throw new Error('NEXT_PUBLIC_APP_URL not configured')
   }
 
-  // Extract first name from email
-  const firstName = email.split('@')[0].split('.').map(part => 
-    part.charAt(0).toUpperCase() + part.slice(1)
-  ).join(' ')
+  // Extract first name from email - better logic
+  const emailPrefix = email.split('@')[0]
+  const firstName = emailPrefix.includes('.') 
+    ? emailPrefix.split('.')[0].charAt(0).toUpperCase() + emailPrefix.split('.')[0].slice(1)
+    : emailPrefix.charAt(0).toUpperCase() + emailPrefix.slice(1)
 
   try {
     console.log('Sending email via Resend...')
@@ -79,10 +80,10 @@ export async function sendMagicLink(email: string, sessionId: string) {
                                 <td height="60"></td>
                             </tr>
                             
-                            <!-- Icon (Optional - the slash) -->
+                            <!-- Logo -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <div style="font-size: 32px; color: #F8D794; font-style: italic; font-weight: 200;">/</div>
+                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 60px; width: auto;" />
                                 </td>
                             </tr>
                             
