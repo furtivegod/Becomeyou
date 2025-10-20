@@ -1,8 +1,8 @@
-import Anthropic from "@anthropic-ai/sdk"
+import Anthropic from "@anthropic-ai/sdk";
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY!,
-})
+});
 
 export const SYSTEM_PROMPT = `You 3.0 Behavioral Optimization Assessment 
 - Master Prompt V4.2
@@ -211,7 +211,7 @@ LANGUAGE-MIRRORING PROTOCOL
 • Always reflect client's vocabulary and metaphors back to them
 • If they use casual, simple words, keep language simple. If they use reflective or abstract 
 language, elevate tone accordingly
-• Quote at least one exact phrase from the client in each domain summary
+• ONLY use exact quotes that the client actually said - never make up or generate quotes
 • When reframing, pair their language with developmental insight:
 ◦ Client: "I always procrastinate."
 ◦ Report: "You shared, 'I always procrastinate.' What looks like procrastination is 
@@ -227,7 +227,7 @@ ground"
 • Keep tone relational: speak as if you're sitting across from them, not diagnosing them
 
 IMPLEMENTATION NOTES
-• Always recall client's exact answers to strengthen trust
+• Always recall client's exact answers to strengthen trust - NEVER fabricate or invent quotes
 • Recommendations must tie directly to what they shared
 • Tone: direct, clear, supportive, never sugar-coated
 • Show connection between existing strengths and growth areas using natural language
@@ -236,48 +236,58 @@ IMPLEMENTATION NOTES
 • Deliver one report only. Practitioner logic stays hidden but informs structure
 • CRITICAL: After the final question, immediately generate the complete report 
 artifact without waiting for client confirmation or expressing uncertainty about 
-timing`
+timing`;
 
-export async function generateClaudeResponse(messages: Array<{role: "user" | "assistant", content: string}>, currentPhase?: string, questionCount?: number) {
+export async function generateClaudeResponse(
+  messages: Array<{ role: "user" | "assistant"; content: string }>,
+  currentPhase?: string,
+  questionCount?: number
+) {
   try {
-    console.log('Calling Claude API with', messages.length, 'messages')
-    
+    console.log("Calling Claude API with", messages.length, "messages");
+
     if (!process.env.ANTHROPIC_API_KEY) {
-      throw new Error('ANTHROPIC_API_KEY not configured')
+      throw new Error("ANTHROPIC_API_KEY not configured");
     }
 
     const response = await anthropic.messages.create({
       model: "claude-sonnet-4-5-20250929",
       max_tokens: 400,
       system: SYSTEM_PROMPT,
-      messages: messages
-    })
+      messages: messages,
+    });
 
-    const content = (response.content[0] as { text: string }).text
-    console.log('Claude response received:', content.substring(0, 100) + '...')
-    return content
+    const content = (response.content[0] as { text: string }).text;
+    console.log("Claude response received:", content.substring(0, 100) + "...");
+    return content;
   } catch (error) {
-    console.error("Claude API error:", error)
-    throw new Error(`Failed to generate response: ${error instanceof Error ? error.message : String(error)}`)
+    console.error("Claude API error:", error);
+    throw new Error(
+      `Failed to generate response: ${error instanceof Error ? error.message : String(error)}`
+    );
   }
 }
 
 export async function generateStructuredPlan(conversationHistory: string) {
   try {
-    console.log('Generating You 3.0 assessment report from conversation')
-    console.log('Conversation length:', conversationHistory.length)
-    
+    console.log("Generating You 3.0 assessment report from conversation");
+    console.log("Conversation length:", conversationHistory.length);
+
     if (!process.env.ANTHROPIC_API_KEY) {
-      throw new Error('ANTHROPIC_API_KEY not configured')
+      throw new Error("ANTHROPIC_API_KEY not configured");
     }
 
     // Truncate conversation if too long to prevent timeouts
-    const maxLength = 6000
-    const truncatedHistory = conversationHistory.length > maxLength 
-      ? conversationHistory.substring(0, maxLength) + '...'
-      : conversationHistory
+    const maxLength = 6000;
+    const truncatedHistory =
+      conversationHistory.length > maxLength
+        ? conversationHistory.substring(0, maxLength) + "..."
+        : conversationHistory;
 
-    console.log('Using truncated conversation length:', truncatedHistory.length)
+    console.log(
+      "Using truncated conversation length:",
+      truncatedHistory.length
+    );
 
     const response = await anthropic.messages.create({
       model: "claude-sonnet-4-5-20250929",
@@ -435,129 +445,164 @@ Format:
 
 Make it deeply personalized using their exact words, metaphors, and language patterns. This should feel like a professional coach's assessment report.
 
+CRITICAL: Only use quotes that the client actually said in the conversation. Never make up, invent, or generate quotes. If no specific quote exists, paraphrase their meaning without using quotation marks.
+
 FINAL CHECK: Ensure every field contains meaningful, personalized content. No empty strings, no generic placeholders, no missing data. Every array must have actual content based on the client's responses.`,
       messages: [
         {
           role: "user",
-          content: `Create a comprehensive You 3.0 assessment report based on this conversation:\n\n${truncatedHistory}`
-        }
-      ]
-    })
+          content: `Create a comprehensive You 3.0 assessment report based on this conversation:\n\n${truncatedHistory}`,
+        },
+      ],
+    });
 
-    const content = (response.content[0] as { text: string }).text
-    console.log('Raw Claude response length:', content.length)
-    
+    const content = (response.content[0] as { text: string }).text;
+    console.log("Raw Claude response length:", content.length);
+
     // Clean the response to extract JSON
-    let jsonString = content.trim()
-    
+    let jsonString = content.trim();
+
     // Remove any markdown code blocks
-    if (jsonString.startsWith('```json')) {
-      jsonString = jsonString.replace(/^```json\s*/, '').replace(/\s*```$/, '')
-    } else if (jsonString.startsWith('```')) {
-      jsonString = jsonString.replace(/^```\s*/, '').replace(/\s*```$/, '')
+    if (jsonString.startsWith("```json")) {
+      jsonString = jsonString.replace(/^```json\s*/, "").replace(/\s*```$/, "");
+    } else if (jsonString.startsWith("```")) {
+      jsonString = jsonString.replace(/^```\s*/, "").replace(/\s*```$/, "");
     }
-    
+
     // Try to find the JSON object - look for the first complete JSON object
-    const jsonMatch = jsonString.match(/\{[\s\S]*\}/)
+    const jsonMatch = jsonString.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
-      jsonString = jsonMatch[0]
+      jsonString = jsonMatch[0];
     } else {
       // If no JSON object found, try to find JSON array
-      const arrayMatch = jsonString.match(/\[[\s\S]*\]/)
+      const arrayMatch = jsonString.match(/\[[\s\S]*\]/);
       if (arrayMatch) {
-        jsonString = arrayMatch[0]
+        jsonString = arrayMatch[0];
       }
     }
-    
-    console.log('Cleaned JSON string length:', jsonString.length)
-    console.log('First 200 chars of cleaned JSON:', jsonString.substring(0, 200))
-    
+
+    console.log("Cleaned JSON string length:", jsonString.length);
+    console.log(
+      "First 200 chars of cleaned JSON:",
+      jsonString.substring(0, 200)
+    );
+
     try {
-      const planData = JSON.parse(jsonString)
-      console.log('✅ Successfully parsed Claude response!')
-      console.log('Report title:', planData.title)
-      console.log('Daily actions count:', planData.daily_actions?.length || 0)
-      console.log('Weekly goals count:', planData.weekly_goals?.length || 0)
-      console.log('Resources count:', planData.resources?.length || 0)
-      console.log('Reflection prompts count:', planData.reflection_prompts?.length || 0)
-      return planData
+      const planData = JSON.parse(jsonString);
+      console.log("✅ Successfully parsed Claude response!");
+      console.log("Report title:", planData.title);
+      console.log("Daily actions count:", planData.daily_actions?.length || 0);
+      console.log("Weekly goals count:", planData.weekly_goals?.length || 0);
+      console.log("Resources count:", planData.resources?.length || 0);
+      console.log(
+        "Reflection prompts count:",
+        planData.reflection_prompts?.length || 0
+      );
+      return planData;
     } catch (parseError) {
-      console.error('❌ JSON parse error:', parseError)
-      console.error('Failed JSON length:', jsonString.length)
-      
+      console.error("❌ JSON parse error:", parseError);
+      console.error("Failed JSON length:", jsonString.length);
+
       // Try to fix incomplete JSON
-      let fixedJson = jsonString
-      
+      let fixedJson = jsonString;
+
       // Check if JSON is incomplete (missing closing brackets)
-      const openBraces = (fixedJson.match(/\{/g) || []).length
-      const closeBraces = (fixedJson.match(/\}/g) || []).length
-      const openBrackets = (fixedJson.match(/\[/g) || []).length
-      const closeBrackets = (fixedJson.match(/\]/g) || []).length
-      
-      console.log('Brace count - Open:', openBraces, 'Close:', closeBraces)
-      console.log('Bracket count - Open:', openBrackets, 'Close:', closeBrackets)
-      
+      const openBraces = (fixedJson.match(/\{/g) || []).length;
+      const closeBraces = (fixedJson.match(/\}/g) || []).length;
+      const openBrackets = (fixedJson.match(/\[/g) || []).length;
+      const closeBrackets = (fixedJson.match(/\]/g) || []).length;
+
+      console.log("Brace count - Open:", openBraces, "Close:", closeBraces);
+      console.log(
+        "Bracket count - Open:",
+        openBrackets,
+        "Close:",
+        closeBrackets
+      );
+
       // If JSON is incomplete, try to complete it
       if (openBraces > closeBraces || openBrackets > closeBrackets) {
-        console.log('🔧 Attempting to fix incomplete JSON...')
-        
+        console.log("🔧 Attempting to fix incomplete JSON...");
+
         // Add missing closing brackets
-        const missingBrackets = openBrackets - closeBrackets
-        const missingBraces = openBraces - closeBraces
-        
+        const missingBrackets = openBrackets - closeBrackets;
+        const missingBraces = openBraces - closeBraces;
+
         for (let i = 0; i < missingBrackets; i++) {
-          fixedJson += ']'
+          fixedJson += "]";
         }
         for (let i = 0; i < missingBraces; i++) {
-          fixedJson += '}'
+          fixedJson += "}";
         }
-        
-        console.log('🔧 Applied JSON completion fixes')
-        
+
+        console.log("🔧 Applied JSON completion fixes");
+
         try {
-          const planData = JSON.parse(fixedJson)
-          console.log('✅ Successfully parsed fixed JSON!')
-          return planData
+          const planData = JSON.parse(fixedJson);
+          console.log("✅ Successfully parsed fixed JSON!");
+          return planData;
         } catch (e) {
-          console.error('❌ Still failed to parse after fixes:', e)
+          console.error("❌ Still failed to parse after fixes:", e);
         }
       }
-      
+
       // Fallback: Create a basic report structure
-      console.log('🔄 Using fallback report structure')
+      console.log("🔄 Using fallback report structure");
       return {
         title: "You 3.0 Behavioral Optimization Assessment Report",
-        overview: "Your personalized assessment has been completed. This report provides insights into your behavioral patterns and recommendations for growth.",
-        assessment_overview: "This assessment has revealed key patterns in your development journey and identified specific areas for growth and optimization.",
-        development_profile: "Based on your responses, you've shown clear patterns of behavior and areas where you're ready for transformation.",
+        overview:
+          "Your personalized assessment has been completed. This report provides insights into your behavioral patterns and recommendations for growth.",
+        assessment_overview:
+          "This assessment has revealed key patterns in your development journey and identified specific areas for growth and optimization.",
+        development_profile:
+          "Based on your responses, you've shown clear patterns of behavior and areas where you're ready for transformation.",
         sabotage_analysis: {
-          protective_pattern: "Based on your responses, you have protective patterns that serve important functions in your life.",
-          what_its_protecting_from: "These patterns protect you from experiences you find challenging.",
-          how_it_serves_you: "These patterns provide you with safety and comfort in difficult situations.",
-          go_to_patterns: "Your current patterns help you navigate daily life and challenges.",
-          success_proof: "You've demonstrated the ability to overcome challenges in the past.",
-          escape_behavior: "Your current escape patterns when facing challenges.",
-          positive_behavior: "Positive behaviors you can choose instead of your escape patterns."
+          protective_pattern:
+            "Based on your responses, you have protective patterns that serve important functions in your life.",
+          what_its_protecting_from:
+            "These patterns protect you from experiences you find challenging.",
+          how_it_serves_you:
+            "These patterns provide you with safety and comfort in difficult situations.",
+          go_to_patterns:
+            "Your current patterns help you navigate daily life and challenges.",
+          success_proof:
+            "You've demonstrated the ability to overcome challenges in the past.",
+          escape_behavior:
+            "Your current escape patterns when facing challenges.",
+          positive_behavior:
+            "Positive behaviors you can choose instead of your escape patterns.",
         },
         domain_breakdown: {
           mind: "Your mental approach shows both strengths and areas for development.",
           body: "Your relationship with your physical self has both supportive and challenging aspects.",
-          spirit: "Your spiritual and relational connections provide both support and growth opportunities.",
-          contribution: "Your approach to work and contribution shows both current capabilities and potential for expansion."
+          spirit:
+            "Your spiritual and relational connections provide both support and growth opportunities.",
+          contribution:
+            "Your approach to work and contribution shows both current capabilities and potential for expansion.",
         },
-        nervous_system_assessment: "Your nervous system shows patterns of both activation and regulation that we can work with.",
+        nervous_system_assessment:
+          "Your nervous system shows patterns of both activation and regulation that we can work with.",
         thirty_day_protocol: {
-          seventy_two_hour_suggestion: "Start with one small, manageable action that builds on your existing strengths.",
-          weekly_recommendation: "Implement one consistent practice that supports your growth goals.",
-          thirty_day_approach: "Focus on one key area of development that will have the most impact.",
-          environmental_optimization: "Make one environmental change that supports your goals.",
-          progress_markers: ["Notice changes in your daily patterns", "Observe shifts in your stress response", "Track improvements in your target area"]
+          seventy_two_hour_suggestion:
+            "Start with one small, manageable action that builds on your existing strengths.",
+          weekly_recommendation:
+            "Implement one consistent practice that supports your growth goals.",
+          thirty_day_approach:
+            "Focus on one key area of development that will have the most impact.",
+          environmental_optimization:
+            "Make one environmental change that supports your goals.",
+          progress_markers: [
+            "Notice changes in your daily patterns",
+            "Observe shifts in your stress response",
+            "Track improvements in your target area",
+          ],
         },
-        bottom_line: "You have the capacity for growth and transformation. The key is to start with what's already working and build from there.",
+        bottom_line:
+          "You have the capacity for growth and transformation. The key is to start with what's already working and build from there.",
         reminder_quote: "Remember: progress, not perfection.",
         book_recommendations: [
           "The Body Keeps the Score by Bessel van der Kolk - Understanding trauma and healing",
-          "Atomic Habits by James Clear - Building sustainable change"
+          "Atomic Habits by James Clear - Building sustainable change",
         ],
         daily_actions: [
           "Day 1: Start with 5 minutes of morning reflection on your goals",
@@ -589,33 +634,34 @@ FINAL CHECK: Ensure every field contains meaningful, personalized content. No em
           "Day 27: Connect with your purpose and meaning",
           "Day 28: Practice resilience in a challenging moment",
           "Day 29: Reflect on your transformation journey",
-          "Day 30: Celebrate your commitment to growth"
+          "Day 30: Celebrate your commitment to growth",
         ],
         weekly_goals: [
           "Week 1: Establish a daily routine that supports your goals",
           "Week 2: Practice one new skill or habit consistently",
           "Week 3: Take action on your biggest challenge",
-          "Week 4: Integrate all your learnings into daily life"
+          "Week 4: Integrate all your learnings into daily life",
         ],
         resources: [
           "Daily journal for tracking progress and insights",
           "Accountability partner or support group",
           "Mindfulness or meditation practice",
           "Regular exercise or movement routine",
-          "Professional support if needed"
+          "Professional support if needed",
         ],
         reflection_prompts: [
           "What was one moment today where I felt truly aligned with my values?",
           "What pattern did I notice in myself today, and how did I respond?",
           "What would I like to do differently tomorrow?",
           "How am I growing and changing through this process?",
-          "What am I most grateful for in my journey right now?"
-        ]
-      }
+          "What am I most grateful for in my journey right now?",
+        ],
+      };
     }
   } catch (error) {
-    console.error('Error generating structured plan:', error)
-    throw new Error(`Failed to generate assessment report: ${error instanceof Error ? error.message : String(error)}`)
+    console.error("Error generating structured plan:", error);
+    throw new Error(
+      `Failed to generate assessment report: ${error instanceof Error ? error.message : String(error)}`
+    );
   }
 }
-
