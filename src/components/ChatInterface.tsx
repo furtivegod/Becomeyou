@@ -509,10 +509,15 @@ export default function ChatInterface({
               >
                 <div className="max-w-[700px] w-full px-6">
                   {message.role === "assistant" ? (
-                    // AI Message - No Avatar for Regular Messages
+                    // AI Message - Green Circle Avatar (No Brain Icon)
                     <div className="flex gap-4 mb-8">
-                      {/* AI Avatar - Empty space for regular messages */}
-                      <div className="w-8 h-8 flex-shrink-0"></div>
+                      {/* AI Avatar - Green Circle Only */}
+                      <div
+                        className="w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center"
+                        style={{ backgroundColor: "#4A5D23" }}
+                      >
+                        {/* Empty - no icon for regular messages */}
+                      </div>
                       {/* AI Content - Fixed formatting with bold support */}
                       <div className="flex-1 text-base leading-[1.7] text-[#1F2937] font-normal tracking-[-0.01em]">
                         {formatMessageContent(message.content)}
@@ -541,25 +546,10 @@ export default function ChatInterface({
                         alt="AI Brain Thinking"
                         className="w-6 h-6 object-contain"
                         onError={(e) => {
-                          console.error(
-                            "Brain icon failed to load, using fallback"
-                          );
+                          console.error("Brain icon failed to load");
                           e.currentTarget.style.display = "none";
-                          // Show fallback emoji
-                          const fallback =
-                            e.currentTarget.parentElement?.querySelector(
-                              ".brain-fallback"
-                            ) as HTMLElement;
-                          if (fallback) fallback.style.display = "block";
                         }}
                       />
-                      {/* Fallback brain emoji - always visible as backup */}
-                      <span
-                        className="brain-fallback text-2xl"
-                        style={{ display: "block" }}
-                      >
-                        🧠
-                      </span>
                     </div>
                     <div className="flex items-center gap-1 pt-2">
                       <span className="text-sm text-[#9CA3AF] font-medium">
