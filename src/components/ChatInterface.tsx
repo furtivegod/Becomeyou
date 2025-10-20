@@ -511,12 +511,35 @@ export default function ChatInterface({
                   {message.role === "assistant" ? (
                     // AI Message - Brain Icon Styling
                     <div className="flex gap-4 mb-8">
-                      {/* AI Avatar - Simple Circle */}
+                      {/* AI Avatar - Brain Icon */}
                       <div
-                        className="w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center text-base"
-                        style={{ backgroundColor: "#4A5D23", color: "#FFFFFF" }}
+                        className="w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center overflow-hidden"
+                        style={{ backgroundColor: "#4A5D23" }}
                       >
-                        ●
+                        <img
+                          src="/brain.png"
+                          alt="AI Brain"
+                          className="w-6 h-6 object-contain filter brightness-0 invert"
+                          onError={(e) => {
+                            console.error(
+                              "Brain icon failed to load, using fallback"
+                            );
+                            e.currentTarget.style.display = "none";
+                            // Show fallback emoji
+                            const fallback =
+                              e.currentTarget.parentElement?.querySelector(
+                                ".brain-fallback"
+                              ) as HTMLElement;
+                            if (fallback) fallback.style.display = "block";
+                          }}
+                        />
+                        {/* Fallback brain emoji */}
+                        <span
+                          className="brain-fallback text-white text-lg"
+                          style={{ display: "none" }}
+                        >
+                          🧠
+                        </span>
                       </div>
                       {/* AI Content - Fixed formatting with bold support */}
                       <div className="flex-1 text-base leading-[1.7] text-[#1F2937] font-normal tracking-[-0.01em]">
@@ -535,27 +558,44 @@ export default function ChatInterface({
               </div>
             ))}
 
-            {/* Typing Indicator - Exact Claude Animation - Hidden when assessment complete */}
+            {/* Typing Indicator - Brain Thinking Animation - Hidden when assessment complete */}
             {isLoading && !assessmentComplete && (
               <div className="w-full flex justify-center mb-8 opacity-60">
                 <div className="max-w-[700px] w-full px-6">
                   <div className="flex gap-4">
                     <div
-                      className="w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center text-base"
-                      style={{ backgroundColor: "#4A5D23", color: "#FFFFFF" }}
+                      className="w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center overflow-hidden animate-[brainPulse_2s_infinite_ease-in-out]"
+                      style={{ backgroundColor: "#4A5D23" }}
                     >
-                      ●
+                      <img
+                        src="/brain.png"
+                        alt="AI Brain Thinking"
+                        className="w-6 h-6 object-contain filter brightness-0 invert"
+                        onError={(e) => {
+                          console.error(
+                            "Brain icon failed to load, using fallback"
+                          );
+                          e.currentTarget.style.display = "none";
+                          // Show fallback emoji
+                          const fallback =
+                            e.currentTarget.parentElement?.querySelector(
+                              ".brain-fallback"
+                            ) as HTMLElement;
+                          if (fallback) fallback.style.display = "block";
+                        }}
+                      />
+                      {/* Fallback brain emoji */}
+                      <span
+                        className="brain-fallback text-white text-lg"
+                        style={{ display: "none" }}
+                      >
+                        🧠
+                      </span>
                     </div>
                     <div className="flex items-center gap-1 pt-2">
-                      <div className="w-2 h-2 bg-[#9CA3AF] rounded-full animate-[typingBounce_1.4s_infinite_ease-in-out]"></div>
-                      <div
-                        className="w-2 h-2 bg-[#9CA3AF] rounded-full animate-[typingBounce_1.4s_infinite_ease-in-out]"
-                        style={{ animationDelay: "0.2s" }}
-                      ></div>
-                      <div
-                        className="w-2 h-2 bg-[#9CA3AF] rounded-full animate-[typingBounce_1.4s_infinite_ease-in-out]"
-                        style={{ animationDelay: "0.4s" }}
-                      ></div>
+                      <span className="text-sm text-[#9CA3AF] font-medium">
+                        Thinking...
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -688,6 +728,18 @@ export default function ChatInterface({
           to {
             opacity: 1;
             transform: translateY(0);
+          }
+        }
+
+        @keyframes brainPulse {
+          0%,
+          100% {
+            transform: scale(1);
+            opacity: 0.8;
+          }
+          50% {
+            transform: scale(1.1);
+            opacity: 1;
           }
         }
 

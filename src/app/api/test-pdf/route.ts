@@ -7,13 +7,13 @@ export async function GET(request: NextRequest) {
     console.log(
       "⚠️  WARNING: This route uses HARDCODED SAMPLE DATA - NOT REAL USER DATA"
     );
-
+    
     // Check if PDFShift API key is available
     if (!process.env.PDFSHIFT_API_KEY) {
       console.error("❌ PDFSHIFT_API_KEY not configured");
       return NextResponse.json(
         {
-          success: false,
+        success: false,
           error: "PDFSHIFT_API_KEY not configured",
           message: "PDF generation service not configured",
         },
@@ -203,10 +203,10 @@ export async function GET(request: NextRequest) {
     // Generate PDF with sample data
     console.log("📝 Starting PDF generation...");
     const result = await generatePDF(samplePlanData, "test-session-123");
-
+    
     console.log("✅ PDF generated successfully!");
     console.log("📄 PDF URL:", result.pdfUrl);
-
+    
     return NextResponse.json({
       success: true,
       message:
@@ -223,10 +223,10 @@ export async function GET(request: NextRequest) {
       stack: error instanceof Error ? error.stack : undefined,
       name: error instanceof Error ? error.name : "Unknown",
     });
-
+    
     return NextResponse.json(
       {
-        success: false,
+      success: false,
         error: error instanceof Error ? error.message : "Unknown error",
         message: "PDF generation test failed",
         details: error instanceof Error ? error.stack : undefined,
