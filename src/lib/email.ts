@@ -82,7 +82,7 @@ export async function sendMagicLink(email: string, sessionId: string, firstName?
                                 <td height="60"></td>
                             </tr>
                             
-                            <!-- Logo -->
+            <!-- Logo -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 60px; width: auto;" />
@@ -99,7 +99,7 @@ export async function sendMagicLink(email: string, sessionId: string, firstName?
                                 <td align="center" style="padding: 0 40px;">
                                     <h1 style="margin: 0; font-size: 32px; font-weight: 300; color: #111A19; letter-spacing: -0.5px; line-height: 1.2;">
                                         <span style="color: #284138;">${displayName}</span>,
-                                    </h1>
+            </h1>
                                 </td>
                             </tr>
                             
@@ -121,8 +121,8 @@ export async function sendMagicLink(email: string, sessionId: string, firstName?
                             <tr>
                                 <td height="50"></td>
                             </tr>
-                            
-                            <!-- CTA Button -->
+            
+            <!-- CTA Button -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <a href="${process.env.NEXT_PUBLIC_APP_URL}/assessment/${sessionId}?token=${jwt.sign({ sessionId, email }, process.env.JWT_SECRET!, { expiresIn: '7d' })}" class="cta-button" style="display: inline-block; background: #284138; color: #FFFFFF; text-decoration: none; padding: 16px 48px; border-radius: 8px; font-size: 16px; font-weight: 500; letter-spacing: 0.3px; transition: background 0.2s ease;">
@@ -152,8 +152,8 @@ export async function sendMagicLink(email: string, sessionId: string, firstName?
                             </tr>
                             
                         </table>
-                        
-                        <!-- Footer -->
+          
+          <!-- Footer -->
                         <table role="presentation" width="600" cellpadding="0" cellspacing="0" class="email-container">
                             <tr>
                                 <td height="30"></td>

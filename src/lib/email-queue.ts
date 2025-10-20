@@ -23,13 +23,13 @@ export async function createEmailSequence(userId: string, sessionId: string, use
     const email = userEmail
     const name = userName || email.split('@')[0]
 
-    // Schedule emails with delays (in milliseconds)
+    // Schedule emails with proper day-based delays (in milliseconds)
     const emailSchedule = [
-      { delay: 2 * 60 * 1000, function: sendPatternRecognitionEmail, name: 'pattern_recognition' }, // 2 minutes
-      { delay: 3 * 60 * 1000, function: sendEvidence7DayEmail, name: 'evidence_7day' }, // 3 minutes  
-      { delay: 4 * 60 * 1000, function: sendIntegrationThresholdEmail, name: 'integration_threshold' }, // 4 minutes
-      { delay: 5 * 60 * 1000, function: sendCompoundEffectEmail, name: 'compound_effect' }, // 5 minutes
-      { delay: 6 * 60 * 1000, function: sendDirectInvitationEmail, name: 'direct_invitation' } // 6 minutes
+      { delay: 3 * 24 * 60 * 60 * 1000, function: sendPatternRecognitionEmail, name: 'pattern_recognition' }, // 3 days
+      { delay: 7 * 24 * 60 * 60 * 1000, function: sendEvidence7DayEmail, name: 'evidence_7day' }, // 7 days  
+      { delay: 14 * 24 * 60 * 60 * 1000, function: sendIntegrationThresholdEmail, name: 'integration_threshold' }, // 14 days
+      { delay: 21 * 24 * 60 * 60 * 1000, function: sendCompoundEffectEmail, name: 'compound_effect' }, // 21 days
+      { delay: 30 * 24 * 60 * 60 * 1000, function: sendDirectInvitationEmail, name: 'direct_invitation' } // 30 days
     ]
 
     // Schedule each email

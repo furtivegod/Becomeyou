@@ -157,7 +157,7 @@ export async function POST(request: NextRequest) {
         userData.email,
         userData.user_name
       )
-      console.log('Email sequence created successfully - follow-up emails will be sent over the next 6 minutes')
+      console.log('Email sequence created successfully - follow-up emails will be sent over the next 30 days')
     } catch (emailError) {
       console.error('Error creating email sequence:', emailError)
       // Don't fail the request if email sequence creation fails

@@ -759,17 +759,17 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           </div>
         
           <p style="font-size: 15px; line-height: 2;">${assessmentOverview}</p>
-        </div>
-      </div>
-      
+            </div>
+          </div>
+        
       <!-- PAGE 4: DEVELOPMENT PROFILE -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Your Profile</div>
             <div class="section-title">Your Development<br>Profile</div>
-          </div>
-        
+      </div>
+      
           <div class="development-profile-content">
             <div class="profile-text">
               ${developmentProfile.split('. ').map(sentence => 
@@ -782,17 +782,17 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
               <div class="your-words-quote">"I wanna be a success business man, but I don't have talent."</div>
             </div>
           </div>
-        </div>
             </div>
-            
+          </div>
+        
       <!-- PAGE 5: SABOTAGE PATTERN ANALYSIS -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Pattern Analysis</div>
             <div class="section-title">Sabotage Pattern<br>Analysis</div>
-          </div>
-          
+      </div>
+      
           <div class="sabotage-content">
             <div class="sabotage-section">
               <div class="block-title">YOUR PROTECTIVE PATTERN</div>
@@ -846,9 +846,9 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
               </div>
             </div>
           </div>
-        </div>
-      </div>
-            
+            </div>
+          </div>
+          
       <!-- PAGE 6: IN THE MOMENT RESET -->
       <div class="page">
         <div class="page-content">
@@ -978,17 +978,17 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="block-title">Growth Opportunities</div>
             <div class="block-content">${contributionDomain.growth_opportunities}</div>
             </div>
+            </div>
           </div>
-      </div>
-      
+        
       <!-- PAGE 12: NERVOUS SYSTEM -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Foundation</div>
             <div class="section-title">Nervous System<br>Assessment</div>
-            </div>
-            
+      </div>
+      
           <div class="metric-row">
             <div class="metric-label">Primary State</div>
             <div class="metric-value">${nervousSystemAssessment.primary_state}</div>
@@ -1008,17 +1008,17 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="block-title">Regulation Reality</div>
             <div class="block-content">${nervousSystemAssessment.regulation_reality}</div>
             </div>
-              </div>
             </div>
-            
+          </div>
+        
       <!-- PAGE 13: 30-DAY PROTOCOL -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Your Protocol</div>
             <div class="section-title">30-Day Growth<br>Protocol</div>
-              </div>
-          
+      </div>
+      
           <div class="protocol-item">
             <div class="protocol-timeline">72-Hour Suggestion</div>
             <div class="protocol-action">${seventyTwoHourSuggestion}</div>
@@ -1027,8 +1027,8 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           <div class="protocol-item">
             <div class="protocol-timeline">Weekly Recommendation</div>
             <div class="protocol-action">${weeklyRecommendation}</div>
-              </div>
-          
+            </div>
+            
           <div class="protocol-item">
             <div class="protocol-timeline">30-Day Approach</div>
             <div class="protocol-action">${thirtyDayApproach}</div>
@@ -1043,22 +1043,22 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="block-title">Suggested Progress Markers</div>
             <div class="block-content">
               ${progressMarkers.map(marker => `<div class="reminder-item">${marker}</div>`).join('')}
+              </div>
             </div>
-          </div>
             
           <div class="content-block">
             <div class="block-title">Daily Actions</div>
             <div class="block-content">
               ${dailyActions.map(action => `<div class="reminder-item">${action}</div>`).join('')}
+              </div>
             </div>
-          </div>
             
           <div class="content-block">
             <div class="block-title">Weekly Goals</div>
             <div class="block-content">
               ${weeklyGoals.map(goal => `<div class="reminder-item">${goal}</div>`).join('')}
+              </div>
             </div>
-          </div>
           </div>
       </div>
       
@@ -1067,8 +1067,8 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
         <div class="page-content" style="text-align: center; max-width: 700px;">
           <h2>Bottom Line</h2>
           <p>${bottomLine}</p>
-        </div>
-      </div>
+            </div>
+          </div>
         
       <!-- PAGE 15: REMINDER BOX -->
       <div class="page reminder-box-page">
@@ -1076,9 +1076,9 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
           <div class="pull-quote">
             <div class="pull-quote-text">"${reminderQuote}"</div>
             <div style="font-size: 11px; letter-spacing: 0.1em; color: #999;">Your truth, the only truth that matters</div>
-          </div>
-        </div>
       </div>
+            </div>
+          </div>
         
       <!-- PAGE 16: DEVELOPMENT REMINDERS -->
       <div class="page">
@@ -1137,9 +1137,9 @@ function generateHTMLReport(planData: PlanData, clientName: string = 'Client'): 
             <div class="block-title">How to Stay Connected</div>
             <div class="block-content">${planData.next_assessment?.stay_connected || 'Join our community and stay connected for ongoing support and guidance'}</div>
             </div>
-            </div>
           </div>
-        
+      </div>
+      
       <!-- FINAL PAGE -->
       <div class="page" style="display: flex; align-items: center; justify-content: center;">
         <div style="background: var(--cream); padding: 60px; text-align: center; max-width: 600px; border-left: 2px solid var(--soft-gold);">

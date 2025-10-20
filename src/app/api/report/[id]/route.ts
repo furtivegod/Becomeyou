@@ -569,7 +569,7 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 <div class="content-block">
                     <div class="block-title">What It's Protecting You From</div>
                     <div class="block-content">${planData.sabotage_analysis.what_its_protecting_from || 'The underlying fear driving your patterns'}</div>
-                </div>
+          </div>
                 
                 <div class="content-block">
                     <div class="block-title">Your Success Proof</div>
@@ -691,8 +691,8 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 <div class="metric-row">
                     <div class="metric-label">Regulation Capacity</div>
                     <div class="metric-value">${planData.nervous_system_assessment.regulation_capacity}</div>
-                </div>
-                ` : ''}
+          </div>
+        ` : ''}
 
                 ${planData.nervous_system_assessment.regulation_reality ? `
                 <div class="content-block">
@@ -709,9 +709,9 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                             ? planData.nervous_system_assessment.observable_patterns.map((pattern: string) => `<p>${pattern}</p>`).join('')
                             : `<p>${planData.nervous_system_assessment.observable_patterns}</p>`
                         }
-                    </div>
-                </div>
-                ` : ''}
+            </div>
+          </div>
+        ` : ''}
                 ` : ''}
             </div>
             <div class="page-number">${8 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
@@ -774,8 +774,8 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                             ? planData.thirty_day_protocol.daily_actions.map((action: string) => `<div class="reminder-item">${action}</div>`).join('')
                             : `<div class="reminder-item">${planData.thirty_day_protocol.daily_actions}</div>`
                         }
-                    </div>
-                </div>
+            </div>
+        </div>
                 ` : ''}
 
                 ${planData.thirty_day_protocol.weekly_goals ? `
