@@ -509,38 +509,10 @@ export default function ChatInterface({
               >
                 <div className="max-w-[700px] w-full px-6">
                   {message.role === "assistant" ? (
-                    // AI Message - Brain Icon Styling
+                    // AI Message - No Avatar for Regular Messages
                     <div className="flex gap-4 mb-8">
-                      {/* AI Avatar - Brain Icon */}
-                      <div
-                        className="w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center overflow-hidden"
-                        style={{ backgroundColor: "#4A5D23" }}
-                      >
-                        <img
-                          src="/brain.png"
-                          alt="AI Brain"
-                          className="w-5 h-5 object-contain filter brightness-0 invert"
-                          onError={(e) => {
-                            console.error(
-                              "Brain icon failed to load, using fallback"
-                            );
-                            e.currentTarget.style.display = "none";
-                            // Show fallback emoji
-                            const fallback =
-                              e.currentTarget.parentElement?.querySelector(
-                                ".brain-fallback"
-                              ) as HTMLElement;
-                            if (fallback) fallback.style.display = "block";
-                          }}
-                        />
-                        {/* Fallback brain emoji - always visible as backup */}
-                        <span
-                          className="brain-fallback text-white text-lg"
-                          style={{ display: "block" }}
-                        >
-                          🧠
-                        </span>
-                      </div>
+                      {/* AI Avatar - Empty space for regular messages */}
+                      <div className="w-8 h-8 flex-shrink-0"></div>
                       {/* AI Content - Fixed formatting with bold support */}
                       <div className="flex-1 text-base leading-[1.7] text-[#1F2937] font-normal tracking-[-0.01em]">
                         {formatMessageContent(message.content)}
@@ -563,14 +535,11 @@ export default function ChatInterface({
               <div className="w-full flex justify-center mb-8 opacity-60">
                 <div className="max-w-[700px] w-full px-6">
                   <div className="flex gap-4">
-                    <div
-                      className="w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center overflow-hidden animate-[brainPulse_2s_infinite_ease-in-out]"
-                      style={{ backgroundColor: "#4A5D23" }}
-                    >
+                    <div className="w-8 h-8 flex-shrink-0 flex items-center justify-center animate-[brainPulse_2s_infinite_ease-in-out]">
                       <img
                         src="/brain.png"
                         alt="AI Brain Thinking"
-                        className="w-5 h-5 object-contain filter brightness-0 invert"
+                        className="w-6 h-6 object-contain"
                         onError={(e) => {
                           console.error(
                             "Brain icon failed to load, using fallback"
@@ -586,7 +555,7 @@ export default function ChatInterface({
                       />
                       {/* Fallback brain emoji - always visible as backup */}
                       <span
-                        className="brain-fallback text-white text-lg"
+                        className="brain-fallback text-2xl"
                         style={{ display: "block" }}
                       >
                         🧠
