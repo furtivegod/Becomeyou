@@ -1108,8 +1108,8 @@ function generateHTMLReport(
       </div>
       
           <div class="metric-row">
-            <div class="metric-label">Primary State</div>
-            <div class="metric-value">${nervousSystemAssessment.primary_state}</div>
+            <div class="block-title">Primary State</div>
+            <div class="block-content">${nervousSystemAssessment.primary_state}</div>
             </div>
             
           <div class="metric-row">
