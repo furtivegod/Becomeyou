@@ -245,7 +245,7 @@ export async function generateClaudeResponse(
 ) {
   try {
     console.log("Calling Claude API with", messages.length, "messages");
-
+    
     if (!process.env.ANTHROPIC_API_KEY) {
       throw new Error("ANTHROPIC_API_KEY not configured");
     }
@@ -272,7 +272,7 @@ export async function generateStructuredPlan(conversationHistory: string) {
   try {
     console.log("Generating You 3.0 assessment report from conversation");
     console.log("Conversation length:", conversationHistory.length);
-
+    
     if (!process.env.ANTHROPIC_API_KEY) {
       throw new Error("ANTHROPIC_API_KEY not configured");
     }
@@ -449,17 +449,17 @@ FINAL CHECK: Ensure every field contains meaningful, personalized content. No em
 
     const content = (response.content[0] as { text: string }).text;
     console.log("Raw Claude response length:", content.length);
-
+    
     // Clean the response to extract JSON
     let jsonString = content.trim();
-
+    
     // Remove any markdown code blocks
     if (jsonString.startsWith("```json")) {
       jsonString = jsonString.replace(/^```json\s*/, "").replace(/\s*```$/, "");
     } else if (jsonString.startsWith("```")) {
       jsonString = jsonString.replace(/^```\s*/, "").replace(/\s*```$/, "");
     }
-
+    
     // Try to find the JSON object - look for the first complete JSON object
     const jsonMatch = jsonString.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
@@ -493,10 +493,10 @@ FINAL CHECK: Ensure every field contains meaningful, personalized content. No em
     } catch (parseError) {
       console.error("❌ JSON parse error:", parseError);
       console.error("Failed JSON length:", jsonString.length);
-
+      
       // Try to fix incomplete JSON
       let fixedJson = jsonString;
-
+      
       // Check if JSON is incomplete (missing closing brackets)
       const openBraces = (fixedJson.match(/\{/g) || []).length;
       const closeBraces = (fixedJson.match(/\}/g) || []).length;
@@ -510,15 +510,15 @@ FINAL CHECK: Ensure every field contains meaningful, personalized content. No em
         "Close:",
         closeBrackets
       );
-
+      
       // If JSON is incomplete, try to complete it
       if (openBraces > closeBraces || openBrackets > closeBrackets) {
         console.log("🔧 Attempting to fix incomplete JSON...");
-
+        
         // Add missing closing brackets
         const missingBrackets = openBrackets - closeBrackets;
         const missingBraces = openBraces - closeBraces;
-
+        
         for (let i = 0; i < missingBrackets; i++) {
           fixedJson += "]";
         }
@@ -536,7 +536,7 @@ FINAL CHECK: Ensure every field contains meaningful, personalized content. No em
           console.error("❌ Still failed to parse after fixes:", e);
         }
       }
-
+      
       // Fallback: Create a basic report structure
       console.log("🔄 Using fallback report structure");
       return {

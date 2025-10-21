@@ -49,7 +49,7 @@ export async function sendMagicLink(
             <style>
                 @media only screen and (min-width: 600px) {
                     .cta-button:hover {
-                        background: #3A4A1F !important;
+                        background: #B89A5A !important;
                     }
                 }
                 
@@ -104,7 +104,7 @@ export async function sendMagicLink(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <h1 style="margin: 0; font-size: 32px; font-weight: 300; color: #2A2A2A; letter-spacing: -0.5px; line-height: 1.2; font-family: 'Cormorant Garamond', Georgia, serif;">
-                                        <span style="color: #4A5D23;">${displayName}</span>,
+                                        <span style="color: #C9A96E;">${displayName}</span>,
             </h1>
                                 </td>
                             </tr>
@@ -131,7 +131,7 @@ export async function sendMagicLink(
             <!-- CTA Button -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <a href="${process.env.NEXT_PUBLIC_APP_URL}/assessment/${sessionId}?token=${jwt.sign({ sessionId, email }, process.env.JWT_SECRET!, { expiresIn: "7d" })}" class="cta-button" style="display: inline-block; background: #4A5D23; color: #FFFFFF; text-decoration: none; padding: 16px 48px; border-radius: 8px; font-size: 16px; font-weight: 500; letter-spacing: 0.3px; transition: background 0.2s ease; font-family: 'Inter', -apple-system, sans-serif;">
+                                    <a href="${process.env.NEXT_PUBLIC_APP_URL}/assessment/${sessionId}?token=${jwt.sign({ sessionId, email }, process.env.JWT_SECRET!, { expiresIn: "7d" })}" class="cta-button" style="display: inline-block; background: #C9A96E; color: #FFFFFF; text-decoration: none; padding: 16px 48px; border-radius: 8px; font-size: 16px; font-weight: 500; letter-spacing: 0.3px; transition: background 0.2s ease; font-family: 'Inter', -apple-system, sans-serif;">
                                         Begin Your Assessment →
                                     </a>
                                 </td>
@@ -253,7 +253,7 @@ export async function sendReportEmail(
           <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
         </head>
         <body>
-        <div style="font-family: 'Inter', sans-serif; max-width: 600px; margin: 0 auto; background-color: #f0e29d;">
+        <div style="font-family: 'Inter', sans-serif; max-width: 600px; margin: 0 auto; background-color: #F9F6F1;">
           <!-- Header Section -->
           <div style="background-color: white; padding: 40px 20px 30px 20px; text-align: center;">
             <!-- Logo -->
@@ -261,40 +261,40 @@ export async function sendReportEmail(
               <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 100px; width: auto;" />
             </div>
             <!-- Green Line -->
-            <div style="height: 3px; background-color: #4A5D23; width: 200px; margin: 0 auto;"></div>
+            <div style="height: 3px; background-color: #C9A96E; width: 200px; margin: 0 auto;"></div>
           </div>
           
           <!-- Body Section -->
-          <div style="background-color: #f0e29d; padding: 40px 20px;">
+          <div style="background-color: #F9F6F1; padding: 40px 20px;">
             <!-- Main Content -->
-            <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               <strong>${displayName},</strong><br><br>
               Your complete assessment is attached.
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Before you read it, know this: Everything in that report—every pattern, every protective 
               mechanism, every stuck point—made perfect sense at the time it formed. Your nervous system 
               has been doing exactly what it was designed to do: keep you safe.
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               The question now is: Are those same strategies still serving you, or is it time to update them?
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Read it when you're ready. Then take the 72-hour action.
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Your Teammate,<br>
-              <strong style="color: #4A5D23;">Matthew</strong>
+              <strong style="color: #C9A96E;">Matthew</strong>
             </p>
             
             ${
               personalizedPS
                 ? `
-            <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+            <p style="color: #2A2A2A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
             `
@@ -310,9 +310,9 @@ export async function sendReportEmail(
           </div>
           
           <!-- Footer -->
-          <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
+          <div style="background-color: #F9F6F1; padding: 20px; text-align: center; border-top: 1px solid #C9A96E;">
             <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-              Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #4A5D23; text-decoration: underline;">support@becomeyou.ai</a>
+              Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #C9A96E; text-decoration: underline;">support@becomeyou.ai</a>
             </p>
           </div>
         </div>
@@ -406,49 +406,49 @@ export async function sendPatternRecognitionEmail(
           <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
         </head>
         <body>
-        <div style="font-family: 'Inter', sans-serif; max-width: 600px; margin: 0 auto; background-color: #f0e29d;">
+        <div style="font-family: 'Inter', sans-serif; max-width: 600px; margin: 0 auto; background-color: #F9F6F1;">
           <div style="background-color: white; padding: 40px 20px 30px 20px; text-align: center;">
             <div style="margin-bottom: 40px;">
               <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 100px; width: auto;" />
             </div>
-            <div style="height: 3px; background-color: #4A5D23; width: 200px; margin: 0 auto;"></div>
+            <div style="height: 3px; background-color: #C9A96E; width: 200px; margin: 0 auto;"></div>
           </div>
           
-          <div style="background-color: #f0e29d; padding: 40px 20px;">
-            <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+          <div style="background-color: #F9F6F1; padding: 40px 20px;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               <strong>${userName},</strong><br><br>
               I'm curious—since reading your assessment, have you caught yourself doing exactly the thing it described?
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Maybe you had clarity about your next move, then immediately started researching "the right way" to do it instead of just starting.
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Or you felt motivated to ${planData?.sabotage_analysis?.protective_pattern || "[their specific pattern]"}, then reached for ${planData?.sabotage_analysis?.escape_behavior || "[their escape behavior]"} instead.
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               That's not failure. That's your nervous system doing what it's been trained to do.
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               The difference now? <strong>You see it happening in real time.</strong>
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               And that awareness gap—the space between the trigger and your automatic response—is where all change begins.
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Your Teammate,<br>
-              <strong style="color: #4A5D23;">Matthew</strong>
+              <strong style="color: #C9A96E;">Matthew</strong>
             </p>
             
             ${
               personalizedPS
                 ? `
-            <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+            <p style="color: #2A2A2A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
             `
@@ -456,9 +456,9 @@ export async function sendPatternRecognitionEmail(
             }
           </div>
           
-          <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
+          <div style="background-color: #F9F6F1; padding: 20px; text-align: center; border-top: 1px solid #C9A96E;">
             <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-              Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #4A5D23; text-decoration: underline;">support@becomeyou.ai</a>
+              Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #C9A96E; text-decoration: underline;">support@becomeyou.ai</a>
             </p>
           </div>
         </div>
@@ -533,25 +533,25 @@ export async function sendEvidence7DayEmail(
           <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
         </head>
         <body>
-        <div style="font-family: 'Inter', sans-serif; max-width: 600px; margin: 0 auto; background-color: #f0e29d;">
+        <div style="font-family: 'Inter', sans-serif; max-width: 600px; margin: 0 auto; background-color: #F9F6F1;">
           <div style="background-color: white; padding: 40px 20px 30px 20px; text-align: center;">
             <div style="margin-bottom: 40px;">
               <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 100px; width: auto;" />
             </div>
-            <div style="height: 3px; background-color: #4A5D23; width: 200px; margin: 0 auto;"></div>
+            <div style="height: 3px; background-color: #C9A96E; width: 200px; margin: 0 auto;"></div>
           </div>
           
-          <div style="background-color: #f0e29d; padding: 40px 20px;">
-            <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+          <div style="background-color: #F9F6F1; padding: 40px 20px;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               <strong>${userName},</strong><br><br>
               Most people wait for transformation to feel like a lightning bolt.
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               It doesn't.
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               It shows up as:
             </p>
             
@@ -561,31 +561,31 @@ export async function sendEvidence7DayEmail(
               <li style="margin-bottom: 8px;">One moment you caught the spiral before it hijacked your whole day</li>
             </ul>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               These aren't "small" wins.
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               They're <strong>proof your nervous system is recalibrating.</strong>
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               So here's your assignment: What's one thing you've done in the last week that your former self—the one who took this assessment—would have avoided or numbed out from?
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               That's the evidence that you're already changing.
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Your Teammate,<br>
-              <strong style="color: #4A5D23;">Matthew</strong>
+              <strong style="color: #C9A96E;">Matthew</strong>
             </p>
             
             ${
               personalizedPS
                 ? `
-            <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+            <p style="color: #2A2A2A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
             `
@@ -593,9 +593,9 @@ export async function sendEvidence7DayEmail(
             }
           </div>
           
-          <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
+          <div style="background-color: #F9F6F1; padding: 20px; text-align: center; border-top: 1px solid #C9A96E;">
             <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-              Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #4A5D23; text-decoration: underline;">support@becomeyou.ai</a>
+              Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #C9A96E; text-decoration: underline;">support@becomeyou.ai</a>
             </p>
           </div>
         </div>
@@ -657,37 +657,37 @@ export async function sendIntegrationThresholdEmail(
           <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
         </head>
         <body>
-        <div style="font-family: 'Inter', sans-serif; max-width: 600px; margin: 0 auto; background-color: #f0e29d;">
+        <div style="font-family: 'Inter', sans-serif; max-width: 600px; margin: 0 auto; background-color: #F9F6F1;">
           <div style="background-color: white; padding: 40px 20px 30px 20px; text-align: center;">
             <div style="margin-bottom: 40px;">
               <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 100px; width: auto;" />
             </div>
-            <div style="height: 3px; background-color: #4A5D23; width: 200px; margin: 0 auto;"></div>
+            <div style="height: 3px; background-color: #C9A96E; width: 200px; margin: 0 auto;"></div>
           </div>
           
-          <div style="background-color: #f0e29d; padding: 40px 20px;">
-            <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+          <div style="background-color: #F9F6F1; padding: 40px 20px;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               <strong>${userName},</strong><br><br>
               Two weeks is when most people quit.
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Not because they failed. Not because the assessment was wrong.
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               But because <strong>awareness without structure = temporary inspiration.</strong>
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               You've done the hardest part—you've seen the pattern clearly. You understand why you've been stuck.
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               But understanding doesn't rewire your nervous system. Consistent, appropriately-sized practice does.
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Here's what shifts people from knowing to embodying:
             </p>
             
@@ -697,19 +697,19 @@ export async function sendIntegrationThresholdEmail(
               <li style="margin-bottom: 8px;"><strong>Accountability structure</strong> that prevents regression when life gets hard</li>
             </ol>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               You've proven you can do hard things—you built ${planData?.sabotage_analysis?.success_proof || planData?.sabotage_analysis?.anchor || "something meaningful in your life"}. The question is: Are you ready to apply that same capability to your own nervous system?
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Your Teammate,<br>
-              <strong style="color: #4A5D23;">Matthew</strong>
+              <strong style="color: #C9A96E;">Matthew</strong>
             </p>
             
             ${
               personalizedPS
                 ? `
-            <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+            <p style="color: #2A2A2A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
             `
@@ -717,9 +717,9 @@ export async function sendIntegrationThresholdEmail(
             }
           </div>
           
-          <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
+          <div style="background-color: #F9F6F1; padding: 20px; text-align: center; border-top: 1px solid #C9A96E;">
             <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-              Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #4A5D23; text-decoration: underline;">support@becomeyou.ai</a>
+              Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #C9A96E; text-decoration: underline;">support@becomeyou.ai</a>
             </p>
           </div>
         </div>
@@ -779,29 +779,29 @@ export async function sendCompoundEffectEmail(
           <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
         </head>
         <body>
-        <div style="font-family: 'Inter', sans-serif; max-width: 600px; margin: 0 auto; background-color: #f0e29d;">
+        <div style="font-family: 'Inter', sans-serif; max-width: 600px; margin: 0 auto; background-color: #F9F6F1;">
           <div style="background-color: white; padding: 40px 20px 30px 20px; text-align: center;">
             <div style="margin-bottom: 40px;">
               <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 100px; width: auto;" />
             </div>
-            <div style="height: 3px; background-color: #4A5D23; width: 200px; margin: 0 auto;"></div>
+            <div style="height: 3px; background-color: #C9A96E; width: 200px; margin: 0 auto;"></div>
           </div>
           
-          <div style="background-color: #f0e29d; padding: 40px 20px;">
-            <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+          <div style="background-color: #F9F6F1; padding: 40px 20px;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               <strong>${userName},</strong><br><br>
               Three weeks is the threshold where temporary motivation either becomes sustainable practice or fades completely.
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Here's what I've noticed working with 680+ people:
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               <strong>The ones who transform don't feel dramatically different at 21 days.</strong>
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               They just notice they're recovering faster:
             </p>
             
@@ -811,35 +811,35 @@ export async function sendCompoundEffectEmail(
               <li style="margin-bottom: 8px;">The old story still plays, but they recognize it as a story instead of truth</li>
             </ul>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               That's not small progress. That's your nervous system learning a new default.
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
                But here's the catch: <strong>This is exactly when most people quit.</strong>
             </p>
 
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
                 Not because nothing's working—but because the initial insight has worn off and the daily practice feels boring. Unsexy. Repetitive.
             </p>
 
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
                 Which is exactly what rewiring your nervous system requires.
             </p>
 
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               You've already proven you can do this—you showed up for the assessment, you read the report, you've been noticing your patterns. The question is: Are you willing to keep going through the unsexy middle where nothing feels dramatic but everything is shifting?
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Your Teammate,<br>
-              <strong style="color: #4A5D23;">Matthew</strong>
+              <strong style="color: #C9A96E;">Matthew</strong>
             </p>
             
             ${
               personalizedPS
                 ? `
-            <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+            <p style="color: #2A2A2A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
             `
@@ -847,9 +847,9 @@ export async function sendCompoundEffectEmail(
             }
           </div>
           
-          <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
+          <div style="background-color: #F9F6F1; padding: 20px; text-align: center; border-top: 1px solid #C9A96E;">
             <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-              Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #4A5D23; text-decoration: underline;">support@becomeyou.ai</a>
+              Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #C9A96E; text-decoration: underline;">support@becomeyou.ai</a>
             </p>
           </div>
         </div>
@@ -906,29 +906,29 @@ export async function sendDirectInvitationEmail(
           <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
         </head>
         <body>
-        <div style="font-family: 'Inter', sans-serif; max-width: 600px; margin: 0 auto; background-color: #f0e29d;">
+        <div style="font-family: 'Inter', sans-serif; max-width: 600px; margin: 0 auto; background-color: #F9F6F1;">
           <div style="background-color: white; padding: 40px 20px 30px 20px; text-align: center;">
             <div style="margin-bottom: 40px;">
               <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 100px; width: auto;" />
             </div>
-            <div style="height: 3px; background-color: #4A5D23; width: 200px; margin: 0 auto;"></div>
+            <div style="height: 3px; background-color: #C9A96E; width: 200px; margin: 0 auto;"></div>
           </div>
           
-          <div style="background-color: #f0e29d; padding: 40px 20px;">
-            <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+          <div style="background-color: #F9F6F1; padding: 40px 20px;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               <strong>${userName},</strong><br><br>
               It's been a month since you took your You 3.0 Assessment.
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               I'm not going to ask if you "implemented everything" or if you're "where you want to be." That's not how transformation works.
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Instead, I'm asking: <strong>What's one thing that's different—even slightly—compared to 30 days ago?</strong>
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Maybe you:
             </p>
             
@@ -938,31 +938,31 @@ export async function sendDirectInvitationEmail(
               <li style="margin-bottom: 8px;">Chose ${planData?.sabotage_analysis?.positive_behavior || "[positive behavior]"} when you normally would have reached for ${planData?.sabotage_analysis?.escape_behavior || "[escape behavior]"}</li>
             </ul>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               If you can name even one shift, that's proof the assessment was accurate and you're capable of change.
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               If nothing's different? That's also useful information—it means you're in the "knowing" phase but haven't moved to the "doing" phase yet.
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Either way, here's what I know after working with 680+ people:
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               <strong>Awareness + Structure + Accountability = Lasting Change</strong>
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               You have the awareness. The assessment gave you that.
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               The question is: Do you want to keep trying to build structure and accountability on your own, or do you want help designing a system that actually fits your nervous system?
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               If you want help, book a Discovery Call. We'll get clear on:
             </p>
             
@@ -972,7 +972,7 @@ export async function sendDirectInvitationEmail(
               <li style="margin-bottom: 8px;">Whether working together 1:1 makes sense or if you need something else first</li>
             </ul>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               If you're not ready yet, that's completely fine. Keep the assessment. Come back to it when the gap between who you are and who you want to be gets uncomfortable enough to act on.
             </p>
             
@@ -984,13 +984,13 @@ export async function sendDirectInvitationEmail(
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Your Teammate,<br>
-              <strong style="color: #4A5D23;">Matthew</strong>
+              <strong style="color: #C9A96E;">Matthew</strong>
             </p>
             
             ${
               personalizedPS
                 ? `
-            <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+            <p style="color: #2A2A2A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
             `
@@ -998,9 +998,9 @@ export async function sendDirectInvitationEmail(
             }
           </div>
           
-          <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
+          <div style="background-color: #F9F6F1; padding: 20px; text-align: center; border-top: 1px solid #C9A96E;">
             <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-              Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #4A5D23; text-decoration: underline;">support@becomeyou.ai</a>
+              Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #C9A96E; text-decoration: underline;">support@becomeyou.ai</a>
             </p>
           </div>
         </div>

@@ -881,23 +881,23 @@ function generateHTMLReport(
                 )
                 .join("<br>")}
             </div>
-      
+            
             <div class="your-words-section">
               <div class="block-title">YOUR WORDS</div>
               <div class="your-words-quote">"${reminderQuote}"</div>
             </div>
           </div>
             </div>
-          </div>
-        
+            </div>
+            
       <!-- PAGE 5: SABOTAGE PATTERN ANALYSIS -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Pattern Analysis</div>
             <div class="section-title">Sabotage Pattern<br>Analysis</div>
-      </div>
-      
+            </div>
+            
           <div class="sabotage-content">
             <div class="sabotage-section">
               <div class="block-title">YOUR PROTECTIVE PATTERN</div>
@@ -924,9 +924,9 @@ function generateHTMLReport(
                       : ""
                   )
                   .join("<br>")}
-              </div>
             </div>
-            
+          </div>
+          
             <div class="sabotage-section">
               <div class="block-title">HOW IT SERVES YOU</div>
               <div class="sabotage-text">
@@ -938,9 +938,9 @@ function generateHTMLReport(
                       : ""
                   )
                   .join("<br>")}
-              </div> 
             </div>
-            
+          </div>
+        
             <div class="sabotage-section">
               <div class="block-title">YOUR SUCCESS PROOF</div>
               <div class="sabotage-text">
@@ -953,8 +953,8 @@ function generateHTMLReport(
                   )
                   .join("<br>")}
               </div>
-            </div>
-            
+      </div>
+      
             <div class="sabotage-section">
               <div class="block-title">GO TO PATTERNS</div>
               <div class="sabotage-text">
@@ -977,8 +977,8 @@ function generateHTMLReport(
             </div>
           </div>
             </div>
-          </div>
-          
+            </div>
+            
       <!-- PAGE 6: IN THE MOMENT RESET -->
       <div class="page">
         <div class="page-content">
@@ -1108,17 +1108,17 @@ function generateHTMLReport(
             <div class="block-title">Growth Opportunities</div>
             <div class="block-content">${contributionDomain.growth_opportunities}</div>
             </div>
-            </div>
           </div>
-        
+      </div>
+      
       <!-- PAGE 12: NERVOUS SYSTEM -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Foundation</div>
             <div class="section-title">Nervous System<br>Assessment</div>
-      </div>
-      
+            </div>
+            
           <div class="metric-row">
             <div class="metric-label">Primary State</div>
             <div class="metric-value">${nervousSystemAssessment.primary_state}</div>
@@ -1138,16 +1138,16 @@ function generateHTMLReport(
             <div class="block-title">Regulation Reality</div>
             <div class="block-content">${nervousSystemAssessment.regulation_reality}</div>
             </div>
+              </div>
             </div>
-          </div>
-        
+            
       <!-- PAGE 13: 30-DAY PROTOCOL -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Your Protocol</div>
             <div class="section-title">30-Day Growth<br>Protocol</div>
-      </div>
+              </div>
       
           <div class="protocol-item">
             <div class="protocol-timeline">72-Hour Suggestion</div>
@@ -1159,7 +1159,7 @@ function generateHTMLReport(
             <div class="protocol-action">${weeklyRecommendation}</div>
             <div class="protocol-goals">
               ${weeklyGoals.map((goal) => `<div class="goal-item">${goal}</div>`).join("")}
-            </div>
+              </div>
             </div>
             
           <div class="protocol-item">
@@ -1168,20 +1168,20 @@ function generateHTMLReport(
             <div class="protocol-goals">
               ${dailyActions.map((action) => `<div class="goal-item">${action}</div>`).join("")}
             </div>
-            </div>
-            
+          </div>
+        
           <div class="protocol-item">
             <div class="protocol-timeline">Environmental Optimization</div>
             <div class="protocol-action">${environmentalOptimization}</div>
-            </div>
-            
+      </div>
+      
           <div class="content-block">
             <div class="block-title">Suggested Progress Markers</div>
             <div class="block-content">
               ${progressMarkers.map((marker) => `<div class="reminder-item">${marker}</div>`).join("")}
-              </div>
             </div>
-            
+          </div>
+        
             
           </div>
       </div>
@@ -1190,7 +1190,7 @@ function generateHTMLReport(
       <div class="page bottom-line-page">
         <div class="page-content" style="text-align: center; max-width: 700px;">
           <h2>Bottom Line</h2>
-          <p>${bottomLine}</p>
+              <p>${bottomLine}</p>
             </div>
           </div>
         
@@ -1233,28 +1233,28 @@ function generateHTMLReport(
           `
             )
             .join("")}
-          </div>
-      </div>
-      
+              </div>
+            </div>
+            
       <!-- PAGE 18: NEXT STEPS -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Moving Forward</div>
             <div class="section-title">Next Steps</div>
-            </div>
-            
+          </div>
+        
             
           <div class="content-block">
             <div class="block-title">How to Stay Connected</div>
             <div class="block-content">${planData.next_assessment?.stay_connected || "Join our community and stay connected for ongoing support and guidance"}</div>
-            </div>
-            
+      </div>
+      
           <div style="background: var(--cream); padding: 60px; text-align: center; max-width: 600px; border-left: 2px solid var(--soft-gold); margin-top: 80px;">
             <p style="font-size: 13px; line-height: 2.2; font-style: italic;">
-              This assessment was built with care, respect, and the belief that you already have everything you need to become the person you described. The only thing left to do is <em>take action</em>.
-            </p>
-          </div>
+            This assessment was built with care, respect, and the belief that you already have everything you need to become the person you described. The only thing left to do is <em>take action</em>.
+          </p>
+        </div>
           </div>
       </div>
 
