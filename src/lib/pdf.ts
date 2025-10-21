@@ -561,7 +561,7 @@ function generateHTMLReport(
           font-style: italic;
           font-weight: 300;
           color: #666;
-          margin-top: 40px;
+          margin-top: 80px;
           line-height: 1.6;
         }
 
@@ -1250,7 +1250,7 @@ function generateHTMLReport(
             <div class="block-content">${planData.next_assessment?.stay_connected || "Join our community and stay connected for ongoing support and guidance"}</div>
             </div>
             
-          <div style="background: var(--cream); padding: 60px; text-align: center; max-width: 600px; border-left: 2px solid var(--soft-gold); margin-top: 40px;">
+          <div style="background: var(--cream); padding: 60px; text-align: center; max-width: 600px; border-left: 2px solid var(--soft-gold); margin-top: 80px;">
             <p style="font-size: 13px; line-height: 2.2; font-style: italic;">
               This assessment was built with care, respect, and the belief that you already have everything you need to become the person you described. The only thing left to do is <em>take action</em>.
             </p>
