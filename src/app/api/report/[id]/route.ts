@@ -282,7 +282,7 @@ function generateHTMLReport(
                 font-weight: 300;
                 color: #666;
                 margin-top: 80px;
-                line-height: 1.6;
+          line-height: 1.6;
             }
 
             /* SECTION HEADERS */
@@ -767,7 +767,7 @@ function generateHTMLReport(
                 <div class="content-block">
                     <div class="block-title">Regulation Capacity</div>
                     <div class="block-content">${planData.nervous_system_assessment.regulation_capacity}</div>
-                </div>
+          </div>
                 `
                     : ""
                 }
@@ -855,7 +855,7 @@ function generateHTMLReport(
                                 .join("")
                             : `<div class="goal-item">${planData.thirty_day_protocol.weekly_goals}</div>`
                         }
-                    </div>
+          </div>
                     `
                         : ""
                     }
@@ -897,11 +897,11 @@ function generateHTMLReport(
                                 .join("")
                             : `<div class="goal-item">${planData.thirty_day_protocol.daily_actions}</div>`
                         }
-                    </div>
+                </div>
                     `
                         : ""
                     }
-                </div>
+            </div>
                 `
                     : ""
                 }
@@ -924,7 +924,7 @@ function generateHTMLReport(
                                 .join("")
                             : `<div class="reminder-item">${planData.thirty_day_protocol.progress_markers}</div>`
                         }
-                    </div>
+        </div>
                 </div>
                 `
                     : ""
@@ -1117,16 +1117,16 @@ function generateHTMLReport(
                 </p>
                 
                 <div style="text-align: center; margin: 40px 0;">
-                    <button 
-                        class="pdf-button" 
-                        onclick="showPDF()"
+          <button 
+            class="pdf-button" 
+            onclick="showPDF()"
                         ${!signedPdfUrl ? "disabled" : ""}
-                    >
+          >
                         ${signedPdfUrl ? "View PDF Report" : "PDF Still Generating..."}
-                    </button>
-                </div>
-            </div>
+          </button>
         </div>
+            </div>
+      </div>
 
       <script>
         function showPDF() {

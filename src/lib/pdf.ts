@@ -1255,7 +1255,7 @@ function generateHTMLReport(
             This assessment was built with care, respect, and the belief that you already have everything you need to become the person you described. The only thing left to do is <em>take action</em>.
           </p>
         </div>
-          </div>
+        </div>
       </div>
 
     </body>

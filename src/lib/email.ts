@@ -9,15 +9,15 @@ export async function sendMagicLink(
   firstName?: string
 ) {
   console.log("Email service called with:", { email, sessionId, firstName });
-
+  
   if (!process.env.RESEND_API_KEY) {
     throw new Error("RESEND_API_KEY not configured");
   }
-
+  
   if (!process.env.JWT_SECRET) {
     throw new Error("JWT_SECRET not configured");
   }
-
+  
   if (!process.env.NEXT_PUBLIC_APP_URL) {
     throw new Error("NEXT_PUBLIC_APP_URL not configured");
   }
@@ -185,12 +185,12 @@ export async function sendMagicLink(
         </html>
       `,
     });
-
+    
     if (error) {
       console.error("Resend API error:", error);
       throw new Error(`Resend API error: ${JSON.stringify(error)}`);
     }
-
+    
     console.log("Magic link email sent successfully:", data?.id);
   } catch (error) {
     console.error("Failed to send magic link:", error);
@@ -206,14 +206,14 @@ export async function sendReportEmail(
   planData?: any
 ) {
   console.log("Sending report email to:", email);
-
+  
   if (!process.env.RESEND_API_KEY) {
     throw new Error("RESEND_API_KEY not configured");
   }
 
   try {
     console.log("Sending email via Resend...");
-
+    
     // Use the provided user name, fallback to email extraction if not provided
     const displayName =
       userName ||
@@ -222,13 +222,13 @@ export async function sendReportEmail(
         .split(".")
         .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
         .join(" ");
-
+    
     // Generate personalized P.S. based on assessment data
     let personalizedPS = "";
     if (planData) {
       const sabotageAnalysis = planData.sabotage_analysis;
       const domainBreakdown = planData.domain_breakdown;
-
+      
       if (sabotageAnalysis?.protective_pattern) {
         personalizedPS = `You mentioned "${sabotageAnalysis.protective_pattern.substring(0, 50)}...". If you want help designing the environment and structure that makes change automatic instead of exhausting, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
       } else if (planData.thirty_day_protocol?.thirty_day_approach) {
@@ -241,7 +241,7 @@ export async function sendReportEmail(
         personalizedPS = `Your assessment revealed important patterns. If you want to understand how these patterns are affecting your progress, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
       }
     }
-
+    
     const emailData: any = {
       from: "Become You <noreply@becomeyou.ai>",
       to: [email],
@@ -333,12 +333,12 @@ export async function sendReportEmail(
     }
 
     const { data, error } = await resend.emails.send(emailData);
-
+    
     if (error) {
       console.error("Resend API error:", error);
       throw new Error(`Resend API error: ${JSON.stringify(error)}`);
     }
-
+    
     console.log("Report email sent successfully:", data?.id);
   } catch (error) {
     console.error("Failed to send report email:", error);
@@ -353,7 +353,7 @@ export async function sendPatternRecognitionEmail(
   planData?: any
 ) {
   console.log("Sending pattern recognition email to:", email);
-
+  
   if (!process.env.RESEND_API_KEY) {
     throw new Error("RESEND_API_KEY not configured");
   }
@@ -466,12 +466,12 @@ export async function sendPatternRecognitionEmail(
         </html>
       `,
     });
-
+    
     if (error) {
       console.error("Resend API error:", error);
       throw new Error(`Resend API error: ${JSON.stringify(error)}`);
     }
-
+    
     console.log("Pattern recognition email sent successfully:", data?.id);
   } catch (error) {
     console.error("Failed to send pattern recognition email:", error);
@@ -486,7 +486,7 @@ export async function sendEvidence7DayEmail(
   planData?: any
 ) {
   console.log("Sending evidence 7-day email to:", email);
-
+  
   if (!process.env.RESEND_API_KEY) {
     throw new Error("RESEND_API_KEY not configured");
   }
@@ -603,12 +603,12 @@ export async function sendEvidence7DayEmail(
         </html>
       `,
     });
-
+    
     if (error) {
       console.error("Resend API error:", error);
       throw new Error(`Resend API error: ${JSON.stringify(error)}`);
     }
-
+    
     console.log("Evidence 7-day email sent successfully:", data?.id);
   } catch (error) {
     console.error("Failed to send evidence 7-day email:", error);
@@ -623,7 +623,7 @@ export async function sendIntegrationThresholdEmail(
   planData?: any
 ) {
   console.log("Sending integration threshold email to:", email);
-
+  
   if (!process.env.RESEND_API_KEY) {
     throw new Error("RESEND_API_KEY not configured");
   }
@@ -727,12 +727,12 @@ export async function sendIntegrationThresholdEmail(
         </html>
       `,
     });
-
+    
     if (error) {
       console.error("Resend API error:", error);
       throw new Error(`Resend API error: ${JSON.stringify(error)}`);
     }
-
+    
     console.log("Integration threshold email sent successfully:", data?.id);
   } catch (error) {
     console.error("Failed to send integration threshold email:", error);
@@ -747,7 +747,7 @@ export async function sendCompoundEffectEmail(
   planData?: any
 ) {
   console.log("Sending compound effect email to:", email);
-
+  
   if (!process.env.RESEND_API_KEY) {
     throw new Error("RESEND_API_KEY not configured");
   }
@@ -857,12 +857,12 @@ export async function sendCompoundEffectEmail(
         </html>
       `,
     });
-
+    
     if (error) {
       console.error("Resend API error:", error);
       throw new Error(`Resend API error: ${JSON.stringify(error)}`);
     }
-
+    
     console.log("Compound effect email sent successfully:", data?.id);
   } catch (error) {
     console.error("Failed to send compound effect email:", error);
@@ -877,7 +877,7 @@ export async function sendDirectInvitationEmail(
   planData?: any
 ) {
   console.log("Sending direct invitation email to:", email);
-
+  
   if (!process.env.RESEND_API_KEY) {
     throw new Error("RESEND_API_KEY not configured");
   }
@@ -1008,12 +1008,12 @@ export async function sendDirectInvitationEmail(
         </html>
       `,
     });
-
+    
     if (error) {
       console.error("Resend API error:", error);
       throw new Error(`Resend API error: ${JSON.stringify(error)}`);
     }
-
+    
     console.log("Direct invitation email sent successfully:", data?.id);
   } catch (error) {
     console.error("Failed to send direct invitation email:", error);
