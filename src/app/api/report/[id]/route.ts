@@ -1105,26 +1105,26 @@ function generateHTMLReport(
                     <div class="block-title">How to Stay Connected</div>
                     <div class="block-content">${planData.next_assessment?.stay_connected || "Join our community and stay connected for ongoing support and guidance"}</div>
                 </div>
-                
-                <div style="background: var(--cream); padding: 60px; text-align: center; max-width: 600px; border-left: 2px solid var(--soft-gold); margin-top: 80px;">
-                    <p style="font-size: 13px; line-height: 2.2; font-style: italic;">
-                        This assessment was built with care, respect, and the belief that you already have everything you need to become the person you described. The only thing left to do is <em>take action</em>.
-                    </p>
-                </div>
             </div>
             <div class="page-number">${15 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
         </div>
 
-        <!-- PDF BUTTON -->
+        <!-- FINAL PAGE -->
         <div class="page" style="display: flex; align-items: center; justify-content: center;">
-            <div style="text-align: center;">
-                <button 
-                    class="pdf-button" 
-                    onclick="showPDF()"
-                    ${!signedPdfUrl ? "disabled" : ""}
-                >
-                    ${signedPdfUrl ? "View PDF Report" : "PDF Still Generating..."}
-                </button>
+            <div style="background: var(--cream); padding: 60px; text-align: center; max-width: 600px; border-left: 2px solid var(--soft-gold);">
+                <p style="font-size: 13px; line-height: 2.2; font-style: italic;">
+                    This assessment was built with care, respect, and the belief that you already have everything you need to become the person you described. The only thing left to do is <em>take action</em>.
+                </p>
+                
+                <div style="text-align: center; margin: 40px 0;">
+                    <button 
+                        class="pdf-button" 
+                        onclick="showPDF()"
+                        ${!signedPdfUrl ? "disabled" : ""}
+                    >
+                        ${signedPdfUrl ? "View PDF Report" : "PDF Still Generating..."}
+                    </button>
+                </div>
             </div>
         </div>
 
