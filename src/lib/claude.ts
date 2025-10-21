@@ -278,7 +278,7 @@ export async function generateStructuredPlan(conversationHistory: string) {
     }
 
     // Truncate conversation if too long to prevent timeouts
-    const maxLength = 6000;
+    const maxLength = 7000;
     const truncatedHistory =
       conversationHistory.length > maxLength
         ? conversationHistory.substring(0, maxLength) + "..."
@@ -430,16 +430,7 @@ Format:
     "Prompt 4: [Another specific reflection question]",
     "Prompt 5: [Another specific reflection question]"
   ],
-  "next_assessment": {
-    "six_month_followup": "6-Month Follow-Up Assessment recommended with personalized timeline and expected progress",
-    "monthly_checkin": "Monthly Check-In Options (brief progress reviews) to track: nervous system regulation progress, business execution vs. avoidance patterns, body care consistency, relationship dynamics as you grow",
-    "focus_areas": [
-      "Focus Area 1: [Specific area for next phase]",
-      "Focus Area 2: [Another specific area]",
-      "Focus Area 3: [Another specific area]",
-      "Focus Area 4: [Another specific area]"
-    ],
-    "stay_connected": "How to Stay Connected: newsletter signup, community links, ongoing support resources"
+  "next_assessment": {"stay_connected": "How to Stay Connected: newsletter signup, community links, ongoing support resources"
   }
 }
 

@@ -62,9 +62,6 @@ export interface PlanData {
   resources?: string[];
   reflection_prompts?: string[];
   next_assessment?: {
-    six_month_followup?: string;
-    monthly_checkin?: string;
-    focus_areas?: string[];
     stay_connected?: string;
   };
 }
@@ -1185,12 +1182,6 @@ function generateHTMLReport(
               </div>
             </div>
             
-          <div class="content-block">
-            <div class="block-title">Daily Actions</div>
-            <div class="block-content">
-              ${dailyActions.map((action) => `<div class="reminder-item">${action}</div>`).join("")}
-              </div>
-            </div>
             
           </div>
       </div>
@@ -1253,22 +1244,6 @@ function generateHTMLReport(
             <div class="section-title">Next Steps</div>
             </div>
             
-          <div class="content-block">
-            <div class="block-title">6-Month Follow-Up Assessment Recommended</div>
-            <div class="block-content">${planData.next_assessment?.six_month_followup || "Personalized timeline and expected progress tracking"}</div>
-            </div>
-            
-          <div class="content-block">
-            <div class="block-title">Monthly Check-In Options</div>
-            <div class="block-content">${planData.next_assessment?.monthly_checkin || "Monthly check-ins to track progress and adjust strategies as needed"}</div>
-            </div>
-            
-          <div class="content-block">
-            <div class="block-title">Focus Areas for Next Phase</div>
-            <div class="block-content">
-              ${(planData.next_assessment?.focus_areas || ["Focus Area 1", "Focus Area 2", "Focus Area 3", "Focus Area 4"]).map((area) => `<p>${area}</p>`).join("")}
-              </div>
-            </div>
             
           <div class="content-block">
             <div class="block-title">How to Stay Connected</div>
