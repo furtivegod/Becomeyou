@@ -1,38 +1,44 @@
-import { Resend } from 'resend'
-import jwt from 'jsonwebtoken'
+import { Resend } from "resend";
+import jwt from "jsonwebtoken";
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const resend = new Resend(process.env.RESEND_API_KEY);
 
+export async function sendMagicLink(
+  email: string,
+  sessionId: string,
+  firstName?: string
+) {
+  console.log("Email service called with:", { email, sessionId, firstName });
 
-export async function sendMagicLink(email: string, sessionId: string, firstName?: string) {
-  console.log('Email service called with:', { email, sessionId, firstName })
-  
   if (!process.env.RESEND_API_KEY) {
-    throw new Error('RESEND_API_KEY not configured')
+    throw new Error("RESEND_API_KEY not configured");
   }
-  
+
   if (!process.env.JWT_SECRET) {
-    throw new Error('JWT_SECRET not configured')
+    throw new Error("JWT_SECRET not configured");
   }
-  
+
   if (!process.env.NEXT_PUBLIC_APP_URL) {
-    throw new Error('NEXT_PUBLIC_APP_URL not configured')
+    throw new Error("NEXT_PUBLIC_APP_URL not configured");
   }
 
   // Use provided firstName or extract from email as fallback
-  const displayName = firstName || (() => {
-    const emailPrefix = email.split('@')[0]
-    return emailPrefix.includes('.') 
-      ? emailPrefix.split('.')[0].charAt(0).toUpperCase() + emailPrefix.split('.')[0].slice(1)
-      : emailPrefix.charAt(0).toUpperCase() + emailPrefix.slice(1)
-  })()
+  const displayName =
+    firstName ||
+    (() => {
+      const emailPrefix = email.split("@")[0];
+      return emailPrefix.includes(".")
+        ? emailPrefix.split(".")[0].charAt(0).toUpperCase() +
+            emailPrefix.split(".")[0].slice(1)
+        : emailPrefix.charAt(0).toUpperCase() + emailPrefix.slice(1);
+    })();
 
   try {
-    console.log('Sending email via Resend...')
+    console.log("Sending email via Resend...");
     const { data, error } = await resend.emails.send({
-      from: 'Become You <noreply@becomeyou.ai>',
+      from: "Become You <noreply@becomeyou.ai>",
       to: [email],
-      subject: 'Your You 3.0 Assessment Is Ready',
+      subject: "Your You 3.0 Assessment Is Ready",
       html: `
         <!DOCTYPE html>
         <html lang="en">
@@ -43,7 +49,7 @@ export async function sendMagicLink(email: string, sessionId: string, firstName?
             <style>
                 @media only screen and (min-width: 600px) {
                     .cta-button:hover {
-                        background: #1f3329 !important;
+                        background: #3A4A1F !important;
                     }
                 }
                 
@@ -68,14 +74,14 @@ export async function sendMagicLink(email: string, sessionId: string, firstName?
                 }
             </style>
         </head>
-        <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif; background-color: #f5f5f5;">
+        <body style="margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #F9F6F1;">
             
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f5; padding: 40px 20px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #F9F6F1; padding: 40px 20px;">
                 <tr>
                     <td align="center">
                         
                         <!-- Main Container -->
-                        <table role="presentation" width="600" cellpadding="0" cellspacing="0" class="email-container" style="background-color: #FDFCF9; border-radius: 8px; overflow: hidden;">
+                        <table role="presentation" width="600" cellpadding="0" cellspacing="0" class="email-container" style="background-color: #FEFDFB; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
                             
                             <!-- Spacer -->
                             <tr>
@@ -97,8 +103,8 @@ export async function sendMagicLink(email: string, sessionId: string, firstName?
                             <!-- Greeting -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <h1 style="margin: 0; font-size: 32px; font-weight: 300; color: #111A19; letter-spacing: -0.5px; line-height: 1.2;">
-                                        <span style="color: #284138;">${displayName}</span>,
+                                    <h1 style="margin: 0; font-size: 32px; font-weight: 300; color: #2A2A2A; letter-spacing: -0.5px; line-height: 1.2; font-family: 'Cormorant Garamond', Georgia, serif;">
+                                        <span style="color: #4A5D23;">${displayName}</span>,
             </h1>
                                 </td>
                             </tr>
@@ -111,7 +117,7 @@ export async function sendMagicLink(email: string, sessionId: string, firstName?
                             <!-- Main Message -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <p style="margin: 0; font-size: 18px; font-weight: 300; color: #111A19; line-height: 1.6;">
+                                    <p style="margin: 0; font-size: 18px; font-weight: 300; color: #2A2A2A; line-height: 1.6; font-family: 'Inter', -apple-system, sans-serif;">
                                         Your assessment is ready.
                                     </p>
                                 </td>
@@ -125,7 +131,7 @@ export async function sendMagicLink(email: string, sessionId: string, firstName?
             <!-- CTA Button -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <a href="${process.env.NEXT_PUBLIC_APP_URL}/assessment/${sessionId}?token=${jwt.sign({ sessionId, email }, process.env.JWT_SECRET!, { expiresIn: '7d' })}" class="cta-button" style="display: inline-block; background: #284138; color: #FFFFFF; text-decoration: none; padding: 16px 48px; border-radius: 8px; font-size: 16px; font-weight: 500; letter-spacing: 0.3px; transition: background 0.2s ease;">
+                                    <a href="${process.env.NEXT_PUBLIC_APP_URL}/assessment/${sessionId}?token=${jwt.sign({ sessionId, email }, process.env.JWT_SECRET!, { expiresIn: "7d" })}" class="cta-button" style="display: inline-block; background: #4A5D23; color: #FFFFFF; text-decoration: none; padding: 16px 48px; border-radius: 8px; font-size: 16px; font-weight: 500; letter-spacing: 0.3px; transition: background 0.2s ease; font-family: 'Inter', -apple-system, sans-serif;">
                                         Begin Your Assessment →
                                     </a>
                                 </td>
@@ -139,7 +145,7 @@ export async function sendMagicLink(email: string, sessionId: string, firstName?
                             <!-- Instructions -->
                             <tr>
                                 <td align="center" class="instruction-text" style="padding: 0 60px;">
-                                    <p style="margin: 0; font-size: 14px; font-weight: 300; color: #80907B; line-height: 1.8;">
+                                    <p style="margin: 0; font-size: 14px; font-weight: 300; color: #666; line-height: 1.8; font-family: 'Inter', -apple-system, sans-serif;">
                                         Takes 15 minutes. No rush.<br>
                                         Find a quiet space where you can be honest.
                                     </p>
@@ -177,60 +183,69 @@ export async function sendMagicLink(email: string, sessionId: string, firstName?
             
         </body>
         </html>
-      `
-    })
-    
+      `,
+    });
+
     if (error) {
-      console.error('Resend API error:', error)
-      throw new Error(`Resend API error: ${JSON.stringify(error)}`)
+      console.error("Resend API error:", error);
+      throw new Error(`Resend API error: ${JSON.stringify(error)}`);
     }
-    
-    console.log('Magic link email sent successfully:', data?.id)
-    
+
+    console.log("Magic link email sent successfully:", data?.id);
   } catch (error) {
-    console.error('Failed to send magic link:', error)
-    throw error
+    console.error("Failed to send magic link:", error);
+    throw error;
   }
 }
 
-export async function sendReportEmail(email: string, userName: string, pdfUrl: string, pdfBuffer?: Buffer, planData?: any) {
-  console.log('Sending report email to:', email)
-  
+export async function sendReportEmail(
+  email: string,
+  userName: string,
+  pdfUrl: string,
+  pdfBuffer?: Buffer,
+  planData?: any
+) {
+  console.log("Sending report email to:", email);
+
   if (!process.env.RESEND_API_KEY) {
-    throw new Error('RESEND_API_KEY not configured')
+    throw new Error("RESEND_API_KEY not configured");
   }
 
   try {
-    console.log('Sending email via Resend...')
-    
+    console.log("Sending email via Resend...");
+
     // Use the provided user name, fallback to email extraction if not provided
-    const displayName = userName || email.split('@')[0].split('.').map(part => 
-      part.charAt(0).toUpperCase() + part.slice(1)
-    ).join(' ')
-    
+    const displayName =
+      userName ||
+      email
+        .split("@")[0]
+        .split(".")
+        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+        .join(" ");
+
     // Generate personalized P.S. based on assessment data
-    let personalizedPS = ''
+    let personalizedPS = "";
     if (planData) {
-      const sabotageAnalysis = planData.sabotage_analysis
-      const domainBreakdown = planData.domain_breakdown
-      
+      const sabotageAnalysis = planData.sabotage_analysis;
+      const domainBreakdown = planData.domain_breakdown;
+
       if (sabotageAnalysis?.protective_pattern) {
-        personalizedPS = `You mentioned "${sabotageAnalysis.protective_pattern.substring(0, 50)}...". If you want help designing the environment and structure that makes change automatic instead of exhausting, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`
+        personalizedPS = `You mentioned "${sabotageAnalysis.protective_pattern.substring(0, 50)}...". If you want help designing the environment and structure that makes change automatic instead of exhausting, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
       } else if (planData.thirty_day_protocol?.thirty_day_approach) {
-        personalizedPS = `You're building toward your transformation goals. If you want to map out how your patterns are affecting your momentum, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`
+        personalizedPS = `You're building toward your transformation goals. If you want to map out how your patterns are affecting your momentum, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
       } else if (domainBreakdown?.spirit) {
-        personalizedPS = `You shared insights about your spiritual connection. If you want to understand how your protective patterns show up in your closest relationships, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`
+        personalizedPS = `You shared insights about your spiritual connection. If you want to understand how your protective patterns show up in your closest relationships, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
       } else if (domainBreakdown?.body) {
-        personalizedPS = `You described your relationship with your body. If you want to rebuild that connection without force or punishment, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`
+        personalizedPS = `You described your relationship with your body. If you want to rebuild that connection without force or punishment, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
       } else {
-        personalizedPS = `Your assessment revealed important patterns. If you want to understand how these patterns are affecting your progress, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`
+        personalizedPS = `Your assessment revealed important patterns. If you want to understand how these patterns are affecting your progress, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
       }
     }
-    
+
     const emailData: any = {
-      from: 'Become You <noreply@becomeyou.ai>',
+      from: "Become You <noreply@becomeyou.ai>",
       to: [email],
-      subject: 'Your You 3.0 roadmap is ready',
+      subject: "Your You 3.0 roadmap is ready",
       html: `
         <!DOCTYPE html>
         <html>
@@ -276,11 +291,15 @@ export async function sendReportEmail(email: string, userName: string, pdfUrl: s
               <strong style="color: #4A5D23;">Matthew</strong>
             </p>
             
-            ${personalizedPS ? `
+            ${
+              personalizedPS
+                ? `
             <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
-            ` : ''}
+            `
+                : ""
+            }
             
             <!-- PDF Attachment Notice -->
             <div style="text-align: center; margin: 40px 0;">
@@ -299,68 +318,87 @@ export async function sendReportEmail(email: string, userName: string, pdfUrl: s
         </div>
         </body>
         </html>
-      `
-    }
+      `,
+    };
 
     // Add PDF attachment if buffer is provided
     if (pdfBuffer) {
       emailData.attachments = [
         {
-          filename: 'your-personalized-protocol.pdf',
-          content: pdfBuffer.toString('base64'),
-          type: 'application/pdf'
-        }
-      ]
+          filename: "your-personalized-protocol.pdf",
+          content: pdfBuffer.toString("base64"),
+          type: "application/pdf",
+        },
+      ];
     }
 
-    const { data, error } = await resend.emails.send(emailData)
-    
+    const { data, error } = await resend.emails.send(emailData);
+
     if (error) {
-      console.error('Resend API error:', error)
-      throw new Error(`Resend API error: ${JSON.stringify(error)}`)
+      console.error("Resend API error:", error);
+      throw new Error(`Resend API error: ${JSON.stringify(error)}`);
     }
-    
-    console.log('Report email sent successfully:', data?.id)
-    
+
+    console.log("Report email sent successfully:", data?.id);
   } catch (error) {
-    console.error('Failed to send report email:', error)
-    throw error
+    console.error("Failed to send report email:", error);
+    throw error;
   }
 }
 
 // Email 2: Pattern Recognition (48 hours)
-export async function sendPatternRecognitionEmail(email: string, userName: string, planData?: any) {
-  console.log('Sending pattern recognition email to:', email)
-  
+export async function sendPatternRecognitionEmail(
+  email: string,
+  userName: string,
+  planData?: any
+) {
+  console.log("Sending pattern recognition email to:", email);
+
   if (!process.env.RESEND_API_KEY) {
-    throw new Error('RESEND_API_KEY not configured')
+    throw new Error("RESEND_API_KEY not configured");
   }
 
   try {
     // Generate personalized P.S. based on nervous system pattern
-    let personalizedPS = ''
+    let personalizedPS = "";
     if (planData) {
-      const nervousSystemAssessment = planData.nervous_system_assessment
+      const nervousSystemAssessment = planData.nervous_system_assessment;
       if (nervousSystemAssessment?.primary_state) {
-        const pattern = nervousSystemAssessment.primary_state.toLowerCase()
-        if (pattern.includes('sympathetic') || pattern.includes('stress') || pattern.includes('overthinking')) {
-          personalizedPS = "In a Discovery Call, we map the exact moments your nervous system shifts into protection mode—and build specific interrupts that work with your wiring. <a href=\"https://calendly.com/matthewpaetz/discovery-call\" style=\"color: #4A5D23; text-decoration: underline;\">Book here</a> when you're ready."
-        } else if (pattern.includes('dorsal') || pattern.includes('avoidance') || pattern.includes('numbing')) {
-          personalizedPS = "In a Discovery Call, we identify what safety looks like for your nervous system—so action doesn't require forcing yourself through shutdown. <a href=\"https://calendly.com/matthewpaetz/discovery-call\" style=\"color: #4A5D23; text-decoration: underline;\">Book here</a> when you're ready."
-        } else if (pattern.includes('ventral') || pattern.includes('regulation')) {
-          personalizedPS = "In a Discovery Call, we design practices that help you stay regulated under pressure—not just when life is calm. <a href=\"https://calendly.com/matthewpaetz/discovery-call\" style=\"color: #4A5D23; text-decoration: underline;\">Book here</a> when you're ready."
+        const pattern = nervousSystemAssessment.primary_state.toLowerCase();
+        if (
+          pattern.includes("sympathetic") ||
+          pattern.includes("stress") ||
+          pattern.includes("overthinking")
+        ) {
+          personalizedPS =
+            'In a Discovery Call, we map the exact moments your nervous system shifts into protection mode—and build specific interrupts that work with your wiring. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a> when you\'re ready.';
+        } else if (
+          pattern.includes("dorsal") ||
+          pattern.includes("avoidance") ||
+          pattern.includes("numbing")
+        ) {
+          personalizedPS =
+            'In a Discovery Call, we identify what safety looks like for your nervous system—so action doesn\'t require forcing yourself through shutdown. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a> when you\'re ready.';
+        } else if (
+          pattern.includes("ventral") ||
+          pattern.includes("regulation")
+        ) {
+          personalizedPS =
+            'In a Discovery Call, we design practices that help you stay regulated under pressure—not just when life is calm. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a> when you\'re ready.';
         } else {
-          personalizedPS = "In a Discovery Call, we design pattern interrupts tailored to your nervous system. <a href=\"https://calendly.com/matthewpaetz/discovery-call\" style=\"color: #4A5D23; text-decoration: underline;\">Book here</a> when you're ready to build new responses."
+          personalizedPS =
+            'In a Discovery Call, we design pattern interrupts tailored to your nervous system. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a> when you\'re ready to build new responses.';
         }
       } else {
-        personalizedPS = "In a Discovery Call, we design pattern interrupts tailored to your nervous system. <a href=\"https://calendly.com/matthewpaetz/discovery-call\" style=\"color: #4A5D23; text-decoration: underline;\">Book here</a> when you're ready to build new responses."
+        personalizedPS =
+          'In a Discovery Call, we design pattern interrupts tailored to your nervous system. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a> when you\'re ready to build new responses.';
       }
     }
 
     const { data, error } = await resend.emails.send({
-      from: 'Become You <noreply@becomeyou.ai>',
+      from: "Become You <noreply@becomeyou.ai>",
       to: [email],
-      subject: 'You probably already noticed it',
+      subject: "You probably already noticed it",
       html: `
         <!DOCTYPE html>
         <html>
@@ -387,7 +425,7 @@ export async function sendPatternRecognitionEmail(email: string, userName: strin
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
-              Or you felt motivated to ${planData?.sabotage_analysis?.protective_pattern || '[their specific pattern]'}, then reached for ${planData?.sabotage_analysis?.escape_behavior || '[their escape behavior]'} instead.
+              Or you felt motivated to ${planData?.sabotage_analysis?.protective_pattern || "[their specific pattern]"}, then reached for ${planData?.sabotage_analysis?.escape_behavior || "[their escape behavior]"} instead.
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
@@ -407,11 +445,15 @@ export async function sendPatternRecognitionEmail(email: string, userName: strin
               <strong style="color: #4A5D23;">Matthew</strong>
             </p>
             
-            ${personalizedPS ? `
+            ${
+              personalizedPS
+                ? `
             <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
-            ` : ''}
+            `
+                : ""
+            }
           </div>
           
           <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
@@ -422,54 +464,68 @@ export async function sendPatternRecognitionEmail(email: string, userName: strin
         </div>
         </body>
         </html>
-      `
-    })
-    
+      `,
+    });
+
     if (error) {
-      console.error('Resend API error:', error)
-      throw new Error(`Resend API error: ${JSON.stringify(error)}`)
+      console.error("Resend API error:", error);
+      throw new Error(`Resend API error: ${JSON.stringify(error)}`);
     }
-    
-    console.log('Pattern recognition email sent successfully:', data?.id)
-    
+
+    console.log("Pattern recognition email sent successfully:", data?.id);
   } catch (error) {
-    console.error('Failed to send pattern recognition email:', error)
-    throw error
+    console.error("Failed to send pattern recognition email:", error);
+    throw error;
   }
 }
 
 // Email 3: Evidence 7-Day (7 days)
-export async function sendEvidence7DayEmail(email: string, userName: string, planData?: any) {
-  console.log('Sending evidence 7-day email to:', email)
-  
+export async function sendEvidence7DayEmail(
+  email: string,
+  userName: string,
+  planData?: any
+) {
+  console.log("Sending evidence 7-day email to:", email);
+
   if (!process.env.RESEND_API_KEY) {
-    throw new Error('RESEND_API_KEY not configured')
+    throw new Error("RESEND_API_KEY not configured");
   }
 
   try {
     // Generate personalized P.S. based on primary sabotage pattern
-    let personalizedPS = ''
+    let personalizedPS = "";
     if (planData) {
-      const sabotageAnalysis = planData.sabotage_analysis
+      const sabotageAnalysis = planData.sabotage_analysis;
       if (sabotageAnalysis?.protective_pattern) {
-        const pattern = sabotageAnalysis.protective_pattern.toLowerCase()
-        if (pattern.includes('perfectionism') || pattern.includes('overthinking')) {
-          personalizedPS = `You mentioned ${sabotageAnalysis.protective_pattern.substring(0, 50)}. In a Discovery Call, we identify what 'good enough' actually looks like for your nervous system—so you can ship without the spiral. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`
-        } else if (pattern.includes('avoidance') || pattern.includes('procrastination')) {
-          personalizedPS = `You shared that ${sabotageAnalysis.protective_pattern.substring(0, 50)}. In a Discovery Call, we build momentum systems that work with your energy cycles instead of fighting them. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`
-        } else if (pattern.includes('people-pleasing') || pattern.includes('conflict')) {
-          personalizedPS = `You described ${sabotageAnalysis.protective_pattern.substring(0, 50)}. In a Discovery Call, we practice saying what's true without triggering your abandonment alarm. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`
+        const pattern = sabotageAnalysis.protective_pattern.toLowerCase();
+        if (
+          pattern.includes("perfectionism") ||
+          pattern.includes("overthinking")
+        ) {
+          personalizedPS = `You mentioned ${sabotageAnalysis.protective_pattern.substring(0, 50)}. In a Discovery Call, we identify what 'good enough' actually looks like for your nervous system—so you can ship without the spiral. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
+        } else if (
+          pattern.includes("avoidance") ||
+          pattern.includes("procrastination")
+        ) {
+          personalizedPS = `You shared that ${sabotageAnalysis.protective_pattern.substring(0, 50)}. In a Discovery Call, we build momentum systems that work with your energy cycles instead of fighting them. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
+        } else if (
+          pattern.includes("people-pleasing") ||
+          pattern.includes("conflict")
+        ) {
+          personalizedPS = `You described ${sabotageAnalysis.protective_pattern.substring(0, 50)}. In a Discovery Call, we practice saying what's true without triggering your abandonment alarm. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
         } else {
-          personalizedPS = "The assessment mapped the patterns. A Discovery Call helps you see progress you're missing and builds momentum structures. <a href=\"https://calendly.com/matthewpaetz/discovery-call\" style=\"color: #4A5D23; text-decoration: underline;\">Book here</a>."
+          personalizedPS =
+            'The assessment mapped the patterns. A Discovery Call helps you see progress you\'re missing and builds momentum structures. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.';
         }
       } else {
-        personalizedPS = "The assessment mapped the patterns. A Discovery Call helps you see progress you're missing and builds momentum structures. <a href=\"https://calendly.com/matthewpaetz/discovery-call\" style=\"color: #4A5D23; text-decoration: underline;\">Book here</a>."
+        personalizedPS =
+          'The assessment mapped the patterns. A Discovery Call helps you see progress you\'re missing and builds momentum structures. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.';
       }
     }
     const { data, error } = await resend.emails.send({
-      from: 'Become You <noreply@becomeyou.ai>',
+      from: "Become You <noreply@becomeyou.ai>",
       to: [email],
-      subject: 'The shift you might not be noticing',
+      subject: "The shift you might not be noticing",
       html: `
         <!DOCTYPE html>
         <html>
@@ -501,7 +557,7 @@ export async function sendEvidence7DayEmail(email: string, userName: string, pla
             
             <ul style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 20px 0; padding-left: 20px; font-family: 'Inter', sans-serif;">
               <li style="margin-bottom: 8px;">One conversation you didn't avoid</li>
-              <li style="margin-bottom: 8px;">One evening you chose ${planData?.sabotage_analysis?.positive_behavior || '[their positive behavior]'} over ${planData?.sabotage_analysis?.escape_behavior || '[their escape behavior]'}</li>
+              <li style="margin-bottom: 8px;">One evening you chose ${planData?.sabotage_analysis?.positive_behavior || "[their positive behavior]"} over ${planData?.sabotage_analysis?.escape_behavior || "[their escape behavior]"}</li>
               <li style="margin-bottom: 8px;">One moment you caught the spiral before it hijacked your whole day</li>
             </ul>
             
@@ -526,11 +582,15 @@ export async function sendEvidence7DayEmail(email: string, userName: string, pla
               <strong style="color: #4A5D23;">Matthew</strong>
             </p>
             
-            ${personalizedPS ? `
+            ${
+              personalizedPS
+                ? `
             <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
-            ` : ''}
+            `
+                : ""
+            }
           </div>
           
           <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
@@ -541,49 +601,53 @@ export async function sendEvidence7DayEmail(email: string, userName: string, pla
         </div>
         </body>
         </html>
-      `
-    })
-    
+      `,
+    });
+
     if (error) {
-      console.error('Resend API error:', error)
-      throw new Error(`Resend API error: ${JSON.stringify(error)}`)
+      console.error("Resend API error:", error);
+      throw new Error(`Resend API error: ${JSON.stringify(error)}`);
     }
-    
-    console.log('Evidence 7-day email sent successfully:', data?.id)
-    
+
+    console.log("Evidence 7-day email sent successfully:", data?.id);
   } catch (error) {
-    console.error('Failed to send evidence 7-day email:', error)
-    throw error
+    console.error("Failed to send evidence 7-day email:", error);
+    throw error;
   }
 }
 
 // Email 4: Integration Threshold (14 days)
-export async function sendIntegrationThresholdEmail(email: string, userName: string, planData?: any) {
-  console.log('Sending integration threshold email to:', email)
-  
+export async function sendIntegrationThresholdEmail(
+  email: string,
+  userName: string,
+  planData?: any
+) {
+  console.log("Sending integration threshold email to:", email);
+
   if (!process.env.RESEND_API_KEY) {
-    throw new Error('RESEND_API_KEY not configured')
+    throw new Error("RESEND_API_KEY not configured");
   }
 
   try {
     // Generate personalized P.S. based on stated goals
-    let personalizedPS = ''
+    let personalizedPS = "";
     if (planData) {
-      const goals = planData.goals
+      const goals = planData.goals;
       if (goals?.business_goal || goals?.financial_goal) {
-        const businessGoal = goals.business_goal || goals.financial_goal
-        personalizedPS = `You're building toward ${businessGoal}. In a Discovery Call, we map how your nervous system patterns are affecting your business momentum—and what to shift first. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`
+        const businessGoal = goals.business_goal || goals.financial_goal;
+        personalizedPS = `You're building toward ${businessGoal}. In a Discovery Call, we map how your nervous system patterns are affecting your business momentum—and what to shift first. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
       } else if (goals?.relationship_goal) {
-        personalizedPS = `You want ${goals.relationship_goal}. In a Discovery Call, we identify how your protective patterns show up in intimacy—and practice new responses. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`
+        personalizedPS = `You want ${goals.relationship_goal}. In a Discovery Call, we identify how your protective patterns show up in intimacy—and practice new responses. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
       } else if (goals?.body_goal || goals?.health_goal) {
-        const bodyGoal = goals.body_goal || goals.health_goal
-        personalizedPS = `You described wanting ${bodyGoal}. In a Discovery Call, we rebuild your relationship with your body without punishment or force. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`
+        const bodyGoal = goals.body_goal || goals.health_goal;
+        personalizedPS = `You described wanting ${bodyGoal}. In a Discovery Call, we rebuild your relationship with your body without punishment or force. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
       } else {
-        personalizedPS = "A Discovery Call clarifies whether you're ready for implementation or still gathering insights. Both are valid—but knowing saves months. <a href=\"https://calendly.com/matthewpaetz/discovery-call\" style=\"color: #4A5D23; text-decoration: underline;\">Book here</a>."
+        personalizedPS =
+          'A Discovery Call clarifies whether you\'re ready for implementation or still gathering insights. Both are valid—but knowing saves months. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.';
       }
     }
     const { data, error } = await resend.emails.send({
-      from: 'Become You <noreply@becomeyou.ai>',
+      from: "Become You <noreply@becomeyou.ai>",
       to: [email],
       subject: "You're at the make-or-break point",
       html: `
@@ -634,7 +698,7 @@ export async function sendIntegrationThresholdEmail(email: string, userName: str
             </ol>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
-              You've proven you can do hard things—you built ${planData?.sabotage_analysis?.success_proof || planData?.sabotage_analysis?.anchor || 'something meaningful in your life'}. The question is: Are you ready to apply that same capability to your own nervous system?
+              You've proven you can do hard things—you built ${planData?.sabotage_analysis?.success_proof || planData?.sabotage_analysis?.anchor || "something meaningful in your life"}. The question is: Are you ready to apply that same capability to your own nervous system?
             </p>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
@@ -642,11 +706,15 @@ export async function sendIntegrationThresholdEmail(email: string, userName: str
               <strong style="color: #4A5D23;">Matthew</strong>
             </p>
             
-            ${personalizedPS ? `
+            ${
+              personalizedPS
+                ? `
             <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
-            ` : ''}
+            `
+                : ""
+            }
           </div>
           
           <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
@@ -657,47 +725,51 @@ export async function sendIntegrationThresholdEmail(email: string, userName: str
         </div>
         </body>
         </html>
-      `
-    })
-    
+      `,
+    });
+
     if (error) {
-      console.error('Resend API error:', error)
-      throw new Error(`Resend API error: ${JSON.stringify(error)}`)
+      console.error("Resend API error:", error);
+      throw new Error(`Resend API error: ${JSON.stringify(error)}`);
     }
-    
-    console.log('Integration threshold email sent successfully:', data?.id)
-    
+
+    console.log("Integration threshold email sent successfully:", data?.id);
   } catch (error) {
-    console.error('Failed to send integration threshold email:', error)
-    throw error
+    console.error("Failed to send integration threshold email:", error);
+    throw error;
   }
 }
 
 // Email 5: Compound Effect (21 days)
-export async function sendCompoundEffectEmail(email: string, userName: string, planData?: any) {
-  console.log('Sending compound effect email to:', email)
-  
+export async function sendCompoundEffectEmail(
+  email: string,
+  userName: string,
+  planData?: any
+) {
+  console.log("Sending compound effect email to:", email);
+
   if (!process.env.RESEND_API_KEY) {
-    throw new Error('RESEND_API_KEY not configured')
+    throw new Error("RESEND_API_KEY not configured");
   }
 
   try {
     // Generate personalized P.S. based on 30-day protocol
-    let personalizedPS = ''
+    let personalizedPS = "";
     if (planData) {
-      const protocol = planData.thirty_day_protocol
+      const protocol = planData.thirty_day_protocol;
       if (protocol?.specific_action) {
-        personalizedPS = `You committed to ${protocol.specific_action}. Whether you did it once or daily, that's data. In a Discovery Call, we use that data to design what's actually sustainable for your nervous system. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`
+        personalizedPS = `You committed to ${protocol.specific_action}. Whether you did it once or daily, that's data. In a Discovery Call, we use that data to design what's actually sustainable for your nervous system. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
       } else if (protocol?.environmental_change) {
-        personalizedPS = `You identified ${protocol.environmental_change}. In a Discovery Call, we refine your environment so the default choice is the right choice—no willpower required. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`
+        personalizedPS = `You identified ${protocol.environmental_change}. In a Discovery Call, we refine your environment so the default choice is the right choice—no willpower required. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
       } else if (protocol?.weekly_practice) {
-        personalizedPS = `You planned ${protocol.weekly_practice}. In a Discovery Call, we figure out why it stuck or why it didn't—and adjust from there. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`
+        personalizedPS = `You planned ${protocol.weekly_practice}. In a Discovery Call, we figure out why it stuck or why it didn't—and adjust from there. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
       } else {
-        personalizedPS = "Three weeks of data is enough to see your patterns clearly. In a Discovery Call, we turn that data into a sustainable system. <a href=\"https://calendly.com/matthewpaetz/discovery-call\" style=\"color: #4A5D23; text-decoration: underline;\">Book here</a>."
+        personalizedPS =
+          'Three weeks of data is enough to see your patterns clearly. In a Discovery Call, we turn that data into a sustainable system. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.';
       }
     }
     const { data, error } = await resend.emails.send({
-      from: 'Become You <noreply@becomeyou.ai>',
+      from: "Become You <noreply@becomeyou.ai>",
       to: [email],
       subject: "Three weeks in—this is where it gets real",
       html: `
@@ -764,11 +836,15 @@ export async function sendCompoundEffectEmail(email: string, userName: string, p
               <strong style="color: #4A5D23;">Matthew</strong>
             </p>
             
-            ${personalizedPS ? `
+            ${
+              personalizedPS
+                ? `
             <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
-            ` : ''}
+            `
+                : ""
+            }
           </div>
           
           <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
@@ -779,43 +855,48 @@ export async function sendCompoundEffectEmail(email: string, userName: string, p
         </div>
         </body>
         </html>
-      `
-    })
-    
+      `,
+    });
+
     if (error) {
-      console.error('Resend API error:', error)
-      throw new Error(`Resend API error: ${JSON.stringify(error)}`)
+      console.error("Resend API error:", error);
+      throw new Error(`Resend API error: ${JSON.stringify(error)}`);
     }
-    
-    console.log('Compound effect email sent successfully:', data?.id)
-    
+
+    console.log("Compound effect email sent successfully:", data?.id);
   } catch (error) {
-    console.error('Failed to send compound effect email:', error)
-    throw error
+    console.error("Failed to send compound effect email:", error);
+    throw error;
   }
 }
 
 // Email 6: Direct Invitation (30 days)
-export async function sendDirectInvitationEmail(email: string, userName: string, planData?: any) {
-  console.log('Sending direct invitation email to:', email)
-  
+export async function sendDirectInvitationEmail(
+  email: string,
+  userName: string,
+  planData?: any
+) {
+  console.log("Sending direct invitation email to:", email);
+
   if (!process.env.RESEND_API_KEY) {
-    throw new Error('RESEND_API_KEY not configured')
+    throw new Error("RESEND_API_KEY not configured");
   }
 
   try {
     // Generate personalized P.S. based on future vision
-    let personalizedPS = ''
+    let personalizedPS = "";
     if (planData) {
-      const futureVision = planData.future_vision || planData.goals?.future_state
+      const futureVision =
+        planData.future_vision || planData.goals?.future_state;
       if (futureVision) {
-        personalizedPS = `You described a Tuesday where ${futureVision}. That version of you exists—you just need the path to get there. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a> to map it out together.`
+        personalizedPS = `You described a Tuesday where ${futureVision}. That version of you exists—you just need the path to get there. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a> to map it out together.`;
       } else {
-        personalizedPS = "You've had the map for 30 days. Ready to build the path? <a href=\"https://calendly.com/matthewpaetz/discovery-call\" style=\"color: #4A5D23; text-decoration: underline;\">Book here</a>."
+        personalizedPS =
+          'You\'ve had the map for 30 days. Ready to build the path? <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.';
       }
     }
     const { data, error } = await resend.emails.send({
-      from: 'Become You <noreply@becomeyou.ai>',
+      from: "Become You <noreply@becomeyou.ai>",
       to: [email],
       subject: "30 days later—what's actually different?",
       html: `
@@ -854,7 +935,7 @@ export async function sendDirectInvitationEmail(email: string, userName: string,
             <ul style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 20px 0; padding-left: 20px; font-family: 'Inter', sans-serif;">
               <li style="margin-bottom: 8px;">Caught yourself mid-spiral and interrupted it (even once)</li>
               <li style="margin-bottom: 8px;">Had a hard conversation you would have avoided before</li>
-              <li style="margin-bottom: 8px;">Chose ${planData?.sabotage_analysis?.positive_behavior || '[positive behavior]'} when you normally would have reached for ${planData?.sabotage_analysis?.escape_behavior || '[escape behavior]'}</li>
+              <li style="margin-bottom: 8px;">Chose ${planData?.sabotage_analysis?.positive_behavior || "[positive behavior]"} when you normally would have reached for ${planData?.sabotage_analysis?.escape_behavior || "[escape behavior]"}</li>
             </ul>
             
             <p style="font-size: 16px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
@@ -906,11 +987,15 @@ export async function sendDirectInvitationEmail(email: string, userName: string,
               <strong style="color: #4A5D23;">Matthew</strong>
             </p>
             
-            ${personalizedPS ? `
+            ${
+              personalizedPS
+                ? `
             <p style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
-            ` : ''}
+            `
+                : ""
+            }
           </div>
           
           <div style="background-color: #f0e29d; padding: 20px; text-align: center; border-top: 1px solid #4A5D23;">
@@ -921,18 +1006,17 @@ export async function sendDirectInvitationEmail(email: string, userName: string,
         </div>
         </body>
         </html>
-      `
-    })
-    
+      `,
+    });
+
     if (error) {
-      console.error('Resend API error:', error)
-      throw new Error(`Resend API error: ${JSON.stringify(error)}`)
+      console.error("Resend API error:", error);
+      throw new Error(`Resend API error: ${JSON.stringify(error)}`);
     }
-    
-    console.log('Direct invitation email sent successfully:', data?.id)
-    
+
+    console.log("Direct invitation email sent successfully:", data?.id);
   } catch (error) {
-    console.error('Failed to send direct invitation email:', error)
-    throw error
+    console.error("Failed to send direct invitation email:", error);
+    throw error;
   }
 }

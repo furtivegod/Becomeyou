@@ -925,7 +925,7 @@ function generateHTMLReport(
                       : ""
                   )
                   .join("<br>")}
-              </div>
+              </div> 
             </div>
             
             <div class="sabotage-section">
