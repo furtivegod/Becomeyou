@@ -564,6 +564,7 @@ function generateHTMLReport(
           font-style: italic;
           font-weight: 300;
           color: #666;
+          margin-top: 40px;
           line-height: 1.6;
         }
 
