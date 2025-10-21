@@ -1,37 +1,38 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { NextRequest, NextResponse } from "next/server";
+import { supabase } from "@/lib/supabase";
 
 export async function GET(
   request: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const params = await context.params
-    const sessionId = params.id
-    
-    console.log('Report viewer API called for session:', sessionId)
+    const params = await context.params;
+    const sessionId = params.id;
+
+    console.log("Report viewer API called for session:", sessionId);
 
     // Try to get signed PDF URL first
-    const signedPdfUrl = await getSignedPDFUrl(sessionId)
-    console.log('PDF URL found:', signedPdfUrl ? 'Yes' : 'No')
-    console.log('PDF URL:', signedPdfUrl)
-    
+    const signedPdfUrl = await getSignedPDFUrl(sessionId);
+    console.log("PDF URL found:", signedPdfUrl ? "Yes" : "No");
+    console.log("PDF URL:", signedPdfUrl);
+
     // Always show HTML page, don't redirect to PDF
-    console.log('Generating HTML view for session:', sessionId)
-    
+    console.log("Generating HTML view for session:", sessionId);
+
     const { data: planOutput, error: planError } = await supabase
-      .from('plan_outputs')
-      .select('plan_json')
-      .eq('session_id', sessionId)
-      .order('created_at', { ascending: false })
+      .from("plan_outputs")
+      .select("plan_json")
+      .eq("session_id", sessionId)
+      .order("created_at", { ascending: false })
       .limit(1)
-      .single()
+      .single();
 
     if (planError || !planOutput) {
-      console.error('Error fetching plan data:', planError)
-      
+      console.error("Error fetching plan data:", planError);
+
       // If all else fails, show a fallback message
-      return new NextResponse(`
+      return new NextResponse(
+        `
         <!DOCTYPE html>
         <html>
         <head>
@@ -92,73 +93,80 @@ export async function GET(
           </div>
         </body>
         </html>
-      `, {
-        headers: { 'Content-Type': 'text/html' }
-      })
+      `,
+        {
+          headers: { "Content-Type": "text/html" },
+        }
+      );
     }
 
-    const planData = planOutput.plan_json
-    
+    const planData = planOutput.plan_json;
+
     // Get user data to display the correct name
     const { data: sessionData, error: sessionError } = await supabase
-      .from('sessions')
-      .select('user_id')
-      .eq('id', sessionId)
-      .single()
+      .from("sessions")
+      .select("user_id")
+      .eq("id", sessionId)
+      .single();
 
-    let userName = 'Client' // Default fallback
+    let userName = "Client"; // Default fallback
     if (!sessionError && sessionData) {
       const { data: userData, error: userError } = await supabase
-        .from('users')
-        .select('user_name')
-        .eq('id', sessionData.user_id)
-        .single()
-      
+        .from("users")
+        .select("user_name")
+        .eq("id", sessionData.user_id)
+        .single();
+
       if (!userError && userData?.user_name) {
-        userName = userData.user_name
+        userName = userData.user_name;
       }
     }
-    
-    return generateHTMLReport(planData, sessionId, signedPdfUrl, userName)
 
+    return generateHTMLReport(planData, sessionId, signedPdfUrl, userName);
   } catch (error) {
-    console.error('Report viewer error:', error)
-    return new NextResponse('Internal Server Error', { status: 500 })
+    console.error("Report viewer error:", error);
+    return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
 
 async function getSignedPDFUrl(sessionId: string): Promise<string | null> {
   try {
     const { data: pdfJob, error } = await supabase
-      .from('pdf_jobs')
-      .select('pdf_url, status')
-      .eq('session_id', sessionId)
-      .eq('status', 'completed')
-      .order('created_at', { ascending: false })
+      .from("pdf_jobs")
+      .select("pdf_url, status")
+      .eq("session_id", sessionId)
+      .eq("status", "completed")
+      .order("created_at", { ascending: false })
       .limit(1)
-      .single()
+      .single();
 
     if (error || !pdfJob) {
-      console.log('No completed PDF found for session:', sessionId)
-      return null
+      console.log("No completed PDF found for session:", sessionId);
+      return null;
     }
 
-    return pdfJob.pdf_url
+    return pdfJob.pdf_url;
   } catch (error) {
-    console.error('Error getting signed PDF URL:', error)
-    return null
+    console.error("Error getting signed PDF URL:", error);
+    return null;
   }
 }
 
-function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: string | null, userName?: string) {
-  const clientName = userName || 'Client';
-  const currentDate = new Date().toLocaleDateString('en-US', { 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
+function generateHTMLReport(
+  planData: any,
+  sessionId: string,
+  signedPdfUrl?: string | null,
+  userName?: string
+) {
+  const clientName = userName || "Client";
+  const currentDate = new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 
-  return new NextResponse(`
+  return new NextResponse(
+    `
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -273,7 +281,8 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 font-style: italic;
                 font-weight: 300;
                 color: #666;
-          line-height: 1.6;
+                margin-top: 80px;
+                line-height: 1.6;
             }
 
             /* SECTION HEADERS */
@@ -433,6 +442,27 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 font-weight: 300;
             }
 
+            .protocol-goals {
+                margin-top: 20px;
+            }
+
+            .goal-item {
+                font-size: 13px;
+                line-height: 1.8;
+                font-weight: 300;
+                margin: 8px 0;
+                padding-left: 20px;
+                position: relative;
+            }
+
+            .goal-item::before {
+                content: '•';
+                color: var(--soft-gold);
+                font-weight: bold;
+                position: absolute;
+                left: 0;
+            }
+
             /* REMINDERS */
             .reminder-item {
                 padding: 25px 0;
@@ -488,7 +518,6 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
             <div class="cover-content">
                 <div class="logo-mark">BECOME YOU</div>
                 <h1>YOUR FULL<br>YOU 3.0<br>SUMMARY</h1>
-                <div class="client-name">${clientName.toUpperCase()}</div>
                 <div class="cover-tagline">This is where<br>transformation begins</div>
             </div>
         </div>
@@ -525,7 +554,7 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                     <div class="section-title">Assessment Overview</div>
           </div>
                 
-                <p style="font-size: 15px; line-height: 2;">${planData.assessment_overview || 'Your personalized behavioral optimization assessment reveals the patterns that have been keeping you stuck and provides a clear path forward.'}</p>
+                <p style="font-size: 15px; line-height: 2;">${planData.assessment_overview || "Your personalized behavioral optimization assessment reveals the patterns that have been keeping you stuck and provides a clear path forward."}</p>
             </div>
             <div class="page-number">03</div>
               </div>
@@ -538,16 +567,20 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                     <div class="section-title">Your Development<br>Profile</div>
           </div>
                 
-                <p style="font-size: 15px; line-height: 2;">${planData.development_profile || 'Your core development pattern and how it shows up in your daily life.'}</p>
+                <p style="font-size: 15px; line-height: 2;">${planData.development_profile || "Your core development pattern and how it shows up in your daily life."}</p>
                 
-                ${planData.client_quote ? `
+                ${
+                  planData.client_quote
+                    ? `
                 <div class="content-block">
                     <div class="block-title">Your Words</div>
                     <div class="block-content" style="font-style: italic;">
                         "${planData.client_quote}"
                     </div>
                 </div>
-                ` : ''}
+                `
+                    : ""
+                }
             </div>
             <div class="page-number">04</div>
         </div>
@@ -560,53 +593,59 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                     <div class="section-title">Sabotage Pattern<br>Analysis</div>
                 </div>
                 
-                ${planData.sabotage_analysis ? `
+                ${
+                  planData.sabotage_analysis
+                    ? `
                 <div class="content-block">
                     <div class="block-title">Your Protective Pattern</div>
-                    <div class="block-content">${planData.sabotage_analysis.protective_pattern || 'Your specific protective pattern'}</div>
+                    <div class="block-content">${planData.sabotage_analysis.protective_pattern || "Your specific protective pattern"}</div>
                 </div>
                 
                 <div class="content-block">
                     <div class="block-title">What It's Protecting You From</div>
-                    <div class="block-content">${planData.sabotage_analysis.what_its_protecting_from || 'The underlying fear driving your patterns'}</div>
+                    <div class="block-content">${planData.sabotage_analysis.what_its_protecting_from || "The underlying fear driving your patterns"}</div>
           </div>
                 
                 <div class="content-block">
                     <div class="block-title">Your Success Proof</div>
-                    <div class="block-content">${planData.sabotage_analysis.success_proof || 'Evidence that you can overcome this pattern'}</div>
+                    <div class="block-content">${planData.sabotage_analysis.success_proof || "Evidence that you can overcome this pattern"}</div>
                 </div>
                 
                 <div class="content-block">
                     <div class="block-title">Your Anchor</div>
-                    <div class="block-content">${planData.sabotage_analysis.anchor || 'Your daily anchor practice'}</div>
+                    <div class="block-content">${planData.sabotage_analysis.anchor || "Your daily anchor practice"}</div>
                 </div>
                 
                 <div class="content-block">
                     <div class="block-title">Go To Patterns</div>
-                    <div class="block-content">${planData.sabotage_analysis.go_to_patterns || 'Your automatic response patterns'}</div>
+                    <div class="block-content">${planData.sabotage_analysis.go_to_patterns || "Your automatic response patterns"}</div>
                 </div>
                 
                 <div class="content-block">
                     <div class="block-title">Escape Behavior</div>
-                    <div class="block-content">${planData.sabotage_analysis.escape_behavior || 'Your primary escape mechanism'}</div>
+                    <div class="block-content">${planData.sabotage_analysis.escape_behavior || "Your primary escape mechanism"}</div>
                 </div>
                 
                 <div class="content-block">
                     <div class="block-title">How It Serves You</div>
-                    <div class="block-content">${planData.sabotage_analysis.how_it_serves_you || 'The function this pattern serves'}</div>
+                    <div class="block-content">${planData.sabotage_analysis.how_it_serves_you || "The function this pattern serves"}</div>
                 </div>
                 
                 <div class="content-block">
                     <div class="block-title">Positive Behavior</div>
-                    <div class="block-content">${planData.sabotage_analysis.positive_behavior || 'The behavior you want to develop'}</div>
+                    <div class="block-content">${planData.sabotage_analysis.positive_behavior || "The behavior you want to develop"}</div>
                 </div>
-                ` : ''}
+                `
+                    : ""
+                }
             </div>
             <div class="page-number">05</div>
         </div>
 
         <!-- IN THE MOMENT RESET PAGE -->
-        ${planData.in_the_moment_reset ? `
+        ${
+          planData.in_the_moment_reset
+            ? `
         <div class="page">
             <div class="page-content">
                 <div class="section-header">
@@ -622,7 +661,9 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
             </div>
             <div class="page-number">06</div>
         </div>
-        ` : ''}
+        `
+            : ""
+        }
 
         <!-- PAGE 7: DOMAIN DIVIDER -->
         <div class="page" style="display: flex; align-items: center; justify-content: center;">
@@ -633,43 +674,67 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
             <div class="page-number">07</div>
         </div>
 
-        ${planData.domain_breakdown ? Object.entries(planData.domain_breakdown).map(([domain, data]: [string, any], index: number) => `
+        ${
+          planData.domain_breakdown
+            ? Object.entries(planData.domain_breakdown)
+                .map(
+                  ([domain, data]: [string, any], index: number) => `
         <!-- PAGE ${8 + index}: ${domain.toUpperCase()} -->
         <div class="page">
             <div class="page-content">
                 <h1 class="domain-hero">${domain.toUpperCase()}</h1>
                 
-                ${data.current_level ? `
+                ${
+                  data.current_level
+                    ? `
                 <div class="metric-row">
                     <div class="metric-label">Current Level</div>
                     <div class="metric-value">${data.current_level}</div>
           </div>
-        ` : ''}
+        `
+                    : ""
+                }
 
-                ${data.current_phase ? `
+                ${
+                  data.current_phase
+                    ? `
                 <div class="metric-row">
                     <div class="metric-label">Current Phase</div>
                     <div class="metric-value">${data.current_phase}</div>
               </div>
-                ` : ''}
+                `
+                    : ""
+                }
                 
-                ${data.key_strengths ? `
+                ${
+                  data.key_strengths
+                    ? `
                 <div class="content-block">
                     <div class="block-title">Key Strengths</div>
                     <div class="block-content">${data.key_strengths}</div>
           </div>
-        ` : ''}
+        `
+                    : ""
+                }
 
-                ${data.growth_opportunities ? `
+                ${
+                  data.growth_opportunities
+                    ? `
                 <div class="content-block">
                     <div class="block-title">Growth Opportunities</div>
                     <div class="block-content">${data.growth_opportunities}</div>
                 </div>
-                ` : ''}
+                `
+                    : ""
+                }
             </div>
             <div class="page-number">${8 + index}</div>
         </div>
-        `).join('') : ''}
+        `
+                )
+                .join("")
+            : ""
+        }
 
         <!-- NERVOUS SYSTEM PAGE -->
         <div class="page">
@@ -679,40 +744,69 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                     <div class="section-title">Nervous System<br>Assessment</div>
                 </div>
                 
-                ${planData.nervous_system_assessment ? `
-                ${planData.nervous_system_assessment.primary_state ? `
-                <div class="metric-row">
-                    <div class="metric-label">Primary State</div>
-                    <div class="metric-value">${planData.nervous_system_assessment.primary_state}</div>
+                ${
+                  planData.nervous_system_assessment
+                    ? `
+                ${
+                  planData.nervous_system_assessment.primary_state
+                    ? `
+                <div class="content-block">
+                    <div class="block-title">Primary State</div>
+                    <div class="block-content">${planData.nervous_system_assessment.primary_state}</div>
                 </div>
-                ` : ''}
                 
-                ${planData.nervous_system_assessment.regulation_capacity ? `
-                <div class="metric-row">
-                    <div class="metric-label">Regulation Capacity</div>
-                    <div class="metric-value">${planData.nervous_system_assessment.regulation_capacity}</div>
-          </div>
-        ` : ''}
+                <div class="divider"></div>
+                
+                `
+                    : ""
+                }
+                
+                ${
+                  planData.nervous_system_assessment.regulation_capacity
+                    ? `
+                <div class="content-block">
+                    <div class="block-title">Regulation Capacity</div>
+                    <div class="block-content">${planData.nervous_system_assessment.regulation_capacity}</div>
+                </div>
+                `
+                    : ""
+                }
 
-                ${planData.nervous_system_assessment.regulation_reality ? `
+                ${
+                  planData.nervous_system_assessment.regulation_reality
+                    ? `
                 <div class="content-block">
                     <div class="block-title">Regulation Reality</div>
                     <div class="block-content">${planData.nervous_system_assessment.regulation_reality}</div>
           </div>
-        ` : ''}
+        `
+                    : ""
+                }
 
-                ${planData.nervous_system_assessment.observable_patterns ? `
+                ${
+                  planData.nervous_system_assessment.observable_patterns
+                    ? `
                 <div class="content-block">
                     <div class="block-title">Observable Patterns</div>
                     <div class="block-content">
-                        ${Array.isArray(planData.nervous_system_assessment.observable_patterns) 
-                            ? planData.nervous_system_assessment.observable_patterns.map((pattern: string) => `<p>${pattern}</p>`).join('')
+                        ${
+                          Array.isArray(
+                            planData.nervous_system_assessment
+                              .observable_patterns
+                          )
+                            ? planData.nervous_system_assessment.observable_patterns
+                                .map((pattern: string) => `<p>${pattern}</p>`)
+                                .join("")
                             : `<p>${planData.nervous_system_assessment.observable_patterns}</p>`
                         }
             </div>
           </div>
-        ` : ''}
-                ` : ''}
+        `
+                    : ""
+                }
+                `
+                    : ""
+                }
             </div>
             <div class="page-number">${8 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
         </div>
@@ -725,78 +819,129 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                     <div class="section-title">30-Day Growth<br>Protocol</div>
                 </div>
                 
-                ${planData.thirty_day_protocol ? `
-                ${planData.thirty_day_protocol.seventy_two_hour_suggestion ? `
+                ${
+                  planData.thirty_day_protocol
+                    ? `
+                ${
+                  planData.thirty_day_protocol.seventy_two_hour_suggestion
+                    ? `
                 <div class="protocol-item">
                     <div class="protocol-timeline">72-Hour Suggestion</div>
                     <div class="protocol-action">${planData.thirty_day_protocol.seventy_two_hour_suggestion}</div>
           </div>
-        ` : ''}
+        `
+                    : ""
+                }
 
-                ${planData.thirty_day_protocol.weekly_recommendation ? `
+                ${
+                  planData.thirty_day_protocol.weekly_recommendation
+                    ? `
                 <div class="protocol-item">
                     <div class="protocol-timeline">Weekly Recommendation</div>
                     <div class="protocol-action">${planData.thirty_day_protocol.weekly_recommendation}</div>
+                    ${
+                      planData.thirty_day_protocol.weekly_goals
+                        ? `
+                    <div class="protocol-goals">
+                        ${
+                          Array.isArray(
+                            planData.thirty_day_protocol.weekly_goals
+                          )
+                            ? planData.thirty_day_protocol.weekly_goals
+                                .map(
+                                  (goal: string) =>
+                                    `<div class="goal-item">${goal}</div>`
+                                )
+                                .join("")
+                            : `<div class="goal-item">${planData.thirty_day_protocol.weekly_goals}</div>`
+                        }
+                    </div>
+                    `
+                        : ""
+                    }
                 </div>
-                ` : ''}
+                `
+                    : ""
+                }
 
-                ${planData.thirty_day_protocol.environmental_optimization ? `
+                ${
+                  planData.thirty_day_protocol.environmental_optimization
+                    ? `
                 <div class="protocol-item">
                     <div class="protocol-timeline">Environmental Optimization</div>
                     <div class="protocol-action">${planData.thirty_day_protocol.environmental_optimization}</div>
           </div>
-        ` : ''}
+        `
+                    : ""
+                }
 
-                ${planData.thirty_day_protocol.thirty_day_approach ? `
+                ${
+                  planData.thirty_day_protocol.thirty_day_approach
+                    ? `
                 <div class="protocol-item">
                     <div class="protocol-timeline">30-Day Approach</div>
                     <div class="protocol-action">${planData.thirty_day_protocol.thirty_day_approach}</div>
+                    ${
+                      planData.thirty_day_protocol.daily_actions
+                        ? `
+                    <div class="protocol-goals">
+                        ${
+                          Array.isArray(
+                            planData.thirty_day_protocol.daily_actions
+                          )
+                            ? planData.thirty_day_protocol.daily_actions
+                                .map(
+                                  (action: string) =>
+                                    `<div class="goal-item">${action}</div>`
+                                )
+                                .join("")
+                            : `<div class="goal-item">${planData.thirty_day_protocol.daily_actions}</div>`
+                        }
+                    </div>
+                    `
+                        : ""
+                    }
                 </div>
-                ` : ''}
+                `
+                    : ""
+                }
 
-                ${planData.thirty_day_protocol.progress_markers ? `
+                ${
+                  planData.thirty_day_protocol.progress_markers
+                    ? `
                 <div class="content-block">
                     <div class="block-title">Suggested Progress Markers</div>
                     <div class="block-content">
-                        ${Array.isArray(planData.thirty_day_protocol.progress_markers) 
-                            ? planData.thirty_day_protocol.progress_markers.map((marker: string) => `<div class="reminder-item">${marker}</div>`).join('')
+                        ${
+                          Array.isArray(
+                            planData.thirty_day_protocol.progress_markers
+                          )
+                            ? planData.thirty_day_protocol.progress_markers
+                                .map(
+                                  (marker: string) =>
+                                    `<div class="reminder-item">${marker}</div>`
+                                )
+                                .join("")
                             : `<div class="reminder-item">${planData.thirty_day_protocol.progress_markers}</div>`
                         }
                     </div>
                 </div>
-                ` : ''}
+                `
+                    : ""
+                }
 
-                ${planData.thirty_day_protocol.daily_actions ? `
-                <div class="content-block">
-                    <div class="block-title">Daily Actions</div>
-                    <div class="block-content">
-                        ${Array.isArray(planData.thirty_day_protocol.daily_actions) 
-                            ? planData.thirty_day_protocol.daily_actions.map((action: string) => `<div class="reminder-item">${action}</div>`).join('')
-                            : `<div class="reminder-item">${planData.thirty_day_protocol.daily_actions}</div>`
-                        }
-            </div>
-        </div>
-                ` : ''}
-
-                ${planData.thirty_day_protocol.weekly_goals ? `
-                <div class="content-block">
-                    <div class="block-title">Weekly Goals</div>
-                    <div class="block-content">
-                        ${Array.isArray(planData.thirty_day_protocol.weekly_goals) 
-                            ? planData.thirty_day_protocol.weekly_goals.map((goal: string) => `<div class="reminder-item">${goal}</div>`).join('')
-                            : `<div class="reminder-item">${planData.thirty_day_protocol.weekly_goals}</div>`
-                        }
-                    </div>
-                </div>
-                ` : ''}
-                ` : ''}
+                `
+                    : ""
+                }
             </div>
             <div class="page-number">${9 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
         </div>
 
 
         <!-- REMINDER QUOTE PAGE -->
-        ${planData.reminder_quote ? `
+        ${
+          planData.reminder_quote
+            ? `
         <div class="page" style="display: flex; align-items: center; justify-content: center;">
             <div class="page-content" style="text-align: center; max-width: 700px;">
                 <div class="pull-quote">
@@ -805,13 +950,15 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
             </div>
             <div class="page-number">${10 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
         </div>
-        ` : ''}
+        `
+            : ""
+        }
 
         <!-- BOTTOM LINE PAGE -->
         <div class="page bottom-line-page">
             <div class="page-content" style="text-align: center; max-width: 700px;">
             <h2>Bottom Line</h2>
-                <p>${planData.bottom_line || 'Your personalized bottom line insight based on your assessment.'}</p>
+                <p>${planData.bottom_line || "Your personalized bottom line insight based on your assessment."}</p>
             </div>
           </div>
 
@@ -823,26 +970,40 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                     <div class="section-title">Development<br>Reminders</div>
                 </div>
                 
-                ${planData.development_reminders ? `
-                ${Array.isArray(planData.development_reminders) ? planData.development_reminders.map((reminder: string) => `
+                ${
+                  planData.development_reminders
+                    ? `
+                ${
+                  Array.isArray(planData.development_reminders)
+                    ? planData.development_reminders
+                        .map(
+                          (reminder: string) => `
                 <div class="reminder-item">${reminder}</div>
-                `).join('') : `
+                `
+                        )
+                        .join("")
+                    : `
                 <div class="reminder-item">${planData.development_reminders}</div>
-                `}
-                ` : `
+                `
+                }
+                `
+                    : `
                 <div class="reminder-item">Growth is cyclical; regression is protection, not failure</div>
                 <div class="reminder-item">Integration comes through consistent practice, not more awareness</div>
                 <div class="reminder-item">Your nervous system is the foundation—regulate first, then grow</div>
                 <div class="reminder-item">Your sabotage patterns have wisdom; honor them while updating them</div>
                 <div class="reminder-item">Identity shifts over time with deliberate practice</div>
                 <div class="reminder-item">You're not broken—you're context-dependent. Build better contexts</div>
-                `}
+                `
+                }
             </div>
             <div class="page-number">${11 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
         </div>
 
         <!-- BOOK RECOMMENDATIONS PAGE -->
-        ${planData.book_recommendations ? `
+        ${
+          planData.book_recommendations
+            ? `
         <div class="page">
             <div class="page-content">
                 <div class="section-header">
@@ -850,18 +1011,30 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                     <div class="section-title">Book<br>Recommendations</div>
                 </div>
                 
-                ${Array.isArray(planData.book_recommendations) ? planData.book_recommendations.map((book: string) => `
+                ${
+                  Array.isArray(planData.book_recommendations)
+                    ? planData.book_recommendations
+                        .map(
+                          (book: string) => `
                 <div class="reminder-item">${book}</div>
-                `).join('') : `
+                `
+                        )
+                        .join("")
+                    : `
                 <div class="reminder-item">${planData.book_recommendations}</div>
-                `}
+                `
+                }
             </div>
             <div class="page-number">${12 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
         </div>
-        ` : ''}
+        `
+            : ""
+        }
 
         <!-- RESOURCES PAGE -->
-        ${planData.resources ? `
+        ${
+          planData.resources
+            ? `
         <div class="page">
             <div class="page-content">
                 <div class="section-header">
@@ -869,18 +1042,30 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                     <div class="section-title">Additional<br>Resources</div>
                 </div>
                 
-                ${Array.isArray(planData.resources) ? planData.resources.map((resource: string) => `
+                ${
+                  Array.isArray(planData.resources)
+                    ? planData.resources
+                        .map(
+                          (resource: string) => `
                 <div class="reminder-item">${resource}</div>
-                `).join('') : `
+                `
+                        )
+                        .join("")
+                    : `
                 <div class="reminder-item">${planData.resources}</div>
-                `}
+                `
+                }
             </div>
             <div class="page-number">${13 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
         </div>
-        ` : ''}
+        `
+            : ""
+        }
 
         <!-- REFLECTION PROMPTS PAGE -->
-        ${planData.reflection_prompts ? `
+        ${
+          planData.reflection_prompts
+            ? `
         <div class="page">
             <div class="page-content">
                 <div class="section-header">
@@ -888,15 +1073,25 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                     <div class="section-title">Reflection<br>Prompts</div>
                 </div>
                 
-                ${Array.isArray(planData.reflection_prompts) ? planData.reflection_prompts.map((prompt: string) => `
+                ${
+                  Array.isArray(planData.reflection_prompts)
+                    ? planData.reflection_prompts
+                        .map(
+                          (prompt: string) => `
                 <div class="reminder-item">${prompt}</div>
-                `).join('') : `
+                `
+                        )
+                        .join("")
+                    : `
                 <div class="reminder-item">${planData.reflection_prompts}</div>
-                `}
+                `
+                }
             </div>
             <div class="page-number">${14 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
         </div>
-        ` : ''}
+        `
+            : ""
+        }
 
         <!-- NEXT STEPS PAGE -->
         <div class="page">
@@ -907,66 +1102,55 @@ function generateHTMLReport(planData: any, sessionId: string, signedPdfUrl?: str
                 </div>
                 
                 <div class="content-block">
-                    <div class="block-title">6-Month Follow-Up Assessment Recommended</div>
-                    <div class="block-content">${planData.next_assessment?.six_month_followup || 'Personalized timeline and expected progress tracking'}</div>
-                </div>
-                
-                <div class="content-block">
-                    <div class="block-title">Monthly Check-In Options</div>
-                    <div class="block-content">${planData.next_assessment?.monthly_checkin || 'Monthly check-ins to track progress and adjust strategies as needed'}</div>
-                </div>
-                
-                <div class="content-block">
                     <div class="block-title">How to Stay Connected</div>
-                    <div class="block-content">${planData.next_assessment?.stay_connected || 'Join our community and stay connected for ongoing support and guidance'}</div>
+                    <div class="block-content">${planData.next_assessment?.stay_connected || "Join our community and stay connected for ongoing support and guidance"}</div>
                 </div>
                 
-                <div class="content-block">
-                    <div class="block-title">Focus Areas for Next Phase</div>
-                    <div class="block-content">
-                        ${(planData.next_assessment?.focus_areas || ['Focus Area 1', 'Focus Area 2', 'Focus Area 3', 'Focus Area 4']).map((area: string) => `<p>${area}</p>`).join('')}
-                    </div>
+                <div style="background: var(--cream); padding: 60px; text-align: center; max-width: 600px; border-left: 2px solid var(--soft-gold); margin-top: 80px;">
+                    <p style="font-size: 13px; line-height: 2.2; font-style: italic;">
+                        This assessment was built with care, respect, and the belief that you already have everything you need to become the person you described. The only thing left to do is <em>take action</em>.
+                    </p>
                 </div>
             </div>
             <div class="page-number">${15 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
         </div>
 
-        <!-- FINAL PAGE -->
+        <!-- PDF BUTTON -->
         <div class="page" style="display: flex; align-items: center; justify-content: center;">
-            <div style="background: var(--cream); padding: 60px; text-align: center; max-width: 600px; border-left: 2px solid var(--soft-gold);">
-                <p style="font-size: 13px; line-height: 2.2; font-style: italic;">
-                    This assessment was built with care, respect, and the belief that you already have everything you need to become the person you described. The only thing left to do is <em>take action</em>.
-                </p>
-                
-                <div style="text-align: center; margin: 40px 0;">
-          <button 
-            class="pdf-button" 
-            onclick="showPDF()"
-            ${!signedPdfUrl ? 'disabled' : ''}
-          >
-                        ${signedPdfUrl ? 'View PDF Report' : 'PDF Still Generating...'}
-          </button>
-        </div>
+            <div style="text-align: center;">
+                <button 
+                    class="pdf-button" 
+                    onclick="showPDF()"
+                    ${!signedPdfUrl ? "disabled" : ""}
+                >
+                    ${signedPdfUrl ? "View PDF Report" : "PDF Still Generating..."}
+                </button>
             </div>
-      </div>
+        </div>
 
       <script>
         function showPDF() {
-          ${signedPdfUrl ? `
+          ${
+            signedPdfUrl
+              ? `
             const link = document.createElement('a');
             link.href = '${signedPdfUrl}';
             link.download = 'your-protocol.pdf';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-          ` : `
+          `
+              : `
             alert('PDF is still being generated. Please wait a moment and refresh the page.');
-          `}
+          `
+          }
         }
       </script>
     </body>
     </html>
-  `, {
-    headers: { 'Content-Type': 'text/html' }
-  })
+  `,
+    {
+      headers: { "Content-Type": "text/html" },
+    }
+  );
 }
