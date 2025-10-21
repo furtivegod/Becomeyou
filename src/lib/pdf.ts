@@ -1107,7 +1107,7 @@ function generateHTMLReport(
             <div class="section-title">Nervous System<br>Assessment</div>
       </div>
       
-          <div class="metric-row">
+          <div class="content-block">
             <div class="block-title">Primary State</div>
             <div class="block-content">${nervousSystemAssessment.primary_state}</div>
             </div>
