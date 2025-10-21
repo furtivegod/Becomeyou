@@ -870,7 +870,7 @@ function generateHTMLReport(
       
             <div class="your-words-section">
               <div class="block-title">YOUR WORDS</div>
-              <div class="your-words-quote">"I wanna be a success business man, but I don't have talent."</div>
+              <div class="your-words-quote">"${reminderQuote}"</div>
             </div>
           </div>
             </div>
