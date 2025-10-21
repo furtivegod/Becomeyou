@@ -38,6 +38,7 @@ export default function ChatInterface({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const completionTriggeredRef = useRef(false);
+  const streamingStartedRef = useRef(false);
 
   // Speech recognition hook
   const {
@@ -105,6 +106,18 @@ export default function ChatInterface({
     smartScroll();
   }, [messages, isLoading, isStreaming]);
 
+  // Debug state changes
+  useEffect(() => {
+    console.log(
+      "State changed - isLoading:",
+      isLoading,
+      "isStreaming:",
+      isStreaming,
+      "assessmentComplete:",
+      assessmentComplete
+    );
+  }, [isLoading, isStreaming, assessmentComplete]);
+
   // Update input when transcript changes
   useEffect(() => {
     if (transcript) {
@@ -164,6 +177,8 @@ export default function ChatInterface({
 
     // Trigger the system prompt to generate the welcome message
     setIsLoading(true);
+    setIsStreaming(false);
+    streamingStartedRef.current = false;
 
     try {
       const response = await fetch("/api/assessment/message", {
@@ -230,6 +245,7 @@ export default function ChatInterface({
     } finally {
       setIsLoading(false);
       setIsStreaming(false);
+      streamingStartedRef.current = false;
     }
 
     trackEvent("assessment_started", { sessionId });
@@ -267,6 +283,8 @@ export default function ChatInterface({
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsLoading(true);
+    setIsStreaming(false);
+    streamingStartedRef.current = false;
     setQuestionCount((prev) => prev + 1);
 
     try {
@@ -310,8 +328,10 @@ export default function ChatInterface({
             try {
               const data = JSON.parse(line.slice(6));
               if (data.content && data.content !== "undefined") {
-                // Set streaming to true when we start receiving content
-                if (!isStreaming) {
+                // Set streaming to true immediately when we start receiving content
+                if (!streamingStartedRef.current) {
+                  console.log("Starting to stream content - hiding brain icon");
+                  streamingStartedRef.current = true;
                   setIsStreaming(true);
                 }
 
@@ -360,6 +380,7 @@ export default function ChatInterface({
     } finally {
       setIsLoading(false);
       setIsStreaming(false);
+      streamingStartedRef.current = false;
     }
   };
 
