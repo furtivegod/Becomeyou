@@ -744,6 +744,21 @@ function generateHTMLReport(
           font-weight: 300;
         }
 
+        .protocol-goals {
+          margin-top: 20px;
+          padding-left: 20px;
+        }
+
+        .goal-item {
+          padding: 8px 0;
+          font-size: 12px;
+          line-height: 1.5;
+          color: #666;
+          border-left: 2px solid var(--soft-gold);
+          padding-left: 15px;
+          margin-bottom: 8px;
+        }
+
         /* REMINDERS */
         .reminder-item {
           padding: 15px 0;
@@ -1145,11 +1160,17 @@ function generateHTMLReport(
           <div class="protocol-item">
             <div class="protocol-timeline">Weekly Recommendation</div>
             <div class="protocol-action">${weeklyRecommendation}</div>
+            <div class="protocol-goals">
+              ${weeklyGoals.map((goal) => `<div class="goal-item">${goal}</div>`).join("")}
+            </div>
             </div>
             
           <div class="protocol-item">
             <div class="protocol-timeline">30-Day Approach</div>
             <div class="protocol-action">${thirtyDayApproach}</div>
+            <div class="protocol-goals">
+              ${dailyActions.map((action) => `<div class="goal-item">${action}</div>`).join("")}
+            </div>
             </div>
             
           <div class="protocol-item">
@@ -1171,12 +1192,6 @@ function generateHTMLReport(
               </div>
             </div>
             
-          <div class="content-block">
-            <div class="block-title">Weekly Goals</div>
-            <div class="block-content">
-              ${weeklyGoals.map((goal) => `<div class="reminder-item">${goal}</div>`).join("")}
-              </div>
-            </div>
           </div>
       </div>
       
