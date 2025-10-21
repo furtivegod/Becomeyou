@@ -662,6 +662,7 @@ function generateHTMLReport(
           font-family: 'Cormorant Garamond', serif;
           font-size: 16px;
           font-weight: 400;
+          margin-left: 20px;
         }
 
         /* PULL QUOTE */
