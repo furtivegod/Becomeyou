@@ -31,6 +31,7 @@ export default function ChatInterface({
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
   const [assessmentComplete, setAssessmentComplete] = useState(false);
   const [questionCount, setQuestionCount] = useState(0);
 
@@ -102,7 +103,7 @@ export default function ChatInterface({
 
   useEffect(() => {
     smartScroll();
-  }, [messages, isLoading]);
+  }, [messages, isLoading, isStreaming]);
 
   // Update input when transcript changes
   useEffect(() => {
@@ -228,6 +229,7 @@ export default function ChatInterface({
       console.error("Error starting assessment:", error);
     } finally {
       setIsLoading(false);
+      setIsStreaming(false);
     }
 
     trackEvent("assessment_started", { sessionId });
@@ -308,6 +310,11 @@ export default function ChatInterface({
             try {
               const data = JSON.parse(line.slice(6));
               if (data.content && data.content !== "undefined") {
+                // Set streaming to true when we start receiving content
+                if (!isStreaming) {
+                  setIsStreaming(true);
+                }
+
                 assistantMessage.content += data.content;
 
                 // Check for completion phrases immediately during streaming
@@ -352,6 +359,7 @@ export default function ChatInterface({
       console.error("Error sending message:", error);
     } finally {
       setIsLoading(false);
+      setIsStreaming(false);
     }
   };
 
@@ -535,8 +543,8 @@ export default function ChatInterface({
               </div>
             ))}
 
-            {/* Typing Indicator - Brain Thinking Animation - Hidden when assessment complete */}
-            {isLoading && !assessmentComplete && (
+            {/* Typing Indicator - Brain Thinking Animation - Only during API call, not during streaming */}
+            {isLoading && !isStreaming && !assessmentComplete && (
               <div className="w-full flex justify-center mb-8 opacity-60">
                 <div className="max-w-[700px] w-full px-6">
                   <div className="flex gap-4">
