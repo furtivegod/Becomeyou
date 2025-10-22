@@ -4,9 +4,11 @@ import { supabaseAdmin as supabase } from "@/lib/supabase";
 function formatTextWithParagraphBreaks(text: string | undefined): string {
   if (!text) return "";
 
-  // First, bold any quoted text (single or double quotes)
+  // First, bold any quoted text (single or double quotes) - but not contractions
+  // This regex looks for quotes that contain actual quoted content, not contractions
+  // It requires at least 4 characters inside quotes to avoid contractions like "don't"
   let formattedText = text.replace(
-    /(['"])([^'"]+)\1/g,
+    /(['"])([^'"]{4,})\1/g,
     "<strong>$1$2$1</strong>"
   );
 
