@@ -360,31 +360,10 @@ export default function ChatInterface({
                     setShowGeneratingMessage(true);
                   }, 15000); // 15 second delay
 
-                  // Trigger report generation after generating message is shown
-                  setTimeout(async () => {
-                    try {
-                      // Call the report generation API
-                      const response = await fetch("/api/report/generate", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ sessionId }),
-                      });
-
-                      if (response.ok) {
-                        const data = await response.json();
-                        // Redirect to the report page
-                        window.location.href = `/report/${data.reportId}`;
-                      } else {
-                        console.error("Report generation failed");
-                        // Still redirect to success page as fallback
-                        onComplete();
-                      }
-                    } catch (error) {
-                      console.error("Error generating report:", error);
-                      // Fallback to original behavior
-                      onComplete();
-                    }
-                  }, 18000); // 18 second delay (15s for message + 3s for generation)
+                  // Trigger report generation immediately (it runs in background)
+                  setTimeout(() => {
+                    onComplete(); // This triggers the report generation API
+                  }, 15000); // Same 15 second delay
 
                   break; // Stop processing more content
                 }
@@ -626,37 +605,33 @@ export default function ChatInterface({
               </div>
             )}
 
-            {/* Generating Report Message - Show after 15 seconds */}
+            {/* Assessment Complete Message - Show after 15 seconds */}
             {showGeneratingMessage && (
               <div className="w-full flex justify-center mb-8 animate-[messageSlideIn_0.5s_ease-out]">
                 <div className="max-w-[700px] w-full px-6">
-                  <div className="flex items-center gap-4 py-6">
-                    {/* Brain Icon */}
-                    <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center">
-                      <img
-                        src="/brain.png"
-                        alt="AI Assistant"
-                        className="w-8 h-8 object-contain"
-                        onError={(e) => {
-                          // Fallback to emoji if image fails to load
-                          e.currentTarget.style.display = "none";
-                          const fallback = document.createElement("span");
-                          fallback.textContent = "🧠";
-                          fallback.className = "text-3xl";
-                          e.currentTarget.parentNode?.appendChild(fallback);
-                        }}
-                      />
-                    </div>
-                    {/* Generating Report Button */}
-                    <div className="flex-1">
-                      <div className="inline-flex items-center gap-3 px-8 py-4 bg-[#4A5D23] text-white rounded-xl font-semibold text-lg shadow-lg">
-                        <span className="text-2xl">🚀</span>
-                        <span>Generating your report...</span>
+                  <div className="bg-green-50 border border-green-200 rounded-xl p-6 text-center">
+                    <div className="flex items-center justify-center gap-3 mb-3">
+                      <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
+                        <svg
+                          className="w-4 h-4 text-white"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
                       </div>
-                      <p className="text-sm text-[#6B7280] mt-3 font-medium">
-                        Your personalized report will be ready shortly
-                      </p>
+                      <h3 className="text-lg font-semibold text-green-800">
+                        Assessment Complete!
+                      </h3>
                     </div>
+                    <p className="text-green-700 font-medium">
+                      Your You 3.0 report will be generated within a few
+                      minutes.
+                    </p>
                   </div>
                 </div>
               </div>

@@ -116,7 +116,7 @@ export default function AssessmentPage({
         console.log("Timeout reached - redirecting to report page");
         router.push(`/api/report/${sessionId}`);
       }
-    }, 120000); // 2 minutes
+    }, 180000); // 3 minutes
   }, [sessionId]);
 
   if (isValid === null) {
