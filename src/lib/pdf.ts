@@ -878,7 +878,7 @@ function generateHTMLReport(
             <div class="section-title">Assessment Overview</div>
           </div>
         
-          <p style="font-size: 15px; line-height: 2;">${assessmentOverview}</p>
+          <p style="font-size: 15px; line-height: 2;">${formatTextWithParagraphBreaks(assessmentOverview)}</p>
             </div>
           </div>
         
@@ -1150,7 +1150,7 @@ function generateHTMLReport(
         
           <div class="protocol-item">
             <div class="protocol-timeline">Environmental Optimization</div>
-            <div class="protocol-action">${environmentalOptimization}</div>
+            <div class="protocol-action">${formatTextWithParagraphBreaks(environmentalOptimization)}</div>
       </div>
       
           <div class="content-block">
