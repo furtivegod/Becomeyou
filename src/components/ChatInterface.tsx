@@ -426,11 +426,11 @@ export default function ChatInterface({
             {/* Greeting */}
             <div className="mb-8">
               <div className="flex items-center justify-center mb-4">
-                <div className="w-6 h-6 mr-3 flex items-center justify-center">
+                <div className="w-6 h-6 mr-5 flex items-center justify-center">
                   <img
                     src="/brain.png"
                     alt="Brain"
-                    className="w-5 h-5"
+                    className="w-6 h-6"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.style.display = "none";
