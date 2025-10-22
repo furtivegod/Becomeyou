@@ -249,7 +249,7 @@ async function convertHTMLToPDF(
       body: JSON.stringify({
         source: htmlContent,
         format: "A4",
-        margin: "20mm",
+        margin: "15mm",
         footer: {
           source: footerHTML,
           height: "40px", // Space between content and footer
@@ -503,7 +503,7 @@ function generateHTMLReport(
         
         .page {
           min-height: 100vh;
-          padding: 60px 50px;
+          padding: 40px 30px;
           background: var(--warm-white);
           margin-bottom: 2px;
           display: flex;
@@ -591,7 +591,7 @@ function generateHTMLReport(
 
         /* SECTION HEADERS */
         .section-header {
-          margin-bottom: 50px;
+          margin-bottom: 40px;
           text-align: center;
         }
 
@@ -614,7 +614,7 @@ function generateHTMLReport(
         
         /* CONTENT BLOCKS */
         .content-block {
-          margin: 30px 0;
+          margin: 25px 0;
         }
 
         .content-block:first-child {
@@ -641,8 +641,9 @@ function generateHTMLReport(
         }
 
         .block-content p {
-          margin-bottom: 12px;
+          margin-bottom: 16px;
           text-align: justify;
+          line-height: 1.6;
         }
 
         .block-content p:last-child {
@@ -688,8 +689,8 @@ function generateHTMLReport(
 
         /* PULL QUOTE */
         .pull-quote {
-          margin: 60px 0;
-          padding: 40px 0;
+          margin: 40px 0;
+          padding: 30px 0;
           border-top: 1px solid rgba(201, 169, 110, 0.3);
           border-bottom: 1px solid rgba(201, 169, 110, 0.3);
           text-align: center;
@@ -739,8 +740,8 @@ function generateHTMLReport(
         }
 
         p {
-          margin-bottom: 20px;
-          line-height: 1.7;
+          margin-bottom: 18px;
+          line-height: 1.6;
         }
 
         /* PROTOCOL */
@@ -806,8 +807,8 @@ function generateHTMLReport(
         }
 
         .your-words-section {
-          margin-top: 60px;
-          padding-top: 40px;
+          margin-top: 40px;
+          padding-top: 30px;
           border-top: 1px solid rgba(201, 169, 110, 0.3);
         }
 
