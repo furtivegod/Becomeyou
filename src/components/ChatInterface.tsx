@@ -33,6 +33,7 @@ export default function ChatInterface({
   const [isLoading, setIsLoading] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
   const [assessmentComplete, setAssessmentComplete] = useState(false);
+  const [showGeneratingMessage, setShowGeneratingMessage] = useState(false);
   const [questionCount, setQuestionCount] = useState(0);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -354,7 +355,12 @@ export default function ChatInterface({
                   completionTriggeredRef.current = true; // Prevent multiple triggers
                   setAssessmentComplete(true);
 
-                  // Trigger report generation and redirect after completion
+                  // Show generating message after 15 seconds
+                  setTimeout(() => {
+                    setShowGeneratingMessage(true);
+                  }, 15000); // 15 second delay
+
+                  // Trigger report generation after generating message is shown
                   setTimeout(async () => {
                     try {
                       // Call the report generation API
@@ -378,7 +384,7 @@ export default function ChatInterface({
                       // Fallback to original behavior
                       onComplete();
                     }
-                  }, 3000); // 3 second delay to show the generating message
+                  }, 18000); // 18 second delay (15s for message + 3s for generation)
 
                   break; // Stop processing more content
                 }
@@ -620,37 +626,36 @@ export default function ChatInterface({
               </div>
             )}
 
-            {/* Generating Report Message - Show after assessment completion */}
-            {assessmentComplete && (
-              <div className="w-full flex justify-center mb-8 animate-[messageSlideIn_0.3s_ease-out]">
+            {/* Generating Report Message - Show after 15 seconds */}
+            {showGeneratingMessage && (
+              <div className="w-full flex justify-center mb-8 animate-[messageSlideIn_0.5s_ease-out]">
                 <div className="max-w-[700px] w-full px-6">
-                  <div className="flex gap-4 mb-8">
-                    {/* AI Avatar - Brain Icon */}
-                    <div className="w-8 h-8 flex-shrink-0 flex items-center justify-center">
+                  <div className="flex items-center gap-4 py-6">
+                    {/* Brain Icon */}
+                    <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center">
                       <img
                         src="/brain.png"
                         alt="AI Assistant"
-                        className="w-6 h-6 object-contain"
+                        className="w-8 h-8 object-contain"
                         onError={(e) => {
                           // Fallback to emoji if image fails to load
                           e.currentTarget.style.display = "none";
                           const fallback = document.createElement("span");
                           fallback.textContent = "🧠";
-                          fallback.className = "text-2xl";
+                          fallback.className = "text-3xl";
                           e.currentTarget.parentNode?.appendChild(fallback);
                         }}
                       />
                     </div>
-                    {/* Generating Report Content */}
-                    <div className="flex-1 text-base leading-[1.7] text-[#1F2937] font-normal tracking-[-0.01em]">
-                      <div className="mt-4">
-                        <div className="px-6 py-3 bg-[#4A5D23] text-white rounded-lg font-medium inline-block">
-                          🚀 Generating your report...
-                        </div>
-                        <p className="text-xs text-[#6B7280] mt-2">
-                          Your personalized report will be ready shortly
-                        </p>
+                    {/* Generating Report Button */}
+                    <div className="flex-1">
+                      <div className="inline-flex items-center gap-3 px-8 py-4 bg-[#4A5D23] text-white rounded-xl font-semibold text-lg shadow-lg">
+                        <span className="text-2xl">🚀</span>
+                        <span>Generating your report...</span>
                       </div>
+                      <p className="text-sm text-[#6B7280] mt-3 font-medium">
+                        Your personalized report will be ready shortly
+                      </p>
                     </div>
                   </div>
                 </div>
