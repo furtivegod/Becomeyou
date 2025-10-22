@@ -1,11 +1,17 @@
 import { supabaseAdmin as supabase } from "@/lib/supabase";
 
-// Function to break text into paragraphs after every 2 sentences
+// Function to break text into paragraphs after every 2 sentences and bold quoted text
 function formatTextWithParagraphBreaks(text: string | undefined): string {
   if (!text) return "";
 
+  // First, bold any quoted text (single or double quotes)
+  let formattedText = text.replace(
+    /(['"])([^'"]+)\1/g,
+    "<strong>$1$2$1</strong>"
+  );
+
   // Split by sentences (ending with . ! or ?)
-  const sentences = text
+  const sentences = formattedText
     .split(/(?<=[.!?])\s+/)
     .filter((sentence) => sentence.trim());
 
