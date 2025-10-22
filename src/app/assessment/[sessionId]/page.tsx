@@ -18,17 +18,7 @@ export default function AssessmentPage({
   const [hasConsented, setHasConsented] = useState(false);
   const [isValid, setIsValid] = useState<boolean | null>(null);
   const [isComplete, setIsComplete] = useState(false);
-  const [isGeneratingReport, setIsGeneratingReport] = useState(false);
 
-  // Debug state changes
-  useEffect(() => {
-    console.log(
-      "State changed - isGeneratingReport:",
-      isGeneratingReport,
-      "isComplete:",
-      isComplete
-    );
-  }, [isGeneratingReport, isComplete]);
   const router = useRouter();
 
   useEffect(() => {
@@ -71,10 +61,7 @@ export default function AssessmentPage({
   }, [searchParams.token, sessionId]);
 
   const handleComplete = useCallback(async () => {
-    // Show loading state while generating report
-    setIsGeneratingReport(true);
-
-    // Trigger report generation FIRST
+    // Trigger report generation and redirect to report page
     try {
       console.log("Starting report generation...");
       console.log("SessionId being sent:", sessionId);
@@ -94,7 +81,7 @@ export default function AssessmentPage({
         const result = await response.json();
         console.log("Report generation completed successfully:", result);
         console.log("Redirecting to report page...");
-        // Redirect to report page instead of showing completion screen
+        // Redirect to report page after successful generation
         router.push(`/api/report/${sessionId}`);
       } else {
         const errorData = await response.json();
@@ -109,15 +96,7 @@ export default function AssessmentPage({
       // Redirect to report page even on catch error - report might still be generated
       router.push(`/api/report/${sessionId}`);
     }
-
-    // Fallback timeout - redirect to report page after 2 minutes regardless
-    setTimeout(() => {
-      if (isGeneratingReport) {
-        console.log("Timeout reached - redirecting to report page");
-        router.push(`/api/report/${sessionId}`);
-      }
-    }, 180000); // 3 minutes
-  }, [sessionId]);
+  }, [sessionId, router]);
 
   if (isValid === null) {
     return (
@@ -196,45 +175,6 @@ export default function AssessmentPage({
       >
         <div className="max-w-2xl w-full">
           <ConsentScreen onConsent={() => setHasConsented(true)} />
-        </div>
-      </div>
-    );
-  }
-
-  if (isGeneratingReport) {
-    return (
-      <div
-        className="min-h-screen flex items-center justify-center px-4"
-        style={{ backgroundColor: "#F5F1E8" }}
-      >
-        <div className="text-center max-w-md w-full bg-white rounded-lg shadow-lg p-6 sm:p-8">
-          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <div
-              className="w-8 h-8 border-4 border-t-transparent rounded-full animate-spin"
-              style={{ borderColor: "#4A5D23", borderTopColor: "transparent" }}
-            ></div>
-          </div>
-          <h1
-            className="text-xl sm:text-2xl font-bold mb-2"
-            style={{
-              color: "#4A5D23",
-              fontFamily: "Georgia, Times New Roman, serif",
-            }}
-          >
-            Generating Your Report
-          </h1>
-          <p className="mb-6 text-sm sm:text-base" style={{ color: "#1A1A1A" }}>
-            Creating your personalized You 3.0 assessment report and sending it
-            to your email...
-          </p>
-          <div
-            className="rounded-md p-4"
-            style={{ backgroundColor: "#E3F2FD", border: "1px solid #2196F3" }}
-          >
-            <p className="text-sm" style={{ color: "#1565C0" }}>
-              This usually takes 1 - 2 minutes
-            </p>
-          </div>
         </div>
       </div>
     );
