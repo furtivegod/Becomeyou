@@ -354,10 +354,31 @@ export default function ChatInterface({
                   completionTriggeredRef.current = true; // Prevent multiple triggers
                   setAssessmentComplete(true);
 
-                  // Auto-trigger report generation after delay to let user see the full summary
-                  setTimeout(() => {
-                    onComplete(); // Automatically trigger report generation
-                  }, 10000); // 10 second delay to let user read the summary
+                  // Trigger report generation and redirect after completion
+                  setTimeout(async () => {
+                    try {
+                      // Call the report generation API
+                      const response = await fetch("/api/report/generate", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ sessionId }),
+                      });
+
+                      if (response.ok) {
+                        const data = await response.json();
+                        // Redirect to the report page
+                        window.location.href = `/report/${data.reportId}`;
+                      } else {
+                        console.error("Report generation failed");
+                        // Still redirect to success page as fallback
+                        onComplete();
+                      }
+                    } catch (error) {
+                      console.error("Error generating report:", error);
+                      // Fallback to original behavior
+                      onComplete();
+                    }
+                  }, 3000); // 3 second delay to show the generating message
 
                   break; // Stop processing more content
                 }
@@ -593,6 +614,43 @@ export default function ChatInterface({
                       <span className="text-sm text-[#9CA3AF] font-medium">
                         Thinking...
                       </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Generating Report Message - Show after assessment completion */}
+            {assessmentComplete && (
+              <div className="w-full flex justify-center mb-8 animate-[messageSlideIn_0.3s_ease-out]">
+                <div className="max-w-[700px] w-full px-6">
+                  <div className="flex gap-4 mb-8">
+                    {/* AI Avatar - Brain Icon */}
+                    <div className="w-8 h-8 flex-shrink-0 flex items-center justify-center">
+                      <img
+                        src="/brain.png"
+                        alt="AI Assistant"
+                        className="w-6 h-6 object-contain"
+                        onError={(e) => {
+                          // Fallback to emoji if image fails to load
+                          e.currentTarget.style.display = "none";
+                          const fallback = document.createElement("span");
+                          fallback.textContent = "🧠";
+                          fallback.className = "text-2xl";
+                          e.currentTarget.parentNode?.appendChild(fallback);
+                        }}
+                      />
+                    </div>
+                    {/* Generating Report Content */}
+                    <div className="flex-1 text-base leading-[1.7] text-[#1F2937] font-normal tracking-[-0.01em]">
+                      <div className="mt-4">
+                        <div className="px-6 py-3 bg-[#4A5D23] text-white rounded-lg font-medium inline-block">
+                          🚀 Generating your report...
+                        </div>
+                        <p className="text-xs text-[#6B7280] mt-2">
+                          Your personalized report will be ready shortly
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
