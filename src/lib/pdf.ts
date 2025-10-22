@@ -1,5 +1,25 @@
 import { supabaseAdmin as supabase } from "@/lib/supabase";
 
+// Function to break text into paragraphs after every 2 sentences
+function formatTextWithParagraphBreaks(text: string | undefined): string {
+  if (!text) return "";
+
+  // Split by sentences (ending with . ! or ?)
+  const sentences = text
+    .split(/(?<=[.!?])\s+/)
+    .filter((sentence) => sentence.trim());
+
+  // Group sentences into paragraphs of 2
+  const paragraphs: string[] = [];
+  for (let i = 0; i < sentences.length; i += 2) {
+    const paragraphSentences = sentences.slice(i, i + 2);
+    paragraphs.push(paragraphSentences.join(" "));
+  }
+
+  // Return as HTML paragraphs
+  return paragraphs.map((paragraph) => `<p>${paragraph.trim()}</p>`).join("");
+}
+
 export interface PlanData {
   title: string;
   overview: string;
@@ -872,14 +892,7 @@ function generateHTMLReport(
       
           <div class="development-profile-content">
             <div class="profile-text">
-              ${developmentProfile
-                .split(". ")
-                .map((sentence) =>
-                  sentence.trim()
-                    ? `${sentence.trim()}${sentence.endsWith(".") ? "" : "."}`
-                    : ""
-                )
-                .join("<br>")}
+              ${formatTextWithParagraphBreaks(developmentProfile)}
             </div>
             
             <div class="your-words-section">
@@ -902,77 +915,42 @@ function generateHTMLReport(
             <div class="sabotage-section">
               <div class="block-title">YOUR PROTECTIVE PATTERN</div>
               <div class="sabotage-text">
-                ${protectivePattern
-                  .split(". ")
-                  .map((sentence) =>
-                    sentence.trim()
-                      ? `${sentence.trim()}${sentence.endsWith(".") ? "" : "."}`
-                      : ""
-                  )
-                  .join("<br>")}
+                ${formatTextWithParagraphBreaks(protectivePattern)}
               </div>
             </div>
             
             <div class="sabotage-section">
               <div class="block-title">WHAT IT'S PROTECTING YOU FROM</div>
               <div class="sabotage-text">
-                ${whatItsProtectingFrom
-                  .split(";")
-                  .map((item) =>
-                    item.trim()
-                      ? `${item.trim()}${item.endsWith(".") ? "" : "."}`
-                      : ""
-                  )
-                  .join("<br>")}
+                ${formatTextWithParagraphBreaks(whatItsProtectingFrom)}
             </div>
           </div>
           
             <div class="sabotage-section">
               <div class="block-title">HOW IT SERVES YOU</div>
               <div class="sabotage-text">
-                ${howItServesYou
-                  .split(";")
-                  .map((item) =>
-                    item.trim()
-                      ? `${item.trim()}${item.endsWith(".") ? "" : "."}`
-                      : ""
-                  )
-                  .join("<br>")}
+                ${formatTextWithParagraphBreaks(howItServesYou)}
             </div>
           </div>
         
             <div class="sabotage-section">
               <div class="block-title">YOUR SUCCESS PROOF</div>
               <div class="sabotage-text">
-                ${successProof
-                  .split(". ")
-                  .map((sentence) =>
-                    sentence.trim()
-                      ? `${sentence.trim()}${sentence.endsWith(".") ? "" : "."}`
-                      : ""
-                  )
-                  .join("<br>")}
+                ${formatTextWithParagraphBreaks(successProof)}
               </div>
       </div>
       
             <div class="sabotage-section">
               <div class="block-title">GO TO PATTERNS</div>
               <div class="sabotage-text">
-                ${goToPatterns
-                  .split(";")
-                  .map((item) =>
-                    item.trim()
-                      ? `${item.trim()}${item.endsWith(".") ? "" : "."}`
-                      : ""
-                  )
-                  .join("<br>")}
+                ${formatTextWithParagraphBreaks(goToPatterns)}
               </div>
             </div>
             
             <div class="sabotage-section">
               <div class="block-title">YOUR ANCHOR</div>
               <div class="sabotage-text">
-                ${anchor}
+                ${formatTextWithParagraphBreaks(anchor)}
               </div>
             </div>
           </div>
@@ -989,7 +967,7 @@ function generateHTMLReport(
             
           <div class="content-block">
             <div class="block-content">
-              <p>${inTheMomentReset}</p>
+              ${formatTextWithParagraphBreaks(inTheMomentReset)}
             </div>
           </div>
             </div>
@@ -1020,12 +998,12 @@ function generateHTMLReport(
             
           <div class="content-block">
             <div class="block-title">Key Strengths</div>
-            <div class="block-content">${mindDomain.key_strengths}</div>
+            <div class="block-content">${formatTextWithParagraphBreaks(mindDomain.key_strengths)}</div>
             </div>
             
           <div class="content-block">
             <div class="block-title">Growth Opportunities</div>
-            <div class="block-content">${mindDomain.growth_opportunities}</div>
+            <div class="block-content">${formatTextWithParagraphBreaks(mindDomain.growth_opportunities)}</div>
             </div>
           </div>
       </div>
@@ -1047,12 +1025,12 @@ function generateHTMLReport(
             
           <div class="content-block">
             <div class="block-title">Key Strengths</div>
-            <div class="block-content">${bodyDomain.key_strengths}</div>
+            <div class="block-content">${formatTextWithParagraphBreaks(bodyDomain.key_strengths)}</div>
             </div>
             
           <div class="content-block">
             <div class="block-title">Growth Opportunities</div>
-            <div class="block-content">${bodyDomain.growth_opportunities}</div>
+            <div class="block-content">${formatTextWithParagraphBreaks(bodyDomain.growth_opportunities)}</div>
             </div>
           </div>
       </div>
@@ -1074,12 +1052,12 @@ function generateHTMLReport(
             
           <div class="content-block">
             <div class="block-title">Key Strengths</div>
-            <div class="block-content">${spiritDomain.key_strengths}</div>
+            <div class="block-content">${formatTextWithParagraphBreaks(spiritDomain.key_strengths)}</div>
             </div>
             
           <div class="content-block">
             <div class="block-title">Growth Opportunities</div>
-            <div class="block-content">${spiritDomain.growth_opportunities}</div>
+            <div class="block-content">${formatTextWithParagraphBreaks(spiritDomain.growth_opportunities)}</div>
             </div>
           </div>
       </div>
@@ -1101,12 +1079,12 @@ function generateHTMLReport(
             
           <div class="content-block">
             <div class="block-title">Key Strengths</div>
-            <div class="block-content">${contributionDomain.key_strengths}</div>
+            <div class="block-content">${formatTextWithParagraphBreaks(contributionDomain.key_strengths)}</div>
             </div>
             
           <div class="content-block">
             <div class="block-title">Growth Opportunities</div>
-            <div class="block-content">${contributionDomain.growth_opportunities}</div>
+            <div class="block-content">${formatTextWithParagraphBreaks(contributionDomain.growth_opportunities)}</div>
             </div>
           </div>
       </div>
@@ -1131,12 +1109,12 @@ function generateHTMLReport(
             
           <div class="content-block">
             <div class="block-title">Observable Patterns</div>
-            <div class="block-content">${nervousSystemAssessment.observable_patterns}</div>
+            <div class="block-content">${formatTextWithParagraphBreaks(nervousSystemAssessment.observable_patterns)}</div>
             </div>
             
           <div class="content-block">
             <div class="block-title">Regulation Reality</div>
-            <div class="block-content">${nervousSystemAssessment.regulation_reality}</div>
+            <div class="block-content">${formatTextWithParagraphBreaks(nervousSystemAssessment.regulation_reality)}</div>
             </div>
               </div>
             </div>
@@ -1151,12 +1129,12 @@ function generateHTMLReport(
       
           <div class="protocol-item">
             <div class="protocol-timeline">72-Hour Suggestion</div>
-            <div class="protocol-action">${seventyTwoHourSuggestion}</div>
+            <div class="protocol-action">${formatTextWithParagraphBreaks(seventyTwoHourSuggestion)}</div>
             </div>
             
           <div class="protocol-item">
             <div class="protocol-timeline">Weekly Recommendation</div>
-            <div class="protocol-action">${weeklyRecommendation}</div>
+            <div class="protocol-action">${formatTextWithParagraphBreaks(weeklyRecommendation)}</div>
             <div class="protocol-goals">
               ${weeklyGoals.map((goal) => `<div class="goal-item">${goal}</div>`).join("")}
               </div>
@@ -1164,7 +1142,7 @@ function generateHTMLReport(
             
           <div class="protocol-item">
             <div class="protocol-timeline">30-Day Approach</div>
-            <div class="protocol-action">${thirtyDayApproach}</div>
+            <div class="protocol-action">${formatTextWithParagraphBreaks(thirtyDayApproach)}</div>
             <div class="protocol-goals">
               ${dailyActions.map((action) => `<div class="goal-item">${action}</div>`).join("")}
             </div>
@@ -1190,7 +1168,7 @@ function generateHTMLReport(
       <div class="page bottom-line-page">
         <div class="page-content" style="text-align: center; max-width: 700px;">
           <h2>Bottom Line</h2>
-              <p>${bottomLine}</p>
+              ${formatTextWithParagraphBreaks(bottomLine)}
             </div>
           </div>
         
@@ -1247,7 +1225,7 @@ function generateHTMLReport(
             
           <div class="content-block">
             <div class="block-title">How to Stay Connected</div>
-            <div class="block-content">${planData.next_assessment?.stay_connected || "Join our community and stay connected for ongoing support and guidance"}</div>
+            <div class="block-content">${formatTextWithParagraphBreaks(planData.next_assessment?.stay_connected || "Join our community and stay connected for ongoing support and guidance")}</div>
       </div>
       
           <div style="background: var(--cream); padding: 60px; text-align: center; max-width: 600px; border-left: 2px solid var(--soft-gold); margin-top: 80px;">
