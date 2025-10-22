@@ -426,11 +426,23 @@ export default function ChatInterface({
             {/* Greeting */}
             <div className="mb-8">
               <div className="flex items-center justify-center mb-4">
-                <div
-                  className="w-6 h-6 rounded-full flex items-center justify-center mr-3"
-                  style={{ backgroundColor: "#4A5D23" }}
-                >
-                  <span className="text-white text-sm">★</span>
+                <div className="w-6 h-6 mr-3 flex items-center justify-center">
+                  <img
+                    src="/brain.png"
+                    alt="Brain"
+                    className="w-5 h-5"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = "none";
+                      const fallback = document.createElement("div");
+                      fallback.className =
+                        "w-5 h-5 rounded-full flex items-center justify-center";
+                      fallback.style.backgroundColor = "#4A5D23";
+                      fallback.innerHTML =
+                        '<span class="text-white text-xs">🧠</span>';
+                      target.parentNode?.insertBefore(fallback, target);
+                    }}
+                  />
                 </div>
                 <h1
                   className="text-2xl font-serif"
