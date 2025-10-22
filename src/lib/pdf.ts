@@ -6,9 +6,16 @@ function formatTextWithParagraphBreaks(text: string | undefined): string {
 
   // First, bold any quoted text (single or double quotes) - but not contractions
   // This regex looks for quotes that contain actual quoted content, not contractions
-  // It requires at least 4 characters inside quotes to avoid contractions like "don't"
+  // It requires at least 10 characters and must contain spaces (indicating a phrase/sentence)
   let formattedText = text.replace(
-    /(['"])([^'"]{4,})\1/g,
+    /(['"])([^'"]{10,})\1/g,
+    "<strong>$1$2$1</strong>"
+  );
+
+  // Additional pass to catch any remaining quoted phrases that might be shorter
+  // but are clearly quoted speech (contain words like "I", "you", "we", etc.)
+  formattedText = formattedText.replace(
+    /(['"])([^'"]*?(?:I|you|we|they|he|she|it)\s+[^'"]*?)\1/g,
     "<strong>$1$2$1</strong>"
   );
 
@@ -907,7 +914,7 @@ function generateHTMLReport(
               <div class="block-title">YOUR WORDS</div>
               <div class="your-words-quote"><strong>"${reminderQuote}"</strong></div>
             </div>
-          </div>
+            </div>
             </div>
             </div>
             
@@ -924,42 +931,42 @@ function generateHTMLReport(
               <div class="block-title">YOUR PROTECTIVE PATTERN</div>
               <div class="sabotage-text">
                 ${formatTextWithParagraphBreaks(protectivePattern)}
-              </div>
             </div>
-            
+          </div>
+          
             <div class="sabotage-section">
               <div class="block-title">WHAT IT'S PROTECTING YOU FROM</div>
               <div class="sabotage-text">
                 ${formatTextWithParagraphBreaks(whatItsProtectingFrom)}
             </div>
           </div>
-          
+        
             <div class="sabotage-section">
               <div class="block-title">HOW IT SERVES YOU</div>
               <div class="sabotage-text">
                 ${formatTextWithParagraphBreaks(howItServesYou)}
+      </div>
             </div>
-          </div>
-        
+            
             <div class="sabotage-section">
               <div class="block-title">YOUR SUCCESS PROOF</div>
               <div class="sabotage-text">
                 ${formatTextWithParagraphBreaks(successProof)}
-              </div>
-      </div>
-      
+            </div>
+            </div>
+            
             <div class="sabotage-section">
               <div class="block-title">GO TO PATTERNS</div>
               <div class="sabotage-text">
                 ${formatTextWithParagraphBreaks(goToPatterns)}
-              </div>
             </div>
-            
+          </div>
+        
             <div class="sabotage-section">
               <div class="block-title">YOUR ANCHOR</div>
               <div class="sabotage-text">
                 ${formatTextWithParagraphBreaks(anchor)}
-              </div>
+      </div>
             </div>
           </div>
             </div>
@@ -1095,15 +1102,15 @@ function generateHTMLReport(
             <div class="block-content">${formatTextWithParagraphBreaks(contributionDomain.growth_opportunities)}</div>
             </div>
           </div>
-      </div>
-      
+            </div>
+            
       <!-- PAGE 12: NERVOUS SYSTEM -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Foundation</div>
             <div class="section-title">Nervous System<br>Assessment</div>
-            </div>
+              </div>
             
           <div class="metric-row">
             <div class="metric-label">Primary State</div>
@@ -1113,7 +1120,7 @@ function generateHTMLReport(
           <div class="metric-row">
             <div class="metric-label">Regulation Capacity</div>
             <div class="metric-value">${nervousSystemAssessment.regulation_capacity}</div>
-            </div>
+              </div>
             
           <div class="content-block">
             <div class="block-title">Observable Patterns</div>
@@ -1123,31 +1130,31 @@ function generateHTMLReport(
           <div class="content-block">
             <div class="block-title">Regulation Reality</div>
             <div class="block-content">${formatTextWithParagraphBreaks(nervousSystemAssessment.regulation_reality)}</div>
-            </div>
               </div>
             </div>
-            
+          </div>
+        
       <!-- PAGE 13: 30-DAY PROTOCOL -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Your Protocol</div>
             <div class="section-title">30-Day Growth<br>Protocol</div>
-              </div>
+      </div>
       
           <div class="protocol-item">
             <div class="protocol-timeline">72-Hour Suggestion</div>
             <div class="protocol-action">${formatTextWithParagraphBreaks(seventyTwoHourSuggestion)}</div>
-            </div>
-            
+          </div>
+        
           <div class="protocol-item">
             <div class="protocol-timeline">Weekly Recommendation</div>
             <div class="protocol-action">${formatTextWithParagraphBreaks(weeklyRecommendation)}</div>
             <div class="protocol-goals">
               ${weeklyGoals.map((goal) => `<div class="goal-item">${goal}</div>`).join("")}
               </div>
-            </div>
-            
+      </div>
+      
           <div class="protocol-item">
             <div class="protocol-timeline">30-Day Approach</div>
             <div class="protocol-action">${formatTextWithParagraphBreaks(thirtyDayApproach)}</div>
@@ -1169,17 +1176,17 @@ function generateHTMLReport(
           </div>
         
             
+            </div>
           </div>
-      </div>
-      
+        
       <!-- PAGE 14: BOTTOM LINE -->
       <div class="page bottom-line-page">
         <div class="page-content" style="text-align: center; max-width: 700px;">
           <h2>Bottom Line</h2>
               ${formatTextWithParagraphBreaks(bottomLine)}
             </div>
-          </div>
-        
+      </div>
+      
       <!-- PAGE 15: REMINDER BOX -->
       <div class="page reminder-box-page">
         <div class="page-content">
@@ -1200,16 +1207,16 @@ function generateHTMLReport(
       
           ${developmentReminders.map((reminder) => `<div class="reminder-item">${reminder}</div>`).join("")}
             </div>
-          </div>
-        
+            </div>
+            
       <!-- PAGE 17: BOOK RECOMMENDATIONS -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Recommended Reading</div>
             <div class="section-title">Book<br>Recommendations</div>
-      </div>
-      
+            </div>
+            
           ${bookRecommendations
             .map(
               (book, index) => `
