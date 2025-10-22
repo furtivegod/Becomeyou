@@ -4,20 +4,9 @@ import { supabaseAdmin as supabase } from "@/lib/supabase";
 function formatTextWithParagraphBreaks(text: string | undefined): string {
   if (!text) return "";
 
-  // First, bold any quoted text (single or double quotes) - but not contractions
-  // This regex looks for quotes that contain actual quoted content, not contractions
-  // It requires at least 10 characters and must contain spaces (indicating a phrase/sentence)
-  let formattedText = text.replace(
-    /(['"])([^'"]{10,})\1/g,
-    "<strong>$1$2$1</strong>"
-  );
-
-  // Additional pass to catch any remaining quoted phrases that might be shorter
-  // but are clearly quoted speech (contain words like "I", "you", "we", etc.)
-  formattedText = formattedText.replace(
-    /(['"])([^'"]*?(?:I|you|we|they|he|she|it)\s+[^'"]*?)\1/g,
-    "<strong>$1$2$1</strong>"
-  );
+  // Bold any quoted text using double quotes only (Claude now uses double quotes for client quotes)
+  // This avoids conflicts with contractions that use single quotes
+  let formattedText = text.replace(/(")([^"]+)\1/g, "<strong>$1$2$1</strong>");
 
   // Split by sentences (ending with . ! or ?)
   const sentences = formattedText
