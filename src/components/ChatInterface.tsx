@@ -354,10 +354,8 @@ export default function ChatInterface({
                   completionTriggeredRef.current = true; // Prevent multiple triggers
                   setAssessmentComplete(true);
 
-                  // Add delay before triggering report generation to let user see the full response
-                  setTimeout(() => {
-                    onComplete(); // Call report generation after delay
-                  }, 15000); // 15 second delay
+                  // Show final message instead of auto-redirecting
+                  // User can manually trigger report generation when ready
 
                   break; // Stop processing more content
                 }
@@ -593,6 +591,71 @@ export default function ChatInterface({
                       <span className="text-sm text-[#9CA3AF] font-medium">
                         Thinking...
                       </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Final Message - Show after assessment completion */}
+            {assessmentComplete && (
+              <div className="w-full flex justify-center mb-8 animate-[messageSlideIn_0.3s_ease-out]">
+                <div className="max-w-[700px] w-full px-6">
+                  <div className="flex gap-4 mb-8">
+                    {/* AI Avatar - Brain Icon */}
+                    <div className="w-8 h-8 flex-shrink-0 flex items-center justify-center">
+                      <img
+                        src="/brain.png"
+                        alt="AI Assistant"
+                        className="w-6 h-6 object-contain"
+                        onError={(e) => {
+                          // Fallback to emoji if image fails to load
+                          e.currentTarget.style.display = "none";
+                          const fallback = document.createElement("span");
+                          fallback.textContent = "🧠";
+                          fallback.className = "text-2xl";
+                          e.currentTarget.parentNode?.appendChild(fallback);
+                        }}
+                      />
+                    </div>
+                    {/* Final Message Content */}
+                    <div className="flex-1 text-base leading-[1.7] text-[#1F2937] font-normal tracking-[-0.01em]">
+                      <p className="mb-4">
+                        <strong>Perfect! Your assessment is complete.</strong>
+                      </p>
+                      <p className="mb-4">
+                        Your personalized "You 3.0" report is being generated
+                        and will be delivered to your email within 2-3 minutes.
+                        This comprehensive report includes your nervous system
+                        assessment, personalized recommendations, and your
+                        30-day transformation protocol.
+                      </p>
+                      <p className="mb-4">
+                        <strong>What to expect in your report:</strong>
+                      </p>
+                      <ul className="list-disc list-inside mb-4 space-y-1 text-sm">
+                        <li>Your nervous system state analysis</li>
+                        <li>Personalized weekly recommendations</li>
+                        <li>30-day daily action plan</li>
+                        <li>Your exact words and insights</li>
+                        <li>Next steps for your transformation</li>
+                      </ul>
+                      <p className="text-sm text-[#6B7280] mb-4">
+                        Check your email (including spam folder) for your
+                        complete report. Thank you for taking this important
+                        step toward your transformation!
+                      </p>
+                      <div className="mt-4">
+                        <button
+                          onClick={() => onComplete()}
+                          className="px-6 py-3 bg-[#4A5D23] text-white rounded-lg hover:bg-[#3A4A1C] transition-colors duration-200 font-medium"
+                        >
+                          Generate My Report Now
+                        </button>
+                        <p className="text-xs text-[#6B7280] mt-2">
+                          Click to start generating your personalized report
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
