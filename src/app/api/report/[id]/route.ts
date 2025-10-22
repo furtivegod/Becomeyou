@@ -8,17 +8,17 @@ export async function GET(
   try {
     const params = await context.params;
     const sessionId = params.id;
-
+    
     console.log("Report viewer API called for session:", sessionId);
 
     // Try to get signed PDF URL first
     const signedPdfUrl = await getSignedPDFUrl(sessionId);
     console.log("PDF URL found:", signedPdfUrl ? "Yes" : "No");
     console.log("PDF URL:", signedPdfUrl);
-
+    
     // Always show HTML page, don't redirect to PDF
     console.log("Generating HTML view for session:", sessionId);
-
+    
     const { data: planOutput, error: planError } = await supabase
       .from("plan_outputs")
       .select("plan_json")
@@ -29,7 +29,7 @@ export async function GET(
 
     if (planError || !planOutput) {
       console.error("Error fetching plan data:", planError);
-
+      
       // If all else fails, show a fallback message
       return new NextResponse(
         `
@@ -101,7 +101,7 @@ export async function GET(
     }
 
     const planData = planOutput.plan_json;
-
+    
     // Get user data to display the correct name
     const { data: sessionData, error: sessionError } = await supabase
       .from("sessions")
@@ -116,12 +116,12 @@ export async function GET(
         .select("user_name")
         .eq("id", sessionData.user_id)
         .single();
-
+      
       if (!userError && userData?.user_name) {
         userName = userData.user_name;
       }
     }
-
+    
     return generateHTMLReport(planData, sessionId, signedPdfUrl, userName);
   } catch (error) {
     console.error("Report viewer error:", error);

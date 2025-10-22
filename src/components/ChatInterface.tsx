@@ -354,8 +354,10 @@ export default function ChatInterface({
                   completionTriggeredRef.current = true; // Prevent multiple triggers
                   setAssessmentComplete(true);
 
-                  // Show final message instead of auto-redirecting
-                  // User can manually trigger report generation when ready
+                  // Auto-trigger report generation after delay to let user see the full summary
+                  setTimeout(() => {
+                    onComplete(); // Automatically trigger report generation
+                  }, 10000); // 10 second delay to let user read the summary
 
                   break; // Stop processing more content
                 }
@@ -624,11 +626,11 @@ export default function ChatInterface({
                         <strong>Perfect! Your assessment is complete.</strong>
                       </p>
                       <p className="mb-4">
-                        Your personalized "You 3.0" report is being generated
-                        and will be delivered to your email within 2-3 minutes.
-                        This comprehensive report includes your nervous system
-                        assessment, personalized recommendations, and your
-                        30-day transformation protocol.
+                        Your personalized "You 3.0" report will be automatically
+                        generated and delivered to your email within 2-3
+                        minutes. This comprehensive report includes your nervous
+                        system assessment, personalized recommendations, and
+                        your 30-day transformation protocol.
                       </p>
                       <p className="mb-4">
                         <strong>What to expect in your report:</strong>
@@ -646,14 +648,12 @@ export default function ChatInterface({
                         step toward your transformation!
                       </p>
                       <div className="mt-4">
-                        <button
-                          onClick={() => onComplete()}
-                          className="px-6 py-3 bg-[#4A5D23] text-white rounded-lg hover:bg-[#3A4A1C] transition-colors duration-200 font-medium"
-                        >
-                          Generate My Report Now
-                        </button>
+                        <div className="px-6 py-3 bg-[#4A5D23] text-white rounded-lg font-medium inline-block">
+                          🚀 Generating your report automatically...
+                        </div>
                         <p className="text-xs text-[#6B7280] mt-2">
-                          Click to start generating your personalized report
+                          Report generation will start automatically in a few
+                          seconds
                         </p>
                       </div>
                     </div>
