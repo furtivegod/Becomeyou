@@ -538,14 +538,23 @@ export default function ChatInterface({
               >
                 <div className="max-w-[700px] w-full px-6">
                   {message.role === "assistant" ? (
-                    // AI Message - Green Circle Avatar (No Brain Icon)
+                    // AI Message - Brain Icon Avatar
                     <div className="flex gap-4 mb-8">
-                      {/* AI Avatar - Green Circle with White Bullet */}
-                      <div
-                        className="w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center"
-                        style={{ backgroundColor: "#4A5D23" }}
-                      >
-                        <span className="text-white text-lg">●</span>
+                      {/* AI Avatar - Brain Icon */}
+                      <div className="w-8 h-8 flex-shrink-0 flex items-center justify-center">
+                        <img
+                          src="/brain.png"
+                          alt="AI Assistant"
+                          className="w-6 h-6 object-contain"
+                          onError={(e) => {
+                            // Fallback to emoji if image fails to load
+                            e.currentTarget.style.display = "none";
+                            const fallback = document.createElement("span");
+                            fallback.textContent = "🧠";
+                            fallback.className = "text-2xl";
+                            e.currentTarget.parentNode?.appendChild(fallback);
+                          }}
+                        />
                       </div>
                       {/* AI Content - Fixed formatting with bold support */}
                       <div className="flex-1 text-base leading-[1.7] text-[#1F2937] font-normal tracking-[-0.01em]">
