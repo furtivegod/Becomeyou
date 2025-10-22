@@ -897,7 +897,7 @@ function generateHTMLReport(
             
             <div class="your-words-section">
               <div class="block-title">YOUR WORDS</div>
-              <div class="your-words-quote">"${reminderQuote}"</div>
+              <div class="your-words-quote"><strong>"${reminderQuote}"</strong></div>
             </div>
           </div>
             </div>
@@ -1176,7 +1176,7 @@ function generateHTMLReport(
       <div class="page reminder-box-page">
         <div class="page-content">
           <div class="pull-quote">
-            <div class="pull-quote-text">"${reminderQuote}"</div>
+            <div class="pull-quote-text"><strong>"${reminderQuote}"</strong></div>
             <div style="font-size: 11px; letter-spacing: 0.1em; color: #999;">Your truth, the only truth that matters</div>
       </div>
             </div>
