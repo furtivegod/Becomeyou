@@ -629,8 +629,8 @@ export default function ChatInterface({
                       </h3>
                     </div>
                     <p className="text-green-700 font-medium">
-                      Your You 3.0 report will be generated within a few
-                      minutes.
+                      Your You 3.0 report will be generated within a few minutes
+                      and will be delivered to your email.
                     </p>
                   </div>
                 </div>
