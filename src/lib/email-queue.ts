@@ -87,21 +87,15 @@ export async function createEmailSequence(
       const scheduledTime = new Date(Date.now() + emailItem.delay);
 
       // Store in database for cron job to process
-      const { error: insertError } = await supabase.from("email_queue").upsert(
-        {
-          user_id: userId,
-          session_id: sessionId,
-          email: email,
-          user_name: name,
-          email_type: emailItem.name,
-          scheduled_for: scheduledTime.toISOString(),
-          status: "pending",
-        },
-        {
-          onConflict: "user_id,session_id,email_type",
-          ignoreDuplicates: true,
-        }
-      );
+      const { error: insertError } = await supabase.from("email_queue").insert({
+        user_id: userId,
+        session_id: sessionId,
+        email: email,
+        user_name: name,
+        email_type: emailItem.name,
+        scheduled_for: scheduledTime.toISOString(),
+        status: "pending",
+      });
 
       if (insertError) {
         console.error(
