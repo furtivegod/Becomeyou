@@ -524,9 +524,7 @@ function generateHTMLReport(
           background: linear-gradient(180deg, var(--warm-white) 0%, var(--cream) 100%);
           text-align: center;
           position: relative;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          padding: 80px 0;
         }
 
         .cover::before {
@@ -546,12 +544,8 @@ function generateHTMLReport(
         .cover-content {
           position: relative;
           z-index: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          height: 100vh;
           text-align: center;
+          padding: 40px 0;
         }
 
         .logo-mark {

@@ -3,71 +3,6 @@ import jwt from "jsonwebtoken";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// Generate proper motivation text from patterns
-function generateMotivationText(pattern: string): string {
-  if (!pattern) return "take action";
-
-  const lowerPattern = pattern.toLowerCase();
-
-  if (lowerPattern.includes("freeze") || lowerPattern.includes("frozen")) {
-    return "push through your resistance";
-  }
-  if (
-    lowerPattern.includes("overthink") ||
-    lowerPattern.includes("overthinking")
-  ) {
-    return "stop overthinking and start";
-  }
-  if (lowerPattern.includes("avoid") || lowerPattern.includes("avoidance")) {
-    return "face what you've been avoiding";
-  }
-  if (
-    lowerPattern.includes("procrastinate") ||
-    lowerPattern.includes("procrastination")
-  ) {
-    return "stop procrastinating and begin";
-  }
-  if (lowerPattern.includes("perfection") || lowerPattern.includes("perfect")) {
-    return "let go of perfectionism and move forward";
-  }
-  if (
-    lowerPattern.includes("people-pleas") ||
-    lowerPattern.includes("conflict")
-  ) {
-    return "speak your truth";
-  }
-
-  return "take the next step";
-}
-
-// Generate proper escape behavior text
-function generateEscapeText(behavior: string): string {
-  if (!behavior) return "your usual escape pattern";
-
-  const lowerBehavior = behavior.toLowerCase();
-
-  if (lowerBehavior.includes("isolation") || lowerBehavior.includes("isolat")) {
-    return "isolation and staying inside";
-  }
-  if (lowerBehavior.includes("distract") || lowerBehavior.includes("busy")) {
-    return "distraction and busywork";
-  }
-  if (lowerBehavior.includes("research") || lowerBehavior.includes("plan")) {
-    return "endless research and planning";
-  }
-  if (lowerBehavior.includes("scroll") || lowerBehavior.includes("social")) {
-    return "mindless scrolling and social media";
-  }
-  if (lowerBehavior.includes("eat") || lowerBehavior.includes("food")) {
-    return "comfort eating and numbing out";
-  }
-  if (lowerBehavior.includes("sleep") || lowerBehavior.includes("rest")) {
-    return "excessive sleeping and avoidance";
-  }
-
-  return "your familiar avoidance pattern";
-}
-
 export async function sendMagicLink(
   email: string,
   sessionId: string,
@@ -203,7 +138,7 @@ export async function sendMagicLink(
 
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <a href="${process.env.NEXT_PUBLIC_APP_URL}/assessment/${sessionId}?token=${jwt.sign({ sessionId, email }, process.env.JWT_SECRET!, { expiresIn: "7d" })}" class="cta-button" style="display: inline-block; background: #C9A96E; color: #FFFFFF; text-decoration: none; padding: 16px 48px; border-radius: 8px; font-size: 16px; font-weight: 500; letter-spacing: 0.3px; transition: background 0.2s ease; font-family: 'Inter', -apple-system, sans-serif;">
+                                    <a href="${process.env.NEXT_PUBLIC_APP_URL}/assessment/${sessionId}?token=${jwt.sign({ sessionId, email }, process.env.JWT_SECRET!, { expiresIn: "7d" })}" class="cta-button" style="display: inline-block; background: #C9A96E; color: #FFFFFF; text-decoration: none; padding: 16px 48px; border-radius: 8px; font-size: 18px; font-weight: 500; letter-spacing: 0.3px; transition: background 0.2s ease; font-family: 'Inter', -apple-system, sans-serif;">
                                         Begin Your Assessment →
                                     </a>
                                 </td>
@@ -299,21 +234,70 @@ export async function sendReportEmail(
         .join(" ");
 
     // Generate personalized P.S. based on assessment data
-
     let personalizedPS = "";
     if (planData) {
       const sabotageAnalysis = planData.sabotage_analysis;
       const domainBreakdown = planData.domain_breakdown;
+      const thirtyDayProtocol = planData.thirty_day_protocol;
 
+      // Check for specific stuck pattern (highest priority)
       if (sabotageAnalysis?.protective_pattern) {
-        personalizedPS = `You mentioned struggling with ${generateMotivationText(sabotageAnalysis.protective_pattern)}. If you want help designing the environment and structure that makes change automatic instead of exhausting, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
-      } else if (planData.thirty_day_protocol?.thirty_day_approach) {
-        personalizedPS = `You're building toward your transformation goals. If you want to map out how your patterns are affecting your momentum, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
-      } else if (domainBreakdown?.spirit) {
-        personalizedPS = `You shared insights about your spiritual connection. If you want to understand how your protective patterns show up in your closest relationships, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
-      } else if (domainBreakdown?.body) {
-        personalizedPS = `You described your relationship with your body. If you want to rebuild that connection without force or punishment, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
-      } else {
+        const patternText = sabotageAnalysis.protective_pattern;
+        personalizedPS = `You mentioned "${patternText}". If you want help designing the environment and structure that makes change automatic instead of exhausting, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
+      }
+      // Check for business/financial goals
+      else if (
+        thirtyDayProtocol?.thirty_day_approach &&
+        (thirtyDayProtocol.thirty_day_approach
+          .toLowerCase()
+          .includes("business") ||
+          thirtyDayProtocol.thirty_day_approach
+            .toLowerCase()
+            .includes("financial") ||
+          thirtyDayProtocol.thirty_day_approach
+            .toLowerCase()
+            .includes("career") ||
+          thirtyDayProtocol.thirty_day_approach
+            .toLowerCase()
+            .includes("money") ||
+          thirtyDayProtocol.thirty_day_approach
+            .toLowerCase()
+            .includes("income"))
+      ) {
+        const goalText = thirtyDayProtocol.thirty_day_approach;
+        personalizedPS = `You're building toward ${goalText}. If you want to map out how your patterns are affecting your momentum, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
+      }
+      // Check for relationship concerns
+      else if (
+        domainBreakdown?.spirit &&
+        (domainBreakdown.spirit.toLowerCase().includes("relationship") ||
+          domainBreakdown.spirit.toLowerCase().includes("partner") ||
+          domainBreakdown.spirit.toLowerCase().includes("family") ||
+          domainBreakdown.spirit.toLowerCase().includes("connection") ||
+          domainBreakdown.spirit.toLowerCase().includes("intimacy"))
+      ) {
+        const relationshipText = domainBreakdown.spirit;
+        personalizedPS = `You shared that ${relationshipText}. If you want to understand how your protective patterns show up in your closest relationships, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
+      }
+      // Check for physical/body disconnect
+      else if (
+        domainBreakdown?.body &&
+        (domainBreakdown.body.toLowerCase().includes("disconnect") ||
+          domainBreakdown.body.toLowerCase().includes("body") ||
+          domainBreakdown.body.toLowerCase().includes("physical") ||
+          domainBreakdown.body.toLowerCase().includes("health") ||
+          domainBreakdown.body.toLowerCase().includes("exercise"))
+      ) {
+        const bodyText = domainBreakdown.body;
+        personalizedPS = `You described your relationship with your body as ${bodyText}. If you want to rebuild that connection without force or punishment, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
+      }
+      // Fallback for general transformation goals
+      else if (thirtyDayProtocol?.thirty_day_approach) {
+        const goalText = thirtyDayProtocol.thirty_day_approach;
+        personalizedPS = `You're building toward ${goalText}. If you want to map out how your patterns are affecting your momentum, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
+      }
+      // Final fallback
+      else {
         personalizedPS = `Your assessment revealed important patterns. If you want to understand how these patterns are affecting your progress, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
       }
     }
@@ -378,23 +362,23 @@ export async function sendReportEmail(
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Before you read it, know this: Everything in that report—every pattern, every protective 
               mechanism, every stuck point—made perfect sense at the time it formed. Your nervous system 
               has been doing exactly what it was designed to do: keep you safe.
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               The question now is: Are those same strategies still serving you, or is it time to update them?
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Read it when you're ready. Then take the 72-hour action.
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Your Teammate,<br>
 
               <strong style="color: #C9A96E;">Matthew</strong>
@@ -403,7 +387,7 @@ export async function sendReportEmail(
             ${
               personalizedPS
                 ? `
-            <p style="color: #2A2A2A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+            <p style="color: #2A2A2A; font-size: 18px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
 
@@ -587,31 +571,31 @@ export async function sendPatternRecognitionEmail(
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Maybe you had clarity about your next move, then immediately started researching "the right way" to do it instead of just starting.
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
-              Or you felt motivated to ${generateMotivationText(planData?.sabotage_analysis?.protective_pattern || "take action")}, then reached for ${generateEscapeText(planData?.sabotage_analysis?.escape_behavior || "your usual escape pattern")} instead.
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+              Or you felt motivated to ${planData?.sabotage_analysis?.protective_pattern || "take action"}, then reached for ${planData?.sabotage_analysis?.escape_behavior || "your usual escape pattern"} instead.
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               That's not failure. That's your nervous system doing what it's been trained to do.
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               The difference now? <strong>You see it happening in real time.</strong>
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               And that awareness gap—the space between the trigger and your automatic response—is where all change begins.
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Your Teammate,<br>
 
               <strong style="color: #C9A96E;">Matthew</strong>
@@ -620,7 +604,7 @@ export async function sendPatternRecognitionEmail(
             ${
               personalizedPS
                 ? `
-            <p style="color: #2A2A2A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+            <p style="color: #2A2A2A; font-size: 18px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
 
@@ -700,17 +684,17 @@ export async function sendEvidence7DayEmail(
           pattern.includes("perfectionism") ||
           pattern.includes("overthinking")
         ) {
-          personalizedPS = `You mentioned struggling with ${generateMotivationText(sabotageAnalysis.protective_pattern)}. In a Discovery Call, we identify what 'good enough' actually looks like for your nervous system—so you can ship without the spiral. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
+          personalizedPS = `You mentioned struggling with ${sabotageAnalysis.protective_pattern}. In a Discovery Call, we identify what 'good enough' actually looks like for your nervous system—so you can ship without the spiral. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
         } else if (
           pattern.includes("avoidance") ||
           pattern.includes("procrastination")
         ) {
-          personalizedPS = `You shared that you struggle with ${generateMotivationText(sabotageAnalysis.protective_pattern)}. In a Discovery Call, we build momentum systems that work with your energy cycles instead of fighting them. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
+          personalizedPS = `You shared that you struggle with ${sabotageAnalysis.protective_pattern}. In a Discovery Call, we build momentum systems that work with your energy cycles instead of fighting them. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
         } else if (
           pattern.includes("people-pleasing") ||
           pattern.includes("conflict")
         ) {
-          personalizedPS = `You described struggling with ${generateMotivationText(sabotageAnalysis.protective_pattern)}. In a Discovery Call, we practice saying what's true without triggering your abandonment alarm. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
+          personalizedPS = `You described struggling with ${sabotageAnalysis.protective_pattern}. In a Discovery Call, we practice saying what's true without triggering your abandonment alarm. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
         } else {
           personalizedPS =
             'The assessment mapped the patterns. A Discovery Call helps you see progress you\'re missing and builds momentum structures. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.';
@@ -778,42 +762,42 @@ export async function sendEvidence7DayEmail(
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               It doesn't.
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               It shows up as:
             </p>
             
-            <ul style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 20px 0; padding-left: 20px; font-family: 'Inter', sans-serif;">
+            <ul style="color: #1A1A1A; font-size: 18px; line-height: 1.6; margin: 20px 0; padding-left: 20px; font-family: 'Inter', sans-serif;">
               <li style="margin-bottom: 8px;">One conversation you didn't avoid</li>
-              <li style="margin-bottom: 8px;">One evening you chose ${generateMotivationText(planData?.sabotage_analysis?.positive_behavior || "take action")} over ${generateEscapeText(planData?.sabotage_analysis?.escape_behavior || "your usual escape pattern")}</li>
+              <li style="margin-bottom: 8px;">One evening you chose ${planData?.sabotage_analysis?.positive_behavior || "take action"} over ${planData?.sabotage_analysis?.escape_behavior || "your usual escape pattern"}</li>
               <li style="margin-bottom: 8px;">One moment you caught the spiral before it hijacked your whole day</li>
             </ul>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               These aren't "small" wins.
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               They're <strong>proof your nervous system is recalibrating.</strong>
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               So here's your assignment: What's one thing you've done in the last week that your former self—the one who took this assessment—would have avoided or numbed out from?
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               That's the evidence that you're already changing.
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Your Teammate,<br>
 
               <strong style="color: #C9A96E;">Matthew</strong>
@@ -822,7 +806,7 @@ export async function sendEvidence7DayEmail(
             ${
               personalizedPS
                 ? `
-            <p style="color: #2A2A2A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+            <p style="color: #2A2A2A; font-size: 18px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
 
@@ -966,42 +950,42 @@ export async function sendIntegrationThresholdEmail(
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Not because they failed. Not because the assessment was wrong.
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               But because <strong>awareness without structure = temporary inspiration.</strong>
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               You've done the hardest part—you've seen the pattern clearly. You understand why you've been stuck.
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               But understanding doesn't rewire your nervous system. Consistent, appropriately-sized practice does.
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Here's what shifts people from knowing to embodying:
             </p>
             
-            <ol style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 20px 0; padding-left: 20px; font-family: 'Inter', sans-serif;">
+            <ol style="color: #1A1A1A; font-size: 18px; line-height: 1.6; margin: 20px 0; padding-left: 20px; font-family: 'Inter', sans-serif;">
               <li style="margin-bottom: 8px;"><strong>Daily micro-practices</strong> that build new neural pathways (not willpower marathons)</li>
               <li style="margin-bottom: 8px;"><strong>Environmental design</strong> that removes friction (not forcing yourself to "be disciplined")</li>
               <li style="margin-bottom: 8px;"><strong>Accountability structure</strong> that prevents regression when life gets hard</li>
             </ol>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               You've proven you can do hard things—you built ${planData?.sabotage_analysis?.success_proof || planData?.sabotage_analysis?.anchor || "something meaningful in your life"}. The question is: Are you ready to apply that same capability to your own nervous system?
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Your Teammate,<br>
 
               <strong style="color: #C9A96E;">Matthew</strong>
@@ -1010,7 +994,7 @@ export async function sendIntegrationThresholdEmail(
             ${
               personalizedPS
                 ? `
-            <p style="color: #2A2A2A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+            <p style="color: #2A2A2A; font-size: 18px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
 
@@ -1152,52 +1136,52 @@ export async function sendCompoundEffectEmail(
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Here's what I've noticed working with 680+ people:
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               <strong>The ones who transform don't feel dramatically different at 21 days.</strong>
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               They just notice they're recovering faster:
             </p>
             
-            <ul style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 20px 0; padding-left: 20px; font-family: 'Inter', sans-serif;">
+            <ul style="color: #1A1A1A; font-size: 18px; line-height: 1.6; margin: 20px 0; padding-left: 20px; font-family: 'Inter', sans-serif;">
               <li style="margin-bottom: 8px;">The spiral still shows up, but it doesn't hijack their whole week</li>
               <li style="margin-bottom: 8px;">The escape pattern still tempts them, but they catch it before autopilot takes over</li>
               <li style="margin-bottom: 8px;">The old story still plays, but they recognize it as a story instead of truth</li>
             </ul>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               That's not small progress. That's your nervous system learning a new default.
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
                But here's the catch: <strong>This is exactly when most people quit.</strong>
             </p>
 
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
                 Not because nothing's working—but because the initial insight has worn off and the daily practice feels boring. Unsexy. Repetitive.
             </p>
 
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
                 Which is exactly what rewiring your nervous system requires.
             </p>
 
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               You've already proven you can do this—you showed up for the assessment, you read the report, you've been noticing your patterns. The question is: Are you willing to keep going through the unsexy middle where nothing feels dramatic but everything is shifting?
             </p>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Your Teammate,<br>
 
               <strong style="color: #C9A96E;">Matthew</strong>
@@ -1206,7 +1190,7 @@ export async function sendCompoundEffectEmail(
             ${
               personalizedPS
                 ? `
-            <p style="color: #2A2A2A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+            <p style="color: #2A2A2A; font-size: 18px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
 
@@ -1345,69 +1329,69 @@ export async function sendDirectInvitationEmail(
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               I'm not going to ask if you "implemented everything" or if you're "where you want to be." That's not how transformation works.
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Instead, I'm asking: <strong>What's one thing that's different—even slightly—compared to 30 days ago?</strong>
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Maybe you:
             </p>
             
-            <ul style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 20px 0; padding-left: 20px; font-family: 'Inter', sans-serif;">
+            <ul style="color: #1A1A1A; font-size: 18px; line-height: 1.6; margin: 20px 0; padding-left: 20px; font-family: 'Inter', sans-serif;">
               <li style="margin-bottom: 8px;">Caught yourself mid-spiral and interrupted it (even once)</li>
               <li style="margin-bottom: 8px;">Had a hard conversation you would have avoided before</li>
-              <li style="margin-bottom: 8px;">Chose ${generateMotivationText(planData?.sabotage_analysis?.positive_behavior || "take action")} when you normally would have reached for ${generateEscapeText(planData?.sabotage_analysis?.escape_behavior || "your usual escape pattern")}</li>
+              <li style="margin-bottom: 8px;">Chose ${planData?.sabotage_analysis?.positive_behavior || "take action"} when you normally would have reached for ${planData?.sabotage_analysis?.escape_behavior || "your usual escape pattern"}</li>
             </ul>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               If you can name even one shift, that's proof the assessment was accurate and you're capable of change.
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               If nothing's different? That's also useful information—it means you're in the "knowing" phase but haven't moved to the "doing" phase yet.
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Either way, here's what I know after working with 680+ people:
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               <strong>Awareness + Structure + Accountability = Lasting Change</strong>
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               You have the awareness. The assessment gave you that.
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               The question is: Do you want to keep trying to build structure and accountability on your own, or do you want help designing a system that actually fits your nervous system?
             </p>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               If you want help, book a Discovery Call. We'll get clear on:
             </p>
             
-            <ul style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 20px 0; padding-left: 20px; font-family: 'Inter', sans-serif;">
+            <ul style="color: #1A1A1A; font-size: 18px; line-height: 1.6; margin: 20px 0; padding-left: 20px; font-family: 'Inter', sans-serif;">
               <li style="margin-bottom: 8px;">Where you actually are (not where you "should" be)</li>
               <li style="margin-bottom: 8px;">What's realistically possible in the next 90 days given your current capacity</li>
               <li style="margin-bottom: 8px;">Whether working together 1:1 makes sense or if you need something else first</li>
             </ul>
             
 
-            <p style="font-size: 16px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               If you're not ready yet, that's completely fine. Keep the assessment. Come back to it when the gap between who you are and who you want to be gets uncomfortable enough to act on.
             </p>
             
@@ -1417,7 +1401,7 @@ export async function sendDirectInvitationEmail(
               </a>
             </div>
             
-            <p style="font-size: 16px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Your Teammate,<br>
 
               <strong style="color: #C9A96E;">Matthew</strong>
@@ -1426,7 +1410,7 @@ export async function sendDirectInvitationEmail(
             ${
               personalizedPS
                 ? `
-            <p style="color: #2A2A2A; font-size: 16px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+            <p style="color: #2A2A2A; font-size: 18px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
 
