@@ -704,7 +704,7 @@ export async function sendPatternRecognitionEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <p style="margin: 0; font-size: 16px; font-weight: 300; color: #2A2A2A; line-height: 1.6; font-family: 'Inter', -apple-system, sans-serif;">
-                                        Maybe you had clarity about your next move, then immediately started researching "the right way" to do it instead of just starting.
+                                        Maybe you had clarity about your next move, then immediately started researching <strong>"the right way"</strong> to do it instead of just starting.
                                     </p>
                                 </td>
                             </tr>
@@ -865,7 +865,7 @@ export async function sendEvidence7DayEmail(
           pattern.includes("perfectionism") ||
           pattern.includes("overthinking")
         ) {
-          personalizedPS = `You mentioned struggling with ${generateMotivationText(sabotageAnalysis.protective_pattern)}. In a Discovery Call, we identify what 'good enough' actually looks like for your nervous system—so you can ship without the spiral. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
+          personalizedPS = `You mentioned struggling with ${generateMotivationText(sabotageAnalysis.protective_pattern)}. In a Discovery Call, we identify what <strong>'good enough'</strong> actually looks like for your nervous system—so you can ship without the spiral. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
         } else if (
           pattern.includes("avoidance") ||
           pattern.includes("procrastination")
@@ -1026,7 +1026,7 @@ export async function sendEvidence7DayEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <p style="margin: 0; font-size: 16px; font-weight: 300; color: #2A2A2A; line-height: 1.6; font-family: 'Inter', -apple-system, sans-serif;">
-                                        These aren't "small" wins.
+                                        These aren't <strong>"small"</strong> wins.
                                     </p>
                                 </td>
                             </tr>
@@ -1346,7 +1346,7 @@ export async function sendIntegrationThresholdEmail(
                                 <td align="center" style="padding: 0 40px;">
                                     <ol style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 0; padding-left: 20px; font-family: 'Inter', -apple-system, sans-serif; text-align: left;">
                                         <li style="margin-bottom: 8px;"><strong>Daily micro-practices</strong> that build new neural pathways (not willpower marathons)</li>
-                                        <li style="margin-bottom: 8px;"><strong>Environmental design</strong> that removes friction (not forcing yourself to "be disciplined")</li>
+                                        <li style="margin-bottom: 8px;"><strong>Environmental design</strong> that removes friction (not forcing yourself to <strong>"be disciplined"</strong>)</li>
                                         <li style="margin-bottom: 8px;"><strong>Accountability structure</strong> that prevents regression when life gets hard</li>
                                     </ol>
                                 </td>
@@ -1888,7 +1888,7 @@ export async function sendDirectInvitationEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <p style="margin: 0; font-size: 16px; font-weight: 300; color: #2A2A2A; line-height: 1.6; font-family: 'Inter', -apple-system, sans-serif;">
-                                        I'm not going to ask if you "implemented everything" or if you're "where you want to be." That's not how transformation works.
+                                        I'm not going to ask if you <strong>"implemented everything"</strong> or if you're <strong>"where you want to be."</strong> That's not how transformation works.
                                     </p>
                                 </td>
                             </tr>
@@ -1956,7 +1956,7 @@ export async function sendDirectInvitationEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <p style="margin: 0; font-size: 16px; font-weight: 300; color: #2A2A2A; line-height: 1.6; font-family: 'Inter', -apple-system, sans-serif;">
-                                        If nothing's different? That's also useful information—it means you're in the "knowing" phase but haven't moved to the "doing" phase yet.
+                                        If nothing's different? That's also useful information—it means you're in the <strong>"knowing"</strong> phase but haven't moved to the <strong>"doing"</strong> phase yet.
                                     </p>
                                 </td>
                             </tr>
@@ -2035,7 +2035,7 @@ export async function sendDirectInvitationEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <ul style="color: #1A1A1A; font-size: 16px; line-height: 1.6; margin: 0; padding-left: 20px; font-family: 'Inter', -apple-system, sans-serif; text-align: left;">
-                                        <li style="margin-bottom: 8px;">Where you actually are (not where you "should" be)</li>
+                                        <li style="margin-bottom: 8px;">Where you actually are (not where you <strong>"should"</strong> be)</li>
                                         <li style="margin-bottom: 8px;">What's realistically possible in the next 90 days given your current capacity</li>
                                         <li style="margin-bottom: 8px;">Whether working together 1:1 makes sense or if you need something else first</li>
                                     </ul>

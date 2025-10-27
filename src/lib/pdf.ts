@@ -543,13 +543,19 @@ function generateHTMLReport(
         .cover-content {
           position: relative;
           z-index: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          text-align: center;
         }
 
         .logo-mark {
           font-size: 10px;
           letter-spacing: 0.3em;
           color: var(--soft-gold);
-          margin-bottom: 80px;
+          margin-bottom: 40px;
           font-weight: 500;
         }
 
@@ -585,7 +591,7 @@ function generateHTMLReport(
           font-style: italic;
           font-weight: 300;
           color: #666;
-          margin-top: 80px;
+          margin-top: 40px;
           line-height: 1.6;
         }
 
