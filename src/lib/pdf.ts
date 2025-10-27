@@ -524,6 +524,9 @@ function generateHTMLReport(
           background: linear-gradient(180deg, var(--warm-white) 0%, var(--cream) 100%);
           text-align: center;
           position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
         .cover::before {
@@ -555,8 +558,9 @@ function generateHTMLReport(
           font-size: 10px;
           letter-spacing: 0.3em;
           color: var(--soft-gold);
-          margin-bottom: 40px;
+          margin: 0 0 80px 0;
           font-weight: 500;
+          text-align: center;
         }
 
         h1 {
@@ -566,7 +570,8 @@ function generateHTMLReport(
           color: var(--deep-charcoal);
           line-height: 1.1;
           letter-spacing: -0.02em;
-          margin-bottom: 40px;
+          margin: 0 0 40px 0;
+          text-align: center;
         }
 
         h2 {
@@ -591,8 +596,9 @@ function generateHTMLReport(
           font-style: italic;
           font-weight: 300;
           color: #666;
-          margin-top: 40px;
+          margin: 80px 0 0 0;
           line-height: 1.6;
+          text-align: center;
         }
 
         /* SECTION HEADERS */

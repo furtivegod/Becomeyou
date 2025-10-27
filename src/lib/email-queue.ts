@@ -32,31 +32,31 @@ export async function createEmailSequence(
     const emailSchedule = [
       {
         // delay: 3 * 24 * 60 * 60 * 1000,
-        delay: 1000,
+        delay: 60 * 1000,
         function: sendPatternRecognitionEmail,
         name: "pattern_recognition",
       }, // 3 days
       {
         // delay: 7 * 24 * 60 * 60 * 1000,
-        delay: 2000,
+        delay: 120 * 2000,
         function: sendEvidence7DayEmail,
         name: "evidence_7day",
       }, // 7 days
       {
         // delay: 14 * 24 * 60 * 60 * 1000,
-        delay: 3000,
+        delay: 180 * 1000,
         function: sendIntegrationThresholdEmail,
         name: "integration_threshold",
       }, // 14 days
       {
         // delay: 21 * 24 * 60 * 60 * 1000,
-        delay: 4000,
+        delay: 240 * 1000,
         function: sendCompoundEffectEmail,
         name: "compound_effect",
       }, // 21 days
       {
         // delay: 30 * 24 * 60 * 60 * 1000,
-        delay: 5000,
+        delay: 300 * 1000,
         function: sendDirectInvitationEmail,
         name: "direct_invitation",
       }, // 30 days
