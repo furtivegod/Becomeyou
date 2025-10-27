@@ -25,6 +25,26 @@ export async function createEmailSequence(
   try {
     console.log("Creating email sequence for user:", userId);
 
+    // Check if email sequence already exists for this user/session
+    const { data: existingEmails, error: checkError } = await supabase
+      .from("email_queue")
+      .select("id")
+      .eq("user_id", userId)
+      .eq("session_id", sessionId)
+      .eq("status", "pending");
+
+    if (checkError) {
+      console.error("Error checking existing emails:", checkError);
+      throw new Error(`Failed to check existing emails: ${checkError.message}`);
+    }
+
+    if (existingEmails && existingEmails.length > 0) {
+      console.log(
+        "Email sequence already exists for this user/session, skipping creation"
+      );
+      return true;
+    }
+
     const email = userEmail;
     const name = userName || email.split("@")[0];
 
@@ -32,31 +52,31 @@ export async function createEmailSequence(
     const emailSchedule = [
       {
         // delay: 3 * 24 * 60 * 60 * 1000,
-        delay: 60 * 1000,
+        delay: 1 * 60 * 1000, // 1 minute
         function: sendPatternRecognitionEmail,
         name: "pattern_recognition",
       }, // 3 days
       {
         // delay: 7 * 24 * 60 * 60 * 1000,
-        delay: 120 * 2000,
+        delay: 2 * 60 * 1000, // 2 minutes
         function: sendEvidence7DayEmail,
         name: "evidence_7day",
       }, // 7 days
       {
         // delay: 14 * 24 * 60 * 60 * 1000,
-        delay: 180 * 1000,
+        delay: 3 * 60 * 1000, // 3 minutes
         function: sendIntegrationThresholdEmail,
         name: "integration_threshold",
       }, // 14 days
       {
         // delay: 21 * 24 * 60 * 60 * 1000,
-        delay: 240 * 1000,
+        delay: 4 * 60 * 1000, // 4 minutes
         function: sendCompoundEffectEmail,
         name: "compound_effect",
       }, // 21 days
       {
         // delay: 30 * 24 * 60 * 60 * 1000,
-        delay: 300 * 1000,
+        delay: 5 * 60 * 1000, // 5 minutes
         function: sendDirectInvitationEmail,
         name: "direct_invitation",
       }, // 30 days
@@ -67,15 +87,21 @@ export async function createEmailSequence(
       const scheduledTime = new Date(Date.now() + emailItem.delay);
 
       // Store in database for cron job to process
-      const { error: insertError } = await supabase.from("email_queue").insert({
-        user_id: userId,
-        session_id: sessionId,
-        email: email,
-        user_name: name,
-        email_type: emailItem.name,
-        scheduled_for: scheduledTime.toISOString(),
-        status: "pending",
-      });
+      const { error: insertError } = await supabase.from("email_queue").upsert(
+        {
+          user_id: userId,
+          session_id: sessionId,
+          email: email,
+          user_name: name,
+          email_type: emailItem.name,
+          scheduled_for: scheduledTime.toISOString(),
+          status: "pending",
+        },
+        {
+          onConflict: "user_id,session_id,email_type",
+          ignoreDuplicates: true,
+        }
+      );
 
       if (insertError) {
         console.error(

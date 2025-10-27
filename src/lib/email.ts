@@ -577,7 +577,7 @@ export async function sendPatternRecognitionEmail(
             
 
             <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
-              Or you felt motivated to ${planData?.sabotage_analysis?.protective_pattern || "take action"}, then reached for ${planData?.sabotage_analysis?.escape_behavior || "your usual escape pattern"} instead.
+              ${planData?.sabotage_analysis?.protective_pattern ? `You mentioned: "${planData.sabotage_analysis.protective_pattern}"` : "You felt motivated to take action"}, but then reached for ${planData?.sabotage_analysis?.escape_behavior || "your usual escape pattern"} instead.
             </p>
             
 
@@ -773,7 +773,7 @@ export async function sendEvidence7DayEmail(
             
             <ul style="color: #1A1A1A; font-size: 18px; line-height: 1.6; margin: 20px 0; padding-left: 20px; font-family: 'Inter', sans-serif;">
               <li style="margin-bottom: 8px;">One conversation you didn't avoid</li>
-              <li style="margin-bottom: 8px;">One evening you chose ${planData?.sabotage_analysis?.positive_behavior || "take action"} over ${planData?.sabotage_analysis?.escape_behavior || "your usual escape pattern"}</li>
+              <li style="margin-bottom: 8px;">One evening you chose ${planData?.sabotage_analysis?.positive_behavior ? `"${planData.sabotage_analysis.positive_behavior}"` : "take action"} over ${planData?.sabotage_analysis?.escape_behavior ? `"${planData.sabotage_analysis.escape_behavior}"` : "your usual escape pattern"}</li>
               <li style="margin-bottom: 8px;">One moment you caught the spiral before it hijacked your whole day</li>
             </ul>
             
@@ -982,7 +982,7 @@ export async function sendIntegrationThresholdEmail(
             
 
             <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
-              You've proven you can do hard things—you built ${planData?.sabotage_analysis?.success_proof || planData?.sabotage_analysis?.anchor || "something meaningful in your life"}. The question is: Are you ready to apply that same capability to your own nervous system?
+              You've proven you can do hard things. ${planData?.sabotage_analysis?.success_proof || planData?.sabotage_analysis?.anchor ? `You mentioned: "${planData.sabotage_analysis.success_proof || planData.sabotage_analysis.anchor}"` : "You've built something meaningful in your life"}. The question is: Are you ready to apply that same capability to your own nervous system?
             </p>
             
             <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
@@ -1346,7 +1346,7 @@ export async function sendDirectInvitationEmail(
             <ul style="color: #1A1A1A; font-size: 18px; line-height: 1.6; margin: 20px 0; padding-left: 20px; font-family: 'Inter', sans-serif;">
               <li style="margin-bottom: 8px;">Caught yourself mid-spiral and interrupted it (even once)</li>
               <li style="margin-bottom: 8px;">Had a hard conversation you would have avoided before</li>
-              <li style="margin-bottom: 8px;">Chose ${planData?.sabotage_analysis?.positive_behavior || "take action"} when you normally would have reached for ${planData?.sabotage_analysis?.escape_behavior || "your usual escape pattern"}</li>
+              <li style="margin-bottom: 8px;">Chose ${planData?.sabotage_analysis?.positive_behavior ? `"${planData.sabotage_analysis.positive_behavior}"` : "take action"} when you normally would have reached for ${planData?.sabotage_analysis?.escape_behavior ? `"${planData.sabotage_analysis.escape_behavior}"` : "your usual escape pattern"}</li>
             </ul>
             
 
