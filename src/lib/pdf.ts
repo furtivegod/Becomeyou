@@ -524,7 +524,10 @@ function generateHTMLReport(
           background: linear-gradient(180deg, var(--warm-white) 0%, var(--cream) 100%);
           text-align: center;
           position: relative;
-          padding: 80px 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 100vh;
         }
 
         .cover::before {
@@ -545,7 +548,6 @@ function generateHTMLReport(
           position: relative;
           z-index: 1;
           text-align: center;
-          padding: 40px 0;
         }
 
         .logo-mark {
@@ -859,7 +861,7 @@ function generateHTMLReport(
         </div>
         
       <!-- PAGE 2: TITLE -->
-      <div class="page">
+      <div class="page" style="display: flex; align-items: center; justify-content: center;">
         <div class="page-content" style="text-align: center;">
           <div style="margin-bottom: 80px; font-size: 14px; letter-spacing: 8px; color: var(--soft-gold); font-weight: 300;">
             become / you
