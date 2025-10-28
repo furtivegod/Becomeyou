@@ -75,8 +75,8 @@ export async function createEmailSequence(
         name: "compound_effect",
       }, // 21 days
       {
-        // delay: 30 * 24 * 60 * 60 * 1000,
-        delay: 5 * 60 * 1000, // 5 minutes
+        delay: 30 * 24 * 60 * 60 * 1000,
+        // delay: 5 * 60 * 1000, // 5 minutes
         function: sendDirectInvitationEmail,
         name: "direct_invitation",
       }, // 30 days
