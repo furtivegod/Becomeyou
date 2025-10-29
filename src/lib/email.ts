@@ -109,7 +109,7 @@ export async function sendMagicLink(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <h1 style="margin: 0; font-size: 32px; font-weight: 300; color: #2A2A2A; letter-spacing: -0.5px; line-height: 1.2; font-family: 'Cormorant Garamond', Georgia, serif;">
-                                        <span style="color: #C9A96E;">${displayName}</span>,
+                                        <span style="color: #2A2A2A;">${displayName}</span>,
             </h1>
 
                                 </td>

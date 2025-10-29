@@ -526,7 +526,15 @@ export default function ChatInterface({
 
             {/* Transformation Message */}
             <div className="mt-8">
-              <p className="text-lg text-gray-800 font-medium">
+              <p
+                className="text-lg"
+                style={{
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontStyle: "italic",
+                  fontWeight: 300,
+                  color: "#80907B",
+                }}
+              >
                 This is where transformation begins.
               </p>
             </div>
