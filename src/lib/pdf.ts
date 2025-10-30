@@ -502,7 +502,7 @@ function generateHTMLReport(
         }
         
         .page {
-          min-height: 100vh;
+          min-height: auto;
           padding: 40px 30px;
           background: var(--warm-white);
           margin-bottom: 2px;
@@ -837,6 +837,8 @@ function generateHTMLReport(
 
         .sabotage-section {
           margin-bottom: 30px;
+          break-inside: avoid;
+          page-break-inside: avoid;
         }
 
         .sabotage-section:last-child {
@@ -1213,19 +1215,47 @@ function generateHTMLReport(
           <div class="section-header">
             <div class="section-label">Recommended Reading</div>
             <div class="section-title">Book<br>Recommendations</div>
+          </div>
+          
+          <div class="content-block">
+            <div class="block-title" style="font-size: 20px; font-weight: 600; margin-bottom: 8px; color: #4A5D23;">Tier 1: Non-Negotiable Foundation <span style="font-size:15px; font-weight:400; color:#999;">(5 books)</span></div>
+              <ol style="margin:0 0 20px 24px; padding:0;">
+                <li style="margin-bottom:16px;"><span style="font-style:italic;"><a href="https://amzn.to/4hJB9wT" style="color: #1a73e8; text-decoration: underline;" target="_blank">"The Body Keeps the Score"</a></span> by <span style="color: #1a73e8">Bessel van der Kolk</span><br><strong>Why:</strong> <span style="color:#222">The definitive text on trauma and nervous system. Directly addresses the core issue for most users stuck in sabotage patterns.</span></li>
+                <li style="margin-bottom:16px;"><span style="font-style:italic;"><a href="https://amzn.to/47xBpua" style="color: #1a73e8; text-decoration: underline;" target="_blank">"Reclaim Your Nervous System"</a></span> by <span style="color: #1a73e8">Mastin Kipp</span><br><strong>Why:</strong> <span style="color:#222">Practical, accessible nervous system regulation. Bridges theory to action. Perfect for immediate implementation.</span></li>
+                <li style="margin-bottom:16px;"><span style="font-style:italic;"><a href="https://amzn.to/431fR7V" style="color: #1a73e8; text-decoration: underline;" target="_blank">"Atomic Habits"</a></span> by <span style="color: #1a73e8">James Clear</span><br><strong>Why:</strong> <span style="color:#222">The behavior change bible. Directly supports the assessment's focus on building evidence through small actions. Universal application across all quadrants.</span></li>
+                <li style="margin-bottom:16px;"><span style="font-style:italic;"><a href="https://amzn.to/43y2mNa" style="color: #1a73e8; text-decoration: underline;" target="_blank">"How to Do the Work"</a></span> by <span style="color: #1a73e8">Dr. Nicole LePera</span><br><strong>Why:</strong> <span style="color:#222">Combines shadow work, nervous system, and daily practices. Holistic approach matches your assessment model perfectly.</span></li>
+                <li><span style="font-style:italic;"><a href="https://amzn.to/3JjyTjf" style="color: #1a73e8; text-decoration: underline;" target="_blank">"Atlas of the Heart"</a></span> by <span style="color: #1a73e8">Brené Brown</span><br><strong>Why:</strong> <span style="color:#222">Emotional literacy is foundational to all quadrants. Users can't regulate what they can't name. Essential for Spirit development.</span></li>
+              </ol>
+          </div>
+
+          <div class="content-block">
+            <div class="block-title" style="font-size: 20px; font-weight: 600; margin-bottom: 8px; color: #80907B;">Tier 2: Quadrant-Specific Power Books <span style="font-size:15px; font-weight:400; color:#999;">(6 books)</span></div>
+              <ol style="margin:0 0 20px 24px; padding:0;">
+                <li style="margin-bottom:16px;"><span style="font-style:italic;"><a href="https://amzn.to/4p3Rwaf" style="color: #1a73e8; text-decoration: underline;" target="_blank">"Be Your Future Self Now"</a></span> by <span style="color: #1a73e8">Dr. Benjamin Hardy</span><br><strong>Why:</strong> <span style="color:#222">Directly addresses identity transformation (the "Become" stage). Practical framework for stepping into new identity without forcing it.</span></li>
+                <li style="margin-bottom:16px;"><span style="font-style:italic;"><a href="https://amzn.to/4hx7Ld3" style="color: #1a73e8; text-decoration: underline;" target="_blank">"The First Rule of Mastery"</a></span> by <span style="color: #1a73e8">Dr. Michael Gervais</span><br><strong>Why:</strong> <span style="color:#222">Mind quadrant excellence. Addresses the mental game and performance psychology. Critical for overthinkers and high performers.</span></li>
+                <li style="margin-bottom:16px;"><span style="font-style:italic;"><a href="https://amzn.to/49sdXkC" style="color: #1a73e8; text-decoration: underline;" target="_blank">"Crucial Conversations"</a></span> by <span style="color: #1a73e8">Kerry Patterson</span><br><strong>Why:</strong> <span style="color:#222">Spirit quadrant essential. Most relationship/career problems stem from poor communication. High ROI skill.</span></li>
+                <li style="margin-bottom:16px;"><span style="font-style:italic;"><a href="https://amzn.to/48UeonB" style="color: #1a73e8; text-decoration: underline;" target="_blank">"Deep Work"</a></span> by <span style="color: #1a73e8">Cal Newport</span><br><strong>Why:</strong> <span style="color:#222">Contribution quadrant. Combats distraction and cheap dopamine. Teaches focus in an age of constant interruption.</span></li>
+                <li style="margin-bottom:16px;"><span style="font-style:italic;"><a href="https://amzn.to/3X35Svi" style="color: #1a73e8; text-decoration: underline;" target="_blank">"The Gifts of Imperfection"</a></span> by <span style="color: #1a73e8">Brené Brown</span><br><strong>Why:</strong> <span style="color:#222">Addresses perfectionism and shame—two of the biggest sabotage drivers. Lighter, more accessible than her other work.</span></li>
+                <li><span style="font-style:italic;"><a href="https://amzn.to/4ntDahQ" style="color: #1a73e8; text-decoration: underline;" target="_blank">"Breath: The New Science of a Lost Art"</a></span> by <span style="color: #1a73e8">James Nestor</span><br><strong>Why:</strong> <span style="color:#222">Body quadrant. Simple, science-backed practice with immediate nervous system benefits. Easy entry point for embodiment work.</span></li>
+              </ol>
+          </div>
+
+          <div class="content-block">
+            <div class="block-title" style="font-size: 20px; font-weight: 600; margin-bottom: 8px; color: #B89A5A;">Tier 3: Specialized Deep Dives <span style="font-size:15px; font-weight:400; color:#999;">(4 books)</span></div>
+              <ol style="margin:0 0 10px 24px; padding:0;">
+                <li style="margin-bottom:16px;"><span style="font-style:italic;"><a href="https://amzn.to/4oPrA1X" style="color: #1a73e8; text-decoration: underline;" target="_blank">"The DOSE Effect"</a></span> by <span style="color: #1a73e8">TJ Power</span><br><strong>Why:</strong> <span style="color:#222">Directly addresses dopamine, the core mechanism behind cheap dopamine loops. Fills a critical gap in understanding sabotage biology.</span></li>
+                <li style="margin-bottom:16px;"><span style="font-style:italic;"><a href="https://amzn.to/4ogrhgI" style="color: #1a73e8; text-decoration: underline;" target="_blank">"The War of Art"</a></span> by <span style="color: #1a73e8">Steven Pressfield</span><br><strong>Why:</strong> <span style="color:#222">Short, punchy, confrontational. Perfect for breaking through resistance and procrastination. Quick read, high impact.</span></li>
+                <li style="margin-bottom:16px;"><span style="font-style:italic;"><a href="https://amzn.to/3Jt9gwr" style="color: #1a73e8; text-decoration: underline;" target="_blank">"Polyvagal Theory in Therapy"</a></span> by <span style="color: #1a73e8">Deb Dana</span><br><strong>Why:</strong> <span style="color:#222">For users showing dorsal vagal shutdown or severe regulation issues. Science-based nervous system intervention. Professional-grade but accessible.</span></li>
+                <li><span style="font-style:italic;"><a href="https://amzn.to/47Lmb66" style="color: #1a73e8; text-decoration: underline;" target="_blank">"Mindset: The New Psychology of Success"</a></span> by <span style="color: #1a73e8">Carol Dweck</span><br><strong>Why:</strong> <span style="color:#222">Fixed vs. growth mindset is foundational to all development work. Changes how users interpret failure and challenge.</span></li>
+              </ol>
+          </div>
+          <div class="content-block" style="margin-top: 32px;">
+            <div style="font-size:13px; color:#777; font-style:italic; line-height:1.7; text-align:left; border-top: 1px solid #eee; padding-top:14px; max-width:650px;">
+              These books support—but do not replace—professional mental health care. If you're experiencing trauma symptoms, severe anxiety, depression, or psychological distress, please consult a licensed therapist.<br>Amazon Associate Disclosure: I earn from qualifying purchases.
             </div>
-            
-          ${bookRecommendations
-            .map(
-              (book, index) => `
-            <div class="content-block">
-              <div class="block-title">${index + 1}. ${book}</div>
-            </div>
-          `
-            )
-            .join("")}
-              </div>
-            </div>
+          </div>
+        </div>
+      </div>
             
       <!-- PAGE 18: NEXT STEPS -->
       <div class="page">
@@ -1238,9 +1268,14 @@ function generateHTMLReport(
             
           <div class="content-block">
             <div class="block-title">How to Stay Connected</div>
-            <div class="block-content">${formatTextWithParagraphBreaks(planData.next_assessment?.stay_connected || "Join our community and stay connected for ongoing support and guidance")}</div>
-      </div>
-      
+            <div class="block-content">
+              Your assessment is just the beginning.<br>
+              Over the coming weeks, you'll receive weekly insights in your inbox—real case studies of people who've broken through the exact patterns you're facing, practical protocols you can implement immediately, and advanced strategies that build on your personalized roadmap.<br>
+              Each email is designed to meet you exactly where you are in your transformation journey, delivering the precise guidance you need, when you need it most.<br>
+              These aren't generic newsletters—they're the ongoing support system that turns your 30-day protocol into a sustainable lifestyle.
+            </div>
+          </div>
+        
           <div style="background: var(--cream); padding: 60px; text-align: center; max-width: 600px; border-left: 2px solid var(--soft-gold); margin-top: 80px;">
             <p style="font-size: 13px; line-height: 2.2; font-style: italic;">
             This assessment was built with care, respect, and the belief that you already have everything you need to become the person you described. The only thing left to do is <em>take action</em>.
