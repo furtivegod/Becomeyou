@@ -1491,7 +1491,7 @@ function generateHTMLReport(
           </div>
 
           <div class="content-block">
-            <div class="block-title" style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">Your Top 2, Personalized</div>
+            <div class="block-title" style="font-size: 18px; font-weight: 600; margin-bottom: 6px;"></div>
             <ol style="margin:0 0 14px 20px; padding:0; font-size:15px;">
               ${selectedBooks
                 .map(
