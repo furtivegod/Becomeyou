@@ -160,7 +160,7 @@ export default function SuccessPage() {
                     className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base"
                     style={{ color: "#4A5D23" }}
                   >
-                    Complete your assessment (20-35 minutes)
+                    Complete your assessment (10-15 minutes)
                   </h4>
                   <p
                     className="text-sm sm:text-base"

@@ -165,6 +165,282 @@ function generateHTMLReport(
     day: "numeric",
   });
 
+  // Select top 2 book recommendations based on assessment content (to mirror PDF)
+  const allBooks = [
+    {
+      id: "body_keeps_score",
+      title: "The Body Keeps the Score",
+      author: "Bessel van der Kolk",
+      url: "https://amzn.to/4hJB9wT",
+      why: "The definitive text on trauma and nervous system.",
+      tags: [
+        "trauma",
+        "nervous system",
+        "shutdown",
+        "dorsal",
+        "anxiety",
+        "somatic",
+        "regulation",
+      ],
+    },
+    {
+      id: "reclaim_nervous_system",
+      title: "Reclaim Your Nervous System",
+      author: "Mastin Kipp",
+      url: "https://amzn.to/47xBpua",
+      why: "Practical, accessible nervous system regulation.",
+      tags: [
+        "regulation",
+        "nervous system",
+        "somatic",
+        "anxiety",
+        "shutdown",
+        "freeze",
+      ],
+    },
+    {
+      id: "atomic_habits",
+      title: "Atomic Habits",
+      author: "James Clear",
+      url: "https://amzn.to/431fR7V",
+      why: "Build evidence through small actions.",
+      tags: [
+        "habits",
+        "behavior",
+        "consistency",
+        "routine",
+        "evidence",
+        "practice",
+      ],
+    },
+    {
+      id: "how_to_do_the_work",
+      title: "How to Do the Work",
+      author: "Dr. Nicole LePera",
+      url: "https://amzn.to/43y2mNa",
+      why: "Holistic approach: shadow work + regulation.",
+      tags: [
+        "shadow",
+        "trauma",
+        "nervous system",
+        "inner child",
+        "therapy",
+        "regulation",
+      ],
+    },
+    {
+      id: "atlas_of_the_heart",
+      title: "Atlas of the Heart",
+      author: "Brené Brown",
+      url: "https://amzn.to/3JjyTjf",
+      why: "Emotional literacy foundation.",
+      tags: [
+        "emotion",
+        "feelings",
+        "language",
+        "shame",
+        "naming",
+        "vocabulary",
+      ],
+    },
+    {
+      id: "future_self",
+      title: "Be Your Future Self Now",
+      author: "Dr. Benjamin Hardy",
+      url: "https://amzn.to/4p3Rwaf",
+      why: "Identity transformation framework.",
+      tags: ["identity", "future self", "become", "vision", "self-concept"],
+    },
+    {
+      id: "first_rule_of_mastery",
+      title: "The First Rule of Mastery",
+      author: "Dr. Michael Gervais",
+      url: "https://amzn.to/4hx7Ld3",
+      why: "Performance psychology for overthinkers.",
+      tags: ["performance", "mind", "fear", "overthinking", "mastery"],
+    },
+    {
+      id: "crucial_conversations",
+      title: "Crucial Conversations",
+      author: "Kerry Patterson",
+      url: "https://amzn.to/49sdXkC",
+      why: "High ROI communication skills.",
+      tags: [
+        "communication",
+        "relationship",
+        "conflict",
+        "conversation",
+        "boundaries",
+      ],
+    },
+    {
+      id: "deep_work",
+      title: "Deep Work",
+      author: "Cal Newport",
+      url: "https://amzn.to/48UeonB",
+      why: "Focus and anti-distraction.",
+      tags: [
+        "focus",
+        "distraction",
+        "work",
+        "attention",
+        "dopamine",
+        "productivity",
+      ],
+    },
+    {
+      id: "gifts_of_imperfection",
+      title: "The Gifts of Imperfection",
+      author: "Brené Brown",
+      url: "https://amzn.to/3X35Svi",
+      why: "Perfectionism and shame.",
+      tags: ["perfectionism", "shame", "worthiness", "belonging"],
+    },
+    {
+      id: "breath",
+      title: "Breath: The New Science of a Lost Art",
+      author: "James Nestor",
+      url: "https://amzn.to/4ntDahQ",
+      why: "Immediate nervous system benefits.",
+      tags: ["breath", "breathing", "anxiety", "body", "calm"],
+    },
+    {
+      id: "dose_effect",
+      title: "The DOSE Effect",
+      author: "TJ Power",
+      url: "https://amzn.to/4oPrA1X",
+      why: "Dopamine and cheap dopamine loops.",
+      tags: [
+        "dopamine",
+        "addiction",
+        "phone",
+        "scroll",
+        "porn",
+        "games",
+        "garden scapes",
+        "garden-scapes",
+        "gardenscapes",
+      ],
+    },
+    {
+      id: "war_of_art",
+      title: "The War of Art",
+      author: "Steven Pressfield",
+      url: "https://amzn.to/4ogrhgI",
+      why: "Break resistance and procrastination.",
+      tags: [
+        "resistance",
+        "procrastination",
+        "creative",
+        "promotion",
+        "visibility",
+        "freeze",
+      ],
+    },
+    {
+      id: "polyvagal_therapy",
+      title: "Polyvagal Theory in Therapy",
+      author: "Deb Dana",
+      url: "https://amzn.to/3Jt9gwr",
+      why: "For dorsal shutdown cases.",
+      tags: ["polyvagal", "shutdown", "dorsal", "therap", "nervous system"],
+    },
+    {
+      id: "mindset",
+      title: "Mindset: The New Psychology of Success",
+      author: "Carol Dweck",
+      url: "https://amzn.to/47Lmb66",
+      why: "Shift from fixed to growth.",
+      tags: ["mindset", "fixed", "growth", "beliefs"],
+    },
+  ];
+
+  function getAssessmentText(pd: any): string {
+    try {
+      const parts = [
+        pd?.assessment_overview,
+        pd?.development_profile,
+        pd?.bottom_line,
+        pd?.sabotage_analysis?.anchor,
+        pd?.sabotage_analysis?.success_proof,
+        pd?.sabotage_analysis?.go_to_patterns,
+        pd?.sabotage_analysis?.escape_behavior,
+        pd?.sabotage_analysis?.positive_behavior,
+        pd?.sabotage_analysis?.protective_pattern,
+        pd?.sabotage_analysis?.what_its_protecting_from,
+        pd?.nervous_system_assessment?.primary_state,
+        pd?.nervous_system_assessment?.regulation_reality,
+        pd?.nervous_system_assessment?.observable_patterns,
+        Array.isArray(pd?.thirty_day_protocol?.weekly_goals)
+          ? pd.thirty_day_protocol.weekly_goals.join(" ")
+          : pd?.thirty_day_protocol?.weekly_goals,
+        Array.isArray(pd?.thirty_day_protocol?.daily_actions)
+          ? pd.thirty_day_protocol.daily_actions.join(" ")
+          : pd?.thirty_day_protocol?.daily_actions,
+      ].filter(Boolean);
+      return String(parts.join(" \n ")).toLowerCase();
+    } catch {
+      return "";
+    }
+  }
+
+  function selectTopTwoBooks(pd: any) {
+    const text = getAssessmentText(pd);
+    const scored = allBooks.map((b) => {
+      const score = b.tags.reduce(
+        (acc: number, tag: string) =>
+          acc + (text.includes(tag.toLowerCase()) ? 1 : 0),
+        0
+      );
+      const boosts =
+        (text.includes("freeze") ||
+        text.includes("resistance") ||
+        text.includes("promotion") ||
+        text.includes("visibility")
+          ? b.id === "war_of_art" || b.id === "deep_work"
+            ? 1
+            : 0
+          : 0) +
+        (text.includes("porn") ||
+        text.includes("scroll") ||
+        text.includes("garden scapes") ||
+        text.includes("gardenscapes")
+          ? b.id === "dose_effect"
+            ? 1
+            : 0
+          : 0) +
+        (text.includes("nervous system") ||
+        text.includes("shutdown") ||
+        text.includes("dorsal") ||
+        text.includes("anxiety")
+          ? b.id === "body_keeps_score" || b.id === "reclaim_nervous_system"
+            ? 1
+            : 0
+          : 0) +
+        (text.includes("identity") ||
+        text.includes("become") ||
+        text.includes("future self")
+          ? b.id === "future_self"
+            ? 1
+            : 0
+          : 0);
+      return { book: b, score: score + boosts };
+    });
+    scored.sort((a, b) => b.score - a.score);
+    const top = scored
+      .filter((s) => s.score > 0)
+      .slice(0, 2)
+      .map((s) => s.book);
+    if (top.length < 2) {
+      return allBooks
+        .filter((b) => ["atomic_habits", "body_keeps_score"].includes(b.id))
+        .slice(0, 2);
+    }
+    return top;
+  }
+
+  const selectedBooks = selectTopTwoBooks(planData);
+
   return new NextResponse(
     `
     <!DOCTYPE html>
@@ -1000,36 +1276,38 @@ function generateHTMLReport(
             <div class="page-number">${11 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
         </div>
 
-        <!-- BOOK RECOMMENDATIONS PAGE -->
-        ${
-          planData.book_recommendations
-            ? `
+        <!-- BOOK RECOMMENDATIONS PAGE (Top 2 Personalized) -->
         <div class="page">
             <div class="page-content">
                 <div class="section-header">
                     <div class="section-label">Resources</div>
                     <div class="section-title">Book<br>Recommendations</div>
                 </div>
-                
-                ${
-                  Array.isArray(planData.book_recommendations)
-                    ? planData.book_recommendations
-                        .map(
-                          (book: string) => `
-                <div class="reminder-item">${book}</div>
-                `
-                        )
-                        .join("")
-                    : `
-                <div class="reminder-item">${planData.book_recommendations}</div>
-                `
-                }
+
+                <div class="content-block">
+                  <div class="block-title">Your Top 2, Personalized</div>
+                  <ol style="margin:0 0 14px 20px; padding:0; font-size:15px;">
+                    ${selectedBooks
+                      .map(
+                        (b: any) => `
+                      <li style="margin-bottom:10px;">
+                        <span style="font-style:italic;"><a href="${b.url}" style="color: #1a73e8; text-decoration: underline; font-size:15px;" target="_blank">"${b.title}"</a></span>
+                        by <span style="color: #1a73e8; font-size:15px;">${b.author}</span><br>
+                        <strong>Why:</strong> <span style="color:#222; font-size:13px;">${b.why}</span>
+                      </li>
+                    `
+                      )
+                      .join("")}
+                  </ol>
+                </div>
+                <div class="content-block" style="margin-top: 10px;">
+                  <div style="font-size:13px; color:#777; font-style:italic; line-height:1.7; text-align:left; border-top: 1px solid #eee; padding-top:10px; max-width:650px;">
+                    These books support—but do not replace—professional mental health care. If you're experiencing trauma symptoms, severe anxiety, depression, or psychological distress, please consult a licensed therapist.
+                  </div>
+                </div>
             </div>
             <div class="page-number">${12 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
         </div>
-        `
-            : ""
-        }
 
         <!-- RESOURCES PAGE -->
         ${

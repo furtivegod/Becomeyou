@@ -453,6 +453,281 @@ function generateHTMLReport(
         "Accountability partner or support group",
       ];
 
+  // Select top 2 book recommendations based on assessment content
+  const allBooks = [
+    {
+      id: "body_keeps_score",
+      title: "The Body Keeps the Score",
+      author: "Bessel van der Kolk",
+      url: "https://amzn.to/4hJB9wT",
+      why: "The definitive text on trauma and nervous system. Directly addresses the core issue for most users stuck in sabotage patterns.",
+      tags: [
+        "trauma",
+        "nervous system",
+        "shutdown",
+        "dorsal",
+        "anxiety",
+        "somatic",
+        "regulation",
+      ],
+    },
+    {
+      id: "reclaim_nervous_system",
+      title: "Reclaim Your Nervous System",
+      author: "Mastin Kipp",
+      url: "https://amzn.to/47xBpua",
+      why: "Practical, accessible nervous system regulation. Bridges theory to action. Perfect for immediate implementation.",
+      tags: [
+        "regulation",
+        "nervous system",
+        "somatic",
+        "anxiety",
+        "shutdown",
+        "freeze",
+      ],
+    },
+    {
+      id: "atomic_habits",
+      title: "Atomic Habits",
+      author: "James Clear",
+      url: "https://amzn.to/431fR7V",
+      why: "The behavior change bible. Supports building evidence through small actions.",
+      tags: [
+        "habits",
+        "behavior",
+        "consistency",
+        "routine",
+        "evidence",
+        "practice",
+      ],
+    },
+    {
+      id: "how_to_do_the_work",
+      title: "How to Do the Work",
+      author: "Dr. Nicole LePera",
+      url: "https://amzn.to/43y2mNa",
+      why: "Combines shadow work, nervous system, and daily practices. Holistic approach.",
+      tags: [
+        "shadow",
+        "trauma",
+        "nervous system",
+        "inner child",
+        "therapy",
+        "regulation",
+      ],
+    },
+    {
+      id: "atlas_of_the_heart",
+      title: "Atlas of the Heart",
+      author: "Brené Brown",
+      url: "https://amzn.to/3JjyTjf",
+      why: "Emotional literacy is foundational—users can't regulate what they can't name.",
+      tags: [
+        "emotion",
+        "feelings",
+        "language",
+        "shame",
+        "naming",
+        "vocabulary",
+      ],
+    },
+    {
+      id: "future_self",
+      title: "Be Your Future Self Now",
+      author: "Dr. Benjamin Hardy",
+      url: "https://amzn.to/4p3Rwaf",
+      why: "Addresses identity transformation (Become). Practical framework for stepping into new identity.",
+      tags: ["identity", "future self", "become", "vision", "self-concept"],
+    },
+    {
+      id: "first_rule_of_mastery",
+      title: "The First Rule of Mastery",
+      author: "Dr. Michael Gervais",
+      url: "https://amzn.to/4hx7Ld3",
+      why: "Performance psychology for overthinkers and high performers.",
+      tags: ["performance", "mind", "fear", "overthinking", "mastery"],
+    },
+    {
+      id: "crucial_conversations",
+      title: "Crucial Conversations",
+      author: "Kerry Patterson",
+      url: "https://amzn.to/49sdXkC",
+      why: "Most relationship/career problems stem from poor communication.",
+      tags: [
+        "communication",
+        "relationship",
+        "conflict",
+        "conversation",
+        "boundaries",
+      ],
+    },
+    {
+      id: "deep_work",
+      title: "Deep Work",
+      author: "Cal Newport",
+      url: "https://amzn.to/48UeonB",
+      why: "Combats distraction and cheap dopamine. Teaches focus.",
+      tags: [
+        "focus",
+        "distraction",
+        "work",
+        "attention",
+        "dopamine",
+        "productivity",
+      ],
+    },
+    {
+      id: "gifts_of_imperfection",
+      title: "The Gifts of Imperfection",
+      author: "Brené Brown",
+      url: "https://amzn.to/3X35Svi",
+      why: "Addresses perfectionism and shame—big sabotage drivers.",
+      tags: ["perfectionism", "shame", "worthiness", "belonging"],
+    },
+    {
+      id: "breath",
+      title: "Breath: The New Science of a Lost Art",
+      author: "James Nestor",
+      url: "https://amzn.to/4ntDahQ",
+      why: "Simple, science-backed practice with immediate nervous system benefits.",
+      tags: ["breath", "breathing", "anxiety", "body", "calm"],
+    },
+    {
+      id: "dose_effect",
+      title: "The DOSE Effect",
+      author: "TJ Power",
+      url: "https://amzn.to/4oPrA1X",
+      why: "Directly addresses dopamine and cheap dopamine loops.",
+      tags: [
+        "dopamine",
+        "addiction",
+        "phone",
+        "scroll",
+        "porn",
+        "games",
+        "Garden Scapes",
+      ],
+    },
+    {
+      id: "war_of_art",
+      title: "The War of Art",
+      author: "Steven Pressfield",
+      url: "https://amzn.to/4ogrhgI",
+      why: "Short, punchy, confrontational—great for breaking resistance and procrastination.",
+      tags: [
+        "resistance",
+        "procrastination",
+        "creative",
+        "promotion",
+        "visibility",
+        "freeze",
+      ],
+    },
+    {
+      id: "polyvagal_therapy",
+      title: "Polyvagal Theory in Therapy",
+      author: "Deb Dana",
+      url: "https://amzn.to/3Jt9gwr",
+      why: "For dorsal shutdown or severe regulation issues.",
+      tags: ["polyvagal", "shutdown", "dorsal", "therap*", "nervous system"],
+    },
+    {
+      id: "mindset",
+      title: "Mindset: The New Psychology of Success",
+      author: "Carol Dweck",
+      url: "https://amzn.to/47Lmb66",
+      why: "Fixed vs. growth mindset foundational to development.",
+      tags: ["mindset", "fixed", "growth", "beliefs"],
+    },
+  ];
+
+  function getAssessmentText(pd: any): string {
+    try {
+      const parts = [
+        pd?.assessment_overview,
+        pd?.development_profile,
+        pd?.bottom_line,
+        pd?.sabotage_analysis?.anchor,
+        pd?.sabotage_analysis?.success_proof,
+        pd?.sabotage_analysis?.go_to_patterns,
+        pd?.sabotage_analysis?.escape_behavior,
+        pd?.sabotage_analysis?.positive_behavior,
+        pd?.sabotage_analysis?.protective_pattern,
+        pd?.sabotage_analysis?.what_its_protecting_from,
+        pd?.nervous_system_assessment?.primary_state,
+        pd?.nervous_system_assessment?.regulation_reality,
+        pd?.nervous_system_assessment?.observable_patterns,
+        Array.isArray(pd?.thirty_day_protocol?.weekly_goals)
+          ? pd.thirty_day_protocol.weekly_goals.join(" ")
+          : pd?.thirty_day_protocol?.weekly_goals,
+        Array.isArray(pd?.thirty_day_protocol?.daily_actions)
+          ? pd.thirty_day_protocol.daily_actions.join(" ")
+          : pd?.thirty_day_protocol?.daily_actions,
+      ].filter(Boolean);
+      return String(parts.join(" \n ")).toLowerCase();
+    } catch {
+      return "";
+    }
+  }
+
+  function selectTopTwoBooks(pd: any) {
+    const text = getAssessmentText(pd);
+    const scored = allBooks.map((b) => {
+      const score = b.tags.reduce(
+        (acc: number, tag: string) =>
+          acc + (text.includes(tag.toLowerCase()) ? 1 : 0),
+        0
+      );
+      // small boosts for common patterns
+      const boosts =
+        (text.includes("freeze") ||
+        text.includes("resistance") ||
+        text.includes("promotion")
+          ? b.id === "war_of_art" || b.id === "deep_work"
+            ? 1
+            : 0
+          : 0) +
+        (text.includes("porn") ||
+        text.includes("scroll") ||
+        text.includes("garden scapes")
+          ? b.id === "dose_effect"
+            ? 1
+            : 0
+          : 0) +
+        (text.includes("nervous system") ||
+        text.includes("shutdown") ||
+        text.includes("dorsal") ||
+        text.includes("anxiety")
+          ? b.id === "body_keeps_score" || b.id === "reclaim_nervous_system"
+            ? 1
+            : 0
+          : 0) +
+        (text.includes("identity") ||
+        text.includes("become") ||
+        text.includes("future self")
+          ? b.id === "future_self"
+            ? 1
+            : 0
+          : 0);
+      return { book: b, score: score + boosts };
+    });
+    scored.sort((a, b) => b.score - a.score);
+    const top = scored
+      .filter((s) => s.score > 0)
+      .slice(0, 2)
+      .map((s) => s.book);
+    if (top.length < 2) {
+      // sensible defaults
+      const defaults = allBooks
+        .filter((b) => ["atomic_habits", "body_keeps_score"].includes(b.id))
+        .slice(0, 2);
+      return defaults;
+    }
+    return top;
+  }
+
+  const selectedBooks = selectTopTwoBooks(planData);
+
   const reflectionPrompts = Array.isArray(planData.reflection_prompts)
     ? planData.reflection_prompts
     : [
@@ -1207,47 +1482,33 @@ function generateHTMLReport(
             </div>
             </div>
             
-      <!-- PAGE 17: BOOK RECOMMENDATIONS -->
+      <!-- PAGE 17: BOOK RECOMMENDATIONS (Top 2 Personalized) -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Recommended Reading</div>
             <div class="section-title">Book<br>Recommendations</div>
           </div>
-          
+
           <div class="content-block">
-            <div class="block-title" style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">Tier 1: Non-Negotiable Foundation <span style="font-size:13px; font-weight:400; color:#999;">(5 books)</span></div>
+            <div class="block-title" style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">Your Top 2, Personalized</div>
             <ol style="margin:0 0 14px 20px; padding:0; font-size:15px;">
-              <li style="margin-bottom:8px;"><span style="font-style:italic;"><a href="https://amzn.to/4hJB9wT" style="color: #1a73e8; text-decoration: underline; font-size:15px;" target="_blank">"The Body Keeps the Score"</a></span> by <span style="color: #1a73e8; font-size:15px;">Bessel van der Kolk</span><br><strong>Why:</strong> <span style="color:#222; font-size:13px;">The definitive text on trauma and nervous system. Directly addresses the core issue for most users stuck in sabotage patterns.</span></li>
-              <li style="margin-bottom:8px;"><span style="font-style:italic;"><a href="https://amzn.to/47xBpua" style="color: #1a73e8; text-decoration: underline; font-size:15px;" target="_blank">"Reclaim Your Nervous System"</a></span> by <span style="color: #1a73e8; font-size:15px;">Mastin Kipp</span><br><strong>Why:</strong> <span style="color:#222; font-size:13px;">Practical, accessible nervous system regulation. Bridges theory to action. Perfect for immediate implementation.</span></li>
-              <li style="margin-bottom:8px;"><span style="font-style:italic;"><a href="https://amzn.to/431fR7V" style="color: #1a73e8; text-decoration: underline; font-size:15px;" target="_blank">"Atomic Habits"</a></span> by <span style="color: #1a73e8; font-size:15px;">James Clear</span><br><strong>Why:</strong> <span style="color:#222; font-size:13px;">The behavior change bible. Directly supports the assessment's focus on building evidence through small actions. Universal application across all quadrants.</span></li>
-              <li style="margin-bottom:8px;"><span style="font-style:italic;"><a href="https://amzn.to/43y2mNa" style="color: #1a73e8; text-decoration: underline; font-size:15px;" target="_blank">"How to Do the Work"</a></span> by <span style="color: #1a73e8; font-size:15px;">Dr. Nicole LePera</span><br><strong>Why:</strong> <span style="color:#222; font-size:13px;">Combines shadow work, nervous system, and daily practices. Holistic approach matches your assessment model perfectly.</span></li>
-              <li><span style="font-style:italic;"><a href="https://amzn.to/3JjyTjf" style="color: #1a73e8; text-decoration: underline; font-size:15px;" target="_blank">"Atlas of the Heart"</a></span> by <span style="color: #1a73e8; font-size:15px;">Brené Brown</span><br><strong>Why:</strong> <span style="color:#222; font-size:13px;">Emotional literacy is foundational to all quadrants. Users can't regulate what they can't name. Essential for Spirit development.</span></li>
+              ${selectedBooks
+                .map(
+                  (b) => `
+              <li style="margin-bottom:10px;">
+                <span style="font-style:italic;">
+                  <a href="${b.url}" style="color: #1a73e8; text-decoration: underline; font-size:15px;" target="_blank">"${b.title}"</a>
+                </span>
+                by <span style="color: #1a73e8; font-size:15px;">${b.author}</span><br>
+                <strong>Why:</strong> <span style="color:#222; font-size:13px;">${b.why}</span>
+              </li>`
+                )
+                .join("")}
             </ol>
           </div>
 
-          <div class="content-block">
-            <div class="block-title" style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">Tier 2: Quadrant-Specific Power Books <span style="font-size:13px; font-weight:400; color:#999;">(6 books)</span></div>
-            <ol style="margin:0 0 14px 20px; padding:0; font-size:15px;">
-              <li style="margin-bottom:8px;"><span style="font-style:italic;"><a href="https://amzn.to/4p3Rwaf" style="color: #1a73e8; text-decoration: underline; font-size:15px;" target="_blank">"Be Your Future Self Now"</a></span> by <span style="color: #1a73e8; font-size:15px;">Dr. Benjamin Hardy</span><br><strong>Why:</strong> <span style="color:#222; font-size:13px;">Directly addresses identity transformation (the "Become" stage). Practical framework for stepping into new identity without forcing it.</span></li>
-              <li style="margin-bottom:8px;"><span style="font-style:italic;"><a href="https://amzn.to/4hx7Ld3" style="color: #1a73e8; text-decoration: underline; font-size:15px;" target="_blank">"The First Rule of Mastery"</a></span> by <span style="color: #1a73e8; font-size:15px;">Dr. Michael Gervais</span><br><strong>Why:</strong> <span style="color:#222; font-size:13px;">Mind quadrant excellence. Addresses the mental game and performance psychology. Critical for overthinkers and high performers.</span></li>
-              <li style="margin-bottom:8px;"><span style="font-style:italic;"><a href="https://amzn.to/49sdXkC" style="color: #1a73e8; text-decoration: underline; font-size:15px;" target="_blank">"Crucial Conversations"</a></span> by <span style="color: #1a73e8; font-size:15px;">Kerry Patterson</span><br><strong>Why:</strong> <span style="color:#222; font-size:13px;">Spirit quadrant essential. Most relationship/career problems stem from poor communication. High ROI skill.</span></li>
-              <li style="margin-bottom:8px;"><span style="font-style:italic;"><a href="https://amzn.to/48UeonB" style="color: #1a73e8; text-decoration: underline; font-size:15px;" target="_blank">"Deep Work"</a></span> by <span style="color: #1a73e8; font-size:15px;">Cal Newport</span><br><strong>Why:</strong> <span style="color:#222; font-size:13px;">Contribution quadrant. Combats distraction and cheap dopamine. Teaches focus in an age of constant interruption.</span></li>
-              <li style="margin-bottom:8px;"><span style="font-style:italic;"><a href="https://amzn.to/3X35Svi" style="color: #1a73e8; text-decoration: underline; font-size:15px;" target="_blank">"The Gifts of Imperfection"</a></span> by <span style="color: #1a73e8; font-size:15px;">Brené Brown</span><br><strong>Why:</strong> <span style="color:#222; font-size:13px;">Addresses perfectionism and shame—two of the biggest sabotage drivers. Lighter, more accessible than her other work.</span></li>
-              <li><span style="font-style:italic;"><a href="https://amzn.to/4ntDahQ" style="color: #1a73e8; text-decoration: underline; font-size:15px;" target="_blank">"Breath: The New Science of a Lost Art"</a></span> by <span style="color: #1a73e8; font-size:15px;">James Nestor</span><br><strong>Why:</strong> <span style="color:#222; font-size:13px;">Body quadrant. Simple, science-backed practice with immediate nervous system benefits. Easy entry point for embodiment work.</span></li>
-            </ol>
-          </div>
-
-          <div class="content-block">
-            <div class="block-title" style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">Tier 3: Specialized Deep Dives <span style="font-size:13px; font-weight:400; color:#999;">(4 books)</span></div>
-            <ol style="margin:0 0 7px 20px; padding:0; font-size:15px;">
-              <li style="margin-bottom:8px;"><span style="font-style:italic;"><a href="https://amzn.to/4oPrA1X" style="color: #1a73e8; text-decoration: underline; font-size:15px;" target="_blank">"The DOSE Effect"</a></span> by <span style="color: #1a73e8; font-size:15px;">TJ Power</span><br><strong>Why:</strong> <span style="color:#222; font-size:13px;">Directly addresses dopamine, the core mechanism behind cheap dopamine loops. Fills a critical gap in understanding sabotage biology.</span></li>
-              <li style="margin-bottom:8px;"><span style="font-style:italic;"><a href="https://amzn.to/4ogrhgI" style="color: #1a73e8; text-decoration: underline; font-size:15px;" target="_blank">"The War of Art"</a></span> by <span style="color: #1a73e8; font-size:15px;">Steven Pressfield</span><br><strong>Why:</strong> <span style="color:#222; font-size:13px;">Short, punchy, confrontational. Perfect for breaking through resistance and procrastination. Quick read, high impact.</span></li>
-              <li style="margin-bottom:8px;"><span style="font-style:italic;"><a href="https://amzn.to/3Jt9gwr" style="color: #1a73e8; text-decoration: underline; font-size:15px;" target="_blank">"Polyvagal Theory in Therapy"</a></span> by <span style="color: #1a73e8; font-size:15px;">Deb Dana</span><br><strong>Why:</strong> <span style="color:#222; font-size:13px;">For users showing dorsal vagal shutdown or severe regulation issues. Science-based nervous system intervention. Professional-grade but accessible.</span></li>
-              <li><span style="font-style:italic;"><a href="https://amzn.to/47Lmb66" style="color: #1a73e8; text-decoration: underline; font-size:15px;" target="_blank">"Mindset: The New Psychology of Success"</a></span> by <span style="color: #1a73e8; font-size:15px;">Carol Dweck</span><br><strong>Why:</strong> <span style="color:#222; font-size:13px;">Fixed vs. growth mindset is foundational to all development work. Changes how users interpret failure and challenge.</span></li>
-            </ol>
-          </div>
-          <div class="content-block" style="margin-top: 32px;">
+          <div class="content-block" style="margin-top: 24px;">
             <div style="font-size:13px; color:#777; font-style:italic; line-height:1.7; text-align:left; border-top: 1px solid #eee; padding-top:14px; max-width:650px;">
               These books support—but do not replace—professional mental health care. If you're experiencing trauma symptoms, severe anxiety, depression, or psychological distress, please consult a licensed therapist.<br>Amazon Associate Disclosure: I earn from qualifying purchases.
             </div>
