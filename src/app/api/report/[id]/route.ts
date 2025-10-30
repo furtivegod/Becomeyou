@@ -8,17 +8,17 @@ export async function GET(
   try {
     const params = await context.params;
     const sessionId = params.id;
-    
+
     console.log("Report viewer API called for session:", sessionId);
 
     // Try to get signed PDF URL first
     const signedPdfUrl = await getSignedPDFUrl(sessionId);
     console.log("PDF URL found:", signedPdfUrl ? "Yes" : "No");
     console.log("PDF URL:", signedPdfUrl);
-    
+
     // Always show HTML page, don't redirect to PDF
     console.log("Generating HTML view for session:", sessionId);
-    
+
     const { data: planOutput, error: planError } = await supabase
       .from("plan_outputs")
       .select("plan_json")
@@ -29,7 +29,7 @@ export async function GET(
 
     if (planError || !planOutput) {
       console.error("Error fetching plan data:", planError);
-      
+
       // If all else fails, show a fallback message
       return new NextResponse(
         `
@@ -101,7 +101,7 @@ export async function GET(
     }
 
     const planData = planOutput.plan_json;
-    
+
     // Get user data to display the correct name
     const { data: sessionData, error: sessionError } = await supabase
       .from("sessions")
@@ -116,12 +116,12 @@ export async function GET(
         .select("user_name")
         .eq("id", sessionData.user_id)
         .single();
-      
+
       if (!userError && userData?.user_name) {
         userName = userData.user_name;
       }
     }
-    
+
     return generateHTMLReport(planData, sessionId, signedPdfUrl, userName);
   } catch (error) {
     console.error("Report viewer error:", error);
@@ -1103,7 +1103,12 @@ function generateHTMLReport(
                 
                 <div class="content-block">
                     <div class="block-title">How to Stay Connected</div>
-                    <div class="block-content">${planData.next_assessment?.stay_connected || "Join our community and stay connected for ongoing support and guidance"}</div>
+                    <div class="block-content">
+                        Your assessment is just the beginning.<br>
+                        Over the coming weeks, you'll receive weekly insights in your inbox—real case studies of people who've broken through the exact patterns you're facing, practical protocols you can implement immediately, and advanced strategies that build on your personalized roadmap.<br>
+                        Each email is designed to meet you exactly where you are in your transformation journey, delivering the precise guidance you need, when you need it most.<br>
+                        These aren't generic newsletters—they're the ongoing support system that turns your 30-day protocol into a sustainable lifestyle.
+                    </div>
                 </div>
             </div>
             <div class="page-number">${15 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
