@@ -1302,74 +1302,14 @@ function generateHTMLReport(
                 </div>
                 <div class="content-block" style="margin-top: 10px;">
                   <div style="font-size:13px; color:#777; font-style:italic; line-height:1.7; text-align:left; border-top: 1px solid #eee; padding-top:10px; max-width:650px;">
-                    These books support—but do not replace—professional mental health care. If you're experiencing trauma symptoms, severe anxiety, depression, or psychological distress, please consult a licensed therapist.
+                    These books support—but do not replace—professional mental health care. If you're experiencing trauma symptoms, severe anxiety, depression, or psychological distress, please consult a licensed therapist.<br>Amazon Associate Disclosure: I earn from qualifying purchases.
                   </div>
                 </div>
             </div>
             <div class="page-number">${12 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
         </div>
 
-        <!-- RESOURCES PAGE -->
-        ${
-          planData.resources
-            ? `
-        <div class="page">
-            <div class="page-content">
-                <div class="section-header">
-                    <div class="section-label">Resources</div>
-                    <div class="section-title">Additional<br>Resources</div>
-                </div>
-                
-                ${
-                  Array.isArray(planData.resources)
-                    ? planData.resources
-                        .map(
-                          (resource: string) => `
-                <div class="reminder-item">${resource}</div>
-                `
-                        )
-                        .join("")
-                    : `
-                <div class="reminder-item">${planData.resources}</div>
-                `
-                }
-            </div>
-            <div class="page-number">${13 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
-        </div>
-        `
-            : ""
-        }
-
-        <!-- REFLECTION PROMPTS PAGE -->
-        ${
-          planData.reflection_prompts
-            ? `
-        <div class="page">
-            <div class="page-content">
-                <div class="section-header">
-                    <div class="section-label">Reflection</div>
-                    <div class="section-title">Reflection<br>Prompts</div>
-                </div>
-                
-                ${
-                  Array.isArray(planData.reflection_prompts)
-                    ? planData.reflection_prompts
-                        .map(
-                          (prompt: string) => `
-                <div class="reminder-item">${prompt}</div>
-                `
-                        )
-                        .join("")
-                    : `
-                <div class="reminder-item">${planData.reflection_prompts}</div>
-                `
-                }
-            </div>
-            <div class="page-number">${14 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
-        </div>
-        `
-            : ""
-        }
+        
 
         <!-- NEXT STEPS PAGE -->
         <div class="page">
@@ -1389,7 +1329,7 @@ function generateHTMLReport(
                     </div>
                 </div>
             </div>
-            <div class="page-number">${15 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
+            <div class="page-number">${13 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
         </div>
 
         <!-- FINAL PAGE -->
