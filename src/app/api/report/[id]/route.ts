@@ -1302,7 +1302,8 @@ function generateHTMLReport(
                 </div>
                 <div class="content-block" style="margin-top: 10px;">
                   <div style="font-size:13px; color:#777; font-style:italic; line-height:1.7; text-align:left; border-top: 1px solid #eee; padding-top:10px; max-width:650px;">
-                    These books support—but do not replace—professional mental health care. If you're experiencing trauma symptoms, severe anxiety, depression, or psychological distress, please consult a licensed therapist. <span style="font-style: normal; color:#777;">Amazon Associate Disclosure: I earn from qualifying purchases.</span>
+                    These books support—but do not replace—professional mental health care. If you're experiencing trauma symptoms, severe anxiety, depression, or psychological distress, please consult a licensed therapist.<br>
+                    <span style="font-style: normal; color:#777;">Amazon Associate Disclosure: I earn from qualifying purchases.</span>
                   </div>
                 </div>
             </div>
@@ -1322,9 +1323,9 @@ function generateHTMLReport(
                 <div class="content-block">
                     <div class="block-title">How to Stay Connected</div>
                     <div class="block-content">
-                        <p style="margin: 0 0 12px 0;">Your assessment is just the beginning.</p>
-                        <p style="margin: 0 0 12px 0;">Over the coming weeks, you'll receive weekly insights in your inbox—real case studies of people who've broken through the exact patterns you're facing, practical protocols you can implement immediately, and advanced strategies that build on your personalized roadmap.</p>
-                        <p style="margin: 0 0 12px 0;">Each email is designed to meet you exactly where you are in your transformation journey, delivering the precise guidance you need, when you need it most.</p>
+                        <p style="margin: 0 0 24px 0;">Your assessment is just the beginning.</p>
+                        <p style="margin: 0 0 24px 0;">Over the coming weeks, you'll receive weekly insights in your inbox—real case studies of people who've broken through the exact patterns you're facing, practical protocols you can implement immediately, and advanced strategies that build on your personalized roadmap.</p>
+                        <p style="margin: 0 0 24px 0;">Each email is designed to meet you exactly where you are in your transformation journey, delivering the precise guidance you need, when you need it most.</p>
                         <p style="margin: 0;">These aren't generic newsletters—they're the ongoing support system that turns your 30-day protocol into a sustainable lifestyle.</p>
                     </div>
                 </div>
