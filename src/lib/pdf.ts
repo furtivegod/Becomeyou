@@ -1510,7 +1510,7 @@ function generateHTMLReport(
 
           <div class="content-block" style="margin-top: 24px;">
             <div style="font-size:13px; color:#777; font-style:italic; line-height:1.7; text-align:left; border-top: 1px solid #eee; padding-top:14px; max-width:650px;">
-              These books support—but do not replace—professional mental health care. If you're experiencing trauma symptoms, severe anxiety, depression, or psychological distress, please consult a licensed therapist.<br> Amazon Associate Disclosure: I earn from qualifying purchases.</span>
+              These books support—but do not replace—professional mental health care. If you're experiencing trauma symptoms, severe anxiety, depression, or psychological distress, please consult a licensed therapist.<br> Amazon Associate Disclosure: I earn from qualifying purchases.
             </div>
           </div>
         </div>
@@ -1535,7 +1535,7 @@ function generateHTMLReport(
             </div>
           </div>
         
-          <div style="background: var(--cream); padding: 60px; text-align: center; max-width: 600px; border-left: 2px solid var(--soft-gold); margin-top: 80px;">
+          <div style="background: var(--cream); padding: 60px; text-align: center; max-width: 600px; border-left: 2px solid var(--soft-gold); margin-top: 180px;">
             <p style="font-size: 13px; line-height: 2.2; font-style: italic;">
             This assessment was built with care, respect, and the belief that you already have everything you need to become the person you described. The only thing left to do is <em>take action</em>.
           </p>
