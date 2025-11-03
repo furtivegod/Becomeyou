@@ -1302,7 +1302,8 @@ function generateHTMLReport(
                 </div>
                 <div class="content-block" style="margin-top: 10px;">
                   <div style="font-size:13px; color:#777; font-style:italic; line-height:1.7; text-align:left; border-top: 1px solid #eee; padding-top:10px; max-width:650px;">
-                    These books support—but do not replace—professional mental health care. If you're experiencing trauma symptoms, severe anxiety, depression, or psychological distress, please consult a licensed therapist.<br>Amazon Associate Disclosure: I earn from qualifying purchases.
+                    These books support—but do not replace—professional mental health care. If you're experiencing trauma symptoms, severe anxiety, depression, or psychological distress, please consult a licensed therapist.<br>
+                    <span style="font-style: normal; color:#222; font-weight:600;">Amazon Associate Disclosure: I earn from qualifying purchases.</span>
                   </div>
                 </div>
             </div>
