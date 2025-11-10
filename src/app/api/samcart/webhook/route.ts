@@ -46,16 +46,6 @@ export async function POST(request: NextRequest) {
       JSON.stringify(samcartData, null, 2)
     );
 
-    // Extract data from SamCart webhook payload
-    const customerEmail = samcartData.customer?.email;
-    const orderId = samcartData.order?.id;
-    const status = samcartData.products?.[0]?.status || "completed"; // Get status from products array
-    const customerFirstName = samcartData.customer?.first_name;
-    const customerName =
-      samcartData.customer?.first_name && samcartData.customer?.last_name
-        ? `${samcartData.customer.first_name} ${samcartData.customer.last_name}`
-        : null;
-
     // Check for event type (for lead add events)
     const eventType =
       samcartData.event ||
@@ -63,11 +53,31 @@ export async function POST(request: NextRequest) {
       samcartData.action ||
       samcartData.event_type;
     const isLeadAdd =
+      eventType === "LeadAdded" ||
       eventType === "lead.added" ||
       eventType === "lead_add" ||
       eventType === "lead_added" ||
       samcartData.lead ||
       samcartData.lead_id;
+
+    // Extract data from SamCart webhook payload
+    // For order complete events: data is nested under customer/order/products
+    // For lead add events: data is at the top level
+    const customerEmail = isLeadAdd
+      ? samcartData.email
+      : samcartData.customer?.email;
+    const orderId = samcartData.order?.id;
+    const status = samcartData.products?.[0]?.status || "completed"; // Get status from products array
+    const customerFirstName = isLeadAdd
+      ? samcartData.first_name
+      : samcartData.customer?.first_name;
+    const customerLastName = isLeadAdd
+      ? samcartData.last_name
+      : samcartData.customer?.last_name;
+    const customerName =
+      customerFirstName && customerLastName
+        ? `${customerFirstName} ${customerLastName}`
+        : customerFirstName || null;
 
     console.log("Extracted data:", {
       customerEmail,
