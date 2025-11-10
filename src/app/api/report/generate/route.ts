@@ -153,11 +153,16 @@ export async function POST(request: NextRequest) {
 
     console.log("User email found:", userData.email);
 
+    // Extract only first name from stored full name for use in emails
+    const firstName = userData.user_name
+      ? userData.user_name.split(" ")[0]
+      : null;
+
     // Send email with PDF synchronously (wait for it to complete)
     console.log("Sending report email with PDF attachment...");
     console.log("Email details:", {
       email: userData.email,
-      userName: userData.user_name,
+      userName: firstName || "Client",
       pdfUrl: pdfUrl,
       hasPdfBuffer: !!pdfBuffer,
       hasPlanData: !!planData,
@@ -166,7 +171,7 @@ export async function POST(request: NextRequest) {
     try {
       await sendReportEmail(
         userData.email,
-        userData.user_name,
+        firstName || "Client",
         pdfUrl,
         pdfBuffer,
         planData
@@ -186,6 +191,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create email sequence for follow-up emails asynchronously
+    // Store full name in queue, but emails will extract first name when sending
     console.log("Creating email sequence for follow-up emails...");
     try {
       const { createEmailSequence } = await import("@/lib/email-queue");
@@ -193,7 +199,7 @@ export async function POST(request: NextRequest) {
         userData.id,
         sessionId,
         userData.email,
-        userData.user_name
+        userData.user_name // Store full name, but email-queue will extract first name
       );
       console.log(
         "Email sequence created successfully - follow-up emails will be sent over the next 30 days"

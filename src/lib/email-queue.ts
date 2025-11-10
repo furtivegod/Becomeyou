@@ -158,40 +158,45 @@ export async function processEmailQueue() {
           );
         }
 
+        // Extract only first name from stored full name
+        const firstName = email.user_name
+          ? email.user_name.split(" ")[0]
+          : null;
+
         // Send the appropriate email
         switch (email.email_type) {
           case "pattern_recognition":
             await sendPatternRecognitionEmail(
               email.email,
-              email.user_name,
+              firstName || "Client",
               planOutput?.plan_json
             );
             break;
           case "evidence_7day":
             await sendEvidence7DayEmail(
               email.email,
-              email.user_name,
+              firstName || "Client",
               planOutput?.plan_json
             );
             break;
           case "integration_threshold":
             await sendIntegrationThresholdEmail(
               email.email,
-              email.user_name,
+              firstName || "Client",
               planOutput?.plan_json
             );
             break;
           case "compound_effect":
             await sendCompoundEffectEmail(
               email.email,
-              email.user_name,
+              firstName || "Client",
               planOutput?.plan_json
             );
             break;
           case "direct_invitation":
             await sendDirectInvitationEmail(
               email.email,
-              email.user_name,
+              firstName || "Client",
               planOutput?.plan_json
             );
             break;
