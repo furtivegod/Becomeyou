@@ -74,11 +74,11 @@ export async function POST(request: NextRequest) {
     const customerLastName = isLeadAdd
       ? samcartData.last_name
       : samcartData.customer?.last_name;
-    // const customerName =
-    //   customerFirstName && customerLastName
-    //     ? `${customerFirstName} ${customerLastName}`
-    //     : customerFirstName || null;
-    const customerName = customerFirstName;
+    // Store full name in database (first + last, or just first if no last name)
+    const customerName =
+      customerFirstName && customerLastName
+        ? `${customerFirstName} ${customerLastName}`
+        : customerFirstName || null;
 
     console.log("Extracted data:", {
       customerEmail,
