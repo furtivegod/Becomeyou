@@ -36,23 +36,23 @@ export async function sendMagicLink(
   try {
     console.log("Sending email via Resend...");
     const { data, error } = await resend.emails.send({
-      from: "Become You <noreply@thesmartmethod.co>",
+      from: "The S.M.A.R.T. Method <noreply@thesmartmethod.co>",
       to: [email],
 
-      subject: "Your You 3.0 Assessment Is Ready",
+      subject: "Your S.M.A.R.T. Assessment Is Ready",
       html: `
         <!DOCTYPE html>
 
         <html lang="en">
         <head>
-
+            <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Your You 3.0 Assessment Is Ready</title>
+            <title>Your S.M.A.R.T. Assessment Is Ready</title>
             <style>
                 @media only screen and (min-width: 600px) {
                     .cta-button:hover {
-                        background: #B89A5A !important;
+                        background: #6BB81A !important;
                     }
                 }
                 
@@ -78,14 +78,14 @@ export async function sendMagicLink(
             </style>
         </head>
 
-        <body style="margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #F9F6F1;">
+        <body style="margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #F5F3ED;">
             
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #F9F6F1; padding: 40px 20px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #F5F3ED; padding: 40px 20px;">
                 <tr>
                     <td align="center">
                         
                         <!-- Main Container -->
-                        <table role="presentation" width="600" cellpadding="0" cellspacing="0" class="email-container" style="background-color: #FEFDFB; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <table role="presentation" width="600" cellpadding="0" cellspacing="0" class="email-container" style="background-color: #FFFFFF; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
                             
                             <!-- Spacer -->
                             <tr>
@@ -96,7 +96,7 @@ export async function sendMagicLink(
 
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 60px; width: auto;" />
+                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="The S.M.A.R.T. Method Logo" style="height: 60px; width: auto;" />
                                 </td>
                             </tr>
                             
@@ -108,8 +108,8 @@ export async function sendMagicLink(
                             <!-- Greeting -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <h1 style="margin: 0; font-size: 32px; font-weight: 300; color: #2A2A2A; letter-spacing: -0.5px; line-height: 1.2; font-family: 'Cormorant Garamond', Georgia, serif;">
-                                        <span style="color: #2A2A2A;">${displayName}</span>,
+                                    <h1 style="margin: 0; font-size: 32px; font-weight: 700; color: #3D4D2E; letter-spacing: -0.5px; line-height: 1.2; font-family: 'Playfair Display', Georgia, serif;">
+                                        <span style="color: #3D4D2E;">${displayName}</span>,
             </h1>
 
                                 </td>
@@ -123,7 +123,7 @@ export async function sendMagicLink(
                             <!-- Main Message -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <p style="margin: 0; font-size: 18px; font-weight: 300; color: #2A2A2A; line-height: 1.6; font-family: 'Inter', -apple-system, sans-serif;">
+                                    <p style="margin: 0; font-size: 18px; font-weight: 400; color: #1A1A1A; line-height: 1.6; font-family: 'Inter', -apple-system, sans-serif;">
                                         Your assessment is ready.
                                     </p>
                                 </td>
@@ -138,7 +138,7 @@ export async function sendMagicLink(
 
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <a href="${process.env.NEXT_PUBLIC_APP_URL}/assessment/${sessionId}?token=${jwt.sign({ sessionId, email }, process.env.JWT_SECRET!, { expiresIn: "7d" })}" class="cta-button" style="display: inline-block; background: #C9A96E; color: #FFFFFF; text-decoration: none; padding: 16px 48px; border-radius: 8px; font-size: 18px; font-weight: 500; letter-spacing: 0.3px; transition: background 0.2s ease; font-family: 'Inter', -apple-system, sans-serif;">
+                                    <a href="${process.env.NEXT_PUBLIC_APP_URL}/assessment/${sessionId}?token=${jwt.sign({ sessionId, email }, process.env.JWT_SECRET!, { expiresIn: "7d" })}" class="cta-button" style="display: inline-block; background: #7ED321; color: #FFFFFF; text-decoration: none; padding: 16px 48px; border-radius: 8px; font-size: 18px; font-weight: 600; letter-spacing: 0.3px; transition: background 0.2s ease; font-family: 'Inter', -apple-system, sans-serif;">
                                         Begin Your Assessment →
                                     </a>
                                 </td>
@@ -152,7 +152,7 @@ export async function sendMagicLink(
                             <!-- Instructions -->
                             <tr>
                                 <td align="center" class="instruction-text" style="padding: 0 60px;">
-                                    <p style="margin: 0; font-size: 14px; font-weight: 300; color: #666; line-height: 1.8; font-family: 'Inter', -apple-system, sans-serif;">
+                                    <p style="margin: 0; font-size: 14px; font-weight: 400; color: #1A1A1A; line-height: 1.8; font-family: 'Inter', -apple-system, sans-serif;">
                                         Takes 15 minutes. No rush.<br>
                                         Find a quiet space where you can be honest.
                                     </p>
@@ -303,10 +303,10 @@ export async function sendReportEmail(
     }
 
     const emailData: any = {
-      from: "Become You <noreply@thesmartmethod.co>",
+      from: "The S.M.A.R.T. Method <noreply@thesmartmethod.co>",
       to: [email],
 
-      subject: "Your You 3.0 roadmap is ready",
+      subject: "Your S.M.A.R.T. Summary is ready",
       html: `
         <!DOCTYPE html>
         <html>
@@ -330,7 +330,7 @@ export async function sendReportEmail(
                             <!-- Logo -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 60px; width: auto;" />
+                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="The S.M.A.R.T. Method Logo" style="height: 60px; width: auto;" />
                                 </td>
                             </tr>
                             
@@ -419,7 +419,7 @@ export async function sendReportEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-                                        Need support? Contact us at <a href="mailto:support@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">support@thesmartmethod.co</a>
+                                        Need support? Contact us at <a href="mailto:info@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">info@thesmartmethod.co</a>
                                     </p>
                                 </td>
                             </tr>
@@ -514,7 +514,7 @@ export async function sendPatternRecognitionEmail(
     }
 
     const { data, error } = await resend.emails.send({
-      from: "Become You <noreply@thesmartmethod.co>",
+      from: "The S.M.A.R.T. Method <noreply@thesmartmethod.co>",
       to: [email],
 
       subject: "You probably already noticed it",
@@ -541,7 +541,7 @@ export async function sendPatternRecognitionEmail(
                             <!-- Logo -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 60px; width: auto;" />
+                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="The S.M.A.R.T. Method Logo" style="height: 60px; width: auto;" />
                                 </td>
                             </tr>
                             
@@ -629,7 +629,7 @@ export async function sendPatternRecognitionEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-                                        Need support? Contact us at <a href="mailto:support@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">support@thesmartmethod.co</a>
+                                        Need support? Contact us at <a href="mailto:info@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">info@thesmartmethod.co</a>
                                     </p>
                                 </td>
                             </tr>
@@ -705,7 +705,7 @@ export async function sendEvidence7DayEmail(
       }
     }
     const { data, error } = await resend.emails.send({
-      from: "Become You <noreply@thesmartmethod.co>",
+      from: "The S.M.A.R.T. Method <noreply@thesmartmethod.co>",
       to: [email],
 
       subject: "The shift you might not be noticing",
@@ -732,7 +732,7 @@ export async function sendEvidence7DayEmail(
                             <!-- Logo -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 60px; width: auto;" />
+                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="The S.M.A.R.T. Method Logo" style="height: 60px; width: auto;" />
                                 </td>
                             </tr>
                             
@@ -831,7 +831,7 @@ export async function sendEvidence7DayEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-                                        Need support? Contact us at <a href="mailto:support@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">support@thesmartmethod.co</a>
+                                        Need support? Contact us at <a href="mailto:info@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">info@thesmartmethod.co</a>
                                     </p>
                                 </td>
                             </tr>
@@ -894,7 +894,7 @@ export async function sendIntegrationThresholdEmail(
       }
     }
     const { data, error } = await resend.emails.send({
-      from: "Become You <noreply@thesmartmethod.co>",
+      from: "The S.M.A.R.T. Method <noreply@thesmartmethod.co>",
       to: [email],
       subject: "You're at the make-or-break point",
       html: `
@@ -920,7 +920,7 @@ export async function sendIntegrationThresholdEmail(
                             <!-- Logo -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 60px; width: auto;" />
+                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="The S.M.A.R.T. Method Logo" style="height: 60px; width: auto;" />
                                 </td>
                             </tr>
                             
@@ -1019,7 +1019,7 @@ export async function sendIntegrationThresholdEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-                                        Need support? Contact us at <a href="mailto:support@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">support@thesmartmethod.co</a>
+                                        Need support? Contact us at <a href="mailto:info@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">info@thesmartmethod.co</a>
                                     </p>
                                 </td>
                             </tr>
@@ -1080,7 +1080,7 @@ export async function sendCompoundEffectEmail(
       }
     }
     const { data, error } = await resend.emails.send({
-      from: "Become You <noreply@thesmartmethod.co>",
+      from: "The S.M.A.R.T. Method <noreply@thesmartmethod.co>",
       to: [email],
       subject: "Three weeks in—this is where it gets real",
       html: `
@@ -1106,7 +1106,7 @@ export async function sendCompoundEffectEmail(
                             <!-- Logo -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 60px; width: auto;" />
+                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="The S.M.A.R.T. Method Logo" style="height: 60px; width: auto;" />
                                 </td>
                             </tr>
                             
@@ -1215,7 +1215,7 @@ export async function sendCompoundEffectEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-                                        Need support? Contact us at <a href="mailto:support@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">support@thesmartmethod.co</a>
+                                        Need support? Contact us at <a href="mailto:info@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">info@thesmartmethod.co</a>
                                     </p>
                                 </td>
                             </tr>
@@ -1273,7 +1273,7 @@ export async function sendDirectInvitationEmail(
       }
     }
     const { data, error } = await resend.emails.send({
-      from: "Become You <noreply@thesmartmethod.co>",
+      from: "The S.M.A.R.T. Method <noreply@thesmartmethod.co>",
       to: [email],
       subject: "30 days later—what's actually different?",
       html: `
@@ -1299,7 +1299,7 @@ export async function sendDirectInvitationEmail(
                             <!-- Logo -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="Become You Logo" style="height: 60px; width: auto;" />
+                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="The S.M.A.R.T. Method Logo" style="height: 60px; width: auto;" />
                                 </td>
                             </tr>
                             
@@ -1325,7 +1325,7 @@ export async function sendDirectInvitationEmail(
                                 <td style="padding: 0 40px;">
             <p style="font-size: 18px; color: #2A2A2A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               <strong>${userName},</strong><br><br>
-              It's been a month since you took your You 3.0 Assessment.
+              It's been a month since you took your S.M.A.R.T. Assessment.
             </p>
             
 
@@ -1435,7 +1435,7 @@ export async function sendDirectInvitationEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-                                        Need support? Contact us at <a href="mailto:support@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">support@thesmartmethod.co</a>
+                                        Need support? Contact us at <a href="mailto:info@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">info@thesmartmethod.co</a>
                                     </p>
                                 </td>
                             </tr>

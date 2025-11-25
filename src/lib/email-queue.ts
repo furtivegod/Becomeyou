@@ -11,7 +11,7 @@ import {
  * Email Queue Management System
  *
  * This module handles the creation and processing of automated email sequences
- * for users who complete the You 3.0 assessment. It schedules follow-up emails
+ * for users who complete the S.M.A.R.T. Assessment. It schedules follow-up emails
  * and processes them via Vercel cron jobs.
  */
 

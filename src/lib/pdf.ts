@@ -236,7 +236,7 @@ async function convertHTMLToPDF(
 ): Promise<Buffer> {
   try {
     // Create footer HTML with PDFShift variables - matching template design
-    const footerHTML = `<div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 20px; border-top: 1px solid #4A5D23; border-bottom: 1px solid #4A5D23; font-size: 11px; color: #666; background: #F5F1E8; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.5px;"><div>${clientName}</div><div>YOU 3.0</div></div>`;
+    const footerHTML = `<div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 20px; border-top: 1px solid #3D4D2E; border-bottom: 1px solid #3D4D2E; font-size: 11px; color: #666; background: #F5F3ED; font-family: 'Inter', Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.5px;"><div>${clientName}</div><div>S.M.A.R.T.</div></div>`;
 
     const response = await fetch("https://api.pdfshift.io/v3/convert/pdf", {
       method: "POST",
@@ -751,7 +751,7 @@ function generateHTMLReport(
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>${planData.title || "You 3.0 Assessment Report"}</title>
+      <title>${planData.title || "S.M.A.R.T. Assessment Report"}</title>
       <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
       <style>
         * {
@@ -1129,8 +1129,8 @@ function generateHTMLReport(
       <!-- PAGE 1: COVER -->
       <div class="page cover">
         <div class="cover-content">
-          <div class="logo-mark">BECOME YOU</div>
-          <h1>YOUR FULL<br>YOU 3.0<br>SUMMARY</h1>
+          <div class="logo-mark">THE S.M.A.R.T. METHOD</div>
+          <h1>YOUR<br>S.M.A.R.T.<br>SUMMARY</h1>
           <div class="cover-tagline">This is where<br>transformation begins</div>
           </div>
         </div>
@@ -1139,10 +1139,10 @@ function generateHTMLReport(
       <div class="page" style="display: flex; align-items: center; justify-content: center;">
         <div class="page-content" style="text-align: center;">
           <div style="margin-bottom: 80px; font-size: 14px; letter-spacing: 8px; color: var(--soft-gold); font-weight: 300;">
-            become / you
+            THE S.M.A.R.T. METHOD
         </div>
         
-          <h2 style="margin-bottom: 60px;">YOU 3.0 PERSONAL<br>DEVELOPMENT ASSESSMENT</h2>
+          <h2 style="margin-bottom: 60px;">THE S.M.A.R.T.<br>ASSESSMENT</h2>
           
           <div style="font-size: 12px; line-height: 2.5; color: #666;">
             <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Client</span><br>${clientName}</p>

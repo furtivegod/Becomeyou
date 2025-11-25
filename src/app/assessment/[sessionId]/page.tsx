@@ -212,7 +212,7 @@ export default function AssessmentPage({
             Assessment Complete!
           </h1>
           <p className="mb-6 text-sm sm:text-base" style={{ color: "#1A1A1A" }}>
-            Your personalized You 3.0 report has been generated and sent to your
+            Your personalized S.M.A.R.T. Summary has been generated and sent to your
             email.
           </p>
           <div

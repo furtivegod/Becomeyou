@@ -42,15 +42,16 @@ export default function SuccessPage() {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "#F5F1E8" }}>
+    <div className="min-h-screen" style={{ backgroundColor: "#F5F3ED" }}>
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-3xl mx-auto text-center">
           {/* Main Headline */}
           <h1
             className="text-4xl md:text-5xl font-bold mb-6"
             style={{
-              color: "#4A5D23",
-              fontFamily: "Georgia, Times New Roman, serif",
+              color: "#3D4D2E",
+              fontFamily: "'Playfair Display', Georgia, serif",
+              fontWeight: 700,
             }}
           >
             You Just Made the Right Decision.
@@ -58,9 +59,9 @@ export default function SuccessPage() {
 
           <p
             className="text-xl mb-12 max-w-2xl mx-auto"
-            style={{ color: "#1A1A1A" }}
+            style={{ color: "#1A1A1A", fontFamily: "'Inter', sans-serif", fontWeight: 400 }}
           >
-            Your personalized You 3.0 assessment is ready to begin. In just
+            Your personalized S.M.A.R.T. Assessment is ready to begin. In just
             minutes, you're going to uncover the exact patterns that have been
             keeping you stuck—and get a protocol built specifically to break
             through them.
@@ -71,8 +72,9 @@ export default function SuccessPage() {
             <h2
               className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6"
               style={{
-                color: "#4A5D23",
-                fontFamily: "Georgia, Times New Roman, serif",
+                color: "#3D4D2E",
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontWeight: 700,
               }}
             >
               📧 Check Your Email Right Now
@@ -97,7 +99,7 @@ export default function SuccessPage() {
                 style={{ backgroundColor: "#FFF3CD" }}
               >
                 <p style={{ color: "#1A1A1A" }}>
-                  <strong>Subject line:</strong> "Your You 3.0 Assessment Link –
+                  <strong>Subject line:</strong> "Your S.M.A.R.T. Assessment Link –
                   Ready to Begin"
                 </p>
                 <p style={{ color: "#1A1A1A" }}>
@@ -118,8 +120,9 @@ export default function SuccessPage() {
             <h3
               className="text-xl sm:text-2xl font-semibold mb-6 sm:mb-8"
               style={{
-                color: "#4A5D23",
-                fontFamily: "Georgia, Times New Roman, serif",
+                color: "#3D4D2E",
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontWeight: 700,
               }}
             >
               What Happens Next
@@ -128,14 +131,14 @@ export default function SuccessPage() {
               <div className="flex items-start">
                 <span
                   className="w-6 h-6 sm:w-8 sm:h-8 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold mr-3 sm:mr-4 mt-1 flex-shrink-0"
-                  style={{ backgroundColor: "#4A5D23" }}
+                    style={{ backgroundColor: "#3D4D2E" }}
                 >
                   1
                 </span>
                 <div>
                   <h4
                     className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base"
-                    style={{ color: "#4A5D23" }}
+                    style={{ color: "#3D4D2E", fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
                   >
                     Click the link in your email
                   </h4>
@@ -151,14 +154,14 @@ export default function SuccessPage() {
               <div className="flex items-start">
                 <span
                   className="w-6 h-6 sm:w-8 sm:h-8 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold mr-3 sm:mr-4 mt-1 flex-shrink-0"
-                  style={{ backgroundColor: "#4A5D23" }}
+                    style={{ backgroundColor: "#3D4D2E" }}
                 >
                   2
                 </span>
                 <div>
                   <h4
                     className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base"
-                    style={{ color: "#4A5D23" }}
+                    style={{ color: "#3D4D2E", fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
                   >
                     Complete your assessment (10-15 minutes)
                   </h4>
@@ -175,14 +178,14 @@ export default function SuccessPage() {
               <div className="flex items-start">
                 <span
                   className="w-6 h-6 sm:w-8 sm:h-8 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold mr-3 sm:mr-4 mt-1 flex-shrink-0"
-                  style={{ backgroundColor: "#4A5D23" }}
+                    style={{ backgroundColor: "#3D4D2E" }}
                 >
                   3
                 </span>
                 <div>
                   <h4
                     className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base"
-                    style={{ color: "#4A5D23" }}
+                    style={{ color: "#3D4D2E", fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
                   >
                     Receive your protocol (Immediately after completion)
                   </h4>
@@ -204,7 +207,7 @@ export default function SuccessPage() {
             <p>
               Need help?{" "}
               <a
-                href="mailto:support@thesmartmethod.co"
+                href="mailto:info@thesmartmethod.co"
                 className="hover:underline"
                 style={{ color: "#4A5D23" }}
               >

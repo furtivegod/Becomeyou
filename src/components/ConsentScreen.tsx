@@ -15,11 +15,12 @@ export default function ConsentScreen({ onConsent }: ConsentScreenProps) {
         <h1
           className="text-3xl font-bold mb-6 text-center"
           style={{
-            color: "#4A5D23",
-            fontFamily: "Georgia, Times New Roman, serif",
+            color: "#3D4D2E",
+            fontFamily: "'Playfair Display', Georgia, serif",
+            fontWeight: 700,
           }}
         >
-          Welcome to BECOME YOU
+          Welcome to The S.M.A.R.T. Method
         </h1>
 
         <div className="space-y-6">
@@ -27,8 +28,9 @@ export default function ConsentScreen({ onConsent }: ConsentScreenProps) {
             <h2
               className="text-xl font-semibold mb-4"
               style={{
-                color: "#4A5D23",
-                fontFamily: "Georgia, Times New Roman, serif",
+                color: "#3D4D2E",
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontWeight: 700,
               }}
             >
               About Your Assessment
@@ -45,8 +47,9 @@ export default function ConsentScreen({ onConsent }: ConsentScreenProps) {
             <h2
               className="text-xl font-semibold mb-4"
               style={{
-                color: "#4A5D23",
-                fontFamily: "Georgia, Times New Roman, serif",
+                color: "#3D4D2E",
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontWeight: 700,
               }}
             >
               Privacy & Consent
@@ -66,7 +69,7 @@ export default function ConsentScreen({ onConsent }: ConsentScreenProps) {
               checked={agreed}
               onChange={(e) => setAgreed(e.target.checked)}
               className="w-4 h-4 border-gray-300 rounded focus:ring-2"
-              style={{ accentColor: "#4A5D23" }}
+              style={{ accentColor: "#3D4D2E" }}
             />
             <label htmlFor="consent" style={{ color: "#1A1A1A" }}>
               I understand and agree to proceed with the assessment
@@ -78,7 +81,7 @@ export default function ConsentScreen({ onConsent }: ConsentScreenProps) {
               onClick={onConsent}
               disabled={!agreed}
               className="text-white px-8 py-3 rounded-lg text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-colors hover:opacity-90"
-              style={{ backgroundColor: "#4A5D23" }}
+              style={{ backgroundColor: "#7ED321", color: "#FFFFFF", fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
             >
               Begin Assessment
             </button>

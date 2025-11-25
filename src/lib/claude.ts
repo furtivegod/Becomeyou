@@ -4,11 +4,11 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY!,
 });
 
-export const SYSTEM_PROMPT = `You 3.0 Behavioral Optimization Assessment 
+export const SYSTEM_PROMPT = `The S.M.A.R.T. Assessment 
 - Master Prompt V4.2
 
 SYSTEM INSTRUCTIONS
-You are conducting a You 3.0 Behavioral Optimization Assessment. This is a professional-grade 
+You are conducting a S.M.A.R.T. Assessment. This is a professional-grade 
 personal development tool designed to produce a single, client-facing report that is deeply 
 relatable, actionable, and emotionally resonant. Practitioner-level logic and structure are retained 
 internally, but the output is always expressed in clear, human language tied directly to the client's 
@@ -81,7 +81,7 @@ SESSION FLOW
 
 Phase 1: Nervous System Baseline
 
-Open with: "Welcome to your You 3.0 Behavioral Optimization Assessment.
+Open with: "Welcome to your S.M.A.R.T. Assessment.
 This assessment will help you understand exactly why you might feel stuck despite having the 
 drive and vision to succeed. We'll identify the specific patterns that have been holding you back, 
 map your unique strengths across four key life domains (Mind, Body, Spirit, and Contribution), 
@@ -199,7 +199,7 @@ keeping you from [the specific goal/transformation they want].
 Here's what I want you to recognize: you already have proof you can do this. You showed me 
 that when you [reference their success proof moment]. That wasn't luck. That was you.
 
-Your complete You 3.0 Behavioral Optimization Assessment is being generated right now and 
+Your complete S.M.A.R.T. Assessment is being generated right now and 
 will arrive in your inbox within the next 2-3 minutes. It includes your personalized 30-day 
 protocol, your 72-hour action step, and the exact roadmap for what comes next.
 
@@ -274,7 +274,7 @@ export async function generateClaudeResponse(
 
 export async function generateStructuredPlan(conversationHistory: string) {
   try {
-    console.log("Generating You 3.0 assessment report from conversation");
+    console.log("Generating S.M.A.R.T. Assessment report from conversation");
     console.log("Conversation length:", conversationHistory.length);
 
     if (!process.env.ANTHROPIC_API_KEY) {
@@ -296,7 +296,7 @@ export async function generateStructuredPlan(conversationHistory: string) {
     const response = await anthropic.messages.create({
       model: "claude-sonnet-4-5-20250929",
       max_tokens: 7000,
-      system: `You are a professional behavioral optimization specialist. Based on the You 3.0 assessment conversation, create a comprehensive client-facing report in valid JSON format.
+      system: `You are a professional behavioral optimization specialist. Based on the S.M.A.R.T. Assessment conversation, create a comprehensive client-facing report in valid JSON format.
 
 CRITICAL INSTRUCTIONS:
 1. Return ONLY valid JSON. No markdown, no explanations, no extra text, no commentary.
@@ -310,7 +310,7 @@ CRITICAL INSTRUCTIONS:
 
 Format:
 {
-  "title": "You 3.0 Behavioral Optimization Assessment Report",
+  "title": "S.M.A.R.T. Assessment Report",
   "overview": "Brief description of what this assessment revealed",
   "assessment_overview": "Short paragraph that frames what this assessment just revealed about them in plain English;
                           Example: "You've been carrying strategies that once kept you safe, but now keep you stuck. Today you've uncovered not just the patterns, but why they exist and how they've been protecting you. The good news? Change is possible because now you can see the whole picture clearly. More importantly, you already have proof you can do this."",
@@ -447,7 +447,7 @@ FINAL CHECK: Ensure every field contains meaningful, personalized content. No em
       messages: [
         {
           role: "user",
-          content: `Create a comprehensive You 3.0 assessment report based on this conversation:\n\n${truncatedHistory}`,
+          content: `Create a comprehensive S.M.A.R.T. Assessment report based on this conversation:\n\n${truncatedHistory}`,
         },
       ],
     });

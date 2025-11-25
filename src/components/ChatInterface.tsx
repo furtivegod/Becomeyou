@@ -463,7 +463,7 @@ export default function ChatInterface({
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Are you ready to unlock You 3.0?"
+                placeholder="Are you ready to begin your S.M.A.R.T. Assessment?"
                 className="w-full min-h-[24px] max-h-[200px] border-none outline-none resize-none text-base leading-[1.5] text-[#1F2937] bg-transparent font-inherit placeholder:text-gray-400"
                 rows={1}
               />
@@ -649,7 +649,7 @@ export default function ChatInterface({
                       </h3>
                     </div>
                     <p className="text-green-700 font-medium">
-                      Your You 3.0 report will be generated within a few minutes
+                      Your S.M.A.R.T. Summary will be generated within a few minutes
                       and will be delivered to your email.
                     </p>
                   </div>

@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Become You",
-  description: "Your personalized transformation journey",
+  title: "The S.M.A.R.T. Method",
+  description: "Your personalized S.M.A.R.T. Assessment and transformation journey",
 };
 
 export default function RootLayout({

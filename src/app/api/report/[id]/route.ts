@@ -448,7 +448,7 @@ function generateHTMLReport(
     <head>
       <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>YOU 3.0 Assessment - ${clientName}</title>
+        <title>S.M.A.R.T. Assessment - ${clientName}</title>
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
       <style>
             * {
@@ -792,8 +792,8 @@ function generateHTMLReport(
         <!-- PAGE 1: COVER -->
         <div class="page cover">
             <div class="cover-content">
-                <div class="logo-mark">BECOME YOU</div>
-                <h1>YOUR FULL<br>YOU 3.0<br>SUMMARY</h1>
+                <div class="logo-mark">THE S.M.A.R.T. METHOD</div>
+                <h1>YOUR<br>S.M.A.R.T.<br>SUMMARY</h1>
                 <div class="cover-tagline">This is where<br>transformation begins</div>
             </div>
         </div>
@@ -805,7 +805,7 @@ function generateHTMLReport(
                     become / you
                 </div>
                 
-                <h2 style="margin-bottom: 60px;">YOU 3.0 PERSONAL<br>DEVELOPMENT ASSESSMENT</h2>
+                <h2 style="margin-bottom: 60px;">THE S.M.A.R.T.<br>ASSESSMENT</h2>
                 
                 <div style="font-size: 12px; line-height: 2.5; color: #666;">
                     <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Client</span><br>${clientName}</p>
