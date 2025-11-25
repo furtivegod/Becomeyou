@@ -290,7 +290,15 @@ export async function POST(request: NextRequest) {
 
     // Generate magic link
     const token = generateToken(sessionId, customerEmail);
-    const magicLink = `${process.env.NEXT_PUBLIC_APP_URL}/assessment/${sessionId}?token=${token}`;
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+    const magicLink = `${appUrl}/assessment/${sessionId}?token=${token}`;
+
+    console.log("=== EMAIL CONFIGURATION ===");
+    console.log("NEXT_PUBLIC_APP_URL:", appUrl);
+    console.log("Magic link:", magicLink);
+    console.log("Customer email:", customerEmail);
+    console.log("Customer first name:", customerFirstName);
+    console.log("===========================");
 
     // Send magic link email
     let emailed = false;
@@ -309,6 +317,10 @@ export async function POST(request: NextRequest) {
     } catch (emailErr) {
       emailError = emailErr;
       console.error("Failed to send magic link email:", emailErr);
+      console.error("Email error details:", {
+        message: emailErr instanceof Error ? emailErr.message : String(emailErr),
+        stack: emailErr instanceof Error ? emailErr.stack : undefined,
+      });
       // Don't fail the webhook if email fails
     }
 

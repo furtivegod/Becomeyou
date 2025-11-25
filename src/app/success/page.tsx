@@ -101,7 +101,7 @@ export default function SuccessPage() {
                   Ready to Begin"
                 </p>
                 <p style={{ color: "#1A1A1A" }}>
-                  <strong>From:</strong> becomeyou.ai
+                  <strong>From:</strong> thesmartmethod.co
                 </p>
               </div>
               <p className="text-xs sm:text-sm" style={{ color: "#666" }}>
@@ -204,7 +204,7 @@ export default function SuccessPage() {
             <p>
               Need help?{" "}
               <a
-                href="mailto:support@becomeyou.ai"
+                href="mailto:support@thesmartmethod.co"
                 className="hover:underline"
                 style={{ color: "#4A5D23" }}
               >

@@ -36,7 +36,7 @@ export async function sendMagicLink(
   try {
     console.log("Sending email via Resend...");
     const { data, error } = await resend.emails.send({
-      from: "Become You <noreply@becomeyou.ai>",
+      from: "Become You <noreply@thesmartmethod.co>",
       to: [email],
 
       subject: "Your You 3.0 Assessment Is Ready",
@@ -303,7 +303,7 @@ export async function sendReportEmail(
     }
 
     const emailData: any = {
-      from: "Become You <noreply@becomeyou.ai>",
+      from: "Become You <noreply@thesmartmethod.co>",
       to: [email],
 
       subject: "Your You 3.0 roadmap is ready",
@@ -419,7 +419,7 @@ export async function sendReportEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-                                        Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #C9A96E; text-decoration: underline;">support@becomeyou.ai</a>
+                                        Need support? Contact us at <a href="mailto:support@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">support@thesmartmethod.co</a>
                                     </p>
                                 </td>
                             </tr>
@@ -514,7 +514,7 @@ export async function sendPatternRecognitionEmail(
     }
 
     const { data, error } = await resend.emails.send({
-      from: "Become You <noreply@becomeyou.ai>",
+      from: "Become You <noreply@thesmartmethod.co>",
       to: [email],
 
       subject: "You probably already noticed it",
@@ -629,7 +629,7 @@ export async function sendPatternRecognitionEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-                                        Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #C9A96E; text-decoration: underline;">support@becomeyou.ai</a>
+                                        Need support? Contact us at <a href="mailto:support@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">support@thesmartmethod.co</a>
                                     </p>
                                 </td>
                             </tr>
@@ -705,7 +705,7 @@ export async function sendEvidence7DayEmail(
       }
     }
     const { data, error } = await resend.emails.send({
-      from: "Become You <noreply@becomeyou.ai>",
+      from: "Become You <noreply@thesmartmethod.co>",
       to: [email],
 
       subject: "The shift you might not be noticing",
@@ -831,7 +831,7 @@ export async function sendEvidence7DayEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-                                        Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #C9A96E; text-decoration: underline;">support@becomeyou.ai</a>
+                                        Need support? Contact us at <a href="mailto:support@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">support@thesmartmethod.co</a>
                                     </p>
                                 </td>
                             </tr>
@@ -894,7 +894,7 @@ export async function sendIntegrationThresholdEmail(
       }
     }
     const { data, error } = await resend.emails.send({
-      from: "Become You <noreply@becomeyou.ai>",
+      from: "Become You <noreply@thesmartmethod.co>",
       to: [email],
       subject: "You're at the make-or-break point",
       html: `
@@ -1019,7 +1019,7 @@ export async function sendIntegrationThresholdEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-                                        Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #C9A96E; text-decoration: underline;">support@becomeyou.ai</a>
+                                        Need support? Contact us at <a href="mailto:support@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">support@thesmartmethod.co</a>
                                     </p>
                                 </td>
                             </tr>
@@ -1080,7 +1080,7 @@ export async function sendCompoundEffectEmail(
       }
     }
     const { data, error } = await resend.emails.send({
-      from: "Become You <noreply@becomeyou.ai>",
+      from: "Become You <noreply@thesmartmethod.co>",
       to: [email],
       subject: "Three weeks in—this is where it gets real",
       html: `
@@ -1215,7 +1215,7 @@ export async function sendCompoundEffectEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-                                        Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #C9A96E; text-decoration: underline;">support@becomeyou.ai</a>
+                                        Need support? Contact us at <a href="mailto:support@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">support@thesmartmethod.co</a>
                                     </p>
                                 </td>
                             </tr>
@@ -1273,7 +1273,7 @@ export async function sendDirectInvitationEmail(
       }
     }
     const { data, error } = await resend.emails.send({
-      from: "Become You <noreply@becomeyou.ai>",
+      from: "Become You <noreply@thesmartmethod.co>",
       to: [email],
       subject: "30 days later—what's actually different?",
       html: `
@@ -1435,7 +1435,7 @@ export async function sendDirectInvitationEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-                                        Need support? Contact us at <a href="mailto:support@becomeyou.ai" style="color: #C9A96E; text-decoration: underline;">support@becomeyou.ai</a>
+                                        Need support? Contact us at <a href="mailto:support@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">support@thesmartmethod.co</a>
                                     </p>
                                 </td>
                             </tr>
