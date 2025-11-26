@@ -96,7 +96,7 @@ export async function sendMagicLink(
 
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="The S.M.A.R.T. Method Logo" style="height: 60px; width: auto;" />
+                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.jpg" alt="The S.M.A.R.T. Method Logo" style="height: 60px; width: auto;" />
                                 </td>
                             </tr>
                             
@@ -330,7 +330,7 @@ export async function sendReportEmail(
                             <!-- Logo -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="The S.M.A.R.T. Method Logo" style="height: 60px; width: auto;" />
+                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.jpg" alt="The S.M.A.R.T. Method Logo" style="height: 60px; width: auto;" />
                                 </td>
                             </tr>
                             
@@ -541,7 +541,7 @@ export async function sendPatternRecognitionEmail(
                             <!-- Logo -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="The S.M.A.R.T. Method Logo" style="height: 60px; width: auto;" />
+                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.jpg" alt="The S.M.A.R.T. Method Logo" style="height: 60px; width: auto;" />
                                 </td>
                             </tr>
                             
@@ -732,7 +732,7 @@ export async function sendEvidence7DayEmail(
                             <!-- Logo -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="The S.M.A.R.T. Method Logo" style="height: 60px; width: auto;" />
+                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.jpg" alt="The S.M.A.R.T. Method Logo" style="height: 60px; width: auto;" />
                                 </td>
                             </tr>
                             
@@ -920,7 +920,7 @@ export async function sendIntegrationThresholdEmail(
                             <!-- Logo -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="The S.M.A.R.T. Method Logo" style="height: 60px; width: auto;" />
+                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.jpg" alt="The S.M.A.R.T. Method Logo" style="height: 60px; width: auto;" />
                                 </td>
                             </tr>
                             
@@ -1106,7 +1106,7 @@ export async function sendCompoundEffectEmail(
                             <!-- Logo -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="The S.M.A.R.T. Method Logo" style="height: 60px; width: auto;" />
+                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.jpg" alt="The S.M.A.R.T. Method Logo" style="height: 60px; width: auto;" />
                                 </td>
                             </tr>
                             
@@ -1299,7 +1299,7 @@ export async function sendDirectInvitationEmail(
                             <!-- Logo -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.png" alt="The S.M.A.R.T. Method Logo" style="height: 60px; width: auto;" />
+                                    <img src="${process.env.NEXT_PUBLIC_APP_URL}/logo.jpg" alt="The S.M.A.R.T. Method Logo" style="height: 60px; width: auto;" />
                                 </td>
                             </tr>
                             
