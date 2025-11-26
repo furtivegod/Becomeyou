@@ -37,6 +37,7 @@ export interface PlanData {
     go_to_patterns?: string;
     success_proof?: string;
     anchor?: string;
+    support_person?: string;
   };
   in_the_moment_reset?: string;
   domain_breakdown?: {
@@ -76,13 +77,14 @@ export interface PlanData {
     weekly_recommendation?: string;
     thirty_day_approach?: string;
     environmental_optimization?: string;
+    support_check_in?: string;
     progress_markers?: string[];
     daily_actions?: string[];
     weekly_goals?: string[];
   };
   reminder_quote?: string;
   development_reminders?: string[];
-  book_recommendations?: string[];
+  book_recommendation?: string;
   resources?: string[];
   reflection_prompts?: string[];
   next_assessment?: {
@@ -348,6 +350,9 @@ function generateHTMLReport(
   const anchor =
     sabotageAnalysis.anchor ||
     "You have existing habits that provide stability and can be leveraged for growth.";
+  const supportPerson =
+    sabotageAnalysis.support_person ||
+    "Identify someone in your life who would support your change.";
 
   // Extract in-the-moment reset
   const inTheMomentReset =
@@ -374,7 +379,8 @@ function generateHTMLReport(
     current_level:
       "Your relationships and meaning provide both support and growth opportunities.",
     current_phase: "Your current phase of relational and meaning development.",
-    key_strengths: "Your key relational and meaning strengths and capabilities.",
+    key_strengths:
+      "Your key relational and meaning strengths and capabilities.",
     growth_opportunities: "Areas where you can grow and develop further.",
   };
   const contributionDomain = domainBreakdown.contribution || {
@@ -404,6 +410,9 @@ function generateHTMLReport(
   const weeklyRecommendation =
     thirtyDayProtocol.weekly_recommendation ||
     "Implement one consistent practice that supports your growth goals.";
+  const supportCheckIn =
+    thirtyDayProtocol.support_check_in ||
+    "Share your progress with someone who supports your change.";
   const thirtyDayApproach =
     thirtyDayProtocol.thirty_day_approach ||
     "Focus on one key area of development that will have the most impact.";
@@ -453,7 +462,7 @@ function generateHTMLReport(
         "Accountability partner or support group",
       ];
 
-  // Select top 2 book recommendations based on assessment content
+  // Handle book recommendation - use provided string or select 1 book from list
   const allBooks = [
     {
       id: "body_keeps_score",
@@ -670,7 +679,7 @@ function generateHTMLReport(
     }
   }
 
-  function selectTopTwoBooks(pd: any) {
+  function selectTopOneBook(pd: any) {
     const text = getAssessmentText(pd);
     const scored = allBooks.map((b) => {
       const score = b.tags.reduce(
@@ -714,19 +723,23 @@ function generateHTMLReport(
     scored.sort((a, b) => b.score - a.score);
     const top = scored
       .filter((s) => s.score > 0)
-      .slice(0, 2)
+      .slice(0, 1)
       .map((s) => s.book);
-    if (top.length < 2) {
-      // sensible defaults
+    if (top.length < 1) {
+      // sensible default
       const defaults = allBooks
-        .filter((b) => ["atomic_habits", "body_keeps_score"].includes(b.id))
-        .slice(0, 2);
+        .filter((b) => ["atomic_habits"].includes(b.id))
+        .slice(0, 1);
       return defaults;
     }
     return top;
   }
 
-  const selectedBooks = selectTopTwoBooks(planData);
+  // Use provided book_recommendation string if available, otherwise select 1 book
+  const bookRecommendationText = planData.book_recommendation;
+  const selectedBooks = bookRecommendationText
+    ? null
+    : selectTopOneBook(planData);
 
   const reflectionPrompts = Array.isArray(planData.reflection_prompts)
     ? planData.reflection_prompts
@@ -1245,6 +1258,13 @@ function generateHTMLReport(
                 ${formatTextWithParagraphBreaks(anchor)}
       </div>
             </div>
+        
+            <div class="sabotage-section">
+              <div class="block-title">YOUR SUPPORT PERSON</div>
+              <div class="sabotage-text">
+                ${formatTextWithParagraphBreaks(supportPerson)}
+      </div>
+            </div>
           </div>
             </div>
             </div>
@@ -1445,6 +1465,11 @@ function generateHTMLReport(
             <div class="protocol-action">${formatTextWithParagraphBreaks(environmentalOptimization)}</div>
       </div>
       
+          <div class="protocol-item">
+            <div class="protocol-timeline">Your Support Check-In</div>
+            <div class="protocol-action">${formatTextWithParagraphBreaks(supportCheckIn)}</div>
+      </div>
+      
           <div class="content-block">
             <div class="block-title">Suggested Progress Markers</div>
             <div class="block-content">
@@ -1486,17 +1511,20 @@ function generateHTMLReport(
             </div>
             </div>
             
-      <!-- PAGE 17: BOOK RECOMMENDATIONS (Top 2 Personalized) -->
+      <!-- PAGE 17: BOOK RECOMMENDATION -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Recommended Reading</div>
-            <div class="section-title">Book<br>Recommendations</div>
+            <div class="section-title">Book<br>Recommendation</div>
           </div>
 
           <div class="content-block">
             <div class="block-title" style="font-size: 18px; font-weight: 600; margin-bottom: 6px;"></div>
-            <ol style="margin:0 0 14px 20px; padding:0; font-size:15px;">
+            ${
+              bookRecommendationText
+                ? `<div style="font-size:15px; line-height:1.7; color:#222;">${bookRecommendationText}</div>`
+                : `<ol style="margin:0 0 14px 20px; padding:0; font-size:15px;">
               ${selectedBooks
                 .map(
                   (b) => `
@@ -1509,7 +1537,8 @@ function generateHTMLReport(
               </li>`
                 )
                 .join("")}
-            </ol>
+            </ol>`
+            }
           </div>
 
           <div class="content-block" style="margin-top: 24px;">

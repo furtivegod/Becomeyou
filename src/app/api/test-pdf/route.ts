@@ -7,13 +7,13 @@ export async function GET(request: NextRequest) {
     console.log(
       "⚠️  WARNING: This route uses HARDCODED SAMPLE DATA - NOT REAL USER DATA"
     );
-    
+
     // Check if PDFShift API key is available
     if (!process.env.PDFSHIFT_API_KEY) {
       console.error("❌ PDFSHIFT_API_KEY not configured");
       return NextResponse.json(
         {
-        success: false,
+          success: false,
           error: "PDFSHIFT_API_KEY not configured",
           message: "PDF generation service not configured",
         },
@@ -154,10 +154,8 @@ export async function GET(request: NextRequest) {
         "Your sabotage patterns have wisdom - the freeze at the money moment has been protecting you from rejection; honor that while updating it",
         "Identity shifts over time with deliberate practice - becoming someone who fully commits and promotes their work happens through repeated small actions, not one big decision",
       ],
-      book_recommendations: [
+      book_recommendation:
         "The Body Keeps the Score by Bessel van der Kolk - will help you understand why your chest pressure and shutdown response are protective mechanisms that can be updated through somatic practice",
-        "The War of Art by Steven Pressfield - directly addresses resistance at the moment of creation and visibility, which mirrors your freeze at the promotion threshold",
-      ],
       resources: [
         "Resource 1: Daily somatic tracking journal to document the shoulder tension and chest pressure patterns alongside what actions you took or avoided - building data about your nervous system responses",
         "Resource 2: Accountability partner or coach who checks in on your morning promotion tasks and helps you reframe self-promotion as service when the freeze starts",
@@ -181,10 +179,10 @@ export async function GET(request: NextRequest) {
     // Generate PDF with sample data
     console.log("📝 Starting PDF generation...");
     const result = await generatePDF(samplePlanData, "test-session-123");
-    
+
     console.log("✅ PDF generated successfully!");
     console.log("📄 PDF URL:", result.pdfUrl);
-    
+
     return NextResponse.json({
       success: true,
       message:
@@ -201,10 +199,10 @@ export async function GET(request: NextRequest) {
       stack: error instanceof Error ? error.stack : undefined,
       name: error instanceof Error ? error.name : "Unknown",
     });
-    
+
     return NextResponse.json(
       {
-      success: false,
+        success: false,
         error: error instanceof Error ? error.message : "Unknown error",
         message: "PDF generation test failed",
         details: error instanceof Error ? error.stack : undefined,
