@@ -67,10 +67,10 @@ export async function GET(
               justify-content: center;
               border: 2px solid #D4AF37;
             }
-            h1 { color: #4A5D23; margin-bottom: 1rem; font-family: 'Georgia', 'Times New Roman', serif; }
+            h1 { color: #3D4D2E; margin-bottom: 1rem; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; }
             p { color: #1A1A1A; line-height: 1.6; }
             .retry-btn {
-              background: #4A5D23;
+              background: #7ED321;
               color: white;
               border: none;
               padding: 12px 24px;
@@ -449,7 +449,7 @@ function generateHTMLReport(
       <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>S.M.A.R.T. Assessment - ${clientName}</title>
-        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
       <style>
             * {
                 margin: 0;
@@ -458,16 +458,18 @@ function generateHTMLReport(
             }
 
             :root {
-                --cream: #F9F6F1;
-                --warm-white: #FEFDFB;
-                --deep-charcoal: #2A2A2A;
-                --soft-gold: #C9A96E;
+                --cream: #F5F3ED;
+                --warm-white: #FFFFFF;
+                --deep-charcoal: #1A1A1A;
+                --soft-gold: #C9A875;
+                --dark-olive: #3D4D2E;
+                --lime-green: #7ED321;
             }
 
         body { 
                 font-family: 'Inter', -apple-system, sans-serif;
                 font-size: 11pt;
-                font-weight: 300;
+                font-weight: 400;
                 line-height: 1.8;
                 color: var(--deep-charcoal);
                 background: #f5f5f5;
@@ -526,19 +528,20 @@ function generateHTMLReport(
             }
 
             h1 {
-                font-family: 'Cormorant Garamond', Georgia, serif;
+                font-family: 'Playfair Display', Georgia, serif;
+                font-weight: 700;
+                color: var(--dark-olive);
                 font-size: 72px;
-                font-weight: 300;
-                color: var(--deep-charcoal);
                 line-height: 1.1;
                 letter-spacing: -0.02em;
                 margin-bottom: 60px;
             }
 
             h2 {
-                font-family: 'Cormorant Garamond', Georgia, serif;
+                font-family: 'Playfair Display', Georgia, serif;
+                font-weight: 700;
+                color: var(--dark-olive);
                 font-size: 42px;
-                font-weight: 300;
                 line-height: 1.2;
                 margin-bottom: 40px;
             }
@@ -552,13 +555,12 @@ function generateHTMLReport(
             }
 
             .cover-tagline {
-                font-family: 'Cormorant Garamond', serif;
+                font-family: 'Inter', sans-serif;
                 font-size: 20px;
-                font-style: italic;
-                font-weight: 300;
-                color: #666;
+                font-weight: 500;
+                color: var(--deep-charcoal);
                 margin-top: 80px;
-          line-height: 1.6;
+                line-height: 1.6;
             }
 
             /* SECTION HEADERS */
@@ -577,9 +579,10 @@ function generateHTMLReport(
             }
 
             .section-title {
-                font-family: 'Cormorant Garamond', serif;
+                font-family: 'Playfair Display', serif;
                 font-size: 48px;
-                font-weight: 300;
+                font-weight: 700;
+                color: var(--dark-olive);
                 letter-spacing: -0.01em;
                 line-height: 1.2;
             }
@@ -601,17 +604,18 @@ function generateHTMLReport(
             .block-content {
                 font-size: 13px;
                 line-height: 2;
-                font-weight: 300;
+                font-weight: 400;
             }
 
             /* DOMAIN HERO */
             .domain-hero {
                 font-size: 96px;
-                font-weight: 300;
+                font-weight: 700;
+                color: var(--dark-olive);
                 text-align: center;
                 margin-bottom: 80px;
                 letter-spacing: -0.03em;
-                font-family: 'Cormorant Garamond', serif;
+                font-family: 'Playfair Display', serif;
             }
 
             /* METRICS */
@@ -635,9 +639,9 @@ function generateHTMLReport(
             }
 
             .metric-value {
-                font-family: 'Cormorant Garamond', serif;
+                font-family: 'Inter', sans-serif;
                 font-size: 18px;
-                font-weight: 400;
+                font-weight: 500;
             }
 
             /* PULL QUOTE */
@@ -650,10 +654,10 @@ function generateHTMLReport(
             }
 
             .pull-quote-text {
-                font-family: 'Cormorant Garamond', serif;
+                font-family: 'Inter', sans-serif;
                 font-size: 28px;
-                font-style: italic;
-                font-weight: 300;
+                font-weight: 500;
+                color: var(--dark-olive);
                 line-height: 1.6;
                 margin-bottom: 30px;
             }

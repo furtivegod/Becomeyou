@@ -243,7 +243,7 @@ export async function sendReportEmail(
       // Check for specific stuck pattern (highest priority)
       if (sabotageAnalysis?.protective_pattern) {
         const patternText = sabotageAnalysis.protective_pattern;
-        personalizedPS = `You mentioned "${patternText}". If you want help designing the environment and structure that makes change automatic instead of exhausting, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
+        personalizedPS = `You mentioned "${patternText}". If you want help designing the environment and structure that makes change automatic instead of exhausting, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">book a call</a>.`;
       }
       // Check for business/financial goals
       else if (
@@ -265,7 +265,7 @@ export async function sendReportEmail(
             .includes("income"))
       ) {
         const goalText = thirtyDayProtocol.thirty_day_approach;
-        personalizedPS = `You're building toward ${goalText}. If you want to map out how your patterns are affecting your momentum, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
+        personalizedPS = `You're building toward ${goalText}. If you want to map out how your patterns are affecting your momentum, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">book a call</a>.`;
       }
       // Check for relationship concerns
       else if (
@@ -277,7 +277,7 @@ export async function sendReportEmail(
           domainBreakdown.spirit.toLowerCase().includes("intimacy"))
       ) {
         const relationshipText = domainBreakdown.spirit;
-        personalizedPS = `You shared that ${relationshipText}. If you want to understand how your protective patterns show up in your closest relationships, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
+        personalizedPS = `You shared that ${relationshipText}. If you want to understand how your protective patterns show up in your closest relationships, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">book a call</a>.`;
       }
       // Check for physical/body disconnect
       else if (
@@ -289,16 +289,16 @@ export async function sendReportEmail(
           domainBreakdown.body.toLowerCase().includes("exercise"))
       ) {
         const bodyText = domainBreakdown.body;
-        personalizedPS = `You described your relationship with your body as ${bodyText}. If you want to rebuild that connection without force or punishment, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
+        personalizedPS = `You described your relationship with your body as ${bodyText}. If you want to rebuild that connection without force or punishment, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">book a call</a>.`;
       }
       // Fallback for general transformation goals
       else if (thirtyDayProtocol?.thirty_day_approach) {
         const goalText = thirtyDayProtocol.thirty_day_approach;
-        personalizedPS = `You're building toward ${goalText}. If you want to map out how your patterns are affecting your momentum, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
+        personalizedPS = `You're building toward ${goalText}. If you want to map out how your patterns are affecting your momentum, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">book a call</a>.`;
       }
       // Final fallback
       else {
-        personalizedPS = `Your assessment revealed important patterns. If you want to understand how these patterns are affecting your progress, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">book a call</a>.`;
+        personalizedPS = `Your assessment revealed important patterns. If you want to understand how these patterns are affecting your progress, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">book a call</a>.`;
       }
     }
 
@@ -311,16 +311,16 @@ export async function sendReportEmail(
         <!DOCTYPE html>
         <html>
         <head>
-          <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+          <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
         </head>
-        <body style="margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #F9F6F1;">
+        <body style="margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #F5F3ED;">
             
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #F9F6F1; padding: 40px 20px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #F5F3ED; padding: 40px 20px;">
                 <tr>
                     <td align="center">
                         
                         <!-- Main Container -->
-                        <table role="presentation" width="600" cellpadding="0" cellspacing="0" class="email-container" style="background-color: #FEFDFB; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <table role="presentation" width="600" cellpadding="0" cellspacing="0" class="email-container" style="background-color: #FFFFFF; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
                             
                             <!-- Spacer -->
                             <tr>
@@ -339,10 +339,10 @@ export async function sendReportEmail(
                                 <td height="40"></td>
                             </tr>
                             
-                            <!-- Green Line -->
+                            <!-- Accent Line -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <div style="height: 3px; background-color: #C9A96E; width: 200px; margin: 0 auto;"></div>
+                                    <div style="height: 3px; background-color: #C9A875; width: 200px; margin: 0 auto;"></div>
                                 </td>
                             </tr>
                             
@@ -356,38 +356,38 @@ export async function sendReportEmail(
                                 <td style="padding: 0 40px;">
             <!-- Main Content -->
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
-              <strong>${displayName},</strong><br><br>
+            <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 400;">
+              <strong style="font-family: 'Playfair Display', serif; font-weight: 700; color: #3D4D2E;">${displayName},</strong><br><br>
               Your complete assessment is attached.
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 400;">
               Before you read it, know this: Everything in that report—every pattern, every protective 
               mechanism, every stuck point—made perfect sense at the time it formed. Your nervous system 
               has been doing exactly what it was designed to do: keep you safe.
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 400;">
               The question now is: Are those same strategies still serving you, or is it time to update them?
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 400;">
               Read it when you're ready. Then take the 72-hour action.
             </p>
             
             <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Your Teammate,<br>
 
-              <strong style="color: #C9A96E;">Matthew</strong>
+              <strong style="color: #C9A875;">Matthew</strong>
             </p>
             
             ${
               personalizedPS
                 ? `
-            <p style="color: #2A2A2A; font-size: 18px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+            <p style="color: #1A1A1A; font-size: 18px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif; font-weight: 400;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
 
@@ -397,7 +397,7 @@ export async function sendReportEmail(
             
             <!-- PDF Attachment Notice -->
             <div style="text-align: center; margin: 40px 0;">
-              <p style="color: #4A5D23; font-size: 18px; font-weight: bold; margin: 0; font-family: 'Inter', sans-serif;">
+              <p style="color: #3D4D2E; font-size: 18px; font-weight: 600; margin: 0; font-family: 'Inter', sans-serif;">
                 Your personalized protocol is attached as a PDF file
                 </p>
             </div>
@@ -419,7 +419,7 @@ export async function sendReportEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-                                        Need support? Contact us at <a href="mailto:info@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">info@thesmartmethod.co</a>
+                                        Need support? Contact us at <a href="mailto:info@thesmartmethod.co" style="color: #C9A875; text-decoration: underline;">info@thesmartmethod.co</a>
                                     </p>
                                 </td>
                             </tr>
@@ -489,27 +489,27 @@ export async function sendPatternRecognitionEmail(
           pattern.includes("overthinking")
         ) {
           personalizedPS =
-            'In a Discovery Call, we map the exact moments your nervous system shifts into protection mode—and build specific interrupts that work with your wiring. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a> when you\'re ready.';
+            'In a Discovery Call, we map the exact moments your nervous system shifts into protection mode—and build specific interrupts that work with your wiring. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">Book here</a> when you\'re ready.';
         } else if (
           pattern.includes("dorsal") ||
           pattern.includes("avoidance") ||
           pattern.includes("numbing")
         ) {
           personalizedPS =
-            'In a Discovery Call, we identify what safety looks like for your nervous system—so action doesn\'t require forcing yourself through shutdown. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a> when you\'re ready.';
+            'In a Discovery Call, we identify what safety looks like for your nervous system—so action doesn\'t require forcing yourself through shutdown. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">Book here</a> when you\'re ready.';
         } else if (
           pattern.includes("ventral") ||
           pattern.includes("regulation")
         ) {
           personalizedPS =
-            'In a Discovery Call, we design practices that help you stay regulated under pressure—not just when life is calm. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a> when you\'re ready.';
+            'In a Discovery Call, we design practices that help you stay regulated under pressure—not just when life is calm. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">Book here</a> when you\'re ready.';
         } else {
           personalizedPS =
-            'In a Discovery Call, we design pattern interrupts tailored to your nervous system. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a> when you\'re ready to build new responses.';
+            'In a Discovery Call, we design pattern interrupts tailored to your nervous system. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">Book here</a> when you\'re ready to build new responses.';
         }
       } else {
         personalizedPS =
-          'In a Discovery Call, we design pattern interrupts tailored to your nervous system. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a> when you\'re ready to build new responses.';
+          'In a Discovery Call, we design pattern interrupts tailored to your nervous system. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">Book here</a> when you\'re ready to build new responses.';
       }
     }
 
@@ -522,16 +522,16 @@ export async function sendPatternRecognitionEmail(
         <!DOCTYPE html>
         <html>
         <head>
-          <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+          <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
         </head>
-        <body style="margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #F9F6F1;">
+        <body style="margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #F5F3ED;">
             
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #F9F6F1; padding: 40px 20px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #F5F3ED; padding: 40px 20px;">
                 <tr>
                     <td align="center">
                         
                         <!-- Main Container -->
-                        <table role="presentation" width="600" cellpadding="0" cellspacing="0" class="email-container" style="background-color: #FEFDFB; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <table role="presentation" width="600" cellpadding="0" cellspacing="0" class="email-container" style="background-color: #FFFFFF; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
                             
                             <!-- Spacer -->
                             <tr>
@@ -550,10 +550,10 @@ export async function sendPatternRecognitionEmail(
                                 <td height="40"></td>
                             </tr>
                             
-                            <!-- Green Line -->
+                            <!-- Accent Line -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <div style="height: 3px; background-color: #C9A96E; width: 200px; margin: 0 auto;"></div>
+                                    <div style="height: 3px; background-color: #C9A875; width: 200px; margin: 0 auto;"></div>
                                 </td>
                             </tr>
                             
@@ -565,46 +565,46 @@ export async function sendPatternRecognitionEmail(
                             <!-- Main Content -->
                             <tr>
                                 <td style="padding: 0 40px;">
-            <p style="font-size: 18px; color: #2A2A2A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               <strong>${userName},</strong><br><br>
               I'm curious—since reading your assessment, have you caught yourself doing exactly the thing it described?
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Maybe you had clarity about your next move, then immediately started researching "the right way" to do it instead of just starting.
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               ${planData?.sabotage_analysis?.protective_pattern ? `You mentioned: "${planData.sabotage_analysis.protective_pattern}"` : "You felt motivated to take action"}, but then reached for ${planData?.sabotage_analysis?.escape_behavior || "your usual escape pattern"} instead.
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               That's not failure. That's your nervous system doing what it's been trained to do.
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               The difference now? <strong>You see it happening in real time.</strong>
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               And that awareness gap—the space between the trigger and your automatic response—is where all change begins.
             </p>
             
             <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Your Teammate,<br>
 
-              <strong style="color: #C9A96E;">Matthew</strong>
+              <strong style="color: #C9A875;">Matthew</strong>
             </p>
             
             ${
               personalizedPS
                 ? `
-            <p style="color: #2A2A2A; font-size: 18px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+            <p style="color: #1A1A1A; font-size: 18px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif; font-weight: 400;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
 
@@ -629,7 +629,7 @@ export async function sendPatternRecognitionEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-                                        Need support? Contact us at <a href="mailto:info@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">info@thesmartmethod.co</a>
+                                        Need support? Contact us at <a href="mailto:info@thesmartmethod.co" style="color: #C9A875; text-decoration: underline;">info@thesmartmethod.co</a>
                                     </p>
                                 </td>
                             </tr>
@@ -684,24 +684,24 @@ export async function sendEvidence7DayEmail(
           pattern.includes("perfectionism") ||
           pattern.includes("overthinking")
         ) {
-          personalizedPS = `You mentioned struggling with ${sabotageAnalysis.protective_pattern}. In a Discovery Call, we identify what 'good enough' actually looks like for your nervous system—so you can ship without the spiral. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
+          personalizedPS = `You mentioned struggling with ${sabotageAnalysis.protective_pattern}. In a Discovery Call, we identify what 'good enough' actually looks like for your nervous system—so you can ship without the spiral. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">Book here</a>.`;
         } else if (
           pattern.includes("avoidance") ||
           pattern.includes("procrastination")
         ) {
-          personalizedPS = `You shared that you struggle with ${sabotageAnalysis.protective_pattern}. In a Discovery Call, we build momentum systems that work with your energy cycles instead of fighting them. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
+          personalizedPS = `You shared that you struggle with ${sabotageAnalysis.protective_pattern}. In a Discovery Call, we build momentum systems that work with your energy cycles instead of fighting them. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">Book here</a>.`;
         } else if (
           pattern.includes("people-pleasing") ||
           pattern.includes("conflict")
         ) {
-          personalizedPS = `You described struggling with ${sabotageAnalysis.protective_pattern}. In a Discovery Call, we practice saying what's true without triggering your abandonment alarm. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
+          personalizedPS = `You described struggling with ${sabotageAnalysis.protective_pattern}. In a Discovery Call, we practice saying what's true without triggering your abandonment alarm. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">Book here</a>.`;
         } else {
           personalizedPS =
-            'The assessment mapped the patterns. A Discovery Call helps you see progress you\'re missing and builds momentum structures. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.';
+            'The assessment mapped the patterns. A Discovery Call helps you see progress you\'re missing and builds momentum structures. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">Book here</a>.';
         }
       } else {
         personalizedPS =
-          'The assessment mapped the patterns. A Discovery Call helps you see progress you\'re missing and builds momentum structures. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.';
+          'The assessment mapped the patterns. A Discovery Call helps you see progress you\'re missing and builds momentum structures. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">Book here</a>.';
       }
     }
     const { data, error } = await resend.emails.send({
@@ -713,16 +713,16 @@ export async function sendEvidence7DayEmail(
         <!DOCTYPE html>
         <html>
         <head>
-          <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+          <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
         </head>
-        <body style="margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #F9F6F1;">
+        <body style="margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #F5F3ED;">
             
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #F9F6F1; padding: 40px 20px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #F5F3ED; padding: 40px 20px;">
                 <tr>
                     <td align="center">
                         
                         <!-- Main Container -->
-                        <table role="presentation" width="600" cellpadding="0" cellspacing="0" class="email-container" style="background-color: #FEFDFB; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <table role="presentation" width="600" cellpadding="0" cellspacing="0" class="email-container" style="background-color: #FFFFFF; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
                             
                             <!-- Spacer -->
                             <tr>
@@ -741,10 +741,10 @@ export async function sendEvidence7DayEmail(
                                 <td height="40"></td>
                             </tr>
                             
-                            <!-- Green Line -->
+                            <!-- Accent Line -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <div style="height: 3px; background-color: #C9A96E; width: 200px; margin: 0 auto;"></div>
+                                    <div style="height: 3px; background-color: #C9A875; width: 200px; margin: 0 auto;"></div>
                                 </td>
                             </tr>
                             
@@ -756,18 +756,18 @@ export async function sendEvidence7DayEmail(
                             <!-- Main Content -->
                             <tr>
                                 <td style="padding: 0 40px;">
-            <p style="font-size: 18px; color: #2A2A2A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               <strong>${userName},</strong><br><br>
               Most people wait for transformation to feel like a lightning bolt.
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               It doesn't.
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               It shows up as:
             </p>
             
@@ -778,35 +778,35 @@ export async function sendEvidence7DayEmail(
             </ul>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               These aren't "small" wins.
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               They're <strong>proof your nervous system is recalibrating.</strong>
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               So here's your assignment: What's one thing you've done in the last week that your former self—the one who took this assessment—would have avoided or numbed out from?
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               That's the evidence that you're already changing.
             </p>
             
             <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Your Teammate,<br>
 
-              <strong style="color: #C9A96E;">Matthew</strong>
+              <strong style="color: #C9A875;">Matthew</strong>
             </p>
             
             ${
               personalizedPS
                 ? `
-            <p style="color: #2A2A2A; font-size: 18px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+            <p style="color: #1A1A1A; font-size: 18px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif; font-weight: 400;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
 
@@ -831,7 +831,7 @@ export async function sendEvidence7DayEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-                                        Need support? Contact us at <a href="mailto:info@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">info@thesmartmethod.co</a>
+                                        Need support? Contact us at <a href="mailto:info@thesmartmethod.co" style="color: #C9A875; text-decoration: underline;">info@thesmartmethod.co</a>
                                     </p>
                                 </td>
                             </tr>
@@ -882,15 +882,15 @@ export async function sendIntegrationThresholdEmail(
       const goals = planData.goals;
       if (goals?.business_goal || goals?.financial_goal) {
         const businessGoal = goals.business_goal || goals.financial_goal;
-        personalizedPS = `You're building toward ${businessGoal}. In a Discovery Call, we map how your nervous system patterns are affecting your business momentum—and what to shift first. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
+        personalizedPS = `You're building toward ${businessGoal}. In a Discovery Call, we map how your nervous system patterns are affecting your business momentum—and what to shift first. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">Book here</a>.`;
       } else if (goals?.relationship_goal) {
-        personalizedPS = `You want ${goals.relationship_goal}. In a Discovery Call, we identify how your protective patterns show up in intimacy—and practice new responses. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
+        personalizedPS = `You want ${goals.relationship_goal}. In a Discovery Call, we identify how your protective patterns show up in intimacy—and practice new responses. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">Book here</a>.`;
       } else if (goals?.body_goal || goals?.health_goal) {
         const bodyGoal = goals.body_goal || goals.health_goal;
-        personalizedPS = `You described wanting ${bodyGoal}. In a Discovery Call, we rebuild your relationship with your body without punishment or force. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
+        personalizedPS = `You described wanting ${bodyGoal}. In a Discovery Call, we rebuild your relationship with your body without punishment or force. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">Book here</a>.`;
       } else {
         personalizedPS =
-          'A Discovery Call clarifies whether you\'re ready for implementation or still gathering insights. Both are valid—but knowing saves months. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.';
+          'A Discovery Call clarifies whether you\'re ready for implementation or still gathering insights. Both are valid—but knowing saves months. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">Book here</a>.';
       }
     }
     const { data, error } = await resend.emails.send({
@@ -901,16 +901,16 @@ export async function sendIntegrationThresholdEmail(
         <!DOCTYPE html>
         <html>
         <head>
-          <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+          <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
         </head>
-        <body style="margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #F9F6F1;">
+        <body style="margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #F5F3ED;">
             
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #F9F6F1; padding: 40px 20px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #F5F3ED; padding: 40px 20px;">
                 <tr>
                     <td align="center">
                         
                         <!-- Main Container -->
-                        <table role="presentation" width="600" cellpadding="0" cellspacing="0" class="email-container" style="background-color: #FEFDFB; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <table role="presentation" width="600" cellpadding="0" cellspacing="0" class="email-container" style="background-color: #FFFFFF; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
                             
                             <!-- Spacer -->
                             <tr>
@@ -929,10 +929,10 @@ export async function sendIntegrationThresholdEmail(
                                 <td height="40"></td>
                             </tr>
                             
-                            <!-- Green Line -->
+                            <!-- Accent Line -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <div style="height: 3px; background-color: #C9A96E; width: 200px; margin: 0 auto;"></div>
+                                    <div style="height: 3px; background-color: #C9A875; width: 200px; margin: 0 auto;"></div>
                                 </td>
                             </tr>
                             
@@ -944,33 +944,33 @@ export async function sendIntegrationThresholdEmail(
                             <!-- Main Content -->
                             <tr>
                                 <td style="padding: 0 40px;">
-            <p style="font-size: 18px; color: #2A2A2A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               <strong>${userName},</strong><br><br>
               Two weeks is when most people quit.
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Not because they failed. Not because the assessment was wrong.
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               But because <strong>awareness without structure = temporary inspiration.</strong>
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               You've done the hardest part—you've seen the pattern clearly. You understand why you've been stuck.
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               But understanding doesn't rewire your nervous system. Consistent, appropriately-sized practice does.
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Here's what shifts people from knowing to embodying:
             </p>
             
@@ -981,20 +981,20 @@ export async function sendIntegrationThresholdEmail(
             </ol>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               You've proven you can do hard things. ${planData?.sabotage_analysis?.success_proof || planData?.sabotage_analysis?.anchor ? `You mentioned: "${planData.sabotage_analysis.success_proof || planData.sabotage_analysis.anchor}"` : "You've built something meaningful in your life"}. The question is: Are you ready to apply that same capability to your own nervous system?
             </p>
             
             <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Your Teammate,<br>
 
-              <strong style="color: #C9A96E;">Matthew</strong>
+              <strong style="color: #C9A875;">Matthew</strong>
             </p>
             
             ${
               personalizedPS
                 ? `
-            <p style="color: #2A2A2A; font-size: 18px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+            <p style="color: #1A1A1A; font-size: 18px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif; font-weight: 400;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
 
@@ -1019,7 +1019,7 @@ export async function sendIntegrationThresholdEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-                                        Need support? Contact us at <a href="mailto:info@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">info@thesmartmethod.co</a>
+                                        Need support? Contact us at <a href="mailto:info@thesmartmethod.co" style="color: #C9A875; text-decoration: underline;">info@thesmartmethod.co</a>
                                     </p>
                                 </td>
                             </tr>
@@ -1069,14 +1069,14 @@ export async function sendCompoundEffectEmail(
     if (planData) {
       const protocol = planData.thirty_day_protocol;
       if (protocol?.specific_action) {
-        personalizedPS = `You committed to ${protocol.specific_action}. Whether you did it once or daily, that's data. In a Discovery Call, we use that data to design what's actually sustainable for your nervous system. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
+        personalizedPS = `You committed to ${protocol.specific_action}. Whether you did it once or daily, that's data. In a Discovery Call, we use that data to design what's actually sustainable for your nervous system. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">Book here</a>.`;
       } else if (protocol?.environmental_change) {
-        personalizedPS = `You identified ${protocol.environmental_change}. In a Discovery Call, we refine your environment so the default choice is the right choice—no willpower required. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
+        personalizedPS = `You identified ${protocol.environmental_change}. In a Discovery Call, we refine your environment so the default choice is the right choice—no willpower required. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">Book here</a>.`;
       } else if (protocol?.weekly_practice) {
-        personalizedPS = `You planned ${protocol.weekly_practice}. In a Discovery Call, we figure out why it stuck or why it didn't—and adjust from there. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.`;
+        personalizedPS = `You planned ${protocol.weekly_practice}. In a Discovery Call, we figure out why it stuck or why it didn't—and adjust from there. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">Book here</a>.`;
       } else {
         personalizedPS =
-          'Three weeks of data is enough to see your patterns clearly. In a Discovery Call, we turn that data into a sustainable system. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.';
+          'Three weeks of data is enough to see your patterns clearly. In a Discovery Call, we turn that data into a sustainable system. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">Book here</a>.';
       }
     }
     const { data, error } = await resend.emails.send({
@@ -1087,16 +1087,16 @@ export async function sendCompoundEffectEmail(
         <!DOCTYPE html>
         <html>
         <head>
-          <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+          <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
         </head>
-        <body style="margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #F9F6F1;">
+        <body style="margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #F5F3ED;">
             
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #F9F6F1; padding: 40px 20px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #F5F3ED; padding: 40px 20px;">
                 <tr>
                     <td align="center">
                         
                         <!-- Main Container -->
-                        <table role="presentation" width="600" cellpadding="0" cellspacing="0" class="email-container" style="background-color: #FEFDFB; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <table role="presentation" width="600" cellpadding="0" cellspacing="0" class="email-container" style="background-color: #FFFFFF; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
                             
                             <!-- Spacer -->
                             <tr>
@@ -1115,10 +1115,10 @@ export async function sendCompoundEffectEmail(
                                 <td height="40"></td>
                             </tr>
                             
-                            <!-- Green Line -->
+                            <!-- Accent Line -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <div style="height: 3px; background-color: #C9A96E; width: 200px; margin: 0 auto;"></div>
+                                    <div style="height: 3px; background-color: #C9A875; width: 200px; margin: 0 auto;"></div>
                                 </td>
                             </tr>
                             
@@ -1130,23 +1130,23 @@ export async function sendCompoundEffectEmail(
                             <!-- Main Content -->
                             <tr>
                                 <td style="padding: 0 40px;">
-            <p style="font-size: 18px; color: #2A2A2A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               <strong>${userName},</strong><br><br>
               Three weeks is the threshold where temporary motivation either becomes sustainable practice or fades completely.
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Here's what I've noticed working with 680+ people:
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               <strong>The ones who transform don't feel dramatically different at 21 days.</strong>
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               They just notice they're recovering faster:
             </p>
             
@@ -1157,40 +1157,40 @@ export async function sendCompoundEffectEmail(
             </ul>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               That's not small progress. That's your nervous system learning a new default.
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
                But here's the catch: <strong>This is exactly when most people quit.</strong>
             </p>
 
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
                 Not because nothing's working—but because the initial insight has worn off and the daily practice feels boring. Unsexy. Repetitive.
             </p>
 
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
                 Which is exactly what rewiring your nervous system requires.
             </p>
 
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               You've already proven you can do this—you showed up for the assessment, you read the report, you've been noticing your patterns. The question is: Are you willing to keep going through the unsexy middle where nothing feels dramatic but everything is shifting?
             </p>
             
             <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Your Teammate,<br>
 
-              <strong style="color: #C9A96E;">Matthew</strong>
+              <strong style="color: #C9A875;">Matthew</strong>
             </p>
             
             ${
               personalizedPS
                 ? `
-            <p style="color: #2A2A2A; font-size: 18px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+            <p style="color: #1A1A1A; font-size: 18px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif; font-weight: 400;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
 
@@ -1215,7 +1215,7 @@ export async function sendCompoundEffectEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-                                        Need support? Contact us at <a href="mailto:info@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">info@thesmartmethod.co</a>
+                                        Need support? Contact us at <a href="mailto:info@thesmartmethod.co" style="color: #C9A875; text-decoration: underline;">info@thesmartmethod.co</a>
                                     </p>
                                 </td>
                             </tr>
@@ -1266,10 +1266,10 @@ export async function sendDirectInvitationEmail(
       const futureVision =
         planData.future_vision || planData.goals?.future_state;
       if (futureVision) {
-        personalizedPS = `You described a Tuesday where ${futureVision}. That version of you exists—you just need the path to get there. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a> to map it out together.`;
+        personalizedPS = `You described a Tuesday where ${futureVision}. That version of you exists—you just need the path to get there. <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">Book here</a> to map it out together.`;
       } else {
         personalizedPS =
-          'You\'ve had the map for 30 days. Ready to build the path? <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #4A5D23; text-decoration: underline;">Book here</a>.';
+          'You\'ve had the map for 30 days. Ready to build the path? <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">Book here</a>.';
       }
     }
     const { data, error } = await resend.emails.send({
@@ -1280,16 +1280,16 @@ export async function sendDirectInvitationEmail(
         <!DOCTYPE html>
         <html>
         <head>
-          <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+          <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
         </head>
-        <body style="margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #F9F6F1;">
+        <body style="margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #F5F3ED;">
             
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #F9F6F1; padding: 40px 20px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #F5F3ED; padding: 40px 20px;">
                 <tr>
                     <td align="center">
                         
                         <!-- Main Container -->
-                        <table role="presentation" width="600" cellpadding="0" cellspacing="0" class="email-container" style="background-color: #FEFDFB; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <table role="presentation" width="600" cellpadding="0" cellspacing="0" class="email-container" style="background-color: #FFFFFF; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
                             
                             <!-- Spacer -->
                             <tr>
@@ -1308,10 +1308,10 @@ export async function sendDirectInvitationEmail(
                                 <td height="40"></td>
                             </tr>
                             
-                            <!-- Green Line -->
+                            <!-- Accent Line -->
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
-                                    <div style="height: 3px; background-color: #C9A96E; width: 200px; margin: 0 auto;"></div>
+                                    <div style="height: 3px; background-color: #C9A875; width: 200px; margin: 0 auto;"></div>
                                 </td>
                             </tr>
                             
@@ -1323,23 +1323,23 @@ export async function sendDirectInvitationEmail(
                             <!-- Main Content -->
                             <tr>
                                 <td style="padding: 0 40px;">
-            <p style="font-size: 18px; color: #2A2A2A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               <strong>${userName},</strong><br><br>
               It's been a month since you took your S.M.A.R.T. Assessment.
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               I'm not going to ask if you "implemented everything" or if you're "where you want to be." That's not how transformation works.
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Instead, I'm asking: <strong>What's one thing that's different—even slightly—compared to 30 days ago?</strong>
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Maybe you:
             </p>
             
@@ -1350,37 +1350,37 @@ export async function sendDirectInvitationEmail(
             </ul>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               If you can name even one shift, that's proof the assessment was accurate and you're capable of change.
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               If nothing's different? That's also useful information—it means you're in the "knowing" phase but haven't moved to the "doing" phase yet.
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Either way, here's what I know after working with 680+ people:
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               <strong>Awareness + Structure + Accountability = Lasting Change</strong>
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               You have the awareness. The assessment gave you that.
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               The question is: Do you want to keep trying to build structure and accountability on your own, or do you want help designing a system that actually fits your nervous system?
             </p>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               If you want help, book a Discovery Call. We'll get clear on:
             </p>
             
@@ -1391,7 +1391,7 @@ export async function sendDirectInvitationEmail(
             </ul>
             
 
-            <p style="font-size: 18px; color: #2A2A2A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            <p style="font-size: 18px; color: #1A1A1A; margin: 20px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               If you're not ready yet, that's completely fine. Keep the assessment. Come back to it when the gap between who you are and who you want to be gets uncomfortable enough to act on.
             </p>
             
@@ -1404,13 +1404,13 @@ export async function sendDirectInvitationEmail(
             <p style="font-size: 18px; color: #1A1A1A; margin: 30px 0; line-height: 1.6; font-family: 'Inter', sans-serif;">
               Your Teammate,<br>
 
-              <strong style="color: #C9A96E;">Matthew</strong>
+              <strong style="color: #C9A875;">Matthew</strong>
             </p>
             
             ${
               personalizedPS
                 ? `
-            <p style="color: #2A2A2A; font-size: 18px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif;">
+            <p style="color: #1A1A1A; font-size: 18px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif; font-weight: 400;">
                 <strong>P.S.</strong> ${personalizedPS}
               </p>
 
@@ -1435,7 +1435,7 @@ export async function sendDirectInvitationEmail(
                             <tr>
                                 <td align="center" style="padding: 0 40px;">
                                     <p style="color: #666; font-size: 12px; margin: 0; font-family: 'Inter', sans-serif;">
-                                        Need support? Contact us at <a href="mailto:info@thesmartmethod.co" style="color: #C9A96E; text-decoration: underline;">info@thesmartmethod.co</a>
+                                        Need support? Contact us at <a href="mailto:info@thesmartmethod.co" style="color: #C9A875; text-decoration: underline;">info@thesmartmethod.co</a>
                                     </p>
                                 </td>
                             </tr>

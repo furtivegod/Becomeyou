@@ -752,7 +752,7 @@ function generateHTMLReport(
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>${planData.title || "S.M.A.R.T. Assessment Report"}</title>
-      <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
       <style>
         * {
           margin: 0;
@@ -761,16 +761,18 @@ function generateHTMLReport(
         }
 
         :root {
-          --cream: #F9F6F1;
-          --warm-white: #FEFDFB;
-          --deep-charcoal: #2A2A2A;
-          --soft-gold: #C9A96E;
+          --cream: #F5F3ED;
+          --warm-white: #FFFFFF;
+          --deep-charcoal: #1A1A1A;
+          --soft-gold: #C9A875;
+          --dark-olive: #3D4D2E;
+          --lime-green: #7ED321;
         }
         
         body {
           font-family: 'Inter', -apple-system, sans-serif;
           font-size: 11pt;
-          font-weight: 300;
+          font-weight: 400;
           line-height: 1.8;
           color: var(--deep-charcoal);
           overflow-x: hidden;
@@ -835,10 +837,10 @@ function generateHTMLReport(
         }
 
         h1 {
-          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-family: 'Playfair Display', Georgia, serif;
           font-size: 56px;
-          font-weight: 300;
-          color: var(--deep-charcoal);
+          font-weight: 700;
+          color: var(--dark-olive);
           line-height: 1.1;
           letter-spacing: -0.02em;
           margin: 0 0 40px 0;
@@ -846,27 +848,27 @@ function generateHTMLReport(
         }
 
         h2 {
-          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-family: 'Playfair Display', Georgia, serif;
           font-size: 32px;
-          font-weight: 300;
+          font-weight: 700;
+          color: var(--dark-olive);
           line-height: 1.2;
           margin-bottom: 30px;
         }
 
         .client-name {
           font-size: 14px;
-          font-weight: 300;
+          font-weight: 400;
           letter-spacing: 0.1em;
           color: #666;
           margin-bottom: 120px;
         }
 
         .cover-tagline {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: 'Inter', sans-serif;
           font-size: 20px;
-          font-style: italic;
-          font-weight: 300;
-          color: #666;
+          font-weight: 500;
+          color: var(--deep-charcoal);
           margin: 80px 0 0 0;
           line-height: 1.6;
           text-align: center;
@@ -888,9 +890,10 @@ function generateHTMLReport(
         }
 
         .section-title {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: 'Playfair Display', serif;
           font-size: 36px;
-          font-weight: 300;
+          font-weight: 700;
+          color: var(--dark-olive);
           letter-spacing: -0.01em;
           line-height: 1.2;
         }
@@ -920,7 +923,7 @@ function generateHTMLReport(
         .block-content {
           font-size: 13px;
           line-height: 1.8;
-          font-weight: 300;
+          font-weight: 400;
         }
 
         .block-content p {
@@ -936,11 +939,12 @@ function generateHTMLReport(
         /* DOMAIN HERO */
         .domain-hero {
           font-size: 72px;
-          font-weight: 300;
+          font-weight: 700;
+          color: var(--dark-olive);
           text-align: center;
           margin-bottom: 50px;
           letter-spacing: -0.03em;
-          font-family: 'Cormorant Garamond', serif;
+          font-family: 'Playfair Display', serif;
         }
 
         /* METRICS */
@@ -964,7 +968,7 @@ function generateHTMLReport(
         }
 
         .metric-value {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: 'Playfair Display', serif;
           font-size: 16px;
           font-weight: 400;
           margin-left: 60px;
@@ -980,10 +984,10 @@ function generateHTMLReport(
         }
         
         .pull-quote-text {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: 'Playfair Display', serif;
           font-size: 24px;
           font-style: italic;
-          font-weight: 300;
+          font-weight: 400;
           line-height: 1.6;
           margin-bottom: 20px;
         }
@@ -1046,7 +1050,7 @@ function generateHTMLReport(
         .protocol-action {
           font-size: 14px;
           line-height: 1.6;
-          font-weight: 300;
+          font-weight: 400;
         }
 
         .protocol-goals {
@@ -1070,7 +1074,7 @@ function generateHTMLReport(
           border-bottom: 1px solid rgba(0,0,0,0.06);
           font-size: 12px;
           line-height: 1.7;
-          font-weight: 300;
+          font-weight: 400;
         }
         
         .page-break {
@@ -1100,7 +1104,7 @@ function generateHTMLReport(
           font-style: italic;
           line-height: 1.6;
           color: var(--deep-charcoal);
-          font-family: 'Cormorant Garamond', serif;
+          font-family: 'Playfair Display', serif;
           text-align: center;
           padding: 20px 0;
         }
@@ -1138,13 +1142,13 @@ function generateHTMLReport(
       <!-- PAGE 2: TITLE -->
       <div class="page" style="display: flex; align-items: center; justify-content: center;">
         <div class="page-content" style="text-align: center;">
-          <div style="margin-bottom: 80px; font-size: 14px; letter-spacing: 8px; color: var(--soft-gold); font-weight: 300;">
+          <div style="margin-bottom: 80px; font-size: 14px; letter-spacing: 8px; color: var(--soft-gold); font-weight: 400; text-transform: uppercase; font-family: 'Inter', sans-serif;">
             THE S.M.A.R.T. METHOD
         </div>
         
           <h2 style="margin-bottom: 60px;">THE S.M.A.R.T.<br>ASSESSMENT</h2>
           
-          <div style="font-size: 12px; line-height: 2.5; color: #666;">
+          <div style="font-size: 12px; line-height: 2.5; color: var(--deep-charcoal); font-family: 'Inter', sans-serif; font-weight: 400;">
             <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Client</span><br>${clientName}</p>
             <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Date</span><br>${new Date().toLocaleDateString()}</p>
             <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Type</span><br>Behavioral Optimization</p>
