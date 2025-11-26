@@ -52,7 +52,7 @@ export interface PlanData {
       key_strengths?: string;
       growth_opportunities?: string;
     };
-    spirit?: {
+    relationships_meaning?: {
       current_level?: string;
       current_phase?: string;
       key_strengths?: string;
@@ -370,11 +370,11 @@ function generateHTMLReport(
     key_strengths: "Your key physical strengths and capabilities.",
     growth_opportunities: "Areas where you can grow and develop further.",
   };
-  const spiritDomain = domainBreakdown.spirit || {
+  const relationshipsMeaningDomain = domainBreakdown.relationships_meaning || {
     current_level:
-      "Your spiritual and relational connections provide both support and growth opportunities.",
-    current_phase: "Your current phase of spiritual development.",
-    key_strengths: "Your key spiritual strengths and capabilities.",
+      "Your relationships and meaning provide both support and growth opportunities.",
+    current_phase: "Your current phase of relational and meaning development.",
+    key_strengths: "Your key relational and meaning strengths and capabilities.",
     growth_opportunities: "Areas where you can grow and develop further.",
   };
   const contributionDomain = domainBreakdown.contribution || {
@@ -1327,29 +1327,29 @@ function generateHTMLReport(
           </div>
       </div>
       
-      <!-- PAGE 10: SPIRIT -->
+      <!-- PAGE 10: RELATIONSHIPS & MEANING -->
       <div class="page">
         <div class="page-content">
-          <h1 class="domain-hero">SPIRIT &<br>RELATIONSHIPS</h1>
+          <h1 class="domain-hero">RELATIONSHIPS &<br>MEANING</h1>
           
           <div class="metric-row">
             <div class="metric-label">Current Level</div>
-            <div class="metric-value">${spiritDomain.current_level}</div>
+            <div class="metric-value">${relationshipsMeaningDomain.current_level}</div>
             </div>
             
           <div class="metric-row">
             <div class="metric-label">Current Phase</div>
-            <div class="metric-value">${spiritDomain.current_phase}</div>
+            <div class="metric-value">${relationshipsMeaningDomain.current_phase}</div>
             </div>
             
           <div class="content-block">
             <div class="block-title">Key Strengths</div>
-            <div class="block-content">${formatTextWithParagraphBreaks(spiritDomain.key_strengths)}</div>
+            <div class="block-content">${formatTextWithParagraphBreaks(relationshipsMeaningDomain.key_strengths)}</div>
             </div>
             
           <div class="content-block">
             <div class="block-title">Growth Opportunities</div>
-            <div class="block-content">${formatTextWithParagraphBreaks(spiritDomain.growth_opportunities)}</div>
+            <div class="block-content">${formatTextWithParagraphBreaks(relationshipsMeaningDomain.growth_opportunities)}</div>
             </div>
           </div>
       </div>

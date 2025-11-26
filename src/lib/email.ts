@@ -269,14 +269,14 @@ export async function sendReportEmail(
       }
       // Check for relationship concerns
       else if (
-        domainBreakdown?.spirit &&
-        (domainBreakdown.spirit.toLowerCase().includes("relationship") ||
-          domainBreakdown.spirit.toLowerCase().includes("partner") ||
-          domainBreakdown.spirit.toLowerCase().includes("family") ||
-          domainBreakdown.spirit.toLowerCase().includes("connection") ||
-          domainBreakdown.spirit.toLowerCase().includes("intimacy"))
+        domainBreakdown?.relationships_meaning &&
+        (domainBreakdown.relationships_meaning.toLowerCase().includes("relationship") ||
+          domainBreakdown.relationships_meaning.toLowerCase().includes("partner") ||
+          domainBreakdown.relationships_meaning.toLowerCase().includes("family") ||
+          domainBreakdown.relationships_meaning.toLowerCase().includes("connection") ||
+          domainBreakdown.relationships_meaning.toLowerCase().includes("intimacy"))
       ) {
-        const relationshipText = domainBreakdown.spirit;
+        const relationshipText = domainBreakdown.relationships_meaning;
         personalizedPS = `You shared that ${relationshipText}. If you want to understand how your protective patterns show up in your closest relationships, <a href="https://calendly.com/matthewpaetz/discovery-call" style="color: #7ED321; text-decoration: underline;">book a call</a>.`;
       }
       // Check for physical/body disconnect

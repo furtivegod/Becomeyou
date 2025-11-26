@@ -66,7 +66,7 @@ export async function GET(request: NextRequest) {
           growth_opportunities:
             "Relationship with physical health characterized by resistance despite knowledge - diet and exercise changes avoided like a defiant toddler to prevent withdrawal symptoms and stress that current eating patterns solve. Building tolerance for the discomfort of positive change instead of using food for regulation.",
         },
-        spirit: {
+        relationships_meaning: {
           current_level: "Foundation",
           current_phase: "Friction",
           key_strengths:
