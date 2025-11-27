@@ -431,12 +431,8 @@ function generateHTMLReport(
         "Track improvements in your target area",
       ];
 
-  const bookRecommendations = Array.isArray(planData.book_recommendations)
-    ? planData.book_recommendations
-    : [
-        "The Body Keeps the Score by Bessel van der Kolk - Understanding trauma and healing",
-        "Atomic Habits by James Clear - Building sustainable change",
-      ];
+  // This variable is no longer used - we use bookRecommendationText and selectedBooks instead
+  // Keeping for reference but it's replaced by the logic below
 
   const dailyActions = Array.isArray(
     planData.thirty_day_protocol?.daily_actions
