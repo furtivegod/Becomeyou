@@ -1520,7 +1520,8 @@ function generateHTMLReport(
             ${
               bookRecommendationText
                 ? `<div style="font-size:15px; line-height:1.7; color:#222;">${bookRecommendationText}</div>`
-                : `<ol style="margin:0 0 14px 20px; padding:0; font-size:15px;">
+                : selectedBooks && selectedBooks.length > 0
+                ? `<ol style="margin:0 0 14px 20px; padding:0; font-size:15px;">
               ${selectedBooks
                 .map(
                   (b) => `
@@ -1534,6 +1535,7 @@ function generateHTMLReport(
                 )
                 .join("")}
             </ol>`
+                : `<div style="font-size:15px; line-height:1.7; color:#222;">The Body Keeps the Score by Bessel van der Kolk - Understanding trauma and healing. This book directly addresses the core issue for most users stuck in sabotage patterns.</div>`
             }
           </div>
 
