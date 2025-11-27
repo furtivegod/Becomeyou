@@ -38,6 +38,12 @@ export interface PlanData {
     success_proof?: string;
     anchor?: string;
     support_person?: string;
+    // V3.0 fields
+    pattern_exact_words?: string; // Client's exact words describing their sabotage behavior
+    pattern_reframe?: string; // Reframe in nervous system language ("What I'm hearing")
+    what_its_costing?: string; // Their actual answer to "What would it cost you to stay exactly where you are for another year?"
+    proof_with_context?: string; // Specific past success with context
+    personalized_insight?: string; // 2-3 sentences connecting pattern → protection → cost → possibility
   };
   in_the_moment_reset?: string;
   domain_breakdown?: {
@@ -46,24 +52,32 @@ export interface PlanData {
       current_phase?: string;
       key_strengths?: string;
       growth_opportunities?: string;
+      // V3.0 fields
+      block?: string; // Primary mental obstacle
     };
     body?: {
       current_level?: string;
       current_phase?: string;
       key_strengths?: string;
       growth_opportunities?: string;
+      // V3.0 fields
+      block?: string; // Primary physical/regulation obstacle
     };
     relationships_meaning?: {
       current_level?: string;
       current_phase?: string;
       key_strengths?: string;
       growth_opportunities?: string;
+      // V3.0 fields
+      block?: string; // Primary connection obstacle
     };
     contribution?: {
       current_level?: string;
       current_phase?: string;
       key_strengths?: string;
       growth_opportunities?: string;
+      // V3.0 fields
+      block?: string; // Primary impact obstacle
     };
   };
   nervous_system_assessment?: {
@@ -81,6 +95,28 @@ export interface PlanData {
     progress_markers?: string[];
     daily_actions?: string[];
     weekly_goals?: string[];
+    // V3.0 fields
+    anchor_habit?: string; // Anchor habit for 72-hour action
+    specific_action?: string; // Specific action to take
+    time_reps?: string; // Time/reps for action
+    why_this_works?: string; // Brief explanation tied to their pattern
+    urgency_statement?: string; // Cost of waiting another month
+    week_1_focus?: string;
+    week_1_chapters?: string;
+    week_1_practice?: string;
+    week_1_marker?: string;
+    week_2_focus?: string;
+    week_2_chapters?: string;
+    week_2_practice?: string;
+    week_2_marker?: string;
+    week_3_focus?: string;
+    week_3_chapters?: string;
+    week_3_practice?: string;
+    week_3_marker?: string;
+    week_4_focus?: string;
+    week_4_practice?: string;
+    week_4_marker?: string;
+    immediate_practice?: string; // Practice from book applied to their specific life
   };
   reminder_quote?: string;
   development_reminders?: string[];
@@ -90,6 +126,24 @@ export interface PlanData {
   next_assessment?: {
     stay_connected?: string;
   };
+  // V3.0 fields
+  smart_roadmap?: {
+    see_brief?: string; // S - SEE THE PATTERN brief
+    map_brief?: string; // M - MAP THE NERVOUS SYSTEM brief
+    address_brief?: string; // A - ADDRESS THE ROOT CAUSE brief
+    rewire_brief?: string; // R - REWIRE THE RESPONSE (72-Hour Action) brief
+    transform_brief?: string; // T - TRANSFORM BEHAVIOR (30-Day Focus) brief
+  };
+  bottom_line_breakdown?: {
+    pattern_restated?: string;
+    what_it_protects?: string;
+    what_it_costs?: string;
+    the_truth?: string;
+    your_proof?: string;
+    what_happens_next?: string;
+  };
+  pull_quote?: string; // Direct quote from client's assessment
+  quote_attribution?: string; // Quote attribution text
 }
 
 export async function generatePDF(
@@ -330,7 +384,7 @@ function generateHTMLReport(
   const reminderQuote =
     planData.reminder_quote || "Remember: progress, not perfection.";
 
-  // Extract sabotage analysis
+  // Extract sabotage analysis (V3.0 compatible)
   const sabotageAnalysis = planData.sabotage_analysis || {};
   const protectivePattern =
     sabotageAnalysis.protective_pattern ||
@@ -353,6 +407,17 @@ function generateHTMLReport(
   const supportPerson =
     sabotageAnalysis.support_person ||
     "Identify someone in your life who would support your change.";
+
+  // V3.0 specific fields
+  const patternExactWords =
+    sabotageAnalysis.pattern_exact_words || protectivePattern;
+  const patternReframe = sabotageAnalysis.pattern_reframe || protectivePattern;
+  const whatItsCosting =
+    sabotageAnalysis.what_its_costing ||
+    "The cost of staying stuck is real, even if you haven't quantified it yet.";
+  const proofWithContext = sabotageAnalysis.proof_with_context || successProof;
+  const personalizedInsight =
+    sabotageAnalysis.personalized_insight || developmentProfile;
 
   // Extract in-the-moment reset
   const inTheMomentReset =
@@ -402,7 +467,7 @@ function generateHTMLReport(
       "The reality of your nervous system regulation capabilities.",
   };
 
-  // Extract 30-day protocol
+  // Extract 30-day protocol (V3.0 compatible)
   const thirtyDayProtocol = planData.thirty_day_protocol || {};
   const seventyTwoHourSuggestion =
     thirtyDayProtocol.seventy_two_hour_suggestion ||
@@ -419,6 +484,32 @@ function generateHTMLReport(
   const environmentalOptimization =
     thirtyDayProtocol.environmental_optimization ||
     "Make one environmental change that supports your goals.";
+
+  // V3.0 specific protocol fields
+  const anchorHabit = thirtyDayProtocol.anchor_habit || anchor;
+  const specificAction =
+    thirtyDayProtocol.specific_action || seventyTwoHourSuggestion;
+  const timeReps = thirtyDayProtocol.time_reps || "";
+  const whyThisWorks = thirtyDayProtocol.why_this_works || "";
+  const urgencyStatement = thirtyDayProtocol.urgency_statement || "";
+  const immediatePractice = thirtyDayProtocol.immediate_practice || "";
+
+  // V3.0 weekly breakdown
+  const week1Focus = thirtyDayProtocol.week_1_focus || "";
+  const week1Chapters = thirtyDayProtocol.week_1_chapters || "";
+  const week1Practice = thirtyDayProtocol.week_1_practice || "";
+  const week1Marker = thirtyDayProtocol.week_1_marker || "";
+  const week2Focus = thirtyDayProtocol.week_2_focus || "";
+  const week2Chapters = thirtyDayProtocol.week_2_chapters || "";
+  const week2Practice = thirtyDayProtocol.week_2_practice || "";
+  const week2Marker = thirtyDayProtocol.week_2_marker || "";
+  const week3Focus = thirtyDayProtocol.week_3_focus || "";
+  const week3Chapters = thirtyDayProtocol.week_3_chapters || "";
+  const week3Practice = thirtyDayProtocol.week_3_practice || "";
+  const week3Marker = thirtyDayProtocol.week_3_marker || "";
+  const week4Focus = thirtyDayProtocol.week_4_focus || "";
+  const week4Practice = thirtyDayProtocol.week_4_practice || "";
+  const week4Marker = thirtyDayProtocol.week_4_marker || "";
 
   // Ensure arrays are properly validated
   const progressMarkers = Array.isArray(
@@ -747,12 +838,42 @@ function generateHTMLReport(
   const developmentReminders = Array.isArray(planData.development_reminders)
     ? planData.development_reminders
     : [
-        "Growth is cyclical; regression is protection, not failure",
-        "Integration comes through consistent practice, not more awareness",
-        "Your nervous system is the foundation — regulate first, then grow",
-        "Your sabotage patterns have wisdom - honor them while updating them",
-        "Identity shifts over time with deliberate practice",
+        "Integration comes through consistent practice, not more awareness—you already have the insight; now you need the repetitions",
+        "Your nervous system is the foundation—regulate first, then grow; breath before action, presence before expansion",
+        "Your sabotage patterns have wisdom—honor them while updating them; they kept you safe when safety was scarce",
+        "Identity shifts over time with deliberate practice—you're becoming someone who can hold bigger energies responsibly, one regulated moment at a time",
       ];
+
+  // V3.0 S.M.A.R.T. Roadmap
+  const smartRoadmap = planData.smart_roadmap || {};
+  const seeBrief =
+    smartRoadmap.see_brief || "What you do, when, why it matters";
+  const mapBrief =
+    smartRoadmap.map_brief || "Your baseline state, regulation capacity";
+  const addressBrief =
+    smartRoadmap.address_brief || "Where this started, what it protected";
+  const rewireBrief =
+    smartRoadmap.rewire_brief || "One specific action to take in 72 hours";
+  const transformBrief =
+    smartRoadmap.transform_brief ||
+    "The sustained practice that changes everything";
+
+  // V3.0 Bottom Line Breakdown
+  const bottomLineBreakdown = planData.bottom_line_breakdown || {};
+  const patternRestated =
+    bottomLineBreakdown.pattern_restated || protectivePattern;
+  const whatItProtects =
+    bottomLineBreakdown.what_it_protects || whatItsProtectingFrom;
+  const whatItCosts = bottomLineBreakdown.what_it_costs || whatItsCosting;
+  const theTruth = bottomLineBreakdown.the_truth || bottomLine;
+  const yourProof = bottomLineBreakdown.your_proof || proofWithContext;
+  const whatHappensNext =
+    bottomLineBreakdown.what_happens_next ||
+    "Change requires you to act before you feel ready. To follow through when it's uncomfortable. To trust the process when your nervous system screams at you to stop. You've done hard things before. You can do this.";
+
+  // V3.0 Pull Quote
+  const pullQuote = planData.pull_quote || reminderQuote;
+  const quoteAttribution = planData.quote_attribution || "From your assessment";
 
   return `
     <!DOCTYPE html>
@@ -1035,6 +1156,116 @@ function generateHTMLReport(
           margin: 80px auto;
         }
 
+        /* V3.0 ROADMAP FLOW */
+        .roadmap-flow {
+          margin: 40px 0;
+        }
+
+        .roadmap-step {
+          margin: 30px 0;
+          padding-left: 40px;
+          position: relative;
+        }
+
+        .roadmap-step::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: -30px;
+          width: 2px;
+          background: var(--soft-gold);
+        }
+
+        .roadmap-step:last-child::before {
+          display: none;
+        }
+
+        .roadmap-letter {
+          position: absolute;
+          left: -15px;
+          top: 0;
+          width: 30px;
+          height: 30px;
+          background: var(--dark-olive);
+          color: var(--warm-white);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: 'Playfair Display', serif;
+          font-size: 16px;
+          font-weight: 700;
+        }
+
+        .roadmap-arrow {
+          position: absolute;
+          left: 2px;
+          top: 30px;
+          width: 0;
+          height: 0;
+          border-left: 6px solid transparent;
+          border-right: 6px solid transparent;
+          border-top: 8px solid var(--soft-gold);
+        }
+
+        .roadmap-label {
+          font-size: 10px;
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
+          color: var(--soft-gold);
+          font-weight: 500;
+          margin-bottom: 8px;
+        }
+
+        .roadmap-brief {
+          font-size: 13px;
+          line-height: 1.6;
+          color: var(--deep-charcoal);
+        }
+
+        /* V3.0 DOMAIN GRID */
+        .domain-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 25px;
+          margin: 40px 0;
+        }
+
+        .domain-card {
+          border: 1px solid rgba(201, 169, 110, 0.2);
+          padding: 20px;
+          background: var(--cream);
+        }
+
+        .domain-card-title {
+          font-family: 'Playfair Display', serif;
+          font-size: 20px;
+          font-weight: 700;
+          color: var(--dark-olive);
+          margin-bottom: 15px;
+        }
+
+        .domain-card-row {
+          margin: 10px 0;
+          font-size: 12px;
+        }
+
+        .domain-card-label {
+          font-size: 9px;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--soft-gold);
+          font-weight: 500;
+          margin-bottom: 4px;
+        }
+
+        .domain-card-value {
+          font-size: 13px;
+          line-height: 1.5;
+          color: var(--deep-charcoal);
+        }
+
         p {
           margin-bottom: 18px;
           line-height: 1.6;
@@ -1139,438 +1370,403 @@ function generateHTMLReport(
       </style>
     </head>
     <body>
-      <!-- PAGE 1: COVER -->
+      <!-- PAGE 1: COVER (V3.0) -->
       <div class="page cover">
         <div class="cover-content">
           <div class="logo-mark">THE S.M.A.R.T. METHOD</div>
-          <h1>YOUR<br>S.M.A.R.T.<br>SUMMARY</h1>
-          <div class="cover-tagline">This is where<br>transformation begins</div>
-          </div>
-        </div>
-        
-      <!-- PAGE 2: TITLE -->
-      <div class="page" style="display: flex; align-items: center; justify-content: center;">
-        <div class="page-content" style="text-align: center;">
-          <div style="margin-bottom: 80px; font-size: 14px; letter-spacing: 8px; color: var(--soft-gold); font-weight: 400; text-transform: uppercase; font-family: 'Inter', sans-serif;">
-            THE S.M.A.R.T. METHOD
-        </div>
-        
-          <h2 style="margin-bottom: 60px;">THE S.M.A.R.T.<br>ASSESSMENT</h2>
-          
-          <div style="font-size: 12px; line-height: 2.5; color: var(--deep-charcoal); font-family: 'Inter', sans-serif; font-weight: 400;">
-            <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Client</span><br>${clientName}</p>
-            <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Date</span><br>${new Date().toLocaleDateString()}</p>
-            <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Type</span><br>Behavioral Optimization</p>
-        </div>
-        
-          <div class="divider"></div>
-          
-          <p style="font-size: 11px; font-style: italic; color: #999; max-width: 500px; margin: 0 auto;">
-            This assessment is not a diagnostic tool and does not replace professional mental health support. If you are experiencing crisis-level distress, please seek immediate professional care.
-          </p>
+          <h1>S.M.A.R.T. METHOD<br>BEHAVIORAL<br>ASSESSMENT</h1>
+          <div class="client-name">${clientName}</div>
+          <div class="cover-tagline">Your transformation begins here</div>
         </div>
       </div>
-      
-      <!-- PAGE 3: ASSESSMENT OVERVIEW -->
-      <div class="page">
-        <div class="page-content">
-          <div class="section-header">
-            <div class="section-label">Overview</div>
-            <div class="section-title">Assessment Overview</div>
-          </div>
         
-          <p style="font-size: 15px; line-height: 2;">${formatTextWithParagraphBreaks(assessmentOverview)}</p>
-            </div>
+      <!-- PAGE 2: YOUR S.M.A.R.T. SUMMARY (V3.0) -->
+      <div class="page">
+        <div class="page-content">
+          <div class="section-header">
+            <div class="section-label">Your Summary</div>
+            <div class="section-title">Your S.M.A.R.T.<br>Summary</div>
           </div>
-        
-      <!-- PAGE 4: DEVELOPMENT PROFILE -->
-      <div class="page">
-        <div class="page-content">
-          <div class="section-header">
-            <div class="section-label">Your Profile</div>
-            <div class="section-title">Your Development<br>Profile</div>
-      </div>
-      
-          <div class="development-profile-content">
-            <div class="profile-text">
-              ${formatTextWithParagraphBreaks(developmentProfile)}
-            </div>
-            
-            <div class="your-words-section">
-              <div class="block-title">YOUR WORDS</div>
-              <div class="your-words-quote"><strong>"${reminderQuote}"</strong></div>
-            </div>
-            </div>
-            </div>
-            </div>
-            
-      <!-- PAGE 5: SABOTAGE PATTERN ANALYSIS -->
-      <div class="page">
-        <div class="page-content">
-          <div class="section-header">
-            <div class="section-label">Pattern Analysis</div>
-            <div class="section-title">Sabotage Pattern<br>Analysis</div>
-            </div>
-            
+          
           <div class="sabotage-content">
             <div class="sabotage-section">
-              <div class="block-title">YOUR PROTECTIVE PATTERN</div>
+              <div class="block-title">THE PATTERN</div>
               <div class="sabotage-text">
-                ${formatTextWithParagraphBreaks(protectivePattern)}
+                <strong>Your Pattern:</strong> ${formatTextWithParagraphBreaks(patternExactWords)}<br><br>
+                <strong>What I'm hearing:</strong> ${formatTextWithParagraphBreaks(patternReframe)}
+              </div>
             </div>
-          </div>
-          
+            
             <div class="sabotage-section">
               <div class="block-title">WHAT IT'S PROTECTING YOU FROM</div>
-              <div class="sabotage-text">
-                ${formatTextWithParagraphBreaks(whatItsProtectingFrom)}
-            </div>
-          </div>
-        
-            <div class="sabotage-section">
-              <div class="block-title">HOW IT SERVES YOU</div>
-              <div class="sabotage-text">
-                ${formatTextWithParagraphBreaks(howItServesYou)}
-      </div>
+              <div class="sabotage-text">${formatTextWithParagraphBreaks(whatItsProtectingFrom)}</div>
             </div>
             
             <div class="sabotage-section">
-              <div class="block-title">YOUR SUCCESS PROOF</div>
-              <div class="sabotage-text">
-                ${formatTextWithParagraphBreaks(successProof)}
-            </div>
+              <div class="block-title">WHAT IT'S COSTING YOU</div>
+              <div class="sabotage-text">${formatTextWithParagraphBreaks(whatItsCosting)}</div>
             </div>
             
             <div class="sabotage-section">
-              <div class="block-title">GO TO PATTERNS</div>
-              <div class="sabotage-text">
-                ${formatTextWithParagraphBreaks(goToPatterns)}
-            </div>
-          </div>
-        
-            <div class="sabotage-section">
-              <div class="block-title">YOUR ANCHOR</div>
-              <div class="sabotage-text">
-                ${formatTextWithParagraphBreaks(anchor)}
-      </div>
-            </div>
-        
-            <div class="sabotage-section">
-              <div class="block-title">YOUR SUPPORT PERSON</div>
-              <div class="sabotage-text">
-                ${formatTextWithParagraphBreaks(supportPerson)}
-      </div>
-            </div>
-          </div>
-            </div>
+              <div class="block-title">YOUR PROOF YOU CAN CHANGE</div>
+              <div class="sabotage-text">${formatTextWithParagraphBreaks(proofWithContext)}</div>
             </div>
             
-      <!-- PAGE 6: IN THE MOMENT RESET -->
-      <div class="page">
-        <div class="page-content">
-          <div class="section-header">
-            <div class="section-label">Reset Strategy</div>
-            <div class="section-title">In The Moment<br>Reset</div>
-            </div>
-            
-          <div class="content-block">
-            <div class="block-content">
-              ${formatTextWithParagraphBreaks(inTheMomentReset)}
+            <div class="sabotage-section" style="margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(201, 169, 110, 0.3);">
+              <div class="sabotage-text">${formatTextWithParagraphBreaks(personalizedInsight)}</div>
             </div>
           </div>
-            </div>
-          </div>
-        
-      <!-- PAGE 7: DOMAIN DIVIDER -->
-      <div class="page" style="display: flex; align-items: center; justify-content: center;">
-        <div style="text-align: center;">
-          <div class="section-label">The Four Domains</div>
-          <h2 style="font-size: 52px; margin-top: 40px;">Domain Breakdown</h2>
         </div>
       </div>
       
-      <!-- PAGE 8: MIND -->
-      <div class="page">
-        <div class="page-content">
-          <h1 class="domain-hero">MIND</h1>
-          
-          <div class="metric-row">
-            <div class="metric-label">Current Level</div>
-            <div class="metric-value">${mindDomain.current_level}</div>
-            </div>
-            
-          <div class="metric-row">
-            <div class="metric-label">Current Phase</div>
-            <div class="metric-value">${mindDomain.current_phase}</div>
-            </div>
-            
-          <div class="content-block">
-            <div class="block-title">Key Strengths</div>
-            <div class="block-content">${formatTextWithParagraphBreaks(mindDomain.key_strengths)}</div>
-            </div>
-            
-          <div class="content-block">
-            <div class="block-title">Growth Opportunities</div>
-            <div class="block-content">${formatTextWithParagraphBreaks(mindDomain.growth_opportunities)}</div>
-            </div>
-          </div>
-      </div>
-      
-      <!-- PAGE 9: BODY -->
-      <div class="page">
-        <div class="page-content">
-          <h1 class="domain-hero">BODY</h1>
-          
-          <div class="metric-row">
-            <div class="metric-label">Current Level</div>
-            <div class="metric-value">${bodyDomain.current_level}</div>
-            </div>
-            
-          <div class="metric-row">
-            <div class="metric-label">Current Phase</div>
-            <div class="metric-value">${bodyDomain.current_phase}</div>
-            </div>
-            
-          <div class="content-block">
-            <div class="block-title">Key Strengths</div>
-            <div class="block-content">${formatTextWithParagraphBreaks(bodyDomain.key_strengths)}</div>
-            </div>
-            
-          <div class="content-block">
-            <div class="block-title">Growth Opportunities</div>
-            <div class="block-content">${formatTextWithParagraphBreaks(bodyDomain.growth_opportunities)}</div>
-            </div>
-          </div>
-      </div>
-      
-      <!-- PAGE 10: RELATIONSHIPS & MEANING -->
-      <div class="page">
-        <div class="page-content">
-          <h1 class="domain-hero">RELATIONSHIPS &<br>MEANING</h1>
-          
-          <div class="metric-row">
-            <div class="metric-label">Current Level</div>
-            <div class="metric-value">${relationshipsMeaningDomain.current_level}</div>
-            </div>
-            
-          <div class="metric-row">
-            <div class="metric-label">Current Phase</div>
-            <div class="metric-value">${relationshipsMeaningDomain.current_phase}</div>
-            </div>
-            
-          <div class="content-block">
-            <div class="block-title">Key Strengths</div>
-            <div class="block-content">${formatTextWithParagraphBreaks(relationshipsMeaningDomain.key_strengths)}</div>
-            </div>
-            
-          <div class="content-block">
-            <div class="block-title">Growth Opportunities</div>
-            <div class="block-content">${formatTextWithParagraphBreaks(relationshipsMeaningDomain.growth_opportunities)}</div>
-            </div>
-          </div>
-      </div>
-      
-      <!-- PAGE 11: CONTRIBUTION -->
-      <div class="page">
-        <div class="page-content">
-          <h1 class="domain-hero">CONTRIBUTION</h1>
-          
-          <div class="metric-row">
-            <div class="metric-label">Current Level</div>
-            <div class="metric-value">${contributionDomain.current_level}</div>
-            </div>
-            
-          <div class="metric-row">
-            <div class="metric-label">Current Phase</div>
-            <div class="metric-value">${contributionDomain.current_phase}</div>
-            </div>
-            
-          <div class="content-block">
-            <div class="block-title">Key Strengths</div>
-            <div class="block-content">${formatTextWithParagraphBreaks(contributionDomain.key_strengths)}</div>
-            </div>
-            
-          <div class="content-block">
-            <div class="block-title">Growth Opportunities</div>
-            <div class="block-content">${formatTextWithParagraphBreaks(contributionDomain.growth_opportunities)}</div>
-            </div>
-          </div>
-            </div>
-            
-      <!-- PAGE 12: NERVOUS SYSTEM -->
+      <!-- PAGE 3: YOUR ROADMAP / S.M.A.R.T. SUMMARY (V3.0) -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
-            <div class="section-label">Foundation</div>
-            <div class="section-title">Nervous System<br>Assessment</div>
-              </div>
-            
-          <div class="metric-row">
-            <div class="metric-label">Primary State</div>
-            <div class="metric-value">${nervousSystemAssessment.primary_state}</div>
+            <div class="section-label">Your Roadmap</div>
+            <div class="section-title">Your S.M.A.R.T.<br>Summary</div>
+          </div>
+          
+          <div class="roadmap-flow">
+            <div class="roadmap-step">
+              <div class="roadmap-letter">S</div>
+              <div class="roadmap-arrow"></div>
+              <div class="roadmap-label">SEE THE PATTERN</div>
+              <div class="roadmap-brief">${seeBrief}</div>
             </div>
             
-          <div class="metric-row">
-            <div class="metric-label">Regulation Capacity</div>
-            <div class="metric-value">${nervousSystemAssessment.regulation_capacity}</div>
-              </div>
-            
-          <div class="content-block">
-            <div class="block-title">Observable Patterns</div>
-            <div class="block-content">${formatTextWithParagraphBreaks(nervousSystemAssessment.observable_patterns)}</div>
+            <div class="roadmap-step">
+              <div class="roadmap-letter">M</div>
+              <div class="roadmap-arrow"></div>
+              <div class="roadmap-label">MAP THE NERVOUS SYSTEM</div>
+              <div class="roadmap-brief">${mapBrief}</div>
             </div>
             
-          <div class="content-block">
-            <div class="block-title">Regulation Reality</div>
-            <div class="block-content">${formatTextWithParagraphBreaks(nervousSystemAssessment.regulation_reality)}</div>
-              </div>
+            <div class="roadmap-step">
+              <div class="roadmap-letter">A</div>
+              <div class="roadmap-arrow"></div>
+              <div class="roadmap-label">ADDRESS THE ROOT CAUSE</div>
+              <div class="roadmap-brief">${addressBrief}</div>
+            </div>
+            
+            <div class="roadmap-step">
+              <div class="roadmap-letter">R</div>
+              <div class="roadmap-arrow"></div>
+              <div class="roadmap-label">REWIRE THE RESPONSE (72-Hour Action)</div>
+              <div class="roadmap-brief">${rewireBrief}</div>
+            </div>
+            
+            <div class="roadmap-step">
+              <div class="roadmap-letter">T</div>
+              <div class="roadmap-label">TRANSFORM BEHAVIOR (30-Day Focus)</div>
+              <div class="roadmap-brief">${transformBrief}</div>
             </div>
           </div>
+        </div>
+      </div>
         
-      <!-- PAGE 13: 30-DAY PROTOCOL -->
+      <!-- PAGE 4: DEVELOPMENT DASHBOARD (V3.0) -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
-            <div class="section-label">Your Protocol</div>
-            <div class="section-title">30-Day Growth<br>Protocol</div>
-      </div>
-      
-          <div class="protocol-item">
-            <div class="protocol-timeline">72-Hour Suggestion</div>
-            <div class="protocol-action">${formatTextWithParagraphBreaks(seventyTwoHourSuggestion)}</div>
+            <div class="section-label">Where You Are Now</div>
+            <div class="section-title">Development<br>Dashboard</div>
           </div>
-        
-          <div class="protocol-item">
-            <div class="protocol-timeline">Weekly Recommendation</div>
-            <div class="protocol-action">${formatTextWithParagraphBreaks(weeklyRecommendation)}</div>
-            <div class="protocol-goals">
-              ${weeklyGoals.map((goal) => `<div class="goal-item">${goal}</div>`).join("")}
+          
+          <div class="domain-grid">
+            <div class="domain-card">
+              <div class="domain-card-title">MIND</div>
+              <div class="domain-card-row">
+                <div class="domain-card-label">Level</div>
+                <div class="domain-card-value">${mindDomain.current_level || "Not specified"}</div>
               </div>
-      </div>
-      
-          <div class="protocol-item">
-            <div class="protocol-timeline">30-Day Approach</div>
-            <div class="protocol-action">${formatTextWithParagraphBreaks(thirtyDayApproach)}</div>
-            <div class="protocol-goals">
-              ${dailyActions.map((action) => `<div class="goal-item">${action}</div>`).join("")}
+              <div class="domain-card-row">
+                <div class="domain-card-label">Block</div>
+                <div class="domain-card-value">${mindDomain.block || mindDomain.growth_opportunities || "Not specified"}</div>
+              </div>
+              <div class="domain-card-row">
+                <div class="domain-card-label">Opportunity</div>
+                <div class="domain-card-value">${mindDomain.growth_opportunities || "Not specified"}</div>
+              </div>
             </div>
-          </div>
-        
-          <div class="protocol-item">
-            <div class="protocol-timeline">Environmental Optimization</div>
-            <div class="protocol-action">${formatTextWithParagraphBreaks(environmentalOptimization)}</div>
-      </div>
-      
-          <div class="protocol-item">
-            <div class="protocol-timeline">Your Support Check-In</div>
-            <div class="protocol-action">${formatTextWithParagraphBreaks(supportCheckIn)}</div>
-      </div>
-      
-          <div class="content-block">
-            <div class="block-title">Suggested Progress Markers</div>
-            <div class="block-content">
-              ${progressMarkers.map((marker) => `<div class="reminder-item">${marker}</div>`).join("")}
-            </div>
-          </div>
-        
             
+            <div class="domain-card">
+              <div class="domain-card-title">BODY</div>
+              <div class="domain-card-row">
+                <div class="domain-card-label">Level</div>
+                <div class="domain-card-value">${bodyDomain.current_level || "Not specified"}</div>
+              </div>
+              <div class="domain-card-row">
+                <div class="domain-card-label">Block</div>
+                <div class="domain-card-value">${bodyDomain.block || bodyDomain.growth_opportunities || "Not specified"}</div>
+              </div>
+              <div class="domain-card-row">
+                <div class="domain-card-label">Opportunity</div>
+                <div class="domain-card-value">${bodyDomain.growth_opportunities || "Not specified"}</div>
+              </div>
+            </div>
+            
+            <div class="domain-card">
+              <div class="domain-card-title">RELATIONSHIPS & MEANING</div>
+              <div class="domain-card-row">
+                <div class="domain-card-label">Level</div>
+                <div class="domain-card-value">${relationshipsMeaningDomain.current_level || "Not specified"}</div>
+              </div>
+              <div class="domain-card-row">
+                <div class="domain-card-label">Block</div>
+                <div class="domain-card-value">${relationshipsMeaningDomain.block || relationshipsMeaningDomain.growth_opportunities || "Not specified"}</div>
+              </div>
+              <div class="domain-card-row">
+                <div class="domain-card-label">Opportunity</div>
+                <div class="domain-card-value">${relationshipsMeaningDomain.growth_opportunities || "Not specified"}</div>
+              </div>
+            </div>
+            
+            <div class="domain-card">
+              <div class="domain-card-title">CONTRIBUTION</div>
+              <div class="domain-card-row">
+                <div class="domain-card-label">Level</div>
+                <div class="domain-card-value">${contributionDomain.current_level || "Not specified"}</div>
+              </div>
+              <div class="domain-card-row">
+                <div class="domain-card-label">Block</div>
+                <div class="domain-card-value">${contributionDomain.block || contributionDomain.growth_opportunities || "Not specified"}</div>
+              </div>
+              <div class="domain-card-row">
+                <div class="domain-card-label">Opportunity</div>
+                <div class="domain-card-value">${contributionDomain.growth_opportunities || "Not specified"}</div>
+              </div>
             </div>
           </div>
-        
-      <!-- PAGE 14: BOTTOM LINE -->
-      <div class="page bottom-line-page">
-        <div class="page-content" style="text-align: center; max-width: 700px;">
-          <h2>Bottom Line</h2>
-              ${formatTextWithParagraphBreaks(bottomLine)}
+          
+          <div style="margin-top: 50px;">
+            <div class="section-header">
+              <div class="section-label">Foundation</div>
+              <div class="section-title">Nervous System<br>Assessment</div>
             </div>
-      </div>
-      
-      <!-- PAGE 15: REMINDER BOX -->
-      <div class="page reminder-box-page">
-        <div class="page-content">
-          <div class="pull-quote">
-            <div class="pull-quote-text"><strong>"${reminderQuote}"</strong></div>
-            <div style="font-size: 11px; letter-spacing: 0.1em; color: #999;">Your truth, the only truth that matters</div>
-      </div>
+            
+            <div class="metric-row">
+              <div class="metric-label">Primary State</div>
+              <div class="metric-value">${nervousSystemAssessment.primary_state}</div>
+            </div>
+            
+            <div class="metric-row">
+              <div class="metric-label">Regulation Capacity</div>
+              <div class="metric-value">${nervousSystemAssessment.regulation_capacity}</div>
+            </div>
+            
+            <div class="content-block">
+              <div class="block-title">Observable Patterns</div>
+              <div class="block-content">${formatTextWithParagraphBreaks(nervousSystemAssessment.observable_patterns)}</div>
+            </div>
+            
+            <div class="content-block">
+              <div class="block-title">The Regulation Reality</div>
+              <div class="block-content">${formatTextWithParagraphBreaks(nervousSystemAssessment.regulation_reality)}</div>
             </div>
           </div>
+        </div>
+      </div>
         
-      <!-- PAGE 16: DEVELOPMENT REMINDERS -->
+      <!-- PAGE 5: YOUR S.M.A.R.T. PROTOCOL (V3.0) -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
-            <div class="section-label">Reminders</div>
-            <div class="section-title">Development<br>Reminders</div>
-      </div>
-      
-          ${developmentReminders.map((reminder) => `<div class="reminder-item">${reminder}</div>`).join("")}
-            </div>
-            </div>
-            
-      <!-- PAGE 17: BOOK RECOMMENDATION -->
-      <div class="page">
-        <div class="page-content">
-          <div class="section-header">
-            <div class="section-label">Recommended Reading</div>
-            <div class="section-title">Book<br>Recommendation</div>
+            <div class="section-label">Start Now</div>
+            <div class="section-title">Your S.M.A.R.T.<br>Protocol</div>
           </div>
-
-          <div class="content-block">
-            <div class="block-title" style="font-size: 18px; font-weight: 600; margin-bottom: 6px;"></div>
+          
+          ${urgencyStatement ? `<div style="font-size: 14px; line-height: 1.8; margin-bottom: 40px; font-style: italic; color: var(--deep-charcoal);">${urgencyStatement}</div>` : ""}
+          
+          <div class="protocol-item">
+            <div class="protocol-timeline">STEP 1: 72-HOUR ACTION</div>
+            <div class="protocol-action">
+              ${anchorHabit && specificAction ? `After ${anchorHabit}, ${specificAction}${timeReps ? ` for ${timeReps}` : ""}` : formatTextWithParagraphBreaks(seventyTwoHourSuggestion)}
+            </div>
+            ${whyThisWorks ? `<div style="font-size: 12px; color: #666; margin-top: 10px; font-style: italic;">Why this works: ${whyThisWorks}</div>` : ""}
+          </div>
+          
+          <div class="protocol-item">
+            <div class="protocol-timeline">STEP 2: READ THIS NOW</div>
+            <div class="protocol-action">
+              ${
+                bookRecommendationText
+                  ? `<div style="font-size:15px; line-height:1.7; color:#222;">${bookRecommendationText}</div>`
+                  : selectedBooks && selectedBooks.length > 0
+                    ? `<div style="margin-bottom: 15px;">
+                      <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px; font-family: 'Playfair Display', serif;">${selectedBooks[0].title}</div>
+                      <div style="font-size: 14px; color: #666; margin-bottom: 15px;">By ${selectedBooks[0].author}</div>
+                      <div style="font-size: 13px; line-height: 1.7; margin-bottom: 15px;"><strong>Why this book, why now:</strong> ${selectedBooks[0].why}</div>
+                      <div style="margin-top: 20px;"><a href="${selectedBooks[0].url}" style="background: var(--lime-green); color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: 600; display: inline-block;">GET THE BOOK</a></div>
+                    </div>`
+                    : `<div style="font-size:15px; line-height:1.7; color:#222;">The Body Keeps the Score by Bessel van der Kolk - Understanding trauma and healing. This book directly addresses the core issue for most users stuck in sabotage patterns.</div>`
+              }
+            </div>
+          </div>
+          
+          ${
+            immediatePractice
+              ? `<div class="protocol-item">
+            <div class="protocol-timeline">STEP 3: IMPLEMENT IMMEDIATELY</div>
+            <div class="protocol-action">${formatTextWithParagraphBreaks(immediatePractice)}</div>
+          </div>`
+              : ""
+          }
+          
+          <div class="protocol-item" style="margin-top: 50px;">
+            <div class="protocol-timeline">YOUR FIRST 30 DAYS</div>
             ${
-              bookRecommendationText
-                ? `<div style="font-size:15px; line-height:1.7; color:#222;">${bookRecommendationText}</div>`
-                : selectedBooks && selectedBooks.length > 0
-                ? `<ol style="margin:0 0 14px 20px; padding:0; font-size:15px;">
-              ${selectedBooks
-                .map(
-                  (b) => `
-              <li style="margin-bottom:10px;">
-                <span style="font-style:italic;">
-                  <a href="${b.url}" style="color: #1a73e8; text-decoration: underline; font-size:15px;" target="_blank">"${b.title}"</a>
-                </span>
-                by <span style="color: #1a73e8; font-size:15px;">${b.author}</span><br>
-                <strong>Why:</strong> <span style="color:#222; font-size:13px;">${b.why}</span>
-              </li>`
-                )
-                .join("")}
-            </ol>`
-                : `<div style="font-size:15px; line-height:1.7; color:#222;">The Body Keeps the Score by Bessel van der Kolk - Understanding trauma and healing. This book directly addresses the core issue for most users stuck in sabotage patterns.</div>`
+              week1Focus
+                ? `<div style="margin: 20px 0;">
+              <div style="font-weight: 600; margin-bottom: 8px;">WEEK 1: ${week1Focus}</div>
+              ${week1Chapters ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">📖 Book: ${week1Chapters}</div>` : ""}
+              ${week1Practice ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">🎯 Practice: ${week1Practice}</div>` : ""}
+              ${week1Marker ? `<div style="font-size: 12px; color: #666;">✓ Marker: ${week1Marker}</div>` : ""}
+            </div>`
+                : ""
+            }
+            ${
+              week2Focus
+                ? `<div style="margin: 20px 0;">
+              <div style="font-weight: 600; margin-bottom: 8px;">WEEK 2: ${week2Focus}</div>
+              ${week2Chapters ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">📖 Book: ${week2Chapters}</div>` : ""}
+              ${week2Practice ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">🎯 Practice: ${week2Practice}</div>` : ""}
+              ${week2Marker ? `<div style="font-size: 12px; color: #666;">✓ Marker: ${week2Marker}</div>` : ""}
+            </div>`
+                : ""
+            }
+            ${
+              week3Focus
+                ? `<div style="margin: 20px 0;">
+              <div style="font-weight: 600; margin-bottom: 8px;">WEEK 3: ${week3Focus}</div>
+              ${week3Chapters ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">📖 Book: ${week3Chapters}</div>` : ""}
+              ${week3Practice ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">🎯 Practice: ${week3Practice}</div>` : ""}
+              ${week3Marker ? `<div style="font-size: 12px; color: #666;">✓ Marker: ${week3Marker}</div>` : ""}
+            </div>`
+                : ""
+            }
+            ${
+              week4Focus
+                ? `<div style="margin: 20px 0;">
+              <div style="font-weight: 600; margin-bottom: 8px;">WEEK 4: ${week4Focus}</div>
+              ${week4Practice ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">🎯 Practice: ${week4Practice}</div>` : ""}
+              ${week4Marker ? `<div style="font-size: 12px; color: #666;">✓ Marker: ${week4Marker}</div>` : ""}
+            </div>`
+                : ""
             }
           </div>
-
-          <div class="content-block" style="margin-top: 24px;">
-            <div style="font-size:13px; color:#777; font-style:italic; line-height:1.7; text-align:left; border-top: 1px solid #eee; padding-top:14px; max-width:650px;">
-              These books support—but do not replace—professional mental health care. If you're experiencing trauma symptoms, severe anxiety, depression, or psychological distress, please consult a licensed therapist.<br> Amazon Associate Disclosure: I earn from qualifying purchases.
+          
+          <div style="margin-top: 40px; padding: 20px; background: var(--cream); border-left: 3px solid var(--soft-gold);">
+            <div style="font-size: 13px; line-height: 1.8; font-style: italic;">
+              Start tonight. This book explains why every strategy you've tried hasn't worked—and what will.
             </div>
           </div>
         </div>
       </div>
+        
+      <!-- PAGE 6: BOTTOM LINE (V3.0) -->
+      <div class="page">
+        <div class="page-content">
+          <div class="section-header">
+            <div class="section-label">The Reality</div>
+            <div class="section-title">Bottom Line</div>
+          </div>
+          
+          <div class="sabotage-content">
+            <div class="sabotage-section">
+              <div class="block-title">YOUR PATTERN</div>
+              <div class="sabotage-text">${formatTextWithParagraphBreaks(patternRestated)}</div>
+            </div>
             
-      <!-- PAGE 18: NEXT STEPS -->
+            <div class="sabotage-section">
+              <div class="block-title">WHAT IT'S PROTECTING YOU FROM</div>
+              <div class="sabotage-text">${formatTextWithParagraphBreaks(whatItProtects)}</div>
+            </div>
+            
+            <div class="sabotage-section">
+              <div class="block-title">WHAT IT'S COSTING YOU</div>
+              <div class="sabotage-text">${formatTextWithParagraphBreaks(whatItCosts)}</div>
+            </div>
+            
+            <div class="sabotage-section">
+              <div class="block-title">THE TRUTH</div>
+              <div class="sabotage-text">${formatTextWithParagraphBreaks(theTruth)}</div>
+            </div>
+            
+            <div class="sabotage-section">
+              <div class="block-title">YOUR PROOF</div>
+              <div class="sabotage-text">${formatTextWithParagraphBreaks(yourProof)}</div>
+            </div>
+            
+            <div class="sabotage-section">
+              <div class="block-title">WHAT HAPPENS NEXT</div>
+              <div class="sabotage-text">${formatTextWithParagraphBreaks(whatHappensNext)}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- PAGE 7: BOTTOM LINE + REMINDER (V3.0) -->
+      <div class="page">
+        <div class="page-content">
+          <div class="section-header">
+            <div class="section-label">Remember</div>
+            <div class="section-title">Bottom Line</div>
+          </div>
+          
+          <div style="margin: 40px 0;">
+            ${formatTextWithParagraphBreaks(bottomLine)}
+          </div>
+          
+          <div class="pull-quote" style="margin-top: 60px;">
+            <div class="pull-quote-text"><strong>"${pullQuote}"</strong></div>
+            <div style="font-size: 11px; letter-spacing: 0.1em; color: #999;">${quoteAttribution}</div>
+          </div>
+        </div>
+      </div>
+            
+      <!-- PAGE 8: WHAT'S NEXT (V3.0) -->
       <div class="page">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Moving Forward</div>
-            <div class="section-title">Next Steps</div>
+            <div class="section-title">You Have Everything<br>You Need</div>
           </div>
-        
+          
+          <div style="margin: 40px 0;">
+            <div style="font-size: 14px; line-height: 2; margin-bottom: 30px;">
+              <div style="margin: 10px 0;">✓ Your pattern mapped</div>
+              <div style="margin: 10px 0;">✓ Your nervous system understood</div>
+              <div style="margin: 10px 0;">✓ Your 72-hour action identified</div>
+              <div style="margin: 10px 0;">✓ Your reading list queued</div>
+              <div style="margin: 10px 0;">✓ Your 30-day protocol ready</div>
+            </div>
             
-          <div class="content-block">
-            <div class="block-title">How to Stay Connected</div>
-            <div class="block-content">
-              <p style="margin: 0 0 20px 0;">Your assessment is just the beginning.</p>
-              <p style="margin: 0 0 20px 0;">Over the coming weeks, you'll receive weekly insights in your inbox—real case studies of people who've broken through the exact patterns you're facing, practical protocols you can implement immediately, and advanced strategies that build on your personalized roadmap.</p>
-              <p style="margin: 0 0 20px 0;">Each email is designed to meet you exactly where you are in your transformation journey, delivering the precise guidance you need, when you need it most.</p>
-              <p style="margin: 0;">These aren't generic newsletters—they're the ongoing support system that turns your 30-day protocol into a sustainable lifestyle.</p>
+            <div style="font-size: 16px; font-weight: 600; margin: 40px 0; text-align: center; color: var(--dark-olive);">
+              The Only Thing Left:<br>Take action.
             </div>
           </div>
-        
-          <div style="background: var(--cream); padding: 60px; text-align: center; max-width: 600px; border-left: 2px solid var(--soft-gold); margin-top: 180px;">
-            <p style="font-size: 13px; line-height: 2.2; font-style: italic;">
-            This assessment was built with care, respect, and the belief that you already have everything you need to become the person you described. The only thing left to do is <em>take action</em>.
-          </p>
+          
+          <div class="content-block" style="margin-top: 60px;">
+            <div class="block-title">RECOMMENDED NEXT STEPS</div>
+            <div class="block-content">
+              <p style="margin: 0 0 20px 0;"><strong>6-Month Follow-Up Assessment ($97):</strong> After implementing your protocol, we'll reassess your nervous system regulation, pattern shifts, and next-level growth areas.</p>
+              <p style="margin: 0 0 20px 0;"><strong>Monthly Check-Ins:</strong> Track progress, troubleshoot blocks, adjust protocol. (Coming soon)</p>
+              <p style="margin: 0 0 20px 0;"><strong>Contact:</strong> Questions? Email info@thesmartmethod.co</p>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- PAGE 9: DEVELOPMENT REMINDERS (V3.0) -->
+      <div class="page">
+        <div class="page-content">
+          <div class="section-header">
+            <div class="section-label">Remember</div>
+            <div class="section-title">Development<br>Reminders</div>
+          </div>
+      
+          ${developmentReminders.map((reminder) => `<div class="reminder-item">→ ${reminder}</div>`).join("")}
         </div>
       </div>
 

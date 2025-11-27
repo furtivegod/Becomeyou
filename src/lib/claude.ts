@@ -503,27 +503,27 @@ Format (matching OUTPUT FORMAT from master prompt):
   "assessment_date": "Date of assessment",
   "disclaimer": "Short, italic, softened but firm disclaimer that avoids fear but keeps integrity",
   "assessment_overview": "Short paragraph that frames what this assessment just revealed about them in plain English. Example: 'You've been carrying strategies that once kept you safe, but now keep you stuck. Today you've uncovered not just the patterns, but why they exist and how they've been protecting you. The good news? Change is possible because now you can see the whole picture clearly. More importantly, you already have proof you can do this.'",
-  "smart_method_map": {
-    "see_the_pattern": "Their primary sabotage pattern",
-    "map_the_nervous_system": "Their baseline state",
-    "address_the_root_cause": "What it's protecting them from",
-    "rewire_the_response": "Their 72-hour action",
-    "transform_behavior": "Their 30-day focus"
+  "smart_roadmap": {
+    "see_brief": "Brief: What you do, when, why it matters (1-2 sentences)",
+    "map_brief": "Brief: Your baseline state, regulation capacity (1-2 sentences)",
+    "address_brief": "Brief: Where this started, what it protected (1-2 sentences)",
+    "rewire_brief": "Brief: One specific action to take in 72 hours (1-2 sentences)",
+    "transform_brief": "Brief: The sustained practice that changes everything (1-2 sentences)"
   },
   "development_profile": "Personalized summary paragraph that reflects their words/patterns back. Tone: empathetic, intimate, almost like a mirror. Include one powerful quote from them to deepen the 'you've been heard' effect",
   "sabotage_analysis": {
-    "protective_pattern": "Their main self-sabotage behavior in their words]
-                          "This pattern shows up most when [their specific stress trigger from their answers]. When you 
-                          notice it starting, you'll likely feel [the emotion they're protecting themselves from] first—that's 
-                          your early warning signal. The faster you catch it, the faster you can choose differently.",
+    "protective_pattern": "Their main self-sabotage behavior in their words. This pattern shows up most when [their specific stress trigger from their answers]. When you notice it starting, you'll likely feel [the emotion they're protecting themselves from] first—that's your early warning signal. The faster you catch it, the faster you can choose differently.",
     "what_its_protecting_from": "The feelings/emotions they're avoiding experiencing",
     "how_it_serves_you": "Secondary gains in plain language",
     "go_to_patterns": "Their current reward patterns and digital habits in their words",
     "success_proof": "Times they've overcome it, however briefly",
     "anchor": "Their strongest existing habit that never breaks",
     "support_person": "The person they identified who would support their change",
-    "escape_behavior": "Specific behavior they use to escape or avoid (e.g., 'sleep', 'gaming', 'scrolling', 'overthinking')",
-    "positive_behavior": "Specific positive behavior they can choose instead (e.g., 'taking action', 'having difficult conversations', 'staying present')"
+    "pattern_exact_words": "Client's exact words describing their sabotage behavior (quote them directly)",
+    "pattern_reframe": "Reframe in nervous system language - 'What I'm hearing' (translate their pattern into nervous system terms)",
+    "what_its_costing": "Their actual answer to 'What would it cost you to stay exactly where you are for another year?' Use ONLY what they said. If vague, acknowledge it. If no answer, connect pattern to their stated goals.",
+    "proof_with_context": "Specific past success with context. Example: 'Last year you launched X despite fear Y. You followed through for 3 months before the pattern returned.'",
+    "personalized_insight": "2-3 sentences connecting pattern → protection → cost → possibility. Example: 'You're not avoiding success—you're avoiding the visibility that comes with it. This pattern kept you safe when being seen meant being criticized. But now it's keeping you invisible in a business that requires you to be found.'"
   },
   "in_the_moment_reset": "When you notice the pattern starting, pause and take 3 deep breaths—in for 4 counts, hold for 4, 
                           out for 6. Then ask yourself: 'What's one small thing I can do right now that moves me forward 
@@ -531,28 +531,32 @@ Format (matching OUTPUT FORMAT from master prompt):
                           becomes possible.",
   "domain_breakdown": {
     "mind": {
-      "current_level": "Current level (Foundation/Exploration/Mastery)",
-      "current_phase": "Current phase (Friction/Experimentation/Integration)",
-      "key_strengths": "key strengths with specific examples",
-      "growth_opportunities": "growth opportunities framed as what's in reach"
+      "current_level": "Current level (Foundation/Exploration/Mastery) in plain language",
+      "current_phase": "Current phase (Friction/Experimentation/Integration) in plain language",
+      "key_strengths": "Key strengths with specific examples",
+      "growth_opportunities": "Growth opportunities framed as what's in reach",
+      "block": "Primary mental obstacle that's blocking progress"
     },
     "body": {
-      "current_level": "Current level (Foundation/Exploration/Mastery)",
-      "current_phase": "Current phase (Friction/Experimentation/Integration)",
-      "key_strengths": "key strengths with specific examples",
-      "growth_opportunities": "growth opportunities framed as what's in reach"
+      "current_level": "Current level (Foundation/Exploration/Mastery) in plain language",
+      "current_phase": "Current phase (Friction/Experimentation/Integration) in plain language",
+      "key_strengths": "Key strengths with specific examples",
+      "growth_opportunities": "Growth opportunities framed as what's in reach",
+      "block": "Primary physical/regulation obstacle that's blocking progress"
     },
     "relationships_meaning": {
-      "current_level": "Current level (Foundation/Exploration/Mastery)",
-      "current_phase": "Current phase (Friction/Experimentation/Integration)",
-      "key_strengths": "key strengths with specific examples",
-      "growth_opportunities": "growth opportunities framed as what's in reach"
+      "current_level": "Current level (Foundation/Exploration/Mastery) in plain language",
+      "current_phase": "Current phase (Friction/Experimentation/Integration) in plain language",
+      "key_strengths": "Key strengths with specific examples",
+      "growth_opportunities": "Growth opportunities framed as what's in reach",
+      "block": "Primary connection obstacle that's blocking progress"
     },
     "contribution": {
-      "current_level": "Current level (Foundation/Exploration/Mastery)",
-      "current_phase": "Current phase (Friction/Experimentation/Integration)",
-      "key_strengths": "key strengths with specific examples",
-      "growth_opportunities": "growth opportunities framed as what's in reach"
+      "current_level": "Current level (Foundation/Exploration/Mastery) in plain language",
+      "current_phase": "Current phase (Friction/Experimentation/Integration) in plain language",
+      "key_strengths": "Key strengths with specific examples",
+      "growth_opportunities": "Growth opportunities framed as what's in reach",
+      "block": "Primary impact obstacle that's blocking progress"
     }
   },
   "nervous_system_assessment": {
@@ -568,53 +572,44 @@ Format (matching OUTPUT FORMAT from master prompt):
     "environmental_optimization": "One specific environmental change that removes friction - reference their stated external obstacles",
     "support_check_in": "Encourage them to share one goal with the support person they identified",
     "progress_markers": ["Specific marker 1", "Specific marker 2", "Specific marker 3"],
-    "daily_actions": [
-      "Day 1: [Specific action based on their patterns]",
-      "Day 2: [Another specific action]",
-      "Day 3: [Another specific action]",
-      "Day 4: [Another specific action]",
-      "Day 5: [Another specific action]",
-      "Day 6: [Another specific action]",
-      "Day 7: [Another specific action]",
-      "Day 8: [Another specific action]",
-      "Day 9: [Another specific action]",
-      "Day 10: [Another specific action]",
-      "Day 11: [Another specific action]",
-      "Day 12: [Another specific action]",
-      "Day 13: [Another specific action]",
-      "Day 14: [Another specific action]",
-      "Day 15: [Another specific action]",
-      "Day 16: [Another specific action]",
-      "Day 17: [Another specific action]",
-      "Day 18: [Another specific action]",
-      "Day 19: [Another specific action]",
-      "Day 20: [Another specific action]",
-      "Day 21: [Another specific action]",
-      "Day 22: [Another specific action]",
-      "Day 23: [Another specific action]",
-      "Day 24: [Another specific action]",
-      "Day 25: [Another specific action]",
-      "Day 26: [Another specific action]",
-      "Day 27: [Another specific action]",
-      "Day 28: [Another specific action]",
-      "Day 29: [Another specific action]",
-      "Day 30: [Another specific action]"
-    ],
-    "weekly_goals": [
-      "Week 1: [Specific weekly goal based on their patterns]",
-      "Week 2: [Another specific weekly goal]",
-      "Week 3: [Another specific weekly goal]",
-      "Week 4: [Another specific weekly goal]"
-    ]
+    "anchor_habit": "Their strongest existing habit that never breaks (for 72-hour action anchoring)",
+    "specific_action": "Specific action to take (from their 72-hour suggestion, refined)",
+    "time_reps": "Time/reps for the action (e.g., '5 minutes', '3 times', 'for 10 reps')",
+    "why_this_works": "Brief explanation tied to their pattern (1-2 sentences)",
+    "urgency_statement": "Cost of waiting another month - specific loss based on their 'what it's costing you' answer",
+    "immediate_practice": "Practice from book applied to their specific life. Example: 'Use the emotional regulation technique from the book before your next client call. Notice how your nervous system responds.'",
+    "week_1_focus": "Week 1 theme/focus",
+    "week_1_chapters": "Book chapters for week 1 (e.g., 'Chapters 1-3')",
+    "week_1_practice": "Daily practice for week 1",
+    "week_1_marker": "How they'll know it's working (observable change)",
+    "week_2_focus": "Week 2 theme/focus",
+    "week_2_chapters": "Book chapters for week 2 (e.g., 'Chapters 4-6')",
+    "week_2_practice": "Daily practice for week 2",
+    "week_2_marker": "How they'll know it's working (observable change)",
+    "week_3_focus": "Week 3 theme/focus",
+    "week_3_chapters": "Book chapters for week 3 (e.g., 'Chapters 7-9')",
+    "week_3_practice": "Daily practice for week 3",
+    "week_3_marker": "How they'll know it's working (observable change)",
+    "week_4_focus": "Week 4 theme (Integration)",
+    "week_4_practice": "Integration practice for week 4",
+    "week_4_marker": "30-day outcome marker (observable change)"
   },
-  "bottom_line": "Personalized wake-up statement that calls them forward without shame, addressing both protective function and cost",
-  "reminder_quote": "Direct quote they wrote or note to self they'll recognize",
+  "bottom_line": "Personalized wake-up statement that calls them forward without shame, addressing both protective function and cost. Should be 2-3 paragraphs: Paragraph 1: The pattern and its origin. Paragraph 2: What it's costing and why it matters now. Paragraph 3: The choice ahead and what's required.",
+  "bottom_line_breakdown": {
+    "pattern_restated": "Their main sabotage behavior restated clearly",
+    "what_it_protects": "The specific fear/emotion - 2-3 sentences",
+    "what_it_costs": "Their actual answer to 'What would it cost you to stay exactly where you are for another year?' - 1-3 sentences using ONLY what they said. Do NOT fabricate numbers or consequences they didn't mention.",
+    "the_truth": "Direct, compassionate reality check - 2-3 sentences. Example: 'You're capable of more than this pattern allows. The protection it once offered now limits your potential. You know this already—that's why you're here.'",
+    "your_proof": "Evidence they can change with specific context - 2-3 sentences",
+    "what_happens_next": "Clear statement of what transformation requires - 2-3 sentences. Example: 'Change requires you to act before you feel ready. To follow through when it's uncomfortable. To trust the process when your nervous system screams at you to stop. You've done hard things before. You can do this.'"
+  },
+  "reminder_quote": "Direct quote from client's assessment that captures their core struggle or insight (ONLY use if they actually said it)",
+  "quote_attribution": "Quote attribution text (e.g., 'From your assessment', 'Your words', etc.)",
   "development_reminders": [
-    "Growth is cyclical; regression is protection, not failure",
-    "Integration comes through consistent practice, not more awareness",
-    "Your nervous system is the foundation — regulate first, then grow",
-    "Your sabotage patterns have wisdom - honor them while updating them",
-    "Identity shifts over time with deliberate practice"
+    "Integration comes through consistent practice, not more awareness—you already have the insight; now you need the repetitions",
+    "Your nervous system is the foundation—regulate first, then grow; breath before action, presence before expansion",
+    "Your sabotage patterns have wisdom—honor them while updating them; they kept you safe when safety was scarce",
+    "Identity shifts over time with deliberate practice—you're becoming someone who can hold bigger energies responsibly, one regulated moment at a time"
   ],
   "book_recommendation": "1 curated resource tied to their specific profile and current phase with brief explanation of why this book fits their journey right now",
   "next_assessment": {
@@ -627,21 +622,16 @@ Format (matching OUTPUT FORMAT from master prompt):
 
 Make it deeply personalized using their exact words, metaphors, and language patterns. This should feel like a professional coach's assessment report.
 
-The report structure should match the OUTPUT FORMAT from the master prompt:
-- Header Section (title, client name, date, disclaimer)
-- Assessment Overview
-- Your S.M.A.R.T. Method Map (see_the_pattern, map_the_nervous_system, address_the_root_cause, rewire_the_response, transform_behavior)
-- Your Development Profile
-- Sabotage Pattern Analysis
-- Your In-the-Moment Reset
-- Domain Breakdown (Mind, Body, Relationships & Meaning, Contribution)
-- Nervous System Assessment
-- 30-Day Recommended Protocol
-- Bottom Line
-- Reminder Box (reminder_quote)
-- Development Reminders
-- Book Recommendation (1 curated resource)
-- Next Assessment & Relationship Building
+The report structure should match the V3.0 OUTPUT FORMAT (9-page framework):
+- Page 1: Cover (title, client name)
+- Page 2: Your S.M.A.R.T. Summary (THE PATTERN with pattern_exact_words and pattern_reframe, WHAT IT'S PROTECTING YOU FROM, WHAT IT'S COSTING YOU, YOUR PROOF YOU CAN CHANGE with proof_with_context, Personalized Insight)
+- Page 3: Your Roadmap / S.M.A.R.T. Summary (smart_roadmap with see_brief, map_brief, address_brief, rewire_brief, transform_brief)
+- Page 4: Development Dashboard (Four-Domain Grid with block fields + Nervous System Assessment)
+- Page 5: Your S.M.A.R.T. Protocol (72-hour action with anchor_habit/specific_action/time_reps/why_this_works, book recommendation, immediate_practice, weekly breakdown with week_1-4 fields)
+- Page 6: Bottom Line (bottom_line_breakdown with pattern_restated, what_it_protects, what_it_costs, the_truth, your_proof, what_happens_next)
+- Page 7: Bottom Line + Reminder (bottom_line paragraphs + pull_quote with quote_attribution)
+- Page 8: What's Next (checklist and next steps)
+- Page 9: Development Reminders (4 specific reminders only)
 
 CRITICAL: Only use quotes that the client actually said in the conversation. Never make up, invent, or generate quotes. If no specific quote exists, paraphrase their meaning without using quotation marks.
 
@@ -696,6 +686,28 @@ FINAL CHECK: Ensure every field contains meaningful, personalized content. No em
         "Reflection prompts count:",
         planData.reflection_prompts?.length || 0
       );
+
+      // Map smart_method_map to smart_roadmap for backward compatibility
+      if (planData.smart_method_map && !planData.smart_roadmap) {
+        planData.smart_roadmap = {
+          see_brief:
+            planData.smart_method_map.see_the_pattern ||
+            planData.smart_method_map.see_brief,
+          map_brief:
+            planData.smart_method_map.map_the_nervous_system ||
+            planData.smart_method_map.map_brief,
+          address_brief:
+            planData.smart_method_map.address_the_root_cause ||
+            planData.smart_method_map.address_brief,
+          rewire_brief:
+            planData.smart_method_map.rewire_the_response ||
+            planData.smart_method_map.rewire_brief,
+          transform_brief:
+            planData.smart_method_map.transform_behavior ||
+            planData.smart_method_map.transform_brief,
+        };
+      }
+
       return planData;
     } catch (parseError) {
       console.error("❌ JSON parse error:", parseError);
@@ -744,10 +756,10 @@ FINAL CHECK: Ensure every field contains meaningful, personalized content. No em
         }
       }
 
-      // Fallback: Create a basic report structure
+      // Fallback: Create a basic report structure (V3.0 compatible)
       console.log("🔄 Using fallback report structure");
       return {
-        title: "You 3.0 Behavioral Optimization Assessment Report",
+        title: "S.M.A.R.T. METHOD BEHAVIORAL ASSESSMENT",
         overview:
           "Your personalized assessment has been completed. This report provides insights into your behavioral patterns and recommendations for growth.",
         assessment_overview:
