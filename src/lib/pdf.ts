@@ -1750,9 +1750,10 @@ function generateHTMLReport(
           <div class="content-block" style="margin-top: 60px;">
             <div class="block-title">RECOMMENDED NEXT STEPS</div>
             <div class="block-content">
-              <p style="margin: 0 0 20px 0;"><strong>6-Month Follow-Up Assessment ($97):</strong> After implementing your protocol, we'll reassess your nervous system regulation, pattern shifts, and next-level growth areas.</p>
-              <p style="margin: 0 0 20px 0;"><strong>Monthly Check-Ins:</strong> Track progress, troubleshoot blocks, adjust protocol. (Coming soon)</p>
-              <p style="margin: 0 0 20px 0;"><strong>Contact:</strong> Questions? Email info@thesmartmethod.co</p>
+              <p style="margin: 0 0 25px 0; line-height: 1.8;"><strong>Join The S.M.A.R.T. Method Community:</strong> Connect with other solopreneurs who are building six-figure businesses without chasing trends or burning out on content. Get live weekly coaching, access to proven frameworks, and strategic support as you implement your protocol.</p>
+              <p style="margin: 0 0 25px 0; line-height: 1.8;"><a href="https://www.skool.com/become-u-4484/about?ref=ade2178e19214f7983f06d6cabed88eb" style="color: var(--lime-green); text-decoration: none; font-weight: 600;">→ Join the Community</a></p>
+              <p style="margin: 0 0 20px 0; line-height: 1.8;"><strong>Monthly Check-Ins:</strong> Track progress, troubleshoot blocks, adjust protocol. (Coming soon)</p>
+              <p style="margin: 0 0 20px 0; line-height: 1.8;"><strong>Contact:</strong> Questions? Email <a href="mailto:info@thesmartmethod.co" style="color: var(--lime-green); text-decoration: none;">info@thesmartmethod.co</a></p>
             </div>
           </div>
         </div>
