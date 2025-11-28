@@ -1664,47 +1664,47 @@ function generateHTMLReport(
         </div>
       </div>
         
-      <!-- PAGE 6: BOTTOM LINE (V3.0) -->
-      <div class="page">
-        <div class="page-content">
-          <div class="section-header">
-            <div class="section-label">The Reality</div>
-            <div class="section-title">Bottom Line</div>
-          </div>
+      // <!-- PAGE 6: BOTTOM LINE (V3.0) -->
+      // <div class="page">
+      //   <div class="page-content">
+      //     <div class="section-header">
+      //       <div class="section-label">The Reality</div>
+      //       <div class="section-title">Bottom Line</div>
+      //     </div>
           
-          <div class="sabotage-content">
-            <div class="sabotage-section">
-              <div class="block-title">YOUR PATTERN</div>
-              <div class="sabotage-text">${formatTextWithParagraphBreaks(patternRestated)}</div>
-            </div>
+      //     <div class="sabotage-content">
+      //       <div class="sabotage-section">
+      //         <div class="block-title">YOUR PATTERN</div>
+      //         <div class="sabotage-text">${formatTextWithParagraphBreaks(patternRestated)}</div>
+      //       </div>
             
-            <div class="sabotage-section">
-              <div class="block-title">WHAT IT'S PROTECTING YOU FROM</div>
-              <div class="sabotage-text">${formatTextWithParagraphBreaks(whatItProtects)}</div>
-            </div>
+      //       <div class="sabotage-section">
+      //         <div class="block-title">WHAT IT'S PROTECTING YOU FROM</div>
+      //         <div class="sabotage-text">${formatTextWithParagraphBreaks(whatItProtects)}</div>
+      //       </div>
             
-            <div class="sabotage-section">
-              <div class="block-title">WHAT IT'S COSTING YOU</div>
-              <div class="sabotage-text">${formatTextWithParagraphBreaks(whatItCosts)}</div>
-            </div>
+      //       <div class="sabotage-section">
+      //         <div class="block-title">WHAT IT'S COSTING YOU</div>
+      //         <div class="sabotage-text">${formatTextWithParagraphBreaks(whatItCosts)}</div>
+      //       </div>
             
-            <div class="sabotage-section">
-              <div class="block-title">THE TRUTH</div>
-              <div class="sabotage-text">${formatTextWithParagraphBreaks(theTruth)}</div>
-            </div>
+      //       <div class="sabotage-section">
+      //         <div class="block-title">THE TRUTH</div>
+      //         <div class="sabotage-text">${formatTextWithParagraphBreaks(theTruth)}</div>
+      //       </div>
             
-            <div class="sabotage-section">
-              <div class="block-title">YOUR PROOF</div>
-              <div class="sabotage-text">${formatTextWithParagraphBreaks(yourProof)}</div>
-            </div>
+      //       <div class="sabotage-section">
+      //         <div class="block-title">YOUR PROOF</div>
+      //         <div class="sabotage-text">${formatTextWithParagraphBreaks(yourProof)}</div>
+      //       </div>
             
-            <div class="sabotage-section">
-              <div class="block-title">WHAT HAPPENS NEXT</div>
-              <div class="sabotage-text">${formatTextWithParagraphBreaks(whatHappensNext)}</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      //       <div class="sabotage-section">
+      //         <div class="block-title">WHAT HAPPENS NEXT</div>
+      //         <div class="sabotage-text">${formatTextWithParagraphBreaks(whatHappensNext)}</div>
+      //       </div>
+      //     </div>
+      //   </div>
+      // </div>
       
       <!-- PAGE 7: BOTTOM LINE + REMINDER (V3.0) -->
       <div class="page">
@@ -1768,6 +1768,10 @@ function generateHTMLReport(
           </div>
       
           ${developmentReminders.map((reminder) => `<div class="reminder-item">→ ${reminder}</div>`).join("")}
+          
+          <div style="margin-top: 60px; padding-top: 40px; border-top: 1px solid #ddd; text-align: center; font-size: 14px; line-height: 1.8; color: var(--deep-charcoal); font-style: italic;">
+            This assessment was built with care, respect, and the belief that you already have everything you need to become the person you described. The only thing left to do is take action.
+          </div>
         </div>
       </div>
 
