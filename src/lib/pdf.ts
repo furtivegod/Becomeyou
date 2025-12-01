@@ -1690,6 +1690,14 @@ function generateHTMLReport(
             </div>`
                 : ""
             }
+            ${
+              dailyActions && dailyActions.length > 0
+                ? `<div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(201, 169, 110, 0.3);">
+              <div style="font-weight: 600; margin-bottom: 15px; color: var(--dark-olive);">DAILY ACTIONS</div>
+              ${dailyActions.map((action, index) => `<div style="font-size: 12px; color: #666; margin-bottom: 8px; line-height: 1.6;">${action}</div>`).join("")}
+            </div>`
+                : ""
+            }
           </div>
           
           <div style="margin-top: 40px; padding: 20px; background: var(--cream); border-left: 3px solid var(--soft-gold);">
