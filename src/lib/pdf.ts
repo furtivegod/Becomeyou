@@ -30,6 +30,8 @@ export interface PlanData {
   assessment_overview?: string;
   development_profile?: string;
   bottom_line?: string;
+  assessment_date?: string;
+  disclaimer?: string;
   sabotage_analysis?: {
     protective_pattern?: string;
     what_its_protecting_from?: string;
@@ -372,6 +374,16 @@ function generateHTMLReport(
   clientName: string = "Client"
 ): string {
   // Extract the real data from the assessment
+  const assessmentDate =
+    planData.assessment_date ||
+    new Date().toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  const disclaimer =
+    planData.disclaimer ||
+    "This assessment is a tool for personal development and self-awareness. It is not a diagnostic tool and does not replace professional mental health support. If you are experiencing a mental health crisis, please contact a qualified professional or crisis support service.";
   const assessmentOverview =
     planData.assessment_overview ||
     "Your personalized assessment has been completed. This report provides insights into your behavioral patterns and recommendations for growth.";
@@ -871,8 +883,13 @@ function generateHTMLReport(
     bottomLineBreakdown.what_happens_next ||
     "Change requires you to act before you feel ready. To follow through when it's uncomfortable. To trust the process when your nervous system screams at you to stop. You've done hard things before. You can do this.";
 
-  // V3.0 Pull Quote
-  const pullQuote = planData.pull_quote || reminderQuote;
+  // V3.0 Pull Quote - prioritize empowering quotes from success_proof, proof_with_context, or personalized_insight
+  const pullQuote =
+    planData.pull_quote ||
+    proofWithContext ||
+    successProof ||
+    personalizedInsight ||
+    reminderQuote;
   const quoteAttribution = planData.quote_attribution || "From your assessment";
 
   return `
@@ -1376,12 +1393,14 @@ function generateHTMLReport(
           <div class="logo-mark">THE S.M.A.R.T. METHOD</div>
           <h1>S.M.A.R.T. METHOD<br>BEHAVIORAL<br>ASSESSMENT</h1>
           <div class="client-name">${clientName}</div>
+          <div style="font-size: 12px; color: #666; margin-top: 20px; font-family: 'Inter', sans-serif;">${assessmentDate}</div>
           <div class="cover-tagline">Your transformation begins here</div>
+          <div style="font-size: 10px; color: #999; margin-top: 40px; font-style: italic; max-width: 500px; line-height: 1.6; font-family: 'Inter', sans-serif;">${disclaimer}</div>
         </div>
       </div>
         
       <!-- PAGE 2: YOUR S.M.A.R.T. SUMMARY (V3.0) -->
-      <div class="page">
+      <div class="page" style="page-break-before: always;">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Your Summary</div>
@@ -1390,11 +1409,13 @@ function generateHTMLReport(
           
           <div class="sabotage-content">
             <div class="sabotage-section">
-              <div class="block-title">THE PATTERN</div>
-              <div class="sabotage-text">
-                <strong>Your Pattern:</strong> ${formatTextWithParagraphBreaks(patternExactWords)}<br><br>
-                <strong>What I'm hearing:</strong> ${formatTextWithParagraphBreaks(patternReframe)}
-              </div>
+              <div class="block-title">YOUR PATTERN</div>
+              <div class="sabotage-text">${formatTextWithParagraphBreaks(patternExactWords)}</div>
+            </div>
+            
+            <div class="sabotage-section">
+              <div class="block-title">WHAT I'M HEARING</div>
+              <div class="sabotage-text">${formatTextWithParagraphBreaks(patternReframe)}</div>
             </div>
             
             <div class="sabotage-section">
@@ -1420,7 +1441,7 @@ function generateHTMLReport(
       </div>
       
       <!-- PAGE 3: YOUR ROADMAP / S.M.A.R.T. SUMMARY (V3.0) -->
-      <div class="page">
+      <div class="page" style="page-break-before: always;">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Your Roadmap</div>
@@ -1466,7 +1487,7 @@ function generateHTMLReport(
       </div>
         
       <!-- PAGE 4: DEVELOPMENT DASHBOARD (V3.0) -->
-      <div class="page">
+      <div class="page" style="page-break-before: always;">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Where You Are Now</div>
@@ -1569,7 +1590,7 @@ function generateHTMLReport(
       </div>
         
       <!-- PAGE 5: YOUR S.M.A.R.T. PROTOCOL (V3.0) -->
-      <div class="page">
+      <div class="page" style="page-break-before: always;">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Start Now</div>
@@ -1594,32 +1615,29 @@ function generateHTMLReport(
                   ? `<div style="font-size:15px; line-height:1.7; color:#222;">${bookRecommendationText}</div>`
                   : selectedBooks && selectedBooks.length > 0
                     ? `<div style="margin-bottom: 15px;">
-                      <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px; font-family: 'Playfair Display', serif;">${selectedBooks[0].title}</div>
-                      <div style="font-size: 14px; color: #666; margin-bottom: 15px;">By ${selectedBooks[0].author}</div>
+                      <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px; font-family: 'Playfair Display', serif;"><a href="${selectedBooks[0].url}" style="color: var(--dark-olive); text-decoration: none;">${selectedBooks[0].title}</a></div>
+                      <div style="font-size: 14px; color: #666; margin-bottom: 20px;">By ${selectedBooks[0].author}</div>
                       <div style="font-size: 13px; line-height: 1.7; margin-bottom: 15px;"><strong>Why this book, why now:</strong> ${selectedBooks[0].why}</div>
-                      <div style="margin-top: 20px;"><a href="${selectedBooks[0].url}" style="background: var(--lime-green); color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: 600; display: inline-block;">GET THE BOOK</a></div>
                     </div>`
                     : `<div style="font-size:15px; line-height:1.7; color:#222;">The Body Keeps the Score by Bessel van der Kolk - Understanding trauma and healing. This book directly addresses the core issue for most users stuck in sabotage patterns.</div>`
               }
             </div>
           </div>
           
-          ${
-            immediatePractice
-              ? `<div class="protocol-item">
-            <div class="protocol-timeline">STEP 3: IMPLEMENT IMMEDIATELY</div>
-            <div class="protocol-action">${formatTextWithParagraphBreaks(immediatePractice)}</div>
-          </div>`
-              : ""
-          }
-          
           <div class="protocol-item" style="margin-top: 50px;">
             <div class="protocol-timeline">YOUR FIRST 30 DAYS</div>
+            ${
+              immediatePractice
+                ? `<div style="margin: 20px 0; padding: 15px; background: var(--cream); border-left: 3px solid var(--soft-gold);">
+              <div style="font-weight: 600; margin-bottom: 8px; color: var(--dark-olive);">STEP 3: IMPLEMENT IMMEDIATELY</div>
+              <div style="font-size: 13px; line-height: 1.7; color: var(--deep-charcoal);">${formatTextWithParagraphBreaks(immediatePractice)}</div>
+            </div>`
+                : ""
+            }
             ${
               week1Focus
                 ? `<div style="margin: 20px 0;">
               <div style="font-weight: 600; margin-bottom: 8px;">WEEK 1: ${week1Focus}</div>
-              ${week1Chapters ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">📖 Book: ${week1Chapters}</div>` : ""}
               ${week1Practice ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">🎯 Practice: ${week1Practice}</div>` : ""}
               ${week1Marker ? `<div style="font-size: 12px; color: #666;">✓ Marker: ${week1Marker}</div>` : ""}
             </div>`
@@ -1629,7 +1647,6 @@ function generateHTMLReport(
               week2Focus
                 ? `<div style="margin: 20px 0;">
               <div style="font-weight: 600; margin-bottom: 8px;">WEEK 2: ${week2Focus}</div>
-              ${week2Chapters ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">📖 Book: ${week2Chapters}</div>` : ""}
               ${week2Practice ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">🎯 Practice: ${week2Practice}</div>` : ""}
               ${week2Marker ? `<div style="font-size: 12px; color: #666;">✓ Marker: ${week2Marker}</div>` : ""}
             </div>`
@@ -1639,7 +1656,6 @@ function generateHTMLReport(
               week3Focus
                 ? `<div style="margin: 20px 0;">
               <div style="font-weight: 600; margin-bottom: 8px;">WEEK 3: ${week3Focus}</div>
-              ${week3Chapters ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">📖 Book: ${week3Chapters}</div>` : ""}
               ${week3Practice ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">🎯 Practice: ${week3Practice}</div>` : ""}
               ${week3Marker ? `<div style="font-size: 12px; color: #666;">✓ Marker: ${week3Marker}</div>` : ""}
             </div>`
@@ -1709,7 +1725,7 @@ function generateHTMLReport(
       -->
       
       <!-- PAGE 7: BOTTOM LINE + REMINDER (V3.0) -->
-      <div class="page">
+      <div class="page" style="page-break-before: always;">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Remember</div>
@@ -1728,7 +1744,7 @@ function generateHTMLReport(
       </div>
             
       <!-- PAGE 8: WHAT'S NEXT (V3.0) -->
-      <div class="page">
+      <div class="page" style="page-break-before: always;">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Moving Forward</div>
@@ -1762,7 +1778,7 @@ function generateHTMLReport(
       </div>
 
       <!-- PAGE 9: DEVELOPMENT REMINDERS (V3.0) -->
-      <div class="page">
+      <div class="page" style="page-break-before: always;">
         <div class="page-content">
           <div class="section-header">
             <div class="section-label">Remember</div>

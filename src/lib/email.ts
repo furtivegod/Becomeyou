@@ -1406,17 +1406,6 @@ export async function sendDirectInvitationEmail(
 
               <strong style="color: #C9A875;">Matthew</strong>
             </p>
-            
-            ${
-              personalizedPS
-                ? `
-            <p style="color: #1A1A1A; font-size: 18px; line-height: 1.6; margin: 30px 0; font-family: 'Inter', sans-serif; font-weight: 400;">
-                <strong>P.S.</strong> ${personalizedPS}
-              </p>
-
-            `
-                : ""
-            }
                                 </td>
                             </tr>
                             
