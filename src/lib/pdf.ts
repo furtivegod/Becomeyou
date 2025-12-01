@@ -1700,7 +1700,7 @@ function generateHTMLReport(
         </div>
       </div>
         
-      <!-- PAGE 7: BOTTOM LINE (V3.0) -->
+      <!-- PAGE 7: BOTTOM LINE + REMINDER (V3.0) -->
       <div class="page" style="page-break-before: always;">
         <div class="page-content">
           <div class="section-header">
@@ -1711,15 +1711,10 @@ function generateHTMLReport(
           <div style="margin: 40px 0;">
             ${formatTextWithParagraphBreaks(bottomLine)}
           </div>
-        </div>
-      </div>
-      
-      <!-- PAGE 7B: CLIENT'S WORDS (PULL QUOTE) -->
-      <div class="page" style="page-break-before: always;">
-        <div class="page-content" style="display: flex; align-items: center; justify-content: center; min-height: 100%;">
-          <div class="pull-quote" style="text-align: center; width: 100%;">
+          
+          <div class="pull-quote" style="margin-top: 60px;">
             <div class="pull-quote-text"><strong>"${pullQuote}"</strong></div>
-            <div style="font-size: 11px; letter-spacing: 0.1em; color: #999; margin-top: 20px;">${quoteAttribution}</div>
+            <div style="font-size: 11px; letter-spacing: 0.1em; color: #999;">${quoteAttribution}</div>
           </div>
         </div>
       </div>
