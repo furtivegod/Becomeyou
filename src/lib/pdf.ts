@@ -1244,13 +1244,13 @@ function generateHTMLReport(
         .domain-grid {
           display: grid;
           grid-template-columns: 1fr;
-          gap: 40px;
-          margin: 50px 0;
+          gap: 25px;
+          margin: 30px 0;
         }
 
         .domain-card {
           border: 1px solid rgba(201, 169, 110, 0.3);
-          padding: 30px;
+          padding: 20px;
           background: var(--cream);
           border-radius: 4px;
           box-shadow: 0 2px 8px rgba(0,0,0,0.05);
@@ -1258,17 +1258,17 @@ function generateHTMLReport(
 
         .domain-card-title {
           font-family: 'Playfair Display', serif;
-          font-size: 24px;
+          font-size: 20px;
           font-weight: 700;
           color: var(--dark-olive);
-          margin-bottom: 20px;
-          padding-bottom: 15px;
+          margin-bottom: 15px;
+          padding-bottom: 10px;
           border-bottom: 2px solid rgba(201, 169, 110, 0.3);
         }
 
         .domain-card-row {
-          margin: 15px 0;
-          padding: 12px 0;
+          margin: 10px 0;
+          padding: 8px 0;
           border-bottom: 1px solid rgba(201, 169, 110, 0.15);
         }
 
@@ -1277,17 +1277,17 @@ function generateHTMLReport(
         }
 
         .domain-card-label {
-          font-size: 10px;
-          letter-spacing: 0.15em;
+          font-size: 9px;
+          letter-spacing: 0.1em;
           text-transform: uppercase;
           color: var(--soft-gold);
           font-weight: 500;
-          margin-bottom: 8px;
+          margin-bottom: 5px;
         }
 
         .domain-card-value {
-          font-size: 14px;
-          line-height: 1.7;
+          font-size: 12px;
+          line-height: 1.6;
           color: var(--deep-charcoal);
           font-weight: 400;
         }
