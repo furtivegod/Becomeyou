@@ -267,16 +267,24 @@ export async function generatePDF(
     const signedUrl = signedUrlData.signedUrl;
     console.log("Signed URL generated successfully");
 
-    // Store PDF metadata in database
-    const { error: dbError } = await supabase.from("pdf_jobs").insert({
-      session_id: sessionId,
-      status: "completed",
-      pdf_url: signedUrl,
-      file_path: filePath,
-    });
+    // Store PDF metadata in database (only if sessionId is a valid UUID)
+    const uuidRegex =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (uuidRegex.test(sessionId)) {
+      const { error: dbError } = await supabase.from("pdf_jobs").insert({
+        session_id: sessionId,
+        status: "completed",
+        pdf_url: signedUrl,
+        file_path: filePath,
+      });
 
-    if (dbError) {
-      console.error("Error storing PDF metadata:", dbError);
+      if (dbError) {
+        console.error("Error storing PDF metadata:", dbError);
+      }
+    } else {
+      console.log(
+        "Skipping database insert for test session (non-UUID session ID)"
+      );
     }
 
     return { pdfUrl: signedUrl, pdfBuffer };
