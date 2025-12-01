@@ -171,16 +171,22 @@ export async function generatePDF(
       throw new Error("PDF generation service not configured");
     }
 
-    // Get user information for client name
+    // Get user information for client name and session date
     console.log("Fetching user information for client name");
     const { data: sessionData, error: sessionError } = await supabase
       .from("sessions")
-      .select("user_id")
+      .select("user_id, started_at")
       .eq("id", sessionId)
       .single();
 
     let clientName = "Client";
+    let sessionDate: Date | null = null;
     if (!sessionError && sessionData) {
+      // Get session date
+      if (sessionData.started_at) {
+        sessionDate = new Date(sessionData.started_at);
+      }
+
       const { data: userData, error: userError } = await supabase
         .from("users")
         .select("email, user_name")
@@ -225,8 +231,8 @@ export async function generatePDF(
       planData.reflection_prompts = [];
     }
 
-    // Generate HTML content with client name
-    const htmlContent = generateHTMLReport(planData, clientName);
+    // Generate HTML content with client name and session date
+    const htmlContent = generateHTMLReport(planData, clientName, sessionDate);
 
     // Convert HTML to PDF using PDFShift
     console.log("Converting HTML to PDF using PDFShift...");
@@ -379,16 +385,23 @@ function splitContentByHeight(
 
 function generateHTMLReport(
   planData: PlanData,
-  clientName: string = "Client"
+  clientName: string = "Client",
+  sessionDate: Date | null = null
 ): string {
   // Extract the real data from the assessment
-  const assessmentDate =
-    planData.assessment_date ||
-    new Date().toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
+  // Use session date if available, otherwise use planData.assessment_date, otherwise use current date
+  const assessmentDate = sessionDate
+    ? sessionDate.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : planData.assessment_date ||
+      new Date().toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
   const disclaimer =
     planData.disclaimer ||
     "This assessment is a tool for personal development and self-awareness. It is not a diagnostic tool and does not replace professional mental health support. If you are experiencing a mental health crisis, please contact a qualified professional or crisis support service.";
