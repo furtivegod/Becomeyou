@@ -1244,7 +1244,7 @@ function generateHTMLReport(
         .domain-grid {
           display: grid;
           grid-template-columns: 1fr;
-          gap: 100px;
+          gap: 50px;
           margin: 20px 0;
         }
 
