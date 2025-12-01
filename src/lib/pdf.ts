@@ -1022,7 +1022,7 @@ function generateHTMLReport(
 
         /* SECTION HEADERS */
         .section-header {
-          margin-bottom: 40px;
+          margin-bottom: 25px;
           text-align: center;
         }
 
@@ -1244,13 +1244,13 @@ function generateHTMLReport(
         .domain-grid {
           display: grid;
           grid-template-columns: 1fr;
-          gap: 25px;
-          margin: 30px 0;
+          gap: 15px;
+          margin: 20px 0;
         }
 
         .domain-card {
           border: 1px solid rgba(201, 169, 110, 0.3);
-          padding: 20px;
+          padding: 15px;
           background: var(--cream);
           border-radius: 4px;
           box-shadow: 0 2px 8px rgba(0,0,0,0.05);
@@ -1258,17 +1258,17 @@ function generateHTMLReport(
 
         .domain-card-title {
           font-family: 'Playfair Display', serif;
-          font-size: 20px;
+          font-size: 18px;
           font-weight: 700;
           color: var(--dark-olive);
-          margin-bottom: 15px;
-          padding-bottom: 10px;
+          margin-bottom: 12px;
+          padding-bottom: 8px;
           border-bottom: 2px solid rgba(201, 169, 110, 0.3);
         }
 
         .domain-card-row {
-          margin: 10px 0;
-          padding: 8px 0;
+          margin: 8px 0;
+          padding: 6px 0;
           border-bottom: 1px solid rgba(201, 169, 110, 0.15);
         }
 
@@ -1277,17 +1277,17 @@ function generateHTMLReport(
         }
 
         .domain-card-label {
-          font-size: 9px;
+          font-size: 8px;
           letter-spacing: 0.1em;
           text-transform: uppercase;
           color: var(--soft-gold);
           font-weight: 500;
-          margin-bottom: 5px;
+          margin-bottom: 4px;
         }
 
         .domain-card-value {
-          font-size: 12px;
-          line-height: 1.6;
+          font-size: 11px;
+          line-height: 1.5;
           color: var(--deep-charcoal);
           font-weight: 400;
         }
