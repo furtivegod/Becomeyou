@@ -1114,7 +1114,7 @@ function generateHTMLReport(
         }
 
         .metric-value {
-          font-family: 'Playfair Display', serif;
+          font-family: 'Inter', sans-serif;
           font-size: 16px;
           font-weight: 400;
           margin-left: 60px;
@@ -1635,7 +1635,6 @@ function generateHTMLReport(
                       <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px; font-family: 'Playfair Display', serif;"><a href="${selectedBooks[0].url}" style="color: var(--dark-olive); text-decoration: none;">${selectedBooks[0].title}</a></div>
                       <div style="font-size: 14px; color: #666; margin-bottom: 20px;">By ${selectedBooks[0].author}</div>
                       <div style="font-size: 13px; line-height: 1.7; margin-bottom: 15px;"><strong>Why this book, why now:</strong> ${bookRecommendationText || selectedBooks[0].why}</div>
-                      <div style="margin-top: 20px;"><a href="${selectedBooks[0].url}" style="background: var(--lime-green); color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: 600; display: inline-block; font-size: 14px;">GET THE BOOK</a></div>
                     </div>`
                   : bookRecommendationText
                     ? `<div style="font-size:15px; line-height:1.7; color:#222;">${bookRecommendationText}</div>`
