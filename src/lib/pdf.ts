@@ -1111,7 +1111,7 @@ function generateHTMLReport(
           letter-spacing: 0.15em;
           text-transform: uppercase;
           color: var(--soft-gold);
-          font-weight: 500;
+          font-weight: 400;
         }
 
         .metric-value {
@@ -1559,37 +1559,40 @@ function generateHTMLReport(
               </div>
             </div>
           </div>
+        </div>
+      </div>
+        
+      <!-- PAGE 5: NERVOUS SYSTEM ASSESSMENT (V3.0) -->
+      <div class="page" style="page-break-before: always;">
+        <div class="page-content">
+          <div class="section-header">
+            <div class="section-label">Foundation</div>
+            <div class="section-title">Nervous System<br>Assessment</div>
+          </div>
           
-          <div style="margin-top: 50px;">
-            <div class="section-header">
-              <div class="section-label">Foundation</div>
-              <div class="section-title">Nervous System<br>Assessment</div>
-            </div>
-            
-            <div class="metric-row">
-              <div class="metric-label">Primary State</div>
-              <div class="metric-value">${nervousSystemAssessment.primary_state}</div>
-            </div>
-            
-            <div class="metric-row">
-              <div class="metric-label">Regulation Capacity</div>
-              <div class="metric-value">${nervousSystemAssessment.regulation_capacity}</div>
-            </div>
-            
-            <div class="content-block">
-              <div class="block-title">Observable Patterns</div>
-              <div class="block-content">${formatTextWithParagraphBreaks(nervousSystemAssessment.observable_patterns)}</div>
-            </div>
-            
-            <div class="content-block">
-              <div class="block-title">The Regulation Reality</div>
-              <div class="block-content">${formatTextWithParagraphBreaks(nervousSystemAssessment.regulation_reality)}</div>
-            </div>
+          <div class="metric-row">
+            <div class="metric-label">Primary State</div>
+            <div class="metric-value">${nervousSystemAssessment.primary_state}</div>
+          </div>
+          
+          <div class="metric-row">
+            <div class="metric-label">Regulation Capacity</div>
+            <div class="metric-value">${nervousSystemAssessment.regulation_capacity}</div>
+          </div>
+          
+          <div class="content-block">
+            <div class="block-title">Observable Patterns</div>
+            <div class="block-content">${formatTextWithParagraphBreaks(nervousSystemAssessment.observable_patterns)}</div>
+          </div>
+          
+          <div class="content-block">
+            <div class="block-title">The Regulation Reality</div>
+            <div class="block-content">${formatTextWithParagraphBreaks(nervousSystemAssessment.regulation_reality)}</div>
           </div>
         </div>
       </div>
         
-      <!-- PAGE 5: YOUR S.M.A.R.T. PROTOCOL (V3.0) -->
+      <!-- PAGE 6: YOUR S.M.A.R.T. PROTOCOL (V3.0) -->
       <div class="page" style="page-break-before: always;">
         <div class="page-content">
           <div class="section-header">
@@ -1680,50 +1683,6 @@ function generateHTMLReport(
         </div>
       </div>
         
-      <!-- PAGE 6: BOTTOM LINE (V3.0) -->
-      <!--
-      <div class="page">
-        <div class="page-content">
-          <div class="section-header">
-            <div class="section-label">The Reality</div>
-            <div class="section-title">Bottom Line</div>
-          </div>
-          
-          <div class="sabotage-content">
-            <div class="sabotage-section">
-              <div class="block-title">YOUR PATTERN</div>
-              <div class="sabotage-text">${formatTextWithParagraphBreaks(patternRestated)}</div>
-            </div>
-            
-            <div class="sabotage-section">
-              <div class="block-title">WHAT IT'S PROTECTING YOU FROM</div>
-              <div class="sabotage-text">${formatTextWithParagraphBreaks(whatItProtects)}</div>
-            </div>
-            
-            <div class="sabotage-section">
-              <div class="block-title">WHAT IT'S COSTING YOU</div>
-              <div class="sabotage-text">${formatTextWithParagraphBreaks(whatItCosts)}</div>
-            </div>
-            
-            <div class="sabotage-section">
-              <div class="block-title">THE TRUTH</div>
-              <div class="sabotage-text">${formatTextWithParagraphBreaks(theTruth)}</div>
-            </div>
-            
-            <div class="sabotage-section">
-              <div class="block-title">YOUR PROOF</div>
-              <div class="sabotage-text">${formatTextWithParagraphBreaks(yourProof)}</div>
-            </div>
-            
-            <div class="sabotage-section">
-              <div class="block-title">WHAT HAPPENS NEXT</div>
-              <div class="sabotage-text">${formatTextWithParagraphBreaks(whatHappensNext)}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      -->
-      
       <!-- PAGE 7: BOTTOM LINE + REMINDER (V3.0) -->
       <div class="page" style="page-break-before: always;">
         <div class="page-content">
