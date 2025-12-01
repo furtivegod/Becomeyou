@@ -836,9 +836,8 @@ function generateHTMLReport(
 
   // Use provided book_recommendation string if available, otherwise select 1 book
   const bookRecommendationText = planData.book_recommendation;
-  const selectedBooks = bookRecommendationText
-    ? null
-    : selectTopOneBook(planData);
+  // Always select a book so we have the URL for the hyperlink, even if bookRecommendationText is provided
+  const selectedBooks = selectTopOneBook(planData);
 
   const reflectionPrompts = Array.isArray(planData.reflection_prompts)
     ? planData.reflection_prompts
@@ -1614,14 +1613,14 @@ function generateHTMLReport(
             <div class="protocol-timeline">STEP 2: READ THIS NOW</div>
             <div class="protocol-action">
               ${
-                bookRecommendationText
-                  ? `<div style="font-size:15px; line-height:1.7; color:#222;">${bookRecommendationText}</div>`
-                  : selectedBooks && selectedBooks.length > 0
-                    ? `<div style="margin-bottom: 15px;">
+                selectedBooks && selectedBooks.length > 0
+                  ? `<div style="margin-bottom: 15px;">
                       <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px; font-family: 'Playfair Display', serif;"><a href="${selectedBooks[0].url}" style="color: var(--dark-olive); text-decoration: none;">${selectedBooks[0].title}</a></div>
                       <div style="font-size: 14px; color: #666; margin-bottom: 20px;">By ${selectedBooks[0].author}</div>
-                      <div style="font-size: 13px; line-height: 1.7; margin-bottom: 15px;"><strong>Why this book, why now:</strong> ${selectedBooks[0].why}</div>
+                      ${bookRecommendationText ? `<div style="font-size: 13px; line-height: 1.7; margin-bottom: 15px;">${bookRecommendationText}</div>` : `<div style="font-size: 13px; line-height: 1.7; margin-bottom: 15px;"><strong>Why this book, why now:</strong> ${selectedBooks[0].why}</div>`}
                     </div>`
+                  : bookRecommendationText
+                    ? `<div style="font-size:15px; line-height:1.7; color:#222;">${bookRecommendationText}</div>`
                     : `<div style="font-size:15px; line-height:1.7; color:#222;">The Body Keeps the Score by Bessel van der Kolk - Understanding trauma and healing. This book directly addresses the core issue for most users stuck in sabotage patterns.</div>`
               }
             </div>
