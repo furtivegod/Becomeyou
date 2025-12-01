@@ -15,8 +15,8 @@ function formatTextWithParagraphBreaks(text: string | undefined): string {
 
   // Group sentences into paragraphs of 2
   const paragraphs: string[] = [];
-  for (let i = 0; i < sentences.length; i += 3) {
-    const paragraphSentences = sentences.slice(i, i + 3);
+  for (let i = 0; i < sentences.length; i += 2) {
+    const paragraphSentences = sentences.slice(i, i + 2);
     paragraphs.push(paragraphSentences.join(" "));
   }
 
