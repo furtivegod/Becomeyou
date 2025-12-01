@@ -858,7 +858,24 @@ function generateHTMLReport(
   // Use provided book_recommendation string if available, otherwise select 1 book
   const bookRecommendationText = planData.book_recommendation;
   // Always select a book so we have the URL for the hyperlink, even if bookRecommendationText is provided
-  const selectedBooks = selectTopOneBook(planData);
+  let selectedBooks = selectTopOneBook(planData);
+
+  // If bookRecommendationText mentions a specific book, try to match it to ensure title matches description
+  if (bookRecommendationText && selectedBooks && selectedBooks.length > 0) {
+    // Try to find a book mentioned in the bookRecommendationText by checking against allBooks
+    const textLower = bookRecommendationText.toLowerCase();
+    const matchedBook = allBooks.find((book) => {
+      const titleLower = book.title.toLowerCase();
+      const authorLower = book.author.toLowerCase();
+      // Check if the text mentions the book title or author
+      return textLower.includes(titleLower) || textLower.includes(authorLower);
+    });
+
+    // If we found a match, use that book instead of the algorithm-selected one
+    if (matchedBook) {
+      selectedBooks = [matchedBook];
+    }
+  }
 
   const reflectionPrompts = Array.isArray(planData.reflection_prompts)
     ? planData.reflection_prompts
@@ -1043,7 +1060,7 @@ function generateHTMLReport(
 
         /* SECTION HEADERS */
         .section-header {
-          margin-bottom: 25px;
+          margin-bottom: 50px;
           text-align: center;
         }
 
@@ -1265,7 +1282,7 @@ function generateHTMLReport(
         .domain-grid {
           display: grid;
           grid-template-columns: 1fr;
-          gap: 50px;
+          gap: 70px;
           margin: 20px 0;
         }
 
