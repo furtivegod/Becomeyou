@@ -1244,42 +1244,52 @@ function generateHTMLReport(
         .domain-grid {
           display: grid;
           grid-template-columns: 1fr;
-          gap: 25px;
-          margin: 40px 0;
+          gap: 40px;
+          margin: 50px 0;
         }
 
         .domain-card {
-          border: 1px solid rgba(201, 169, 110, 0.2);
-          padding: 20px;
+          border: 1px solid rgba(201, 169, 110, 0.3);
+          padding: 30px;
           background: var(--cream);
+          border-radius: 4px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
         .domain-card-title {
           font-family: 'Playfair Display', serif;
-          font-size: 20px;
+          font-size: 24px;
           font-weight: 700;
           color: var(--dark-olive);
-          margin-bottom: 15px;
+          margin-bottom: 20px;
+          padding-bottom: 15px;
+          border-bottom: 2px solid rgba(201, 169, 110, 0.3);
         }
 
         .domain-card-row {
-          margin: 10px 0;
-          font-size: 12px;
+          margin: 15px 0;
+          padding: 12px 0;
+          border-bottom: 1px solid rgba(201, 169, 110, 0.15);
+        }
+
+        .domain-card-row:last-child {
+          border-bottom: none;
         }
 
         .domain-card-label {
-          font-size: 9px;
-          letter-spacing: 0.1em;
+          font-size: 10px;
+          letter-spacing: 0.15em;
           text-transform: uppercase;
           color: var(--soft-gold);
           font-weight: 500;
-          margin-bottom: 4px;
+          margin-bottom: 8px;
         }
 
         .domain-card-value {
-          font-size: 13px;
-          line-height: 1.5;
+          font-size: 14px;
+          line-height: 1.7;
           color: var(--deep-charcoal);
+          font-weight: 400;
         }
 
         p {
@@ -1485,7 +1495,7 @@ function generateHTMLReport(
         </div>
       </div>
         
-      <!-- PAGE 4: DEVELOPMENT DASHBOARD (V3.0) -->
+      <!-- PAGE 4: DEVELOPMENT DASHBOARD - PART 1 (MIND & BODY) -->
       <div class="page" style="page-break-before: always;">
         <div class="page-content">
           <div class="section-header">
@@ -1525,7 +1535,19 @@ function generateHTMLReport(
                 <div class="domain-card-value">${bodyDomain.growth_opportunities || "Not specified"}</div>
               </div>
             </div>
-            
+          </div>
+        </div>
+      </div>
+        
+      <!-- PAGE 4B: DEVELOPMENT DASHBOARD - PART 2 (RELATIONSHIPS & MEANING & CONTRIBUTION) -->
+      <div class="page" style="page-break-before: always;">
+        <div class="page-content">
+          <div class="section-header">
+            <div class="section-label">Where You Are Now</div>
+            <div class="section-title">Development<br>Dashboard</div>
+          </div>
+          
+          <div class="domain-grid">
             <div class="domain-card">
               <div class="domain-card-title">RELATIONSHIPS & MEANING</div>
               <div class="domain-card-row">
