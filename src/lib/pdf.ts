@@ -1715,9 +1715,9 @@ function generateHTMLReport(
       </div>
       
       <!-- PAGE 7B: CLIENT'S WORDS (PULL QUOTE) -->
-      <div class="page" style="page-break-before: always;">
-        <div class="page-content" style="display: flex; align-items: center; justify-content: center; min-height: 100%;">
-          <div class="pull-quote" style="text-align: center; width: 100%;">
+      <div class="page" style="page-break-before: always; display: flex; align-items: center; justify-content: center;">
+        <div class="page-content" style="display: flex; align-items: center; justify-content: center; height: 100%; width: 100%;">
+          <div class="pull-quote" style="text-align: center; width: 100%; margin: 0;">
             <div class="pull-quote-text"><strong>"${pullQuote}"</strong></div>
             <div style="font-size: 11px; letter-spacing: 0.1em; color: #999; margin-top: 20px;">${quoteAttribution}</div>
           </div>
