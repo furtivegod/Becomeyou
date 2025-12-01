@@ -1244,7 +1244,7 @@ function generateHTMLReport(
         .domain-grid {
           display: grid;
           grid-template-columns: 1fr;
-          gap: 15px;
+          gap: 30px;
           margin: 20px 0;
         }
 
@@ -1542,12 +1542,7 @@ function generateHTMLReport(
       <!-- PAGE 4B: DEVELOPMENT DASHBOARD - PART 2 (RELATIONSHIPS & MEANING & CONTRIBUTION) -->
       <div class="page" style="page-break-before: always;">
         <div class="page-content">
-          <div class="section-header">
-            <div class="section-label">Where You Are Now</div>
-            <div class="section-title">Development<br>Dashboard</div>
-          </div>
-          
-          <div class="domain-grid">
+          <div class="domain-grid" style="margin-top: 0;">
             <div class="domain-card">
               <div class="domain-card-title">RELATIONSHIPS & MEANING</div>
               <div class="domain-card-row">
