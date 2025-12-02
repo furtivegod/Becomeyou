@@ -666,6 +666,7 @@ function generateHTMLReport(
             .cover-content {
                 position: relative;
                 z-index: 1;
+                text-align: center;
             }
 
             .logo-mark {
@@ -1089,7 +1090,7 @@ function generateHTMLReport(
                 <div class="client-name">${clientName}</div>
                 <div style="font-size: 12px; color: #666; margin-top: 20px; font-family: 'Inter', sans-serif;">${assessmentDate}</div>
                 <div class="cover-tagline">Your transformation begins here</div>
-                <div style="font-size: 10px; color: #999; margin-top: 40px; font-style: italic; max-width: 500px; line-height: 1.6; font-family: 'Inter', sans-serif;">${disclaimer}</div>
+                <div style="font-size: 10px; color: #999; margin: 40px auto 0 auto; font-style: italic; max-width: 500px; line-height: 1.6; font-family: 'Inter', sans-serif;">${disclaimer}</div>
             </div>
         </div>
 
