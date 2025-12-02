@@ -285,6 +285,194 @@ function generateHTMLReport(
     return paragraphs.map((paragraph) => `<p>${paragraph.trim()}</p>`).join("");
   }
 
+  // Handle book recommendation - use provided string or select 1 book from list
+  const allBooks = [
+    {
+      id: "body_keeps_score",
+      title: "The Body Keeps the Score",
+      author: "Bessel van der Kolk",
+      url: "https://amzn.to/4hJB9wT",
+      why: "The definitive text on trauma and nervous system. Directly addresses the core issue for most users stuck in sabotage patterns.",
+      tags: [
+        "trauma",
+        "nervous system",
+        "shutdown",
+        "dorsal",
+        "anxiety",
+        "somatic",
+        "regulation",
+      ],
+    },
+    {
+      id: "reclaim_nervous_system",
+      title: "Reclaim Your Nervous System",
+      author: "Mastin Kipp",
+      url: "https://amzn.to/47xBpua",
+      why: "Practical, accessible nervous system regulation. Bridges theory to action. Perfect for immediate implementation.",
+      tags: [
+        "regulation",
+        "nervous system",
+        "somatic",
+        "anxiety",
+        "shutdown",
+        "freeze",
+      ],
+    },
+    {
+      id: "atomic_habits",
+      title: "Atomic Habits",
+      author: "James Clear",
+      url: "https://amzn.to/431fR7V",
+      why: "The behavior change bible. Supports building evidence through small actions.",
+      tags: [
+        "habits",
+        "behavior",
+        "consistency",
+        "routine",
+        "evidence",
+        "practice",
+      ],
+    },
+    {
+      id: "how_to_do_the_work",
+      title: "How to Do the Work",
+      author: "Dr. Nicole LePera",
+      url: "https://amzn.to/43y2mNa",
+      why: "Combines shadow work, nervous system, and daily practices. Holistic approach.",
+      tags: [
+        "shadow",
+        "trauma",
+        "nervous system",
+        "inner child",
+        "therapy",
+        "regulation",
+      ],
+    },
+    {
+      id: "atlas_of_the_heart",
+      title: "Atlas of the Heart",
+      author: "Brené Brown",
+      url: "https://amzn.to/3JjyTjf",
+      why: "Emotional literacy is foundational—users can't regulate what they can't name.",
+      tags: [
+        "emotion",
+        "feelings",
+        "language",
+        "shame",
+        "naming",
+        "vocabulary",
+      ],
+    },
+    {
+      id: "future_self",
+      title: "Be Your Future Self Now",
+      author: "Dr. Benjamin Hardy",
+      url: "https://amzn.to/4p3Rwaf",
+      why: "Addresses identity transformation (Become). Practical framework for stepping into new identity.",
+      tags: ["identity", "future self", "become", "vision", "self-concept"],
+    },
+    {
+      id: "first_rule_of_mastery",
+      title: "The First Rule of Mastery",
+      author: "Dr. Michael Gervais",
+      url: "https://amzn.to/4hx7Ld3",
+      why: "Performance psychology for overthinkers and high performers.",
+      tags: ["performance", "mind", "fear", "overthinking", "mastery"],
+    },
+    {
+      id: "crucial_conversations",
+      title: "Crucial Conversations",
+      author: "Kerry Patterson",
+      url: "https://amzn.to/49sdXkC",
+      why: "Most relationship/career problems stem from poor communication.",
+      tags: [
+        "communication",
+        "relationship",
+        "conflict",
+        "conversation",
+        "boundaries",
+      ],
+    },
+    {
+      id: "deep_work",
+      title: "Deep Work",
+      author: "Cal Newport",
+      url: "https://amzn.to/48UeonB",
+      why: "Combats distraction and cheap dopamine. Teaches focus.",
+      tags: [
+        "focus",
+        "distraction",
+        "work",
+        "attention",
+        "dopamine",
+        "productivity",
+      ],
+    },
+    {
+      id: "gifts_of_imperfection",
+      title: "The Gifts of Imperfection",
+      author: "Brené Brown",
+      url: "https://amzn.to/3X35Svi",
+      why: "Addresses perfectionism and shame—big sabotage drivers.",
+      tags: ["perfectionism", "shame", "worthiness", "belonging"],
+    },
+    {
+      id: "breath",
+      title: "Breath: The New Science of a Lost Art",
+      author: "James Nestor",
+      url: "https://amzn.to/4ntDahQ",
+      why: "Simple, science-backed practice with immediate nervous system benefits.",
+      tags: ["breath", "breathing", "anxiety", "body", "calm"],
+    },
+    {
+      id: "dose_effect",
+      title: "The DOSE Effect",
+      author: "TJ Power",
+      url: "https://amzn.to/4oPrA1X",
+      why: "Directly addresses dopamine and cheap dopamine loops.",
+      tags: [
+        "dopamine",
+        "addiction",
+        "phone",
+        "scroll",
+        "porn",
+        "games",
+        "Garden Scapes",
+      ],
+    },
+    {
+      id: "war_of_art",
+      title: "The War of Art",
+      author: "Steven Pressfield",
+      url: "https://amzn.to/4ogrhgI",
+      why: "Short, punchy, confrontational—great for breaking resistance and procrastination.",
+      tags: [
+        "resistance",
+        "procrastination",
+        "creative",
+        "promotion",
+        "visibility",
+        "freeze",
+      ],
+    },
+    {
+      id: "polyvagal_therapy",
+      title: "Polyvagal Theory in Therapy",
+      author: "Deb Dana",
+      url: "https://amzn.to/3Jt9gwr",
+      why: "For dorsal shutdown or severe regulation issues.",
+      tags: ["polyvagal", "shutdown", "dorsal", "therap*", "nervous system"],
+    },
+    {
+      id: "mindset",
+      title: "Mindset: The New Psychology of Success",
+      author: "Carol Dweck",
+      url: "https://amzn.to/47Lmb66",
+      why: "Fixed vs. growth mindset foundational to development.",
+      tags: ["mindset", "fixed", "growth", "beliefs"],
+    },
+  ];
+
   // Book selection logic - match PDF structure
   function getAssessmentText(pd: any): string {
     try {
@@ -317,7 +505,7 @@ function generateHTMLReport(
 
   function selectTopOneBook(pd: any) {
     const text = getAssessmentText(pd);
-    const scored = allBooks.map((b) => {
+    const scored = allBooks.map((b: { id: string; tags: string[] }) => {
       const score = b.tags.reduce(
         (acc: number, tag: string) =>
           acc + (text.includes(tag.toLowerCase()) ? 1 : 0),
@@ -356,15 +544,17 @@ function generateHTMLReport(
           : 0);
       return { book: b, score: score + boosts };
     });
-    scored.sort((a, b) => b.score - a.score);
+    scored.sort(
+      (a: { score: number }, b: { score: number }) => b.score - a.score
+    );
     const top = scored
-      .filter((s) => s.score > 0)
+      .filter((s: { score: number }) => s.score > 0)
       .slice(0, 1)
-      .map((s) => s.book);
+      .map((s: { book: any }) => s.book);
     if (top.length < 1) {
       // sensible default
       const defaults = allBooks
-        .filter((b) => ["atomic_habits"].includes(b.id))
+        .filter((b: { id: string }) => ["atomic_habits"].includes(b.id))
         .slice(0, 1);
       return defaults;
     }
@@ -372,7 +562,6 @@ function generateHTMLReport(
   }
 
   // Use provided book_recommendation string if available, otherwise select 1 book
-  const bookRecommendationText = planData.book_recommendation;
   // Always select a book so we have the URL for the hyperlink, even if bookRecommendationText is provided
   let selectedBooks = selectTopOneBook(planData);
 
@@ -380,12 +569,16 @@ function generateHTMLReport(
   if (bookRecommendationText && selectedBooks && selectedBooks.length > 0) {
     // Try to find a book mentioned in the bookRecommendationText by checking against allBooks
     const textLower = bookRecommendationText.toLowerCase();
-    const matchedBook = allBooks.find((book) => {
-      const titleLower = book.title.toLowerCase();
-      const authorLower = book.author.toLowerCase();
-      // Check if the text mentions the book title or author
-      return textLower.includes(titleLower) || textLower.includes(authorLower);
-    });
+    const matchedBook = allBooks.find(
+      (book: { title: string; author: string }) => {
+        const titleLower = book.title.toLowerCase();
+        const authorLower = book.author.toLowerCase();
+        // Check if the text mentions the book title or author
+        return (
+          textLower.includes(titleLower) || textLower.includes(authorLower)
+        );
+      }
+    );
 
     // If we found a match, use that book instead of the algorithm-selected one
     if (matchedBook) {
@@ -1186,7 +1379,7 @@ function generateHTMLReport(
                       dailyActions && dailyActions.length > 0
                         ? `<div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(201, 169, 110, 0.3);">
                         <div style="font-weight: 600; margin-bottom: 15px; color: var(--dark-olive);">DAILY ACTIONS</div>
-                        ${dailyActions.map((action, index) => `<div style="font-size: 12px; color: #666; margin-bottom: 8px; line-height: 1.6;">${action}</div>`).join("")}
+                        ${dailyActions.map((action: string) => `<div style="font-size: 12px; color: #666; margin-bottom: 8px; line-height: 1.6;">${action}</div>`).join("")}
                     </div>`
                         : ""
                     }
@@ -1274,7 +1467,7 @@ function generateHTMLReport(
                     <div class="section-title">Development<br>Reminders</div>
                 </div>
         
-                ${developmentReminders.map((reminder) => `<div class="reminder-item">→ ${reminder}</div>`).join("")}
+                ${developmentReminders.map((reminder: string) => `<div class="reminder-item">→ ${reminder}</div>`).join("")}
                 
                 <div style="background: var(--cream); padding: 60px; text-align: center; max-width: 600px; border-left: 2px solid var(--soft-gold); margin-top: 180px;">
                     <p style="font-size: 13px; line-height: 2.2; font-style: italic;">
