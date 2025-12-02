@@ -26,203 +26,238 @@ export async function GET(request: NextRequest) {
     const samplePlanData = {
       title: "S.M.A.R.T. METHOD BEHAVIORAL ASSESSMENT",
       overview:
-        "This assessment revealed the protective mechanisms that keep you safe from disconnection and judgment, while simultaneously blocking the financial success and visibility you're capable of achieving.",
+        "You've been protecting yourself from visibility and the weight of expectation by letting momentum drop halfway through. It's not laziness or lack of capability—it's a nervous system strategy that once kept you safe from judgment and pressure. But now it's keeping you from the sustained success you're capable of. The good news? You already have proof you can push through when someone's counting on you. You just need to rewire the system so you can count on yourself the same way.",
       disclaimer:
-        "This assessment reflects patterns observed in our conversation and is designed to support your growth. It's a starting point for exploration, not a clinical diagnosis. Real change happens through consistent practice and support.",
-      client_name: "Client",
-      assessment_date: "2025",
-      assessment_overview:
-        "You've been carrying a protection strategy that's kept you connected but cost you your visibility. Today you've uncovered not just the freeze pattern around money, but why it exists—success once meant disconnection from people who mattered. The good news? You've already proven you can take action despite fear. You catch your nervous system responses in real time now instead of days later. That's massive progress. More importantly, you know staying small isn't actually keeping you safe anymore—it's keeping you stuck.",
-      development_profile:
-        "You're someone who takes action despite fear and anxiety. That's not common—most people wait until they feel ready. You've also built real nervous system awareness, catching stress responses in real time instead of days later. But you're running a deep protection pattern: staying small keeps you connected. Early on, you learned that success brings criticism and disconnection. People told you don't forget where you come from when you thought you were making them proud. So now, right when it's time to promote your work and earn money, your body hits the shutdown button—chest pressure, confusion, freeze. The pattern is working perfectly to keep you safe from the thing you learned to fear: being visible and alone. But staying stuck isn't keeping you connected anymore. It's just keeping you invisible.",
-      smart_roadmap: {
-        see_brief:
-          "You freeze when it's time to promote your work and earn money. This shows up as confusion, chest pressure, and shutting down right at the moment of visibility. It matters because it's blocking your income and keeping your work hidden.",
-        map_brief:
-          "Your nervous system runs activated—shoulders tense, focus scatters under stress. You've built capacity to catch it in real time and breathe through it, but the anxiety still runs intense. That's progress from taking days to recover.",
-        address_brief:
-          "This started when early success brought criticism instead of pride. People said don't forget where you come from, you're not better than anyone. Your nervous system learned: visibility equals disconnection from people you love.",
-        rewire_brief:
-          "Within 72 hours: After your morning routine (the habit that never breaks), spend 5 minutes writing one authentic post about your work. Don't edit. Don't perfect it. Just write and publish. This trains your nervous system that visibility doesn't equal abandonment.",
-        transform_brief:
-          "Daily visibility practice—one authentic share about your work before noon. Track when the freeze response starts. Breathe through it. Post anyway. Your nervous system needs repetitions to update the old program.",
-      },
-      sabotage_analysis: {
-        protective_pattern:
-          "You freeze at the exact moment you need to promote your work and earn money. This pattern shows up most when visibility and recognition are required. When you notice it starting, you'll likely feel chest pressure and confusion first—that's your early warning signal. The faster you catch it, the faster you can choose differently.",
-        what_its_protecting_from:
-          "Disconnection from people you care about. Being judged, criticized, or told you're not better than anyone. Having to prove you can sustain success and meet higher expectations.",
-        how_it_serves_you:
-          "Staying stuck protects you from stepping into a bigger version of yourself. You avoid higher expectations, more responsibility, the pressure to keep showing up. You never have to risk disappointing people or proving you're actually capable. Staying small feels safer than being visible and potentially alone.",
-        go_to_patterns:
-          "Phone scrolling for quick escape—a couple hours daily without noticing. Watching random videos and checking messages when pressure builds instead of sitting with discomfort.",
-        success_proof:
-          "You've pushed through this pattern before when you stopped overthinking. You take action despite fear and anxiety—that's full commitment. You've also built the capacity to catch stress in real time and regulate with breath, a massive shift from taking days to recover.",
-        anchor: "Morning routine that never breaks",
-        support_person: "Not yet identified",
-        pattern_exact_words:
-          "I freeze at the moment I need to promote my work. I shut down and feel stuck, get confused and can feel pressure build in my chest.",
-        pattern_reframe:
-          "What I'm hearing: Your nervous system perceives visibility as a threat to connection. When it's time to be seen with your work, your body activates a shutdown response—chest pressure, confusion, freeze. This is dorsal vagal shutdown, your system's way of protecting you from what it learned early on: that being visible and successful means losing the people who matter.",
-        what_its_costing:
-          "Staying stuck keeps you invisible in work that requires you to be found. It's costing you income, impact, and the chance to prove to yourself that visibility doesn't have to mean disconnection. Every day you freeze at the promotion moment is another day your work stays hidden and your potential stays unrealized.",
-        proof_with_context:
-          "You've pushed through this freeze pattern before when you stopped overthinking and just acted. You describe yourself as fully committed—someone who takes action despite fear or anxiety. That's not everyone. You've also built massive nervous system capacity, going from taking days to recover from stress to catching it in real time and breathing through it. You already have proof you can do hard things and rewire old patterns.",
-        personalized_insight:
-          "You're not avoiding success—you're avoiding the disconnection you learned comes with it. This pattern kept you safe when being seen meant being criticized and losing people. But now it's keeping you invisible in work that requires visibility to grow. The protection is outdated. You can be successful and connected—but first your nervous system needs new proof that visibility doesn't equal abandonment.",
-      },
-      in_the_moment_reset:
-        "When you notice the freeze pattern starting—chest pressure, confusion, that shutdown feeling—pause and take 3 deep breaths: in for 4 counts, hold for 4, out for 6. Then ask yourself: What's one small thing I can do right now that moves me toward visibility instead of hiding? It won't stop the pattern completely at first, but it creates the gap where choice becomes possible.",
-      domain_breakdown: {
-        mind: {
-          current_level:
-            "Exploration—you have awareness of your patterns and can catch them in real time, but consistent follow-through when it matters most is still developing",
-          current_phase:
-            "Experimentation—you're testing what works to push through the freeze response, but haven't yet built the consistent practice that makes visibility automatic",
-          key_strengths:
-            "Strong self-awareness. You catch your stress responses in real time now instead of days later. You're willing to take action despite fear. You can name your patterns clearly.",
-          growth_opportunities:
-            "Building tolerance for sustained visibility. Training your mind to stay present when the freeze response activates instead of reaching for distraction. Developing a consistent promotion practice that doesn't depend on feeling ready.",
-          block:
-            "Overthinking at the moment of action. Your mind runs the old story that visibility equals disconnection, triggering confusion and shutdown right when you need to promote your work.",
-        },
-        body: {
-          current_level:
-            "Foundation—you've built the capacity to notice body signals and use breath for regulation, but your baseline still runs activated with intense anxiety",
-          current_phase:
-            "Integration—you're actively using regulation tools like breath work, and you're building the reps needed to lower your baseline activation over time",
-          key_strengths:
-            "You can catch tension in your shoulders and recognize when focus scatters. You've gone from taking days to recover from stress to regulating in real time with breath. That's significant nervous system progress.",
-          growth_opportunities:
-            "Deepening your capacity to stay regulated during visibility moments. Building more somatic practices that discharge activation before it builds into shutdown. Learning to recognize the early body signals before the freeze takes over.",
-          block:
-            "Shutdown response with chest pressure and confusion when things feel too big. Your body hits the brakes hard to protect you from perceived threat, making it difficult to take visible action in those critical moments.",
-        },
-        relationships_meaning: {
-          current_level:
-            "Foundation—you're aware of the connection pattern driving your behavior, but you haven't yet built a support system or updated the belief that success equals disconnection",
-          current_phase:
-            "Friction—the old story that being successful means losing connection is still running your nervous system's response to visibility",
-          key_strengths:
-            "Deep awareness of how early experiences shaped your relationship to visibility and success. You can clearly name the messages you received and how they still impact you.",
-          growth_opportunities:
-            "Finding evidence that you can be successful and connected. Building relationships with people who celebrate your visibility instead of criticizing it. Identifying support people who can anchor you when the old story activates.",
-          block:
-            "The belief that visibility and success mean disconnection from people you care about. Until your nervous system has proof that you can be seen and still belong, it will keep protecting you from promotion moments.",
-        },
-        contribution: {
-          current_level:
-            "Foundation—you have work you're proud of, but the freeze pattern around promotion is blocking your ability to share it consistently and earn from it",
-          current_phase:
-            "Friction—you're stuck between wanting to contribute and share your work, and the nervous system response that shuts you down at the moment of visibility",
-          key_strengths:
-            "You care about your work quality. You've built something worth promoting. You're capable of taking action despite fear when you stop overthinking.",
-          growth_opportunities:
-            "Developing a consistent visibility practice that doesn't require you to feel ready. Building evidence that promoting your work doesn't lead to judgment or disconnection. Learning to share imperfectly and often.",
-          block:
-            "Freezing at the promotion moment. Your nervous system perceives sharing your work as a threat, triggering shutdown right when you need to be visible. This keeps your contribution hidden and blocks your income.",
-        },
-      },
-      nervous_system_assessment: {
-        primary_state:
-          "Activated baseline with shutdown response under pressure. You run sympathetic activation—tense shoulders, scattered focus—until things feel too big, then your system shifts into dorsal vagal shutdown with chest pressure and confusion.",
-        regulation_capacity:
-          "Developing—you've built the ability to catch stress in real time and use breath to regulate, which is significant progress from taking days to recover. But your baseline still runs intense anxiety even when you're using regulation tools.",
-        observable_patterns:
-          "You said: I get tense in the shoulders and lose focus under stress. I shut down and feel stuck, get confused and can feel pressure build in my chest when avoiding something important. I can catch it in real time now and keep my composure, then quickly do a few deep breaths to calm down, but I still feel the anxiety pretty intensely.",
-        regulation_reality:
-          "Your nervous system has learned to perceive visibility as a threat to connection. When it's time to promote your work, your body activates the shutdown response to protect you from what it learned early on: that being seen means being criticized and losing people. The regulation tools you're using are working—you're catching responses faster—but the pattern is deeply wired. Consistent practice with small doses of visibility will gradually retrain your system to tolerate being seen without triggering shutdown.",
-      },
-      thirty_day_protocol: {
-        seventy_two_hour_suggestion:
-          "After your morning routine, spend 5 minutes writing one authentic post about your work. Don't edit. Don't perfect it. Just write and publish.",
-        anchor_habit: "Morning routine that never breaks",
-        specific_action: "Write and publish one authentic post about your work",
-        time_reps: "5 minutes",
-        why_this_works:
-          "This works because it gives your nervous system small doses of the thing it's been protecting you from—visibility—without the stakes being life or death. Anchoring it to your morning routine means you're acting before overthinking takes over. Publishing without editing trains your system that being seen imperfectly doesn't lead to disconnection.",
-        urgency_statement:
-          "Staying stuck for another month means another month of your work staying hidden. Another month of blocking your income at the exact moment you need to promote it. Another month of your nervous system running the old story that visibility equals disconnection, while the real cost is staying invisible in work that requires you to be found.",
-        immediate_practice:
-          "Before your next visibility moment, use the breath regulation you've already built—in for 4, hold for 4, out for 6. Notice the chest pressure and confusion starting. Name it: this is my nervous system trying to protect me. Then take one small visible action anyway.",
-        thirty_day_approach:
-          "Build a consistent visibility habit that trains your nervous system that being seen doesn't equal disconnection. Start with small, imperfect shares. Track the freeze response but post anyway. Gradually increase the visibility stakes as your system builds tolerance.",
-        weekly_recommendation:
-          "Daily visibility practice before noon—one authentic share about your work. Track when the freeze response starts. Breathe through it. Post anyway.",
-        environmental_optimization:
-          "Remove phone scrolling triggers during work hours—put phone in another room or use app blockers during your morning visibility practice time.",
-        support_check_in:
-          "Identify one person who celebrates your visibility and share your 72-hour goal with them. Ask them to check in with you after you post.",
-        progress_markers: [
-          "You post about your work without waiting to feel ready",
-          "The freeze response still shows up but doesn't stop you from taking action",
-          "You notice the chest pressure and confusion starting earlier and can breathe through it before shutdown takes over",
-        ],
-        week_1_focus:
-          "Building awareness of the freeze pattern and catching it earlier",
-        week_1_chapters:
-          "Foundation chapters on nervous system states and protection patterns",
-        week_1_practice:
-          "Daily: Notice when the freeze response starts. Name it. Breathe through it. Take one small visible action.",
-        week_1_marker:
-          "You can identify the freeze response before it leads to full shutdown",
-        week_2_focus:
-          "Consistent visibility practice anchored to your morning routine",
-        week_2_chapters:
-          "Chapters on rewiring patterns and building new neural pathways",
-        week_2_practice:
-          "Daily: After morning routine, write and publish one authentic post about your work without editing",
-        week_2_marker:
-          "You post at least 5 times this week, even when the freeze response shows up",
-        week_3_focus:
-          "Increasing visibility stakes while maintaining regulation",
-        week_3_chapters:
-          "Chapters on building capacity and tolerating discomfort",
-        week_3_practice:
-          "Daily: Post about your work and include a clear call to action or promotion. Track your nervous system response.",
-        week_3_marker:
-          "You can promote your work directly without triggering full shutdown",
-        week_4_focus: "Integration—visibility becomes part of your identity",
-        week_4_practice:
-          "Daily visibility plus one bigger promotion action (email list, offer, etc.). Continue tracking and regulating through discomfort.",
-        week_4_marker:
-          "You've built 30 days of consistent visibility. The freeze response shows up but doesn't stop you. You have proof you can be seen and still belong.",
-      },
+        "This assessment reflects patterns observed during our conversation and is designed to support your growth, not diagnose or replace professional mental health care. Use what resonates, adjust what doesn't, and trust your own wisdom about what you need next.",
       bottom_line:
-        "You freeze at the moment you need to promote your work and earn money. This isn't a discipline problem or a character flaw. It's your nervous system doing exactly what it learned to do early on: protect you from disconnection. When you succeeded or got recognition as a kid, people criticized you instead of celebrating you. They said don't forget where you come from, you're not better than anyone. You thought you were making them proud, but visibility brought judgment and distance. So your system learned: stay small, stay connected. Be visible, be alone.\n\nThat pattern is costing you income, impact, and the chance to prove to yourself that success doesn't have to mean losing people. Every day you freeze at the promotion moment is another day your work stays hidden and your potential stays unrealized. Staying stuck isn't keeping you safe anymore. It's just keeping you invisible in work that requires visibility to grow. The people who criticized you aren't the people you're serving now. But your nervous system doesn't know that yet—it's still running the old program.\n\nHere's the truth: you're capable of more than this pattern allows. You've already proven it. You take action despite fear. You've built the capacity to catch your stress responses in real time instead of days later. You've pushed through the freeze before when you stopped overthinking. The protection your nervous system is offering is outdated. You can be successful and connected—but first you need to give your system new proof. That means taking visible action before you feel ready. Publishing imperfectly. Promoting your work when the chest pressure and confusion show up. Breathing through it and doing it anyway. You've done hard things before. You can do this. The only question is: are you willing to be uncomfortable long enough for your nervous system to learn a new story?",
-      bottom_line_breakdown: {
-        pattern_restated:
-          "You freeze at the exact moment you need to promote your work and earn money, shutting down with chest pressure and confusion right when visibility is required",
-        what_it_protects:
-          "This pattern protects you from the disconnection you learned comes with success. Early on, when you succeeded or got recognition, people criticized you instead of celebrating you. They told you don't forget where you come from, you're not better than anyone. You thought you were making them proud, but visibility brought judgment and distance. Your nervous system learned: be visible, be alone. So now it shuts you down to keep you safe from that perceived threat.",
-        what_it_costs:
-          "Staying stuck keeps you invisible in work that requires you to be found. It's costing you income, impact, and the chance to prove to yourself that visibility doesn't have to mean disconnection. Every day you freeze at the promotion moment is another day your work stays hidden and your potential stays unrealized.",
-        the_truth:
-          "You're capable of more than this pattern allows. The protection it once offered now limits your potential and keeps your work hidden. You know this already—that's why you're here. The people who criticized you aren't the people you're serving now, but your nervous system doesn't know that yet. It's still running the old program.",
-        your_proof:
-          "You've pushed through this freeze pattern before when you stopped overthinking and just acted. You take action despite fear and anxiety—that's full commitment, not everyone does that. You've also built massive nervous system capacity, going from taking days to recover from stress to catching it in real time and breathing through it. You already have proof you can do hard things and rewire old patterns.",
-        what_happens_next:
-          "Change requires you to act before you feel ready. To publish imperfectly and promote your work when the chest pressure and confusion show up. To breathe through it and do it anyway, giving your nervous system small doses of visibility until it learns a new story: you can be seen and still belong. You've done hard things before. You can do this.",
+        "You've been protecting yourself from the weight of sustained expectation by letting momentum drop halfway through. It's not laziness, lack of discipline, or a character flaw—it's a nervous system strategy that once kept you safe from judgment and the pressure of being watched. Staying in the dip kept the spotlight dimmer, the stakes lower, and the responsibility manageable. It worked when you needed it to. But here's the truth: that pattern is now costing you more than it's protecting you. Every time you lose momentum halfway through, you're reinforcing the belief that you can't sustain what you start. That belief compounds faster than any external success can undo it. It affects how you see yourself, how others see you, and what opportunities you're willing to pursue. The real cost isn't just unfinished projects—it's the identity of someone who starts but doesn't finish becoming your default. And you already know this. That's why you're here. The good news is you have proof you can change. When you've had a clear deadline and someone counting on you, you've locked in and pushed through. External accountability gave you the structure to finish strong—which means the capability is there. You just need to build the internal version of that accountability so you're not dependent on external pressure to follow through. Change requires you to act before you feel ready. To finish when it's uncomfortable. To trust the process when your nervous system screams at you to stop. You've done hard things before. You can do this. The next 30 days aren't about perfection—they're about proving to yourself that you can cross the finish line when it matters. One task at a time. One completed project at a time. Until finishing strong becomes who you are, not just what you do when someone's watching.",
+      client_name: "Client",
+      smart_roadmap: {
+        map_brief:
+          "Your nervous system shifts between wired alertness under pressure and foggy shutdown when avoiding—but you recover quickly, which is a real strength.",
+        see_brief:
+          "You start strong but lose momentum halfway through to avoid the pressure of being fully seen and expected to perform consistently.",
+        rewire_brief:
+          "Anchor one meaningful task completion to your morning water and plan check—finish something small within 72 hours that proves you can cross the finish line.",
+        address_brief:
+          "This pattern started as protection from judgment and the weight of others watching—staying in the dip kept responsibility and expectations manageable.",
+        transform_brief:
+          "Build external accountability into your weekly rhythm—share one goal with your close friend every Sunday and report progress by Friday.",
       },
-      reminder_quote: "I thought I was making them proud",
-      quote_attribution: "From your assessment",
-      development_reminders: [
-        "Integration comes through consistent practice, not more awareness—you already have the insight about your freeze pattern; now you need the repetitions of posting anyway",
-        "Your nervous system is the foundation—regulate first, then promote; breath before action, presence before visibility",
-        "Your sabotage pattern has wisdom—it kept you connected when being seen felt dangerous; honor it while updating it with new proof that visibility doesn't equal abandonment",
-        "Identity shifts over time with deliberate practice—you're becoming someone who can be visible and successful without losing connection, one regulated post at a time",
-      ],
-      book_recommendation:
-        "The Body Keeps the Score by Bessel van der Kolk. This book will help you understand why your nervous system learned to perceive visibility as a threat and how trauma responses like shutdown operate below conscious awareness. Given that you've already built capacity to catch your responses in real time, this will give you the neuroscience framework to understand what you're working with and why consistent somatic practice—not just cognitive awareness—is what rewires these deep patterns.",
+      reminder_quote:
+        "I keep starting strong on things, then losing momentum halfway through. That dip frustrates me every time.",
+      assessment_date: "2025",
       next_assessment: {
         focus_areas:
-          "Next phase will focus on sustaining visibility practice, building support network, deepening regulation capacity, and exploring bigger promotion opportunities as nervous system tolerance increases",
+          "Focus Areas for Next Phase: Building internal accountability, sustaining energy through larger projects, deepening nervous system regulation capacity",
         stay_connected:
-          "Join the newsletter for weekly regulation practices and visibility reminders. Consider community support for ongoing accountability as you build this new pattern.",
+          "Stay connected through the newsletter for ongoing nervous system insights, join the community for accountability support, and reach out when you're ready for the next level of this work",
         monthly_check_in:
-          "Monthly Check-In: Brief progress review tracking visibility frequency, regulation capacity, and income changes",
+          "Monthly Check-In Options: brief progress reviews to track momentum dip awareness and completion consistency",
         six_month_follow_up:
-          "6-Month Follow-Up Assessment recommended to track nervous system capacity growth and visibility pattern shifts",
+          "6-Month Follow-Up Assessment recommended to track identity shifts and sustained completion patterns",
+      },
+      domain_breakdown: {
+        body: {
+          block:
+            "The automatic shutdown response when tasks require sustained visibility or pressure",
+          current_level:
+            "Foundation—you recognize your body's signals under stress and can regulate quickly once pressure eases",
+          current_phase:
+            "Integration—you're aware of the wired-to-shutdown shift and learning to work with it",
+          key_strengths:
+            "Quick recovery time after stress—you can settle back down in minutes, which is a real regulatory advantage",
+          growth_opportunities:
+            "Learning to catch the energy drop before it becomes full shutdown—using breath and movement to bridge the momentum dip",
+        },
+        mind: {
+          block:
+            "The belief that finishing strong every time creates unsustainable pressure from yourself and others",
+          current_level:
+            "Exploration—you're actively learning by doing and refining your approach through action",
+          current_phase:
+            "Experimentation—you trust discovery over preparation and adjust in real time",
+          key_strengths:
+            "You weigh facts fast, trust your gut, and decide without overthinking—clarity and action are natural strengths",
+          growth_opportunities:
+            "Building sustained focus through the momentum dip—learning to maintain energy when visibility increases",
+        },
+        contribution: {
+          block:
+            "The belief that sustained success creates pressure and expectation you're not ready to carry long-term",
+          current_level:
+            "Foundation—you're pushing your work forward consistently, even on low-energy days",
+          current_phase:
+            "Friction—the momentum dip keeps you from finishing strong, which limits your impact and reinforces self-doubt",
+          key_strengths:
+            "You show up even when energy is low—that consistency is proof of commitment, not capability gaps",
+          growth_opportunities:
+            "Completing projects fully so your impact matches your effort—building the identity of someone who finishes what they start",
+        },
+        relationships_meaning: {
+          block:
+            "The fear that being consistently visible means others will watch and judge your ability to sustain what you start",
+          current_level:
+            "Foundation—you have a solid support person but don't consistently leverage external accountability",
+          current_phase:
+            "Friction—external pressure is the only thing that consistently gets you across the finish line, which creates dependency",
+          key_strengths:
+            "You're honest about what you need and have someone in your corner who pushes you without judgment",
+          growth_opportunities:
+            "Building internal accountability that matches the external kind—learning to count on yourself the way you count on deadlines",
+        },
+      },
+      quote_attribution: "From your assessment",
+      sabotage_analysis: {
+        anchor:
+          "Drinking water first thing in the morning and checking your plan for the day—these two habits never slip, even when nothing else feels solid",
+        success_proof:
+          "When you've had a clear deadline and someone counting on you, you lock in and push through—external accountability becomes the bridge across that momentum dip",
+        go_to_patterns:
+          "Quick scroll on your phone—an hour or two scattered in small chunks when you need a mental break or escape",
+        support_person:
+          "Your close friend—someone solid who pushes you in the right direction without judgment",
+        pattern_reframe:
+          "What I'm hearing: Your nervous system perceives sustained visibility as a threat—so it creates an energy drop halfway through to reduce exposure and manage the perceived danger of being consistently seen as capable.",
+        what_its_costing:
+          "You didn't specify a direct cost when asked about staying exactly where you are for another year, but the pattern itself tells the story—every time you lose momentum halfway through, you reinforce the belief that you can't sustain what you start. That belief compounds. It affects how you see yourself, how others see you, and what opportunities you're willing to pursue. The real cost isn't just unfinished projects—it's the identity of someone who starts but doesn't finish becoming your default.",
+        how_it_serves_you:
+          "Staying in the dip keeps the spotlight dimmer, the stakes lower, and the judgment at bay—it lets you stay functional without carrying the full weight of what you're capable of",
+        proof_with_context:
+          "When you've had a clear deadline and someone counting on you, you've locked in and pushed through the momentum dip. External accountability gave you the structure to finish strong—which means the capability is there. You just need to build the internal version of that accountability so you're not dependent on external pressure to follow through.",
+        protective_pattern:
+          "You start strong on things but lose momentum halfway through. This pattern shows up most when the stakes feel higher or when visibility increases—when finishing means people will expect you to sustain that level consistently. When you notice it starting, you'll likely feel the weight of expectation or the pressure of being watched first—that's your early warning signal. The faster you catch it, the faster you can choose differently.",
+        pattern_exact_words:
+          "I keep starting strong on things, then losing momentum halfway through. That dip frustrates me every time.",
+        personalized_insight:
+          "You're not avoiding success—you're avoiding the sustained pressure that comes with it. This pattern kept you safe when being watched meant heavier judgment and expectations you weren't ready to carry. But now it's keeping you from building the identity of someone who finishes what they start. The capability is there. The proof is there. What's missing is the willingness to be seen consistently—and that's what the next 30 days are designed to build.",
+        what_its_protecting_from:
+          "The pressure of being fully seen, the weight of sustained expectation, and the responsibility that comes with proving you can finish strong every time",
+      },
+      assessment_overview:
+        "You've been protecting yourself from visibility and the weight of expectation by letting momentum drop halfway through. It's not laziness or lack of capability—it's a nervous system strategy that once kept you safe from judgment and pressure. But now it's keeping you from the sustained success you're capable of. The good news? You already have proof you can push through when someone's counting on you. You just need to rewire the system so you can count on yourself the same way.",
+      book_recommendation:
+        "Atomic Habits by James Clear—because you're someone who learns by doing and trusts action over preparation. This book will give you the framework to build the identity of someone who finishes what they start by focusing on systems and small wins, not willpower and motivation. It fits your current phase because you're in Experimentation—you're ready to test what works through real-world application, and this book gives you the exact structure to do that.",
+      development_profile:
+        "You're someone who trusts action over preparation, moves through decisions with clarity, and has the capacity to regulate quickly when stress passes. Your energy is mobilized and functional under pressure—shoulders tight, breathing shallow, mind running fast—but you know how to settle back down. The challenge isn't your capability or your commitment. It's that halfway through, your nervous system hits the brakes. Energy drops, fog rolls in, and easier tasks suddenly look more appealing. You said it yourself: staying in the dip protects you from being fully seen and from the pressure of others watching to see if you can keep it up. And that's the real pattern—not lack of discipline, but a protection mechanism that's outlived its usefulness.",
+      in_the_moment_reset:
+        "When you notice the momentum starting to drop—energy fading, fog rolling in, easier tasks looking more appealing—pause and take 3 deep breaths: in for 4 counts, hold for 4, out for 6. Then ask yourself: What's one small thing I can finish right now that proves I can cross the finish line? It won't stop the pattern completely at first, but it creates the gap where choice becomes possible.",
+      thirty_day_protocol: {
+        time_reps: "One complete task within 72 hours",
+        anchor_habit:
+          "Drinking water first thing in the morning and checking your plan for the day",
+        week_1_focus:
+          "Building awareness—notice when the momentum dip starts without trying to fix it yet",
+        week_2_focus:
+          "Creating micro-finishes—complete one small thing fully every day, no matter how insignificant it feels",
+        week_3_focus:
+          "Building sustained energy—push through the momentum dip on one larger task this week",
+        week_4_focus:
+          "Integration—become someone who finishes what they start without external pressure",
+        daily_actions: [
+          "Day 1: Right after your morning water and plan check, finish one small task completely before moving on—no switching halfway through",
+          "Day 2: Notice when the momentum dip starts today—pause, take 3 breaths, and name the emotion that shows up right before it",
+          "Day 3: Text your close friend and tell him you're working on finishing strong—ask him to check in on you this week",
+          "Day 4: Remove your phone from your workspace during one focused work block—create distance between momentum dip and quick escape",
+          "Day 5: Finish something meaningful today without an external deadline—just because you said you would",
+          "Day 6: Use the 4-4-6 breath pattern before tackling your most important task—regulate your nervous system before the dip hits",
+          "Day 7: Track your completions for the week—write down what you finished fully, not just what you worked on",
+          "Day 8: Choose one project that has a momentum dip halfway through—commit to pushing through it this week",
+          "Day 9: When energy drops today, choose one small action to push through instead of switching to easier tasks",
+          "Day 10: Notice your body's signals before the shutdown response—tight shoulders, shallow breath, fast mind—and use movement to shift it",
+          "Day 11: Share your progress with your close friend—report what you've finished so far this week",
+          "Day 12: Finish one task that requires sustained focus today—no partial completion, no momentum dip escape",
+          "Day 13: Use breath or movement to bridge the momentum dip on one task today—stay present through the discomfort",
+          "Day 14: Track your completions for the week—notice if finishing is starting to feel more natural than stopping halfway",
+          "Day 15: Identify the exact moment today when your nervous system wants to shut down—name it, breathe through it, keep going",
+          "Day 16: Finish something today that you would normally let drop halfway through—prove to yourself you can push through",
+          "Day 17: Remove one distraction from your environment that makes the momentum dip easier to escape into",
+          "Day 18: Text your close friend mid-week—tell him what you're working on finishing and ask him to hold you accountable",
+          "Day 19: Notice when easier tasks start looking more appealing—pause, breathe, and choose the meaningful task instead",
+          "Day 20: Finish one larger project this week that required pushing through the momentum dip—celebrate the completion",
+          "Day 21: Track your completions for the week—write down what you finished fully and notice the belief shift that's happening",
+          "Day 22: Choose one task today that feels heavy or visible—finish it anyway and notice how your nervous system responds",
+          "Day 23: Use the 4-4-6 breath pattern before every important task today—regulate proactively instead of reactively",
+          "Day 24: Notice if the momentum dip feels less automatic today—if finishing is starting to feel like a choice instead of a threat",
+          "Day 25: Share your progress with your close friend—report what you've finished this week and what you're working on next",
+          "Day 26: Finish something meaningful today without external pressure—just because you're becoming someone who follows through",
+          "Day 27: Track your daily completions this week—notice if the identity of someone who finishes what they start is starting to feel real",
+          "Day 28: Reflect on the past 4 weeks—write down what shifted, what you finished, and what you're capable of when you push through",
+          "Day 29: Choose one larger goal for next month—anchor it to your morning routine and share it with your close friend",
+          "Day 30: Celebrate 30 days of intentional completion—you've proven you can finish what you start when you work with your nervous system instead of against it",
+        ],
+        week_1_marker:
+          "You can name the exact moment the momentum dip starts and what emotion shows up right before it",
+        week_2_marker:
+          "You've completed 7 consecutive days of finishing one thing fully without skipping or switching halfway through",
+        week_3_marker:
+          "You finish something meaningful that required pushing through the dip—and you notice the belief shift that comes with it",
+        week_4_marker:
+          "You've finished 4 consecutive weeks of intentional completion—and the identity of someone who follows through is starting to feel real",
+        why_this_works:
+          "You already never skip your morning water and plan check—anchoring completion to that existing habit removes the willpower requirement and proves you can finish without external pressure",
+        specific_action:
+          "Right after checking your plan tomorrow morning, choose one task that matters and commit to finishing it fully—no partial completion, no switching halfway through",
+        week_1_chapters: "Chapters 1-3",
+        week_1_practice:
+          "Every time you feel energy drop or fog roll in, pause and take 3 deep breaths—just notice the pattern without judgment",
+        week_2_chapters: "Chapters 4-6",
+        week_2_practice:
+          "Anchor one daily completion to your morning water and plan check—finish something before you move on to the rest of your day",
+        week_3_chapters: "Chapters 7-9",
+        week_3_practice:
+          "Choose one project that has a momentum dip halfway through—use breath, movement, or external accountability to finish it strong",
+        week_4_practice:
+          "Track completion, not just effort—at the end of each day, write down what you finished fully, not just what you worked on",
+        progress_markers: [
+          "You notice the momentum dip starting but choose one small action to push through instead of switching to easier tasks",
+          "You finish something meaningful without external pressure or a hard deadline—just because you said you would",
+          "You can name the exact moment your nervous system wants to shut down and use breath or movement to stay present through it",
+        ],
+        support_check_in:
+          "Text your close friend this week and tell him you're working on finishing strong—ask him to check in on you when things get hard",
+        urgency_statement:
+          "If you stay in this pattern for another month, you'll have more proof that you can't sustain what you start—and that belief will compound into your identity faster than any external success can undo it",
+        immediate_practice:
+          "Before you tackle your next meaningful task, use the 4-4-6 breath pattern from the book—in for 4 counts, hold for 4, out for 6—to regulate your nervous system before the momentum dip hits",
+        thirty_day_approach:
+          "Build the identity of someone who finishes what they start by tracking completion, not just effort—every time you push through the momentum dip, you're rewiring the belief that sustained visibility is dangerous",
+        weekly_recommendation:
+          "Every Sunday, share one specific goal with your close friend—then report progress by Friday, creating the external accountability loop that already works for you",
+        environmental_optimization:
+          "Remove the phone from your workspace during deep work blocks—reduce the friction between momentum dip and quick escape by creating distance from your go-to distraction",
+        seventy_two_hour_suggestion:
+          "Anchor one meaningful task completion to your morning water and plan check—within 72 hours, finish one thing that matters and proves you can cross the finish line",
+      },
+      bottom_line_breakdown: {
+        the_truth:
+          "You're capable of more than this pattern allows. The protection it once offered—keeping you safe from judgment and pressure—now limits your potential. You already know this. That's why you're here. The capability is there. The proof is there. What's missing is the willingness to be seen consistently—and that's what the next 30 days are designed to build.",
+        your_proof:
+          "When you've had a clear deadline and someone counting on you, you've locked in and pushed through the momentum dip. External accountability gave you the structure to finish strong—which means the capability is already there. You just need to build the internal version of that accountability so you're not dependent on external pressure to follow through.",
+        what_it_costs:
+          "You didn't name a specific cost when asked, but the pattern itself tells the story—every time you lose momentum halfway through, you reinforce the belief that you can't sustain what you start. That belief compounds. It affects how you see yourself, how others see you, and what opportunities you're willing to pursue. The real cost isn't just unfinished projects—it's the identity of someone who starts but doesn't finish becoming your default.",
+        pattern_restated:
+          "You start strong on things but lose momentum halfway through—energy drops, fog rolls in, and easier tasks suddenly look more appealing",
+        what_it_protects:
+          "This pattern protects you from the pressure of being fully seen and the weight of sustained expectation. When you finish strong consistently, people expect it every time—and so do you. Staying in the dip keeps the spotlight dimmer, the stakes lower, and the judgment at bay. It lets you stay functional without carrying the full weight of what you're capable of.",
+        what_happens_next:
+          "Change requires you to act before you feel ready. To finish when it's uncomfortable. To trust the process when your nervous system screams at you to stop. You've done hard things before—you've shown up consistently even on low-energy days. You can do this. The next 30 days aren't about perfection—they're about proving to yourself that you can cross the finish line when it matters. One task at a time. One completed project at a time. Until finishing strong becomes who you are, not just what you do when someone's watching.",
+      },
+      development_reminders: [
+        "Integration comes through consistent practice, not more awareness—you already have the insight; now you need the repetitions of finishing what you start",
+        "Your nervous system is the foundation—regulate first, then grow; breath before action, presence before expansion, completion before more projects",
+        "Your sabotage patterns have wisdom—this momentum dip kept you safe from judgment and pressure when you needed protection; honor it while updating it",
+        "Identity shifts over time with deliberate practice—you're becoming someone who finishes strong consistently, one completed task at a time, one regulated moment at a time",
+      ],
+      nervous_system_assessment: {
+        primary_state:
+          "Mobilized alert—your system defaults to wired, functional stress with tight shoulders, shallow breathing, and a fast-running mind",
+        regulation_reality:
+          "Your nervous system has two distinct strategies—mobilized alert when pressure is external, shutdown when the threat feels internal or sustained. The good news is you recover quickly, which means your window of tolerance is functional. The challenge is learning to stay present through the momentum dip without triggering the shutdown response.",
+        observable_patterns:
+          "Under stress: tight and alert, shoulders tense, breathing shallow, mind running fast. When avoiding: energy drops, fog rolls in, easier tasks become more appealing. You said your body kind of hits the brakes—that's dorsal vagal shutdown kicking in to reduce perceived threat.",
+        regulation_capacity:
+          "Developing—you recover quickly once pressure eases, but the wired-to-shutdown shift happens automatically when avoidance kicks in",
       },
     };
 
