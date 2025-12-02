@@ -1736,13 +1736,8 @@ function generateHTMLReport(
               ${dailyActions
                 .map((action, index) => {
                   const dayNumber = index + 1;
-                  const weekNumber = Math.ceil(dayNumber / 7);
-                  const isWeekStart = (dayNumber - 1) % 7 === 0;
-                  const weekLabel = isWeekStart
-                    ? `<div style="margin-top: ${index > 0 ? "30px" : "0"}; margin-bottom: 15px; padding: 8px 12px; background: var(--cream); border-left: 3px solid var(--soft-gold); font-size: 11px; font-weight: 600; color: var(--dark-olive); letter-spacing: 0.05em; text-transform: uppercase;">Week ${weekNumber}</div>`
-                    : "";
-                  return `${weekLabel}<div style="display: flex; margin-bottom: 12px; padding: 10px 0; border-bottom: 1px solid rgba(201, 169, 110, 0.1);">
-                  <div style="flex-shrink: 0; width: 50px; font-size: 11px; font-weight: 600; color: var(--soft-gold); letter-spacing: 0.05em; padding-right: 12px;">Day ${dayNumber}</div>
+                  return `<div style="display: flex; margin-bottom: 12px; padding: 10px 0; border-bottom: 1px solid rgba(201, 169, 110, 0.1);">
+                  <div style="flex-shrink: 0; width: 80px; font-size: 12px; font-weight: 600; color: var(--soft-gold); letter-spacing: 0.05em; padding-right: 20px;">Day ${dayNumber}</div>
                   <div style="flex: 1; font-size: 12px; color: var(--deep-charcoal); line-height: 1.7;">${action.replace(/^Day \d+:\s*/i, "")}</div>
                 </div>`;
                 })
