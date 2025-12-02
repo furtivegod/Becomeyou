@@ -1378,9 +1378,19 @@ function generateHTMLReport(
                     }
                     ${
                       dailyActions && dailyActions.length > 0
-                        ? `<div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(201, 169, 110, 0.3);">
-                        <div style="font-weight: 600; margin-bottom: 15px; color: var(--dark-olive);">DAILY ACTIONS</div>
-                        ${dailyActions.map((action: string) => `<div style="font-size: 12px; color: #666; margin-bottom: 8px; line-height: 1.6;">${action}</div>`).join("")}
+                        ? `<div style="margin-top: 50px; padding-top: 30px; border-top: 2px solid rgba(201, 169, 110, 0.4);">
+                        <div style="font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; margin-bottom: 25px; color: var(--dark-olive); letter-spacing: -0.01em;">Daily Actions</div>
+                        <div style="font-size: 11px; color: #999; margin-bottom: 25px; line-height: 1.6; font-style: italic;">Your 30-day roadmap to building the identity of someone who finishes what they start</div>
+                        ${dailyActions.map((action: string, index: number) => {
+                          const dayNumber = index + 1;
+                          const weekNumber = Math.ceil(dayNumber / 7);
+                          const isWeekStart = (dayNumber - 1) % 7 === 0;
+                          const weekLabel = isWeekStart ? `<div style="margin-top: ${index > 0 ? '30px' : '0'}; margin-bottom: 15px; padding: 8px 12px; background: var(--cream); border-left: 3px solid var(--soft-gold); font-size: 11px; font-weight: 600; color: var(--dark-olive); letter-spacing: 0.05em; text-transform: uppercase;">Week ${weekNumber}</div>` : '';
+                          return `${weekLabel}<div style="display: flex; margin-bottom: 12px; padding: 10px 0; border-bottom: 1px solid rgba(201, 169, 110, 0.1);">
+                            <div style="flex-shrink: 0; width: 50px; font-size: 11px; font-weight: 600; color: var(--soft-gold); letter-spacing: 0.05em; padding-right: 12px;">Day ${dayNumber}</div>
+                            <div style="flex: 1; font-size: 12px; color: var(--deep-charcoal); line-height: 1.7;">${action.replace(/^Day \d+:\s*/i, '')}</div>
+                          </div>`;
+                        }).join("")}
                     </div>`
                         : ""
                     }
