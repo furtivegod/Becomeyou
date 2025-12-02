@@ -116,7 +116,7 @@ export async function GET(
       if (sessionData.started_at) {
         sessionDate = new Date(sessionData.started_at);
       }
-      
+
       const { data: userData, error: userError } = await supabase
         .from("users")
         .select("user_name")
@@ -128,7 +128,13 @@ export async function GET(
       }
     }
 
-    return generateHTMLReport(planData, sessionId, signedPdfUrl, userName, sessionDate);
+    return generateHTMLReport(
+      planData,
+      sessionId,
+      signedPdfUrl,
+      userName,
+      sessionDate
+    );
   } catch (error) {
     console.error("Report viewer error:", error);
     return new NextResponse("Internal Server Error", { status: 500 });
@@ -166,7 +172,7 @@ function generateHTMLReport(
   sessionDate?: Date | null
 ) {
   const clientName = userName || "Client";
-  
+
   // Get session date for accurate assessment date
   const assessmentDate = sessionDate
     ? sessionDate.toLocaleDateString("en-US", {
@@ -180,21 +186,29 @@ function generateHTMLReport(
         month: "long",
         day: "numeric",
       });
-  const disclaimer = planData.disclaimer || "This assessment is a tool for personal development and self-awareness. It is not a diagnostic tool and does not replace professional mental health support. If you are experiencing a mental health crisis, please contact a qualified professional or crisis support service.";
-  
+  const disclaimer =
+    planData.disclaimer ||
+    "This assessment is a tool for personal development and self-awareness. It is not a diagnostic tool and does not replace professional mental health support. If you are experiencing a mental health crisis, please contact a qualified professional or crisis support service.";
+
   // Extract data similar to PDF generation
   const sabotageAnalysis = planData.sabotage_analysis || {};
-  const patternExactWords = sabotageAnalysis.pattern_exact_words || sabotageAnalysis.protective_pattern || "";
+  const patternExactWords =
+    sabotageAnalysis.pattern_exact_words ||
+    sabotageAnalysis.protective_pattern ||
+    "";
   let patternReframe = sabotageAnalysis.pattern_reframe || "";
   // Remove redundant "What I'm hearing:" prefix if present
   if (patternReframe.toLowerCase().startsWith("what i'm hearing:")) {
-    patternReframe = patternReframe.substring(patternReframe.indexOf(":") + 1).trim();
+    patternReframe = patternReframe
+      .substring(patternReframe.indexOf(":") + 1)
+      .trim();
   }
   const whatItsProtectingFrom = sabotageAnalysis.what_its_protecting_from || "";
   const whatItsCosting = sabotageAnalysis.what_its_costing || "";
-  const proofWithContext = sabotageAnalysis.proof_with_context || sabotageAnalysis.success_proof || "";
+  const proofWithContext =
+    sabotageAnalysis.proof_with_context || sabotageAnalysis.success_proof || "";
   const personalizedInsight = sabotageAnalysis.personalized_insight || "";
-  
+
   // Extract smart roadmap
   const smartRoadmap = planData.smart_roadmap || {};
   const seeBrief = smartRoadmap.see_brief || "";
@@ -202,17 +216,18 @@ function generateHTMLReport(
   const addressBrief = smartRoadmap.address_brief || "";
   const rewireBrief = smartRoadmap.rewire_brief || "";
   const transformBrief = smartRoadmap.transform_brief || "";
-  
+
   // Extract domain breakdown
   const domainBreakdown = planData.domain_breakdown || {};
   const mindDomain = domainBreakdown.mind || {};
   const bodyDomain = domainBreakdown.body || {};
-  const relationshipsMeaningDomain = domainBreakdown.relationships_meaning || {};
+  const relationshipsMeaningDomain =
+    domainBreakdown.relationships_meaning || {};
   const contributionDomain = domainBreakdown.contribution || {};
-  
+
   // Extract nervous system assessment
   const nervousSystemAssessment = planData.nervous_system_assessment || {};
-  
+
   // Extract protocol data
   const thirtyDayProtocol = planData.thirty_day_protocol || {};
   const urgencyStatement = thirtyDayProtocol.urgency_statement || "";
@@ -220,7 +235,8 @@ function generateHTMLReport(
   const specificAction = thirtyDayProtocol.specific_action || "";
   const timeReps = thirtyDayProtocol.time_reps || "";
   const whyThisWorks = thirtyDayProtocol.why_this_works || "";
-  const seventyTwoHourSuggestion = thirtyDayProtocol.seventy_two_hour_suggestion || "";
+  const seventyTwoHourSuggestion =
+    thirtyDayProtocol.seventy_two_hour_suggestion || "";
   const immediatePractice = thirtyDayProtocol.immediate_practice || "";
   const week1Focus = thirtyDayProtocol.week_1_focus || "";
   const week1Practice = thirtyDayProtocol.week_1_practice || "";
@@ -234,27 +250,29 @@ function generateHTMLReport(
   const week4Focus = thirtyDayProtocol.week_4_focus || "";
   const week4Practice = thirtyDayProtocol.week_4_practice || "";
   const week4Marker = thirtyDayProtocol.week_4_marker || "";
-  const dailyActions = Array.isArray(thirtyDayProtocol.daily_actions) ? thirtyDayProtocol.daily_actions : [];
+  const dailyActions = Array.isArray(thirtyDayProtocol.daily_actions)
+    ? thirtyDayProtocol.daily_actions
+    : [];
   const thirtyDayApproach = thirtyDayProtocol.thirty_day_approach || "";
-  
+
   // Extract book recommendation
   const bookRecommendationText = planData.book_recommendation;
-  
+
   // Extract bottom line and pull quote
   const bottomLine = planData.bottom_line || "";
   const pullQuote = planData.pull_quote || planData.reminder_quote || "";
   const quoteAttribution = planData.quote_attribution || "From your assessment";
-  
+
   // Extract development reminders
-  const developmentReminders = Array.isArray(planData.development_reminders) 
-    ? planData.development_reminders 
+  const developmentReminders = Array.isArray(planData.development_reminders)
+    ? planData.development_reminders
     : [
         "Integration comes through consistent practice, not more awareness—you already have the insight; now you need the repetitions",
         "Your nervous system is the foundation—regulate first, then grow; breath before action, presence before expansion",
         "Your sabotage patterns have wisdom—honor them while updating them; they kept you safe when safety was scarce",
-        "Identity shifts over time with deliberate practice—you're becoming someone who can hold bigger energies responsibly, one regulated moment at a time"
+        "Identity shifts over time with deliberate practice—you're becoming someone who can hold bigger energies responsibly, one regulated moment at a time",
       ];
-  
+
   // Helper function to format text with paragraph breaks
   function formatTextWithParagraphBreaks(text: string | undefined): string {
     if (!text) return "";
@@ -266,7 +284,7 @@ function generateHTMLReport(
     }
     return paragraphs.map((paragraph) => `<p>${paragraph.trim()}</p>`).join("");
   }
-  
+
   // Book selection logic - match PDF structure
   function getAssessmentText(pd: any): string {
     try {
@@ -376,281 +394,8 @@ function generateHTMLReport(
   }
 
   // allBooks is already defined above, removing duplicate
-  /*
-  const allBooks = [
-    {
-      id: "body_keeps_score",
-      title: "The Body Keeps the Score",
-      author: "Bessel van der Kolk",
-      url: "https://amzn.to/4hJB9wT",
-      why: "The definitive text on trauma and nervous system.",
-      tags: [
-        "trauma",
-        "nervous system",
-        "shutdown",
-        "dorsal",
-        "anxiety",
-        "somatic",
-        "regulation",
-      ],
-    },
-    {
-      id: "reclaim_nervous_system",
-      title: "Reclaim Your Nervous System",
-      author: "Mastin Kipp",
-      url: "https://amzn.to/47xBpua",
-      why: "Practical, accessible nervous system regulation.",
-      tags: [
-        "regulation",
-        "nervous system",
-        "somatic",
-        "anxiety",
-        "shutdown",
-        "freeze",
-      ],
-    },
-    {
-      id: "atomic_habits",
-      title: "Atomic Habits",
-      author: "James Clear",
-      url: "https://amzn.to/431fR7V",
-      why: "Build evidence through small actions.",
-      tags: [
-        "habits",
-        "behavior",
-        "consistency",
-        "routine",
-        "evidence",
-        "practice",
-      ],
-    },
-    {
-      id: "how_to_do_the_work",
-      title: "How to Do the Work",
-      author: "Dr. Nicole LePera",
-      url: "https://amzn.to/43y2mNa",
-      why: "Holistic approach: shadow work + regulation.",
-      tags: [
-        "shadow",
-        "trauma",
-        "nervous system",
-        "inner child",
-        "therapy",
-        "regulation",
-      ],
-    },
-    {
-      id: "atlas_of_the_heart",
-      title: "Atlas of the Heart",
-      author: "Brené Brown",
-      url: "https://amzn.to/3JjyTjf",
-      why: "Emotional literacy foundation.",
-      tags: [
-        "emotion",
-        "feelings",
-        "language",
-        "shame",
-        "naming",
-        "vocabulary",
-      ],
-    },
-    {
-      id: "future_self",
-      title: "Be Your Future Self Now",
-      author: "Dr. Benjamin Hardy",
-      url: "https://amzn.to/4p3Rwaf",
-      why: "Identity transformation framework.",
-      tags: ["identity", "future self", "become", "vision", "self-concept"],
-    },
-    {
-      id: "first_rule_of_mastery",
-      title: "The First Rule of Mastery",
-      author: "Dr. Michael Gervais",
-      url: "https://amzn.to/4hx7Ld3",
-      why: "Performance psychology for overthinkers.",
-      tags: ["performance", "mind", "fear", "overthinking", "mastery"],
-    },
-    {
-      id: "crucial_conversations",
-      title: "Crucial Conversations",
-      author: "Kerry Patterson",
-      url: "https://amzn.to/49sdXkC",
-      why: "High ROI communication skills.",
-      tags: [
-        "communication",
-        "relationship",
-        "conflict",
-        "conversation",
-        "boundaries",
-      ],
-    },
-    {
-      id: "deep_work",
-      title: "Deep Work",
-      author: "Cal Newport",
-      url: "https://amzn.to/48UeonB",
-      why: "Focus and anti-distraction.",
-      tags: [
-        "focus",
-        "distraction",
-        "work",
-        "attention",
-        "dopamine",
-        "productivity",
-      ],
-    },
-    {
-      id: "gifts_of_imperfection",
-      title: "The Gifts of Imperfection",
-      author: "Brené Brown",
-      url: "https://amzn.to/3X35Svi",
-      why: "Perfectionism and shame.",
-      tags: ["perfectionism", "shame", "worthiness", "belonging"],
-    },
-    {
-      id: "breath",
-      title: "Breath: The New Science of a Lost Art",
-      author: "James Nestor",
-      url: "https://amzn.to/4ntDahQ",
-      why: "Immediate nervous system benefits.",
-      tags: ["breath", "breathing", "anxiety", "body", "calm"],
-    },
-    {
-      id: "dose_effect",
-      title: "The DOSE Effect",
-      author: "TJ Power",
-      url: "https://amzn.to/4oPrA1X",
-      why: "Dopamine and cheap dopamine loops.",
-      tags: [
-        "dopamine",
-        "addiction",
-        "phone",
-        "scroll",
-        "porn",
-        "games",
-        "garden scapes",
-        "garden-scapes",
-        "gardenscapes",
-      ],
-    },
-    {
-      id: "war_of_art",
-      title: "The War of Art",
-      author: "Steven Pressfield",
-      url: "https://amzn.to/4ogrhgI",
-      why: "Break resistance and procrastination.",
-      tags: [
-        "resistance",
-        "procrastination",
-        "creative",
-        "promotion",
-        "visibility",
-        "freeze",
-      ],
-    },
-    {
-      id: "polyvagal_therapy",
-      title: "Polyvagal Theory in Therapy",
-      author: "Deb Dana",
-      url: "https://amzn.to/3Jt9gwr",
-      why: "For dorsal shutdown cases.",
-      tags: ["polyvagal", "shutdown", "dorsal", "therap", "nervous system"],
-    },
-    {
-      id: "mindset",
-      title: "Mindset: The New Psychology of Success",
-      author: "Carol Dweck",
-      url: "https://amzn.to/47Lmb66",
-      why: "Shift from fixed to growth.",
-      tags: ["mindset", "fixed", "growth", "beliefs"],
-    },
-  ];
 
-  function getAssessmentText(pd: any): string {
-    try {
-      const parts = [
-        pd?.assessment_overview,
-        pd?.development_profile,
-        pd?.bottom_line,
-        pd?.sabotage_analysis?.anchor,
-        pd?.sabotage_analysis?.success_proof,
-        pd?.sabotage_analysis?.go_to_patterns,
-        pd?.sabotage_analysis?.escape_behavior,
-        pd?.sabotage_analysis?.positive_behavior,
-        pd?.sabotage_analysis?.protective_pattern,
-        pd?.sabotage_analysis?.what_its_protecting_from,
-        pd?.nervous_system_assessment?.primary_state,
-        pd?.nervous_system_assessment?.regulation_reality,
-        pd?.nervous_system_assessment?.observable_patterns,
-        Array.isArray(pd?.thirty_day_protocol?.weekly_goals)
-          ? pd.thirty_day_protocol.weekly_goals.join(" ")
-          : pd?.thirty_day_protocol?.weekly_goals,
-        Array.isArray(pd?.thirty_day_protocol?.daily_actions)
-          ? pd.thirty_day_protocol.daily_actions.join(" ")
-          : pd?.thirty_day_protocol?.daily_actions,
-      ].filter(Boolean);
-      return String(parts.join(" \n ")).toLowerCase();
-    } catch {
-      return "";
-    }
-  }
-
-  function selectTopTwoBooks(pd: any) {
-    const text = getAssessmentText(pd);
-    const scored = allBooks.map((b) => {
-      const score = b.tags.reduce(
-        (acc: number, tag: string) =>
-          acc + (text.includes(tag.toLowerCase()) ? 1 : 0),
-        0
-      );
-      const boosts =
-        (text.includes("freeze") ||
-        text.includes("resistance") ||
-        text.includes("promotion") ||
-        text.includes("visibility")
-          ? b.id === "war_of_art" || b.id === "deep_work"
-            ? 1
-            : 0
-          : 0) +
-        (text.includes("porn") ||
-        text.includes("scroll") ||
-        text.includes("garden scapes") ||
-        text.includes("gardenscapes")
-          ? b.id === "dose_effect"
-            ? 1
-            : 0
-          : 0) +
-        (text.includes("nervous system") ||
-        text.includes("shutdown") ||
-        text.includes("dorsal") ||
-        text.includes("anxiety")
-          ? b.id === "body_keeps_score" || b.id === "reclaim_nervous_system"
-            ? 1
-            : 0
-          : 0) +
-        (text.includes("identity") ||
-        text.includes("become") ||
-        text.includes("future self")
-          ? b.id === "future_self"
-            ? 1
-            : 0
-          : 0);
-      return { book: b, score: score + boosts };
-    });
-    scored.sort((a, b) => b.score - a.score);
-    const top = scored
-      .filter((s) => s.score > 0)
-      .slice(0, 2)
-      .map((s) => s.book);
-    if (top.length < 2) {
-      return allBooks
-        .filter((b) => ["atomic_habits", "body_keeps_score"].includes(b.id))
-        .slice(0, 2);
-    }
-    return top;
-  }
-
-  const selectedBooks = selectTopTwoBooks(planData);
+  // selectedBooks is already set above with selectTopOneBook logic
 
   return new NextResponse(
     `
@@ -1377,81 +1122,81 @@ function generateHTMLReport(
                     <div class="protocol-timeline">STEP 2: READ THIS NOW</div>
                     <div class="protocol-action">
                         ${
-                            selectedBooks && selectedBooks.length > 0
-                                ? `<div style="margin-bottom: 15px;">
+                          selectedBooks && selectedBooks.length > 0
+                            ? `<div style="margin-bottom: 15px;">
                                     <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px; font-family: 'Playfair Display', serif;"><a href="${selectedBooks[0].url}" style="color: var(--dark-olive); text-decoration: none;">${selectedBooks[0].title}</a></div>
                                     <div style="font-size: 14px; color: #666; margin-bottom: 20px;">By ${selectedBooks[0].author}</div>
                                     <div style="font-size: 13px; line-height: 1.7; margin-bottom: 15px;"><strong>Why this book, why now:</strong> ${bookRecommendationText || selectedBooks[0].why}</div>
                                 </div>`
-                                : bookRecommendationText
-                                    ? `<div style="font-size:15px; line-height:1.7; color:#222;">${bookRecommendationText}</div>`
-                                    : `<div style="font-size:15px; line-height:1.7; color:#222;">The Body Keeps the Score by Bessel van der Kolk - Understanding trauma and healing. This book directly addresses the core issue for most users stuck in sabotage patterns.</div>`
+                            : bookRecommendationText
+                              ? `<div style="font-size:15px; line-height:1.7; color:#222;">${bookRecommendationText}</div>`
+                              : `<div style="font-size:15px; line-height:1.7; color:#222;">The Body Keeps the Score by Bessel van der Kolk - Understanding trauma and healing. This book directly addresses the core issue for most users stuck in sabotage patterns.</div>`
                         }
                     </div>
                 </div>
                 
                 ${
-                    immediatePractice
-                        ? `<div class="protocol-item">
+                  immediatePractice
+                    ? `<div class="protocol-item">
                     <div class="protocol-timeline">STEP 3: IMPLEMENT IMMEDIATELY</div>
                     <div class="protocol-action">${formatTextWithParagraphBreaks(immediatePractice)}</div>
                 </div>`
-                        : ""
+                    : ""
                 }
                 
                 <div class="protocol-item" style="margin-top: 50px;">
                     <div class="protocol-timeline">YOUR FIRST 30 DAYS</div>
                     ${
-                        week1Focus
-                            ? `<div style="margin: 20px 0;">
+                      week1Focus
+                        ? `<div style="margin: 20px 0;">
                         <div style="font-weight: 600; margin-bottom: 8px;">WEEK 1: ${week1Focus}</div>
                         ${week1Practice ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">🎯 Practice: ${week1Practice}</div>` : ""}
                         ${week1Marker ? `<div style="font-size: 12px; color: #666;">✓ Marker: ${week1Marker}</div>` : ""}
                     </div>`
-                            : ""
+                        : ""
                     }
                     ${
-                        week2Focus
-                            ? `<div style="margin: 20px 0;">
+                      week2Focus
+                        ? `<div style="margin: 20px 0;">
                         <div style="font-weight: 600; margin-bottom: 8px;">WEEK 2: ${week2Focus}</div>
                         ${week2Practice ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">🎯 Practice: ${week2Practice}</div>` : ""}
                         ${week2Marker ? `<div style="font-size: 12px; color: #666;">✓ Marker: ${week2Marker}</div>` : ""}
                     </div>`
-                            : ""
+                        : ""
                     }
                     ${
-                        week3Focus
-                            ? `<div style="margin: 20px 0;">
+                      week3Focus
+                        ? `<div style="margin: 20px 0;">
                         <div style="font-weight: 600; margin-bottom: 8px;">WEEK 3: ${week3Focus}</div>
                         ${week3Practice ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">🎯 Practice: ${week3Practice}</div>` : ""}
                         ${week3Marker ? `<div style="font-size: 12px; color: #666;">✓ Marker: ${week3Marker}</div>` : ""}
                     </div>`
-                            : ""
+                        : ""
                     }
                     ${
-                        week4Focus
-                            ? `<div style="margin: 20px 0;">
+                      week4Focus
+                        ? `<div style="margin: 20px 0;">
                         <div style="font-weight: 600; margin-bottom: 8px;">WEEK 4: ${week4Focus}</div>
                         ${week4Practice ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">🎯 Practice: ${week4Practice}</div>` : ""}
                         ${week4Marker ? `<div style="font-size: 12px; color: #666;">✓ Marker: ${week4Marker}</div>` : ""}
                     </div>`
-                            : ""
+                        : ""
                     }
                     ${
-                        dailyActions && dailyActions.length > 0
-                            ? `<div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(201, 169, 110, 0.3);">
+                      dailyActions && dailyActions.length > 0
+                        ? `<div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(201, 169, 110, 0.3);">
                         <div style="font-weight: 600; margin-bottom: 15px; color: var(--dark-olive);">DAILY ACTIONS</div>
                         ${dailyActions.map((action, index) => `<div style="font-size: 12px; color: #666; margin-bottom: 8px; line-height: 1.6;">${action}</div>`).join("")}
                     </div>`
-                            : ""
+                        : ""
                     }
                     ${
-                        thirtyDayApproach
-                            ? `<div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(201, 169, 110, 0.3);">
+                      thirtyDayApproach
+                        ? `<div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(201, 169, 110, 0.3);">
                         <div style="font-weight: 600; margin-bottom: 15px; color: var(--dark-olive);">30-DAY APPROACH</div>
                         <div style="font-size: 13px; line-height: 1.7; color: var(--deep-charcoal);">${formatTextWithParagraphBreaks(thirtyDayApproach)}</div>
                     </div>`
-                            : ""
+                        : ""
                     }
                 </div>
                 
