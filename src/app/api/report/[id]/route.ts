@@ -102,15 +102,21 @@ export async function GET(
 
     const planData = planOutput.plan_json;
 
-    // Get user data to display the correct name
+    // Get user data and session date to display the correct name and date
     const { data: sessionData, error: sessionError } = await supabase
       .from("sessions")
-      .select("user_id")
+      .select("user_id, started_at")
       .eq("id", sessionId)
       .single();
 
     let userName = "Client"; // Default fallback
+    let sessionDate: Date | null = null;
     if (!sessionError && sessionData) {
+      // Get session date
+      if (sessionData.started_at) {
+        sessionDate = new Date(sessionData.started_at);
+      }
+      
       const { data: userData, error: userError } = await supabase
         .from("users")
         .select("user_name")
@@ -122,7 +128,7 @@ export async function GET(
       }
     }
 
-    return generateHTMLReport(planData, sessionId, signedPdfUrl, userName);
+    return generateHTMLReport(planData, sessionId, signedPdfUrl, userName, sessionDate);
   } catch (error) {
     console.error("Report viewer error:", error);
     return new NextResponse("Internal Server Error", { status: 500 });
@@ -156,16 +162,221 @@ function generateHTMLReport(
   planData: any,
   sessionId: string,
   signedPdfUrl?: string | null,
-  userName?: string
+  userName?: string,
+  sessionDate?: Date | null
 ) {
   const clientName = userName || "Client";
-  const currentDate = new Date().toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  
+  // Get session date for accurate assessment date
+  const assessmentDate = sessionDate
+    ? sessionDate.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : planData.assessment_date ||
+      new Date().toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+  const disclaimer = planData.disclaimer || "This assessment is a tool for personal development and self-awareness. It is not a diagnostic tool and does not replace professional mental health support. If you are experiencing a mental health crisis, please contact a qualified professional or crisis support service.";
+  
+  // Extract data similar to PDF generation
+  const sabotageAnalysis = planData.sabotage_analysis || {};
+  const patternExactWords = sabotageAnalysis.pattern_exact_words || sabotageAnalysis.protective_pattern || "";
+  let patternReframe = sabotageAnalysis.pattern_reframe || "";
+  // Remove redundant "What I'm hearing:" prefix if present
+  if (patternReframe.toLowerCase().startsWith("what i'm hearing:")) {
+    patternReframe = patternReframe.substring(patternReframe.indexOf(":") + 1).trim();
+  }
+  const whatItsProtectingFrom = sabotageAnalysis.what_its_protecting_from || "";
+  const whatItsCosting = sabotageAnalysis.what_its_costing || "";
+  const proofWithContext = sabotageAnalysis.proof_with_context || sabotageAnalysis.success_proof || "";
+  const personalizedInsight = sabotageAnalysis.personalized_insight || "";
+  
+  // Extract smart roadmap
+  const smartRoadmap = planData.smart_roadmap || {};
+  const seeBrief = smartRoadmap.see_brief || "";
+  const mapBrief = smartRoadmap.map_brief || "";
+  const addressBrief = smartRoadmap.address_brief || "";
+  const rewireBrief = smartRoadmap.rewire_brief || "";
+  const transformBrief = smartRoadmap.transform_brief || "";
+  
+  // Extract domain breakdown
+  const domainBreakdown = planData.domain_breakdown || {};
+  const mindDomain = domainBreakdown.mind || {};
+  const bodyDomain = domainBreakdown.body || {};
+  const relationshipsMeaningDomain = domainBreakdown.relationships_meaning || {};
+  const contributionDomain = domainBreakdown.contribution || {};
+  
+  // Extract nervous system assessment
+  const nervousSystemAssessment = planData.nervous_system_assessment || {};
+  
+  // Extract protocol data
+  const thirtyDayProtocol = planData.thirty_day_protocol || {};
+  const urgencyStatement = thirtyDayProtocol.urgency_statement || "";
+  const anchorHabit = thirtyDayProtocol.anchor_habit || "";
+  const specificAction = thirtyDayProtocol.specific_action || "";
+  const timeReps = thirtyDayProtocol.time_reps || "";
+  const whyThisWorks = thirtyDayProtocol.why_this_works || "";
+  const seventyTwoHourSuggestion = thirtyDayProtocol.seventy_two_hour_suggestion || "";
+  const immediatePractice = thirtyDayProtocol.immediate_practice || "";
+  const week1Focus = thirtyDayProtocol.week_1_focus || "";
+  const week1Practice = thirtyDayProtocol.week_1_practice || "";
+  const week1Marker = thirtyDayProtocol.week_1_marker || "";
+  const week2Focus = thirtyDayProtocol.week_2_focus || "";
+  const week2Practice = thirtyDayProtocol.week_2_practice || "";
+  const week2Marker = thirtyDayProtocol.week_2_marker || "";
+  const week3Focus = thirtyDayProtocol.week_3_focus || "";
+  const week3Practice = thirtyDayProtocol.week_3_practice || "";
+  const week3Marker = thirtyDayProtocol.week_3_marker || "";
+  const week4Focus = thirtyDayProtocol.week_4_focus || "";
+  const week4Practice = thirtyDayProtocol.week_4_practice || "";
+  const week4Marker = thirtyDayProtocol.week_4_marker || "";
+  const dailyActions = Array.isArray(thirtyDayProtocol.daily_actions) ? thirtyDayProtocol.daily_actions : [];
+  const thirtyDayApproach = thirtyDayProtocol.thirty_day_approach || "";
+  
+  // Extract book recommendation
+  const bookRecommendationText = planData.book_recommendation;
+  
+  // Extract bottom line and pull quote
+  const bottomLine = planData.bottom_line || "";
+  const pullQuote = planData.pull_quote || planData.reminder_quote || "";
+  const quoteAttribution = planData.quote_attribution || "From your assessment";
+  
+  // Extract development reminders
+  const developmentReminders = Array.isArray(planData.development_reminders) 
+    ? planData.development_reminders 
+    : [
+        "Integration comes through consistent practice, not more awareness—you already have the insight; now you need the repetitions",
+        "Your nervous system is the foundation—regulate first, then grow; breath before action, presence before expansion",
+        "Your sabotage patterns have wisdom—honor them while updating them; they kept you safe when safety was scarce",
+        "Identity shifts over time with deliberate practice—you're becoming someone who can hold bigger energies responsibly, one regulated moment at a time"
+      ];
+  
+  // Helper function to format text with paragraph breaks
+  function formatTextWithParagraphBreaks(text: string | undefined): string {
+    if (!text) return "";
+    const sentences = text.split(/(?<=[.!?])\s+/).filter((s) => s.trim());
+    const paragraphs: string[] = [];
+    for (let i = 0; i < sentences.length; i += 2) {
+      const paragraphSentences = sentences.slice(i, i + 2);
+      paragraphs.push(paragraphSentences.join(" "));
+    }
+    return paragraphs.map((paragraph) => `<p>${paragraph.trim()}</p>`).join("");
+  }
+  
+  // Book selection logic - match PDF structure
+  function getAssessmentText(pd: any): string {
+    try {
+      const parts = [
+        pd?.assessment_overview,
+        pd?.development_profile,
+        pd?.bottom_line,
+        pd?.sabotage_analysis?.anchor,
+        pd?.sabotage_analysis?.success_proof,
+        pd?.sabotage_analysis?.go_to_patterns,
+        pd?.sabotage_analysis?.escape_behavior,
+        pd?.sabotage_analysis?.positive_behavior,
+        pd?.sabotage_analysis?.protective_pattern,
+        pd?.sabotage_analysis?.what_its_protecting_from,
+        pd?.nervous_system_assessment?.primary_state,
+        pd?.nervous_system_assessment?.regulation_reality,
+        pd?.nervous_system_assessment?.observable_patterns,
+        Array.isArray(pd?.thirty_day_protocol?.weekly_goals)
+          ? pd.thirty_day_protocol.weekly_goals.join(" ")
+          : pd?.thirty_day_protocol?.weekly_goals,
+        Array.isArray(pd?.thirty_day_protocol?.daily_actions)
+          ? pd.thirty_day_protocol.daily_actions.join(" ")
+          : pd?.thirty_day_protocol?.daily_actions,
+      ].filter(Boolean);
+      return String(parts.join(" \n ")).toLowerCase();
+    } catch {
+      return "";
+    }
+  }
 
-  // Select top 2 book recommendations based on assessment content (to mirror PDF)
+  function selectTopOneBook(pd: any) {
+    const text = getAssessmentText(pd);
+    const scored = allBooks.map((b) => {
+      const score = b.tags.reduce(
+        (acc: number, tag: string) =>
+          acc + (text.includes(tag.toLowerCase()) ? 1 : 0),
+        0
+      );
+      // small boosts for common patterns
+      const boosts =
+        (text.includes("freeze") ||
+        text.includes("resistance") ||
+        text.includes("promotion")
+          ? b.id === "war_of_art" || b.id === "deep_work"
+            ? 1
+            : 0
+          : 0) +
+        (text.includes("porn") ||
+        text.includes("scroll") ||
+        text.includes("garden scapes")
+          ? b.id === "dose_effect"
+            ? 1
+            : 0
+          : 0) +
+        (text.includes("nervous system") ||
+        text.includes("shutdown") ||
+        text.includes("dorsal") ||
+        text.includes("anxiety")
+          ? b.id === "body_keeps_score" || b.id === "reclaim_nervous_system"
+            ? 1
+            : 0
+          : 0) +
+        (text.includes("identity") ||
+        text.includes("become") ||
+        text.includes("future self")
+          ? b.id === "future_self"
+            ? 1
+            : 0
+          : 0);
+      return { book: b, score: score + boosts };
+    });
+    scored.sort((a, b) => b.score - a.score);
+    const top = scored
+      .filter((s) => s.score > 0)
+      .slice(0, 1)
+      .map((s) => s.book);
+    if (top.length < 1) {
+      // sensible default
+      const defaults = allBooks
+        .filter((b) => ["atomic_habits"].includes(b.id))
+        .slice(0, 1);
+      return defaults;
+    }
+    return top;
+  }
+
+  // Use provided book_recommendation string if available, otherwise select 1 book
+  const bookRecommendationText = planData.book_recommendation;
+  // Always select a book so we have the URL for the hyperlink, even if bookRecommendationText is provided
+  let selectedBooks = selectTopOneBook(planData);
+
+  // If bookRecommendationText mentions a specific book, try to match it to ensure title matches description
+  if (bookRecommendationText && selectedBooks && selectedBooks.length > 0) {
+    // Try to find a book mentioned in the bookRecommendationText by checking against allBooks
+    const textLower = bookRecommendationText.toLowerCase();
+    const matchedBook = allBooks.find((book) => {
+      const titleLower = book.title.toLowerCase();
+      const authorLower = book.author.toLowerCase();
+      // Check if the text mentions the book title or author
+      return textLower.includes(titleLower) || textLower.includes(authorLower);
+    });
+
+    // If we found a match, use that book instead of the algorithm-selected one
+    if (matchedBook) {
+      selectedBooks = [matchedBook];
+    }
+  }
+
+  // allBooks is already defined above, removing duplicate
+  /*
   const allBooks = [
     {
       id: "body_keeps_score",
@@ -695,6 +906,145 @@ function generateHTMLReport(
                 margin: 80px auto;
             }
 
+            /* V3.0 ROADMAP FLOW */
+            .roadmap-flow {
+                margin: 40px 0;
+            }
+
+            .roadmap-step {
+                margin: 30px 0;
+                padding-left: 40px;
+                position: relative;
+            }
+
+            .roadmap-step::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: -30px;
+                width: 2px;
+                background: var(--soft-gold);
+            }
+
+            .roadmap-step:last-child::before {
+                display: none;
+            }
+
+            .roadmap-letter {
+                position: absolute;
+                left: -15px;
+                top: 0;
+                width: 30px;
+                height: 30px;
+                background: var(--dark-olive);
+                color: var(--warm-white);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: 'Playfair Display', serif;
+                font-size: 16px;
+                font-weight: 700;
+            }
+
+            .roadmap-arrow {
+                position: absolute;
+                left: 2px;
+                top: 30px;
+                width: 0;
+                height: 0;
+                border-left: 6px solid transparent;
+                border-right: 6px solid transparent;
+                border-top: 8px solid var(--soft-gold);
+            }
+
+            .roadmap-label {
+                font-size: 10px;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                color: var(--soft-gold);
+                font-weight: 500;
+                margin-bottom: 8px;
+            }
+
+            .roadmap-brief {
+                font-size: 13px;
+                line-height: 1.6;
+                color: var(--deep-charcoal);
+            }
+
+            /* V3.0 DOMAIN GRID */
+            .domain-grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 70px;
+                margin: 20px 0;
+            }
+
+            .domain-card {
+                border: 1px solid rgba(201, 169, 110, 0.3);
+                padding: 15px;
+                background: var(--cream);
+                border-radius: 4px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            }
+
+            .domain-card-title {
+                font-family: 'Playfair Display', serif;
+                font-size: 18px;
+                font-weight: 700;
+                color: var(--dark-olive);
+                margin-bottom: 12px;
+                padding-bottom: 8px;
+                border-bottom: 2px solid rgba(201, 169, 110, 0.3);
+            }
+
+            .domain-card-row {
+                margin: 8px 0;
+                padding: 6px 0;
+                border-bottom: 1px solid rgba(201, 169, 110, 0.15);
+            }
+
+            .domain-card-row:last-child {
+                border-bottom: none;
+            }
+
+            .domain-card-label {
+                font-size: 8px;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: var(--soft-gold);
+                font-weight: 500;
+                margin-bottom: 4px;
+            }
+
+            .domain-card-value {
+                font-size: 11px;
+                line-height: 1.5;
+                color: var(--deep-charcoal);
+                font-weight: 400;
+            }
+
+            /* SABOTAGE PATTERN ANALYSIS */
+            .sabotage-content {
+                margin-top: 40px;
+            }
+
+            .sabotage-section {
+                margin-bottom: 30px;
+            }
+
+            .sabotage-section:last-child {
+                margin-bottom: 0;
+            }
+
+            .sabotage-text {
+                font-size: 14px;
+                line-height: 1.8;
+                text-align: left;
+            }
+
             p {
                 margin-bottom: 28px;
                 line-height: 1.9;
@@ -793,230 +1143,189 @@ function generateHTMLReport(
     </head>
     <body>
 
-        <!-- PAGE 1: COVER -->
+        <!-- PAGE 1: COVER (V3.0) -->
         <div class="page cover">
             <div class="cover-content">
                 <div class="logo-mark">THE S.M.A.R.T. METHOD</div>
-                <h1>YOUR<br>S.M.A.R.T.<br>SUMMARY</h1>
-                <div class="cover-tagline">This is where<br>transformation begins</div>
+                <h1>S.M.A.R.T. METHOD<br>BEHAVIORAL<br>ASSESSMENT</h1>
+                <div class="client-name">${clientName}</div>
+                <div style="font-size: 12px; color: #666; margin-top: 20px; font-family: 'Inter', sans-serif;">${assessmentDate}</div>
+                <div class="cover-tagline">Your transformation begins here</div>
+                <div style="font-size: 10px; color: #999; margin-top: 40px; font-style: italic; max-width: 500px; line-height: 1.6; font-family: 'Inter', sans-serif;">${disclaimer}</div>
             </div>
         </div>
 
-        <!-- PAGE 2: TITLE -->
+        <!-- PAGE 2: YOUR S.M.A.R.T. SUMMARY (V3.0) -->
         <div class="page">
-            <div class="page-content" style="text-align: center;">
-                <div style="margin-bottom: 80px; font-size: 14px; letter-spacing: 8px; color: var(--soft-gold); font-weight: 300;">
-                    become / you
+            <div class="page-content">
+                <div class="section-header">
+                    <div class="section-label">Your Summary</div>
+                    <div class="section-title">Your S.M.A.R.T.<br>Summary</div>
                 </div>
                 
-                <h2 style="margin-bottom: 60px;">THE S.M.A.R.T.<br>ASSESSMENT</h2>
-                
-                <div style="font-size: 12px; line-height: 2.5; color: #666;">
-                    <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Client</span><br>${clientName}</p>
-                    <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Date</span><br>${currentDate}</p>
-                    <p style="margin: 20px 0;"><span style="letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; color: var(--soft-gold);">Type</span><br>Behavioral Optimization</p>
-          </div>
-                
-                <div class="divider"></div>
-                
-                <p style="font-size: 11px; font-style: italic; color: #999; max-width: 500px; margin: 0 auto;">
-                    This assessment is not a diagnostic tool and does not replace professional mental health support. If you are experiencing crisis-level distress, please seek immediate professional care.
-                </p>
-            </div>
-            <div class="page-number">02</div>
-        </div>
-
-        <!-- PAGE 3: ASSESSMENT OVERVIEW -->
-        <div class="page">
-            <div class="page-content">
-                <div class="section-header">
-                    <div class="section-label">Overview</div>
-                    <div class="section-title">Assessment Overview</div>
-          </div>
-                
-                <p style="font-size: 15px; line-height: 2;">${planData.assessment_overview || "Your personalized behavioral optimization assessment reveals the patterns that have been keeping you stuck and provides a clear path forward."}</p>
-            </div>
-            <div class="page-number">03</div>
-              </div>
-
-        <!-- PAGE 4: DEVELOPMENT PROFILE -->
-        <div class="page">
-            <div class="page-content">
-                <div class="section-header">
-                    <div class="section-label">Your Profile</div>
-                    <div class="section-title">Your Development<br>Profile</div>
-          </div>
-                
-                <p style="font-size: 15px; line-height: 2;">${planData.development_profile || "Your core development pattern and how it shows up in your daily life."}</p>
-                
-                ${
-                  planData.client_quote
-                    ? `
-                <div class="content-block">
-                    <div class="block-title">Your Words</div>
-                    <div class="block-content" style="font-style: italic;">
-                        "${planData.client_quote}"
+                <div class="sabotage-content">
+                    <div class="sabotage-section">
+                        <div class="block-title">YOUR PATTERN</div>
+                        <div class="sabotage-text">${formatTextWithParagraphBreaks(patternExactWords)}</div>
                     </div>
-                </div>
-                `
-                    : ""
-                }
-            </div>
-            <div class="page-number">04</div>
-        </div>
-
-        <!-- PAGE 5: SABOTAGE PATTERN -->
-        <div class="page">
-            <div class="page-content">
-                <div class="section-header">
-                    <div class="section-label">Pattern Analysis</div>
-                    <div class="section-title">Sabotage Pattern<br>Analysis</div>
-                </div>
-                
-                ${
-                  planData.sabotage_analysis
-                    ? `
-                <div class="content-block">
-                    <div class="block-title">Your Protective Pattern</div>
-                    <div class="block-content">${planData.sabotage_analysis.protective_pattern || "Your specific protective pattern"}</div>
-                </div>
-                
-                <div class="content-block">
-                    <div class="block-title">What It's Protecting You From</div>
-                    <div class="block-content">${planData.sabotage_analysis.what_its_protecting_from || "The underlying fear driving your patterns"}</div>
-          </div>
-                
-                <div class="content-block">
-                    <div class="block-title">Your Success Proof</div>
-                    <div class="block-content">${planData.sabotage_analysis.success_proof || "Evidence that you can overcome this pattern"}</div>
-                </div>
-                
-                <div class="content-block">
-                    <div class="block-title">Your Anchor</div>
-                    <div class="block-content">${planData.sabotage_analysis.anchor || "Your daily anchor practice"}</div>
-                </div>
-                
-                <div class="content-block">
-                    <div class="block-title">Go To Patterns</div>
-                    <div class="block-content">${planData.sabotage_analysis.go_to_patterns || "Your automatic response patterns"}</div>
-                </div>
-                
-                <div class="content-block">
-                    <div class="block-title">Escape Behavior</div>
-                    <div class="block-content">${planData.sabotage_analysis.escape_behavior || "Your primary escape mechanism"}</div>
-                </div>
-                
-                <div class="content-block">
-                    <div class="block-title">How It Serves You</div>
-                    <div class="block-content">${planData.sabotage_analysis.how_it_serves_you || "The function this pattern serves"}</div>
-                </div>
-                
-                <div class="content-block">
-                    <div class="block-title">Positive Behavior</div>
-                    <div class="block-content">${planData.sabotage_analysis.positive_behavior || "The behavior you want to develop"}</div>
-                </div>
-                `
-                    : ""
-                }
-            </div>
-            <div class="page-number">05</div>
-        </div>
-
-        <!-- IN THE MOMENT RESET PAGE -->
-        ${
-          planData.in_the_moment_reset
-            ? `
-        <div class="page">
-            <div class="page-content">
-                <div class="section-header">
-                    <div class="section-label">Reset Strategy</div>
-                    <div class="section-title">In The Moment<br>Reset</div>
-                </div>
-                
-                <div class="content-block">
-                    <div class="block-content">
-                        <p>${planData.in_the_moment_reset}</p>
+                    
+                    <div class="sabotage-section">
+                        <div class="block-title">WHAT I'M HEARING</div>
+                        <div class="sabotage-text">${formatTextWithParagraphBreaks(patternReframe)}</div>
+                    </div>
+                    
+                    <div class="sabotage-section">
+                        <div class="block-title">WHAT IT'S PROTECTING YOU FROM</div>
+                        <div class="sabotage-text">${formatTextWithParagraphBreaks(whatItsProtectingFrom)}</div>
+                    </div>
+                    
+                    <div class="sabotage-section">
+                        <div class="block-title">WHAT IT'S COSTING YOU</div>
+                        <div class="sabotage-text">${formatTextWithParagraphBreaks(whatItsCosting)}</div>
+                    </div>
+                    
+                    <div class="sabotage-section">
+                        <div class="block-title">YOUR PROOF YOU CAN CHANGE</div>
+                        <div class="sabotage-text">${formatTextWithParagraphBreaks(proofWithContext)}</div>
+                    </div>
+                    
+                    <div class="sabotage-section" style="margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(201, 169, 110, 0.3);">
+                        <div class="sabotage-text">${formatTextWithParagraphBreaks(personalizedInsight)}</div>
                     </div>
                 </div>
             </div>
-            <div class="page-number">06</div>
         </div>
-        `
-            : ""
-        }
-
-        <!-- PAGE 7: DOMAIN DIVIDER -->
-        <div class="page" style="display: flex; align-items: center; justify-content: center;">
-            <div style="text-align: center;">
-                <div class="section-label">The Four Domains</div>
-                <h2 style="font-size: 52px; margin-top: 40px;">Domain Breakdown</h2>
-            </div>
-            <div class="page-number">07</div>
-        </div>
-
-        ${
-          planData.domain_breakdown
-            ? Object.entries(planData.domain_breakdown)
-                .map(
-                  ([domain, data]: [string, any], index: number) => `
-        <!-- PAGE ${8 + index}: ${domain.toUpperCase()} -->
+        
+        <!-- PAGE 3: YOUR ROADMAP / S.M.A.R.T. SUMMARY (V3.0) -->
         <div class="page">
             <div class="page-content">
-                <h1 class="domain-hero">${domain.toUpperCase()}</h1>
-                
-                ${
-                  data.current_level
-                    ? `
-                <div class="metric-row">
-                    <div class="metric-label">Current Level</div>
-                    <div class="metric-value">${data.current_level}</div>
-          </div>
-        `
-                    : ""
-                }
-
-                ${
-                  data.current_phase
-                    ? `
-                <div class="metric-row">
-                    <div class="metric-label">Current Phase</div>
-                    <div class="metric-value">${data.current_phase}</div>
-              </div>
-                `
-                    : ""
-                }
-                
-                ${
-                  data.key_strengths
-                    ? `
-                <div class="content-block">
-                    <div class="block-title">Key Strengths</div>
-                    <div class="block-content">${data.key_strengths}</div>
-          </div>
-        `
-                    : ""
-                }
-
-                ${
-                  data.growth_opportunities
-                    ? `
-                <div class="content-block">
-                    <div class="block-title">Growth Opportunities</div>
-                    <div class="block-content">${data.growth_opportunities}</div>
+                <div class="section-header">
+                    <div class="section-label">Your Roadmap</div>
+                    <div class="section-title">Your S.M.A.R.T.<br>Summary</div>
                 </div>
-                `
-                    : ""
-                }
+                
+                <div class="roadmap-flow">
+                    <div class="roadmap-step">
+                        <div class="roadmap-letter">S</div>
+                        <div class="roadmap-arrow"></div>
+                        <div class="roadmap-label">SEE THE PATTERN</div>
+                        <div class="roadmap-brief">${seeBrief}</div>
+                    </div>
+                    
+                    <div class="roadmap-step">
+                        <div class="roadmap-letter">M</div>
+                        <div class="roadmap-arrow"></div>
+                        <div class="roadmap-label">MAP THE NERVOUS SYSTEM</div>
+                        <div class="roadmap-brief">${mapBrief}</div>
+                    </div>
+                    
+                    <div class="roadmap-step">
+                        <div class="roadmap-letter">A</div>
+                        <div class="roadmap-arrow"></div>
+                        <div class="roadmap-label">ADDRESS THE ROOT CAUSE</div>
+                        <div class="roadmap-brief">${addressBrief}</div>
+                    </div>
+                    
+                    <div class="roadmap-step">
+                        <div class="roadmap-letter">R</div>
+                        <div class="roadmap-arrow"></div>
+                        <div class="roadmap-label">REWIRE THE RESPONSE (72-Hour Action)</div>
+                        <div class="roadmap-brief">${rewireBrief}</div>
+                    </div>
+                    
+                    <div class="roadmap-step">
+                        <div class="roadmap-letter">T</div>
+                        <div class="roadmap-label">TRANSFORM BEHAVIOR (30-Day Focus)</div>
+                        <div class="roadmap-brief">${transformBrief}</div>
+                    </div>
+                </div>
             </div>
-            <div class="page-number">${8 + index}</div>
         </div>
-        `
-                )
-                .join("")
-            : ""
-        }
 
-        <!-- NERVOUS SYSTEM PAGE -->
+        <!-- PAGE 4: DEVELOPMENT DASHBOARD - PART 1 (MIND & BODY) -->
+        <div class="page">
+            <div class="page-content">
+                <div class="section-header">
+                    <div class="section-label">Where You Are Now</div>
+                    <div class="section-title">Development<br>Dashboard</div>
+                </div>
+                
+                <div class="domain-grid">
+                    <div class="domain-card">
+                        <div class="domain-card-title">MIND</div>
+                        <div class="domain-card-row">
+                            <div class="domain-card-label">Level</div>
+                            <div class="domain-card-value">${mindDomain.current_level || "Not specified"}</div>
+                        </div>
+                        <div class="domain-card-row">
+                            <div class="domain-card-label">Block</div>
+                            <div class="domain-card-value">${mindDomain.block || mindDomain.growth_opportunities || "Not specified"}</div>
+                        </div>
+                        <div class="domain-card-row">
+                            <div class="domain-card-label">Opportunity</div>
+                            <div class="domain-card-value">${mindDomain.growth_opportunities || "Not specified"}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="domain-card">
+                        <div class="domain-card-title">BODY</div>
+                        <div class="domain-card-row">
+                            <div class="domain-card-label">Level</div>
+                            <div class="domain-card-value">${bodyDomain.current_level || "Not specified"}</div>
+                        </div>
+                        <div class="domain-card-row">
+                            <div class="domain-card-label">Block</div>
+                            <div class="domain-card-value">${bodyDomain.block || bodyDomain.growth_opportunities || "Not specified"}</div>
+                        </div>
+                        <div class="domain-card-row">
+                            <div class="domain-card-label">Opportunity</div>
+                            <div class="domain-card-value">${bodyDomain.growth_opportunities || "Not specified"}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- PAGE 4B: DEVELOPMENT DASHBOARD - PART 2 (RELATIONSHIPS & MEANING & CONTRIBUTION) -->
+        <div class="page">
+            <div class="page-content">
+                <div class="domain-grid" style="margin-top: 0;">
+                    <div class="domain-card">
+                        <div class="domain-card-title">RELATIONSHIPS & MEANING</div>
+                        <div class="domain-card-row">
+                            <div class="domain-card-label">Level</div>
+                            <div class="domain-card-value">${relationshipsMeaningDomain.current_level || "Not specified"}</div>
+                        </div>
+                        <div class="domain-card-row">
+                            <div class="domain-card-label">Block</div>
+                            <div class="domain-card-value">${relationshipsMeaningDomain.block || relationshipsMeaningDomain.growth_opportunities || "Not specified"}</div>
+                        </div>
+                        <div class="domain-card-row">
+                            <div class="domain-card-label">Opportunity</div>
+                            <div class="domain-card-value">${relationshipsMeaningDomain.growth_opportunities || "Not specified"}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="domain-card">
+                        <div class="domain-card-title">CONTRIBUTION</div>
+                        <div class="domain-card-row">
+                            <div class="domain-card-label">Level</div>
+                            <div class="domain-card-value">${contributionDomain.current_level || "Not specified"}</div>
+                        </div>
+                        <div class="domain-card-row">
+                            <div class="domain-card-label">Block</div>
+                            <div class="domain-card-value">${contributionDomain.block || contributionDomain.growth_opportunities || "Not specified"}</div>
+                        </div>
+                        <div class="domain-card-row">
+                            <div class="domain-card-label">Opportunity</div>
+                            <div class="domain-card-value">${contributionDomain.growth_opportunities || "Not specified"}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 5: NERVOUS SYSTEM ASSESSMENT (V3.0) -->
         <div class="page">
             <div class="page-content">
                 <div class="section-header">
@@ -1024,316 +1333,210 @@ function generateHTMLReport(
                     <div class="section-title">Nervous System<br>Assessment</div>
                 </div>
                 
-                ${
-                  planData.nervous_system_assessment
-                    ? `
-                ${
-                  planData.nervous_system_assessment.primary_state
-                    ? `
-                <div class="content-block">
-                    <div class="block-title">Primary State</div>
-                    <div class="block-content">${planData.nervous_system_assessment.primary_state}</div>
+                <div class="metric-row">
+                    <div class="metric-label">Primary State</div>
+                    <div class="metric-value">${nervousSystemAssessment.primary_state || "Not specified"}</div>
                 </div>
                 
-                <div class="divider"></div>
+                <div class="metric-row">
+                    <div class="metric-label">Regulation Capacity</div>
+                    <div class="metric-value">${nervousSystemAssessment.regulation_capacity || "Not specified"}</div>
+                </div>
                 
-                `
-                    : ""
-                }
-                
-                ${
-                  planData.nervous_system_assessment.regulation_capacity
-                    ? `
-                <div class="content-block">
-                    <div class="block-title">Regulation Capacity</div>
-                    <div class="block-content">${planData.nervous_system_assessment.regulation_capacity}</div>
-          </div>
-                `
-                    : ""
-                }
-
-                ${
-                  planData.nervous_system_assessment.regulation_reality
-                    ? `
-                <div class="content-block">
-                    <div class="block-title">Regulation Reality</div>
-                    <div class="block-content">${planData.nervous_system_assessment.regulation_reality}</div>
-          </div>
-        `
-                    : ""
-                }
-
-                ${
-                  planData.nervous_system_assessment.observable_patterns
-                    ? `
                 <div class="content-block">
                     <div class="block-title">Observable Patterns</div>
-                    <div class="block-content">
-                        ${
-                          Array.isArray(
-                            planData.nervous_system_assessment
-                              .observable_patterns
-                          )
-                            ? planData.nervous_system_assessment.observable_patterns
-                                .map((pattern: string) => `<p>${pattern}</p>`)
-                                .join("")
-                            : `<p>${planData.nervous_system_assessment.observable_patterns}</p>`
-                        }
+                    <div class="block-content">${formatTextWithParagraphBreaks(nervousSystemAssessment.observable_patterns)}</div>
+                </div>
+                
+                <div class="content-block">
+                    <div class="block-title">The Regulation Reality</div>
+                    <div class="block-content">${formatTextWithParagraphBreaks(nervousSystemAssessment.regulation_reality)}</div>
+                </div>
             </div>
-          </div>
-        `
-                    : ""
-                }
-                `
-                    : ""
-                }
-            </div>
-            <div class="page-number">${8 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
         </div>
 
-        <!-- 30-DAY PROTOCOL PAGE -->
+        <!-- PAGE 6: YOUR S.M.A.R.T. PROTOCOL (V3.0) -->
         <div class="page">
             <div class="page-content">
                 <div class="section-header">
-                    <div class="section-label">Your Protocol</div>
-                    <div class="section-title">30-Day Growth<br>Protocol</div>
+                    <div class="section-label">Start Now</div>
+                    <div class="section-title">Your S.M.A.R.T.<br>Protocol</div>
+                </div>
+                
+                ${urgencyStatement ? `<div style="font-size: 14px; line-height: 1.8; margin-bottom: 40px; font-style: italic; color: var(--deep-charcoal);">${urgencyStatement}</div>` : ""}
+                
+                <div class="protocol-item">
+                    <div class="protocol-timeline">STEP 1: 72-HOUR ACTION</div>
+                    <div class="protocol-action">
+                        ${anchorHabit && specificAction ? `After ${anchorHabit}, ${specificAction}${timeReps ? ` for ${timeReps}` : ""}` : formatTextWithParagraphBreaks(seventyTwoHourSuggestion)}
+                    </div>
+                    ${whyThisWorks ? `<div style="font-size: 12px; color: #666; margin-top: 10px; font-style: italic;">Why this works: ${whyThisWorks}</div>` : ""}
+                </div>
+                
+                <div class="protocol-item">
+                    <div class="protocol-timeline">STEP 2: READ THIS NOW</div>
+                    <div class="protocol-action">
+                        ${
+                            selectedBooks && selectedBooks.length > 0
+                                ? `<div style="margin-bottom: 15px;">
+                                    <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px; font-family: 'Playfair Display', serif;"><a href="${selectedBooks[0].url}" style="color: var(--dark-olive); text-decoration: none;">${selectedBooks[0].title}</a></div>
+                                    <div style="font-size: 14px; color: #666; margin-bottom: 20px;">By ${selectedBooks[0].author}</div>
+                                    <div style="font-size: 13px; line-height: 1.7; margin-bottom: 15px;"><strong>Why this book, why now:</strong> ${bookRecommendationText || selectedBooks[0].why}</div>
+                                </div>`
+                                : bookRecommendationText
+                                    ? `<div style="font-size:15px; line-height:1.7; color:#222;">${bookRecommendationText}</div>`
+                                    : `<div style="font-size:15px; line-height:1.7; color:#222;">The Body Keeps the Score by Bessel van der Kolk - Understanding trauma and healing. This book directly addresses the core issue for most users stuck in sabotage patterns.</div>`
+                        }
+                    </div>
                 </div>
                 
                 ${
-                  planData.thirty_day_protocol
-                    ? `
-                ${
-                  planData.thirty_day_protocol.seventy_two_hour_suggestion
-                    ? `
-                <div class="protocol-item">
-                    <div class="protocol-timeline">72-Hour Suggestion</div>
-                    <div class="protocol-action">${planData.thirty_day_protocol.seventy_two_hour_suggestion}</div>
-          </div>
-        `
-                    : ""
-                }
-
-                ${
-                  planData.thirty_day_protocol.weekly_recommendation
-                    ? `
-                <div class="protocol-item">
-                    <div class="protocol-timeline">Weekly Recommendation</div>
-                    <div class="protocol-action">${planData.thirty_day_protocol.weekly_recommendation}</div>
-                    ${
-                      planData.thirty_day_protocol.weekly_goals
-                        ? `
-                    <div class="protocol-goals">
-                        ${
-                          Array.isArray(
-                            planData.thirty_day_protocol.weekly_goals
-                          )
-                            ? planData.thirty_day_protocol.weekly_goals
-                                .map(
-                                  (goal: string) =>
-                                    `<div class="goal-item">${goal}</div>`
-                                )
-                                .join("")
-                            : `<div class="goal-item">${planData.thirty_day_protocol.weekly_goals}</div>`
-                        }
-          </div>
-                    `
+                    immediatePractice
+                        ? `<div class="protocol-item">
+                    <div class="protocol-timeline">STEP 3: IMPLEMENT IMMEDIATELY</div>
+                    <div class="protocol-action">${formatTextWithParagraphBreaks(immediatePractice)}</div>
+                </div>`
                         : ""
-                    }
-                </div>
-                `
-                    : ""
                 }
-
-                ${
-                  planData.thirty_day_protocol.environmental_optimization
-                    ? `
-                <div class="protocol-item">
-                    <div class="protocol-timeline">Environmental Optimization</div>
-                    <div class="protocol-action">${planData.thirty_day_protocol.environmental_optimization}</div>
-          </div>
-        `
-                    : ""
-                }
-
-                ${
-                  planData.thirty_day_protocol.thirty_day_approach
-                    ? `
-                <div class="protocol-item">
-                    <div class="protocol-timeline">30-Day Approach</div>
-                    <div class="protocol-action">${planData.thirty_day_protocol.thirty_day_approach}</div>
+                
+                <div class="protocol-item" style="margin-top: 50px;">
+                    <div class="protocol-timeline">YOUR FIRST 30 DAYS</div>
                     ${
-                      planData.thirty_day_protocol.daily_actions
-                        ? `
-                    <div class="protocol-goals">
-                        ${
-                          Array.isArray(
-                            planData.thirty_day_protocol.daily_actions
-                          )
-                            ? planData.thirty_day_protocol.daily_actions
-                                .map(
-                                  (action: string) =>
-                                    `<div class="goal-item">${action}</div>`
-                                )
-                                .join("")
-                            : `<div class="goal-item">${planData.thirty_day_protocol.daily_actions}</div>`
-                        }
-                </div>
-                    `
-                        : ""
+                        week1Focus
+                            ? `<div style="margin: 20px 0;">
+                        <div style="font-weight: 600; margin-bottom: 8px;">WEEK 1: ${week1Focus}</div>
+                        ${week1Practice ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">🎯 Practice: ${week1Practice}</div>` : ""}
+                        ${week1Marker ? `<div style="font-size: 12px; color: #666;">✓ Marker: ${week1Marker}</div>` : ""}
+                    </div>`
+                            : ""
                     }
-            </div>
-                `
-                    : ""
-                }
-
-                ${
-                  planData.thirty_day_protocol.progress_markers
-                    ? `
-                <div class="content-block">
-                    <div class="block-title">Suggested Progress Markers</div>
-                    <div class="block-content">
-                        ${
-                          Array.isArray(
-                            planData.thirty_day_protocol.progress_markers
-                          )
-                            ? planData.thirty_day_protocol.progress_markers
-                                .map(
-                                  (marker: string) =>
-                                    `<div class="reminder-item">${marker}</div>`
-                                )
-                                .join("")
-                            : `<div class="reminder-item">${planData.thirty_day_protocol.progress_markers}</div>`
-                        }
-        </div>
-                </div>
-                `
-                    : ""
-                }
-
-                `
-                    : ""
-                }
-            </div>
-            <div class="page-number">${9 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
-        </div>
-
-
-        <!-- REMINDER QUOTE PAGE -->
-        ${
-          planData.reminder_quote
-            ? `
-        <div class="page" style="display: flex; align-items: center; justify-content: center;">
-            <div class="page-content" style="text-align: center; max-width: 700px;">
-                <div class="pull-quote">
-                    <div class="pull-quote-text">"${planData.reminder_quote}"</div>
-                </div>
-            </div>
-            <div class="page-number">${10 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
-        </div>
-        `
-            : ""
-        }
-
-        <!-- BOTTOM LINE PAGE -->
-        <div class="page bottom-line-page">
-            <div class="page-content" style="text-align: center; max-width: 700px;">
-            <h2>Bottom Line</h2>
-                <p>${planData.bottom_line || "Your personalized bottom line insight based on your assessment."}</p>
-            </div>
-          </div>
-
-        <!-- DEVELOPMENT REMINDERS PAGE -->
-        <div class="page">
-            <div class="page-content">
-                <div class="section-header">
-                    <div class="section-label">Reminders</div>
-                    <div class="section-title">Development<br>Reminders</div>
+                    ${
+                        week2Focus
+                            ? `<div style="margin: 20px 0;">
+                        <div style="font-weight: 600; margin-bottom: 8px;">WEEK 2: ${week2Focus}</div>
+                        ${week2Practice ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">🎯 Practice: ${week2Practice}</div>` : ""}
+                        ${week2Marker ? `<div style="font-size: 12px; color: #666;">✓ Marker: ${week2Marker}</div>` : ""}
+                    </div>`
+                            : ""
+                    }
+                    ${
+                        week3Focus
+                            ? `<div style="margin: 20px 0;">
+                        <div style="font-weight: 600; margin-bottom: 8px;">WEEK 3: ${week3Focus}</div>
+                        ${week3Practice ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">🎯 Practice: ${week3Practice}</div>` : ""}
+                        ${week3Marker ? `<div style="font-size: 12px; color: #666;">✓ Marker: ${week3Marker}</div>` : ""}
+                    </div>`
+                            : ""
+                    }
+                    ${
+                        week4Focus
+                            ? `<div style="margin: 20px 0;">
+                        <div style="font-weight: 600; margin-bottom: 8px;">WEEK 4: ${week4Focus}</div>
+                        ${week4Practice ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">🎯 Practice: ${week4Practice}</div>` : ""}
+                        ${week4Marker ? `<div style="font-size: 12px; color: #666;">✓ Marker: ${week4Marker}</div>` : ""}
+                    </div>`
+                            : ""
+                    }
+                    ${
+                        dailyActions && dailyActions.length > 0
+                            ? `<div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(201, 169, 110, 0.3);">
+                        <div style="font-weight: 600; margin-bottom: 15px; color: var(--dark-olive);">DAILY ACTIONS</div>
+                        ${dailyActions.map((action, index) => `<div style="font-size: 12px; color: #666; margin-bottom: 8px; line-height: 1.6;">${action}</div>`).join("")}
+                    </div>`
+                            : ""
+                    }
+                    ${
+                        thirtyDayApproach
+                            ? `<div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(201, 169, 110, 0.3);">
+                        <div style="font-weight: 600; margin-bottom: 15px; color: var(--dark-olive);">30-DAY APPROACH</div>
+                        <div style="font-size: 13px; line-height: 1.7; color: var(--deep-charcoal);">${formatTextWithParagraphBreaks(thirtyDayApproach)}</div>
+                    </div>`
+                            : ""
+                    }
                 </div>
                 
-                ${
-                  planData.development_reminders
-                    ? `
-                ${
-                  Array.isArray(planData.development_reminders)
-                    ? planData.development_reminders
-                        .map(
-                          (reminder: string) => `
-                <div class="reminder-item">${reminder}</div>
-                `
-                        )
-                        .join("")
-                    : `
-                <div class="reminder-item">${planData.development_reminders}</div>
-                `
-                }
-                `
-                    : `
-                <div class="reminder-item">Growth is cyclical; regression is protection, not failure</div>
-                <div class="reminder-item">Integration comes through consistent practice, not more awareness</div>
-                <div class="reminder-item">Your nervous system is the foundation—regulate first, then grow</div>
-                <div class="reminder-item">Your sabotage patterns have wisdom; honor them while updating them</div>
-                <div class="reminder-item">Identity shifts over time with deliberate practice</div>
-                <div class="reminder-item">You're not broken—you're context-dependent. Build better contexts</div>
-                `
-                }
+                <div style="margin-top: 40px; padding: 20px; background: var(--cream); border-left: 3px solid var(--soft-gold);">
+                    <div style="font-size: 13px; line-height: 1.8; font-style: italic;">
+                        Start tonight. This book explains why every strategy you've tried hasn't worked—and what will.
+                    </div>
+                </div>
             </div>
-            <div class="page-number">${11 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
         </div>
 
-        <!-- BOOK RECOMMENDATIONS PAGE (Top 2 Personalized) -->
-        <div class="page">
+
+        <!-- PAGE 7: BOTTOM LINE + REMINDER (V3.0) -->
+        <div class="page" style="page-break-before: always;">
             <div class="page-content">
                 <div class="section-header">
-                    <div class="section-label">Resources</div>
-                    <div class="section-title">Book<br>Recommendations</div>
+                    <div class="section-label">Remember</div>
+                    <div class="section-title">Bottom Line</div>
                 </div>
-
-                <div class="content-block">
-                  <div class="block-title">Your Top 2, Personalized</div>
-                  <ol style="margin:0 0 14px 20px; padding:0; font-size:15px;">
-                    ${selectedBooks
-                      .map(
-                        (b: any) => `
-                      <li style="margin-bottom:10px;">
-                        <span style="font-style:italic;"><a href="${b.url}" style="color: #1a73e8; text-decoration: underline; font-size:15px;" target="_blank">"${b.title}"</a></span>
-                        by <span style="color: #1a73e8; font-size:15px;">${b.author}</span><br>
-                        <strong>Why:</strong> <span style="color:#222; font-size:13px;">${b.why}</span>
-                      </li>
-                    `
-                      )
-                      .join("")}
-                  </ol>
-                </div>
-                <div class="content-block" style="margin-top: 10px;">
-                  <div style="font-size:13px; color:#777; font-style:italic; line-height:1.7; text-align:left; border-top: 1px solid #eee; padding-top:10px; max-width:650px;">
-                    These books support—but do not replace—professional mental health care. If you're experiencing trauma symptoms, severe anxiety, depression, or psychological distress, please consult a licensed therapist.<br>Amazon Associate Disclosure: I earn from qualifying purchases.
-                  </div>
+                
+                <div style="margin: 40px 0;">
+                    ${formatTextWithParagraphBreaks(bottomLine)}
                 </div>
             </div>
-            <div class="page-number">${12 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
         </div>
-
         
+        <!-- PAGE 7B: CLIENT'S WORDS (PULL QUOTE) -->
+        <div class="page" style="page-break-before: always; display: flex; align-items: center; justify-content: center;">
+            <div class="page-content" style="display: flex; align-items: center; justify-content: center; height: 100%; width: 100%;">
+                <div class="pull-quote" style="text-align: center; width: 100%; margin: 0;">
+                    <div class="pull-quote-text"><strong>"${pullQuote}"</strong></div>
+                    <div style="font-size: 11px; letter-spacing: 0.1em; color: #999; margin-top: 20px;">${quoteAttribution}</div>
+                </div>
+            </div>
+        </div>
 
-        <!-- NEXT STEPS PAGE -->
+        <!-- PAGE 8: WHAT'S NEXT (V3.0) -->
         <div class="page">
             <div class="page-content">
                 <div class="section-header">
                     <div class="section-label">Moving Forward</div>
-                    <div class="section-title">Next Steps</div>
+                    <div class="section-title">You Have Everything<br>You Need</div>
                 </div>
                 
-                <div class="content-block">
-                    <div class="block-title">How to Stay Connected</div>
+                <div style="margin: 40px 0;">
+                    <div style="font-size: 14px; line-height: 2; margin-bottom: 30px;">
+                        <div style="margin: 10px 0;">✓ Your pattern mapped</div>
+                        <div style="margin: 10px 0;">✓ Your nervous system understood</div>
+                        <div style="margin: 10px 0;">✓ Your 72-hour action identified</div>
+                        <div style="margin: 10px 0;">✓ Your reading list queued</div>
+                        <div style="margin: 10px 0;">✓ Your 30-day protocol ready</div>
+                    </div>
+                    
+                    <div style="font-size: 16px; font-weight: 600; margin: 40px 0; text-align: center; color: var(--dark-olive);">
+                        The Only Thing Left:<br>Take action.
+                    </div>
+                </div>
+                
+                <div class="content-block" style="margin-top: 60px;">
+                    <div class="block-title">RECOMMENDED NEXT STEPS</div>
                     <div class="block-content">
-                        <p style="margin: 0 0 20px 0;">Your assessment is just the beginning.</p>
-                        <p style="margin: 0 0 20px 0;">Over the coming weeks, you'll receive weekly insights in your inbox—real case studies of people who've broken through the exact patterns you're facing, practical protocols you can implement immediately, and advanced strategies that build on your personalized roadmap.</p>
-                        <p style="margin: 0 0 20px 0;">Each email is designed to meet you exactly where you are in your transformation journey, delivering the precise guidance you need, when you need it most.</p>
-                        <p style="margin: 0;">These aren't generic newsletters—they're the ongoing support system that turns your 30-day protocol into a sustainable lifestyle.</p>
+                        <p style="margin: 0 0 25px 0; line-height: 1.8;"><strong>Join The S.M.A.R.T. Method Community:</strong> Connect with other solopreneurs who are building six-figure businesses without chasing trends or burning out on content. Get live weekly coaching, access to proven frameworks, and strategic support as you implement your protocol.</p>
+                        <p style="margin: 0 0 25px 0; line-height: 1.8;"><a href="https://www.skool.com/become-u-4484/about?ref=ade2178e19214f7983f06d6cabed88eb" style="color: var(--lime-green); text-decoration: none; font-weight: 600;">→ Join the Community</a></p>
+                        <p style="margin: 0 0 20px 0; line-height: 1.8;"><strong>Contact:</strong> Questions? Email <a href="mailto:info@thesmartmethod.co" style="color: var(--lime-green); text-decoration: none;">info@thesmartmethod.co</a></p>
                     </div>
                 </div>
             </div>
-            <div class="page-number">${13 + (planData.domain_breakdown ? Object.keys(planData.domain_breakdown).length : 0)}</div>
+        </div>
+
+        <!-- PAGE 9: DEVELOPMENT REMINDERS (V3.0) -->
+        <div class="page">
+            <div class="page-content">
+                <div class="section-header">
+                    <div class="section-label">Remember</div>
+                    <div class="section-title">Development<br>Reminders</div>
+                </div>
+        
+                ${developmentReminders.map((reminder) => `<div class="reminder-item">→ ${reminder}</div>`).join("")}
+                
+                <div style="background: var(--cream); padding: 60px; text-align: center; max-width: 600px; border-left: 2px solid var(--soft-gold); margin-top: 180px;">
+                    <p style="font-size: 13px; line-height: 2.2; font-style: italic;">
+                        This assessment was built with care, respect, and the belief that you already have everything you need to become the person you described. The only thing left to do is <em>take action</em>.
+                    </p>
+                </div>
+            </div>
         </div>
 
         <!-- FINAL PAGE -->
